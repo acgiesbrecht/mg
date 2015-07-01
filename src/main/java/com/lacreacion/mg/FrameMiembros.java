@@ -34,7 +34,6 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
  */
 public class FrameMiembros extends JInternalFrame {
 
-    String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
     public FrameMiembros() {
@@ -412,7 +411,7 @@ public class FrameMiembros extends JInternalFrame {
             int returnVal = fc.showOpenDialog(this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                getDatabaseIP();
+
                 File file = fc.getSelectedFile();
                 POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(file));
                 HSSFWorkbook wb = new HSSFWorkbook(fs);
@@ -466,19 +465,6 @@ public class FrameMiembros extends JInternalFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void getDatabaseIP() {
-        try {
-            databaseIP = Preferences.userRoot().node("Remates").get("DatabaseIP", "127.0.0.1");
-
-            persistenceMap.put("javax.persistence.jdbc.url", "jdbc:derby://" + databaseIP + ":5432/mgdb");
-            persistenceMap.put("javax.persistence.jdbc.user", "mg");
-            persistenceMap.put("javax.persistence.jdbc.password", "123456");
-            persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-        }
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.lacreacion.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
     private javax.swing.JTextField ctacteField;

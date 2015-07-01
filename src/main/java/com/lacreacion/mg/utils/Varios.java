@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.prefs.Preferences;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 
 /**
  *
@@ -77,4 +79,20 @@ public class Varios {
         persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
         return persistenceMap;
     }
+
+    public static int getIndexOfModel(ListModel model, Object value) {
+        if (value == null) {
+            return -1;
+        }
+        if (model instanceof DefaultListModel) {
+            return ((DefaultListModel) model).indexOf(value);
+        }
+        for (int i = 0; i < model.getSize(); i++) {
+            if (value.equals(model.getElementAt(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }

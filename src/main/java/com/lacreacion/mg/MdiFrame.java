@@ -5,6 +5,7 @@
  */
 package com.lacreacion.mg;
 
+import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.Color;
 import java.util.HashMap;
@@ -33,11 +34,13 @@ public class MdiFrame extends javax.swing.JFrame {
     public MdiFrame() {
         try {
             persistenceMap = Varios.getDatabaseIP();
+
             if (Boolean.parseBoolean(Preferences.userRoot().node("MG").get("isServer", "true"))) {
                 NetworkServerControl server = new NetworkServerControl();
                 server.start(null);
             }
             initComponents();
+
             desktop = new JDesktopPane();
             desktop.setBackground(Color.white);
             setContentPane(desktop);
@@ -63,18 +66,25 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        mnuLogin = new javax.swing.JMenuItem();
+        mnuOp = new javax.swing.JMenu();
+        mnuOpRemates = new javax.swing.JMenuItem();
+        mnuOpPagos = new javax.swing.JMenuItem();
+        mnuOpRemates1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mnuMiembros = new javax.swing.JMenuItem();
-        mnuMiembros3 = new javax.swing.JMenuItem();
-        mnuMiembros4 = new javax.swing.JMenuItem();
-        mnuCategorias = new javax.swing.JMenuItem();
-        mnuMiembros1 = new javax.swing.JMenuItem();
-        mnuMiembros2 = new javax.swing.JMenuItem();
-        mnuMiembros5 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        mnuAdRemates = new javax.swing.JMenuItem();
+        mnuAdCuotas = new javax.swing.JMenuItem();
+        mnuAdCat = new javax.swing.JMenuItem();
+        mnuAdTransf = new javax.swing.JMenuItem();
+        mnuAdRecibos = new javax.swing.JMenuItem();
+        mnuAdIglesia = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        mnuAdConfig = new javax.swing.JMenuItem();
+        mnuAdUsuarios = new javax.swing.JMenuItem();
+        mnuAdRoles = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        mnuAdInformes = new javax.swing.JMenuItem();
 
         jMenu3.setText("jMenu3");
 
@@ -84,25 +94,45 @@ public class MdiFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jMenu1.setText("Operaciones");
+        jMenu1.setText("Usuario");
 
-        jMenuItem2.setText("Remates");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        mnuLogin.setText("Login");
+        mnuLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                mnuLoginActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
-
-        jMenuItem3.setText("Pagos");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem3);
+        jMenu1.add(mnuLogin);
 
         jMenuBar1.add(jMenu1);
+
+        mnuOp.setText("Operaciones");
+
+        mnuOpRemates.setText("Remates");
+        mnuOpRemates.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuOpRematesActionPerformed(evt);
+            }
+        });
+        mnuOp.add(mnuOpRemates);
+
+        mnuOpPagos.setText("Pagos");
+        mnuOpPagos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuOpPagosActionPerformed(evt);
+            }
+        });
+        mnuOp.add(mnuOpPagos);
+
+        mnuOpRemates1.setText("Colectas");
+        mnuOpRemates1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuOpRemates1ActionPerformed(evt);
+            }
+        });
+        mnuOp.add(mnuOpRemates1);
+
+        jMenuBar1.add(mnuOp);
 
         jMenu2.setText("Administracion");
 
@@ -114,69 +144,87 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         jMenu2.add(mnuMiembros);
 
-        mnuMiembros3.setText("Administrar Remates");
-        mnuMiembros3.addActionListener(new java.awt.event.ActionListener() {
+        mnuAdRemates.setText("Administrar Remates");
+        mnuAdRemates.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuMiembros3ActionPerformed(evt);
+                mnuAdRematesActionPerformed(evt);
             }
         });
-        jMenu2.add(mnuMiembros3);
+        jMenu2.add(mnuAdRemates);
 
-        mnuMiembros4.setText("Administrar Cuotas de Remates");
-        mnuMiembros4.addActionListener(new java.awt.event.ActionListener() {
+        mnuAdCuotas.setText("Administrar Cuotas de Remates");
+        mnuAdCuotas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuMiembros4ActionPerformed(evt);
+                mnuAdCuotasActionPerformed(evt);
             }
         });
-        jMenu2.add(mnuMiembros4);
+        jMenu2.add(mnuAdCuotas);
 
-        mnuCategorias.setText("Administrar Categorias de Articulos");
-        mnuCategorias.addActionListener(new java.awt.event.ActionListener() {
+        mnuAdCat.setText("Administrar Categorias de Articulos");
+        mnuAdCat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuCategoriasActionPerformed(evt);
+                mnuAdCatActionPerformed(evt);
             }
         });
-        jMenu2.add(mnuCategorias);
+        jMenu2.add(mnuAdCat);
 
-        mnuMiembros1.setText("Administrar Transferencias");
-        mnuMiembros1.addActionListener(new java.awt.event.ActionListener() {
+        mnuAdTransf.setText("Administrar Transferencias");
+        mnuAdTransf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuMiembros1ActionPerformed(evt);
+                mnuAdTransfActionPerformed(evt);
             }
         });
-        jMenu2.add(mnuMiembros1);
+        jMenu2.add(mnuAdTransf);
 
-        mnuMiembros2.setText("Administrar Recibos");
-        mnuMiembros2.addActionListener(new java.awt.event.ActionListener() {
+        mnuAdRecibos.setText("Administrar Recibos");
+        mnuAdRecibos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuMiembros2ActionPerformed(evt);
+                mnuAdRecibosActionPerformed(evt);
             }
         });
-        jMenu2.add(mnuMiembros2);
+        jMenu2.add(mnuAdRecibos);
 
-        mnuMiembros5.setText("Administrar Iglesia");
-        mnuMiembros5.addActionListener(new java.awt.event.ActionListener() {
+        mnuAdIglesia.setText("Administrar Iglesia");
+        mnuAdIglesia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuMiembros5ActionPerformed(evt);
+                mnuAdIglesiaActionPerformed(evt);
             }
         });
-        jMenu2.add(mnuMiembros5);
+        jMenu2.add(mnuAdIglesia);
+        jMenu2.add(jSeparator1);
 
-        jMenuItem5.setText("Configuracion del Sistema");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        mnuAdConfig.setText("Configuracion del Sistema");
+        mnuAdConfig.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                mnuAdConfigActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem5);
+        jMenu2.add(mnuAdConfig);
 
-        jMenuItem6.setText("Informes");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+        mnuAdUsuarios.setText("Administrar Usuarios");
+        mnuAdUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
+                mnuAdUsuariosActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem6);
+        jMenu2.add(mnuAdUsuarios);
+
+        mnuAdRoles.setText("Administrar Grupos");
+        mnuAdRoles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdRolesActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuAdRoles);
+        jMenu2.add(jSeparator2);
+
+        mnuAdInformes.setText("Informes");
+        mnuAdInformes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdInformesActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuAdInformes);
 
         jMenuBar1.add(jMenu2);
 
@@ -210,7 +258,7 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuMiembrosActionPerformed
 
-    private void mnuCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuCategoriasActionPerformed
+    private void mnuAdCatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdCatActionPerformed
         try {
             FrameRematesCategorias frame = new FrameRematesCategorias();
             frame.setVisible(true);
@@ -223,9 +271,9 @@ public class MdiFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
 
-    }//GEN-LAST:event_mnuCategoriasActionPerformed
+    }//GEN-LAST:event_mnuAdCatActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void mnuOpRematesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpRematesActionPerformed
         try {
             FrameRematesDetalle frameR = new FrameRematesDetalle();
             frameR.setVisible(true);
@@ -237,9 +285,9 @@ public class MdiFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_mnuOpRematesActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void mnuOpPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpPagosActionPerformed
         try {
             FramePagos frame = new FramePagos();
             frame.setVisible(true);
@@ -252,9 +300,9 @@ public class MdiFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_mnuOpPagosActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void mnuAdConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdConfigActionPerformed
         try {
             FrameConfig frame = new FrameConfig();
             frame.setVisible(true);
@@ -266,9 +314,9 @@ public class MdiFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_mnuAdConfigActionPerformed
 
-    private void mnuMiembros1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMiembros1ActionPerformed
+    private void mnuAdTransfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdTransfActionPerformed
         try {
             FrameTransferencias frame = new FrameTransferencias();
             frame.setVisible(true);
@@ -281,9 +329,9 @@ public class MdiFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             ex.printStackTrace();
         }
-    }//GEN-LAST:event_mnuMiembros1ActionPerformed
+    }//GEN-LAST:event_mnuAdTransfActionPerformed
 
-    private void mnuMiembros2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMiembros2ActionPerformed
+    private void mnuAdRecibosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdRecibosActionPerformed
         try {
             FrameRecibos frame = new FrameRecibos();
             frame.setVisible(true);
@@ -295,9 +343,9 @@ public class MdiFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
-    }//GEN-LAST:event_mnuMiembros2ActionPerformed
+    }//GEN-LAST:event_mnuAdRecibosActionPerformed
 
-    private void mnuMiembros3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMiembros3ActionPerformed
+    private void mnuAdRematesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdRematesActionPerformed
         try {
             FrameRematesAdmin frame = new FrameRematesAdmin();
             frame.setVisible(true);
@@ -309,9 +357,9 @@ public class MdiFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
-    }//GEN-LAST:event_mnuMiembros3ActionPerformed
+    }//GEN-LAST:event_mnuAdRematesActionPerformed
 
-    private void mnuMiembros4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMiembros4ActionPerformed
+    private void mnuAdCuotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdCuotasActionPerformed
         try {
             FrameCuotasAdmin frame = new FrameCuotasAdmin();
             frame.setVisible(true);
@@ -323,9 +371,9 @@ public class MdiFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
-    }//GEN-LAST:event_mnuMiembros4ActionPerformed
+    }//GEN-LAST:event_mnuAdCuotasActionPerformed
 
-    private void mnuMiembros5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMiembros5ActionPerformed
+    private void mnuAdIglesiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdIglesiaActionPerformed
         try {
             FrameIglesiaAdmin frame = new FrameIglesiaAdmin();
             frame.setVisible(true);
@@ -337,9 +385,9 @@ public class MdiFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
-    }//GEN-LAST:event_mnuMiembros5ActionPerformed
+    }//GEN-LAST:event_mnuAdIglesiaActionPerformed
 
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+    private void mnuAdInformesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdInformesActionPerformed
         try {
             FrameInformes frame = new FrameInformes();
             frame.setVisible(true);
@@ -352,7 +400,53 @@ public class MdiFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             ex.printStackTrace();
         }
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
+    }//GEN-LAST:event_mnuAdInformesActionPerformed
+
+    private void mnuOpRemates1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpRemates1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnuOpRemates1ActionPerformed
+
+    private void mnuAdUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdUsuariosActionPerformed
+        try {
+            FrameUsuariosAdmin frame = new FrameUsuariosAdmin();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_mnuAdUsuariosActionPerformed
+
+    private void mnuAdRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdRolesActionPerformed
+        try {
+            FrameRolesAdmin frame = new FrameRolesAdmin();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_mnuAdRolesActionPerformed
+
+    private void mnuLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuLoginActionPerformed
+        try {
+            FormLogin frame = new FormLogin(this, true);
+            frame.setVisible(true);
+            CurrentUser currentUser = CurrentUser.getInstance();
+            JOptionPane.showMessageDialog(null, currentUser.getUser().getNombre());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_mnuLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -398,18 +492,25 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem mnuCategorias;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JMenuItem mnuAdCat;
+    private javax.swing.JMenuItem mnuAdConfig;
+    private javax.swing.JMenuItem mnuAdCuotas;
+    private javax.swing.JMenuItem mnuAdIglesia;
+    private javax.swing.JMenuItem mnuAdInformes;
+    private javax.swing.JMenuItem mnuAdRecibos;
+    private javax.swing.JMenuItem mnuAdRemates;
+    private javax.swing.JMenuItem mnuAdRoles;
+    private javax.swing.JMenuItem mnuAdTransf;
+    private javax.swing.JMenuItem mnuAdUsuarios;
+    private javax.swing.JMenuItem mnuLogin;
     private javax.swing.JMenuItem mnuMiembros;
-    private javax.swing.JMenuItem mnuMiembros1;
-    private javax.swing.JMenuItem mnuMiembros2;
-    private javax.swing.JMenuItem mnuMiembros3;
-    private javax.swing.JMenuItem mnuMiembros4;
-    private javax.swing.JMenuItem mnuMiembros5;
+    private javax.swing.JMenu mnuOp;
+    private javax.swing.JMenuItem mnuOpPagos;
+    private javax.swing.JMenuItem mnuOpRemates;
+    private javax.swing.JMenuItem mnuOpRemates1;
     // End of variables declaration//GEN-END:variables
 
     /**

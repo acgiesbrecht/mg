@@ -8,7 +8,7 @@
         <class>com.lacreacion.mg.domain.TblRematesCategorias</class>
         <class>com.lacreacion.mg.domain.TblRematesDetalle</class>
         <class>com.lacreacion.mg.domain.TblMiembros</class>
-        <class>com.lacreacion.mg.domain.TblTransferencias</class>
+        <class>com.lacreacion.mg.domain.TblPagos</class>
         <class>com.lacreacion.mg.domain.TblRecibos</class>
         <class>com.lacreacion.mg.domain.TblTransferencias</class>
         <class>com.lacreacion.mg.domain.TblIglesia_1</class>
@@ -16,11 +16,19 @@
         <class>com.lacreacion.mg.domain.TblRecibos_1</class>
         <class>com.lacreacion.mg.domain.TblRematesCuotas_1</class>
         <class>com.lacreacion.mg.domain.TblRematesDetalle_1</class>
+        <class>com.lacreacion.mg.domain.TblCategoriasTributarias</class>
+        <class>com.lacreacion.mg.domain.TblColectas</class>
+        <class>com.lacreacion.mg.domain.TBLroles</class>
+        <class>com.lacreacion.mg.domain.TBLusers</class>
+        <class>com.lacreacion.mg.domain.TblRoles</class>
+        <class>com.lacreacion.mg.domain.TblUsers</class>
+        <class>com.lacreacion.mg.domain.TblRolesUsers</class>
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/mgdb"/>
             <property name="javax.persistence.jdbc.user" value="mg"/>
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
             <property name="javax.persistence.jdbc.password" value="123456"/>
+            <property name="eclipselink.logging.level" value="FINE"/>
         </properties>
     </persistence-unit>
 </persistence>

@@ -5,7 +5,6 @@
  */
 package com.lacreacion.mg;
 
-import com.lacreacion.mg.domain.TblRematesCuotas;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.EventQueue;
 import java.beans.Beans;
@@ -22,13 +21,13 @@ import javax.swing.JInternalFrame;
  *
  * @author Industria
  */
-public class FrameRematesAdmin extends JInternalFrame {
+public class FrameColectasAdmin extends JInternalFrame {
 
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
-    public FrameRematesAdmin() {
-        super("Administrar Remates",
+    public FrameColectasAdmin() {
+        super("Administrar Colectas",
                 true, //resizable
                 true, //closable
                 true, //maximizable
@@ -51,7 +50,7 @@ public class FrameRematesAdmin extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblRemates t");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblColectas t");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         dateToStringConverter1 = new com.lacreacion.mg.utils.DateToStringConverter();
         dateTableCellRenderer1 = new com.lacreacion.mg.utils.DateTimeTableCellRenderer();
@@ -183,16 +182,16 @@ public class FrameRematesAdmin extends JInternalFrame {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                FrameRematesAdmin.this.saveButtonActionPerformed(evt);
+                FrameColectasAdmin.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                FrameRematesAdmin.this.refreshButtonActionPerformed(evt);
+                FrameColectasAdmin.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                FrameRematesAdmin.this.newButtonActionPerformed(evt);
+                FrameColectasAdmin.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                FrameRematesAdmin.this.deleteButtonActionPerformed(evt);
+                FrameColectasAdmin.this.deleteButtonActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -211,9 +210,9 @@ public class FrameRematesAdmin extends JInternalFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int[] selected = masterTable.getSelectedRows();
-        List<com.lacreacion.mg.domain.TblRemates> toRemove = new ArrayList<com.lacreacion.mg.domain.TblRemates>(selected.length);
+        List<com.lacreacion.mg.domain.TblColectas> toRemove = new ArrayList<com.lacreacion.mg.domain.TblColectas>(selected.length);
         for (int idx = 0; idx < selected.length; idx++) {
-            com.lacreacion.mg.domain.TblRemates t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+            com.lacreacion.mg.domain.TblColectas t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
             toRemove.add(t);
             entityManager.remove(t);
         }
@@ -221,7 +220,7 @@ public class FrameRematesAdmin extends JInternalFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        com.lacreacion.mg.domain.TblRemates t = new com.lacreacion.mg.domain.TblRemates();
+        com.lacreacion.mg.domain.TblColectas t = new com.lacreacion.mg.domain.TblColectas();
         entityManager.persist(t);
         list.add(t);
         int row = list.size() - 1;
@@ -239,21 +238,11 @@ public class FrameRematesAdmin extends JInternalFrame {
             }
             list.clear();
             list.addAll(data);
-            list.stream().forEach((r) -> {
-                if (entityManager.find(TblRematesCuotas.class, r.getId()) == null) {
-                    TblRematesCuotas cuota = new TblRematesCuotas();
-                    cuota.setIdRemate(r.getId());
-                    entityManager.persist(cuota);
-                    entityManager.flush();
-                    entityManager.getTransaction().commit();
-                    entityManager.getTransaction().begin();
-                }
-            });
         } catch (RollbackException rex) {
             rex.printStackTrace();
             entityManager.getTransaction().begin();
-            List<com.lacreacion.mg.domain.TblRemates> merged = new ArrayList<com.lacreacion.mg.domain.TblRemates>(list.size());
-            for (com.lacreacion.mg.domain.TblRemates t : list) {
+            List<com.lacreacion.mg.domain.TblColectas> merged = new ArrayList<>(list.size());
+            for (com.lacreacion.mg.domain.TblColectas t : list) {
                 merged.add(entityManager.merge(t));
             }
             list.clear();
@@ -270,7 +259,7 @@ public class FrameRematesAdmin extends JInternalFrame {
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fechaLabel;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
-    private java.util.List<com.lacreacion.mg.domain.TblRemates> list;
+    private java.util.List<com.lacreacion.mg.domain.TblColectas> list;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
@@ -294,21 +283,22 @@ public class FrameRematesAdmin extends JInternalFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameRematesAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameColectasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameRematesAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameColectasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameRematesAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameColectasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameRematesAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameColectasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new FrameRematesAdmin());
+                frame.setContentPane(new FrameColectasAdmin());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);
