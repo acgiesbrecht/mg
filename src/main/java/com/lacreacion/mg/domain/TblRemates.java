@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblRemates.findByFecha", query = "SELECT t FROM TblRemates t WHERE t.fecha = :fecha"),
     @NamedQuery(name = "TblRemates.findByDescripcion", query = "SELECT t FROM TblRemates t WHERE t.descripcion = :descripcion")})
 public class TblRemates implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -176,7 +177,7 @@ public class TblRemates implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblRemates[ id=" + id + " ]";
+        return descripcion + " - " + fecha.toString();
     }
 
 }

@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblRematesCategorias.findById", query = "SELECT t FROM TblRematesCategorias t WHERE t.id = :id"),
     @NamedQuery(name = "TblRematesCategorias.findByDescripcion", query = "SELECT t FROM TblRematesCategorias t WHERE t.descripcion = :descripcion")})
 public class TblRematesCategorias implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -98,7 +99,7 @@ public class TblRematesCategorias implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblRematesCategorias[ id=" + id + " ]";
+        return descripcion;
     }
 
 }
