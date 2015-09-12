@@ -16,8 +16,8 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import org.mindrot.jbcrypt.BCrypt;
@@ -60,10 +60,10 @@ public class FormLogin extends javax.swing.JDialog {
                 .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
                     @Override
                     public void propertyChange(final PropertyChangeEvent e) {
-                        if (e.getNewValue() instanceof JFormattedTextField) {
+                        if (e.getNewValue() instanceof JTextField) {
                             SwingUtilities.invokeLater(new Runnable() {
                                 public void run() {
-                                    JFormattedTextField textField = (JFormattedTextField) e.getNewValue();
+                                    JTextField textField = (JTextField) e.getNewValue();
                                     textField.selectAll();
                                 }
                             });
@@ -98,6 +98,7 @@ public class FormLogin extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
+        setAlwaysOnTop(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
@@ -117,6 +118,15 @@ public class FormLogin extends javax.swing.JDialog {
                 cancelButtonActionPerformed(evt);
             }
         });
+
+        txtPass.setText("adrian");
+        txtPass.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtPassFocusGained(evt);
+            }
+        });
+
+        txtUser.setText("adrian");
 
         jLabel1.setText("Usuario:");
 
@@ -197,6 +207,10 @@ public class FormLogin extends javax.swing.JDialog {
         currentUser.setUser(null);
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
+
+    private void txtPassFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPassFocusGained
+        txtPass.setText("");
+    }//GEN-LAST:event_txtPassFocusGained
 
     private void doClose(int retStatus) {
         returnStatus = retStatus;

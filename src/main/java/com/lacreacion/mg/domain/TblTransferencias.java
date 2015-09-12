@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Industria
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_TRANSFERENCIAS")
@@ -57,6 +57,9 @@ public class TblTransferencias implements Serializable {
     @JoinColumn(name = "ID_REMATE", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblRemates idRemate;
+    @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblUsers idUser;
 
     public TblTransferencias() {
     }
@@ -117,6 +120,14 @@ public class TblTransferencias implements Serializable {
 
     public void setIdRemate(TblRemates idRemate) {
         this.idRemate = idRemate;
+    }
+
+    public TblUsers getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(TblUsers idUser) {
+        this.idUser = idUser;
     }
 
     @Override

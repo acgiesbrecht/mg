@@ -6,7 +6,7 @@
 package com.lacreacion.mg.domain;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Industria
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_CATEGORIAS_TRIBUTARIAS")
@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblCategoriasTributarias.findById", query = "SELECT t FROM TblCategoriasTributarias t WHERE t.id = :id"),
     @NamedQuery(name = "TblCategoriasTributarias.findByDescripcion", query = "SELECT t FROM TblCategoriasTributarias t WHERE t.descripcion = :descripcion")})
 public class TblCategoriasTributarias implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +44,7 @@ public class TblCategoriasTributarias implements Serializable {
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCategoriaTributaria")
-    private Collection<TblColectas> tblColectasCollection;
+    private List<TblColectas> tblColectasList;
 
     public TblCategoriasTributarias() {
     }
@@ -74,12 +75,12 @@ public class TblCategoriasTributarias implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblColectas> getTblColectasCollection() {
-        return tblColectasCollection;
+    public List<TblColectas> getTblColectasList() {
+        return tblColectasList;
     }
 
-    public void setTblColectasCollection(Collection<TblColectas> tblColectasCollection) {
-        this.tblColectasCollection = tblColectasCollection;
+    public void setTblColectasList(List<TblColectas> tblColectasList) {
+        this.tblColectasList = tblColectasList;
     }
 
     @Override
@@ -104,7 +105,7 @@ public class TblCategoriasTributarias implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblCategoriasTributarias[ id=" + id + " ]";
+        return descripcion;
     }
 
 }

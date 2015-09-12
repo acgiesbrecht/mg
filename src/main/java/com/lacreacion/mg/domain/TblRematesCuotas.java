@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Industria
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_REMATES_CUOTAS")
@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblRematesCuotas.findByFecha1", query = "SELECT t FROM TblRematesCuotas t WHERE t.fecha1 = :fecha1"),
     @NamedQuery(name = "TblRematesCuotas.findByFecha2", query = "SELECT t FROM TblRematesCuotas t WHERE t.fecha2 = :fecha2"),
     @NamedQuery(name = "TblRematesCuotas.findByFecha3", query = "SELECT t FROM TblRematesCuotas t WHERE t.fecha3 = :fecha3"),
-    @NamedQuery(name = "TblRematesCuotas.findByFecha4", query = "SELECT t FROM TblRematesCuotas t WHERE t.fecha4 = :fecha4")})
+    @NamedQuery(name = "TblRematesCuotas.findByFecha4", query = "SELECT t FROM TblRematesCuotas t WHERE t.fecha4 = :fecha4"),
+    @NamedQuery(name = "TblRematesCuotas.findByIdUser", query = "SELECT t FROM TblRematesCuotas t WHERE t.idUser = :idUser")})
 public class TblRematesCuotas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,6 +53,8 @@ public class TblRematesCuotas implements Serializable {
     @Column(name = "FECHA_4")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha4;
+    @Column(name = "ID_USER")
+    private Integer idUser;
     @JoinColumn(name = "ID_REMATE", referencedColumnName = "ID", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private TblRemates tblRemates;
@@ -101,6 +104,14 @@ public class TblRematesCuotas implements Serializable {
 
     public void setFecha4(Date fecha4) {
         this.fecha4 = fecha4;
+    }
+
+    public Integer getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Integer idUser) {
+        this.idUser = idUser;
     }
 
     public TblRemates getTblRemates() {

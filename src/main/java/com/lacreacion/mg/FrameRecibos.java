@@ -8,6 +8,7 @@ package com.lacreacion.mg;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
@@ -40,6 +41,7 @@ import net.sf.jasperreports.engine.JasperReport;
  */
 public class FrameRecibos extends JInternalFrame {
 
+    CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
@@ -87,8 +89,8 @@ public class FrameRecibos extends JInternalFrame {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblRecibos t WHERE t.tipo = 1");
+        entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("remates_PU", persistenceMap).createEntityManager();
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblRecibos t");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblMiembros t ORDER BY t.nombre");
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());

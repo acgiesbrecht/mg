@@ -6,7 +6,7 @@
 package com.lacreacion.mg.domain;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Industria
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_REMATES_CATEGORIAS")
@@ -33,7 +33,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblRematesCategorias.findById", query = "SELECT t FROM TblRematesCategorias t WHERE t.id = :id"),
     @NamedQuery(name = "TblRematesCategorias.findByDescripcion", query = "SELECT t FROM TblRematesCategorias t WHERE t.descripcion = :descripcion")})
 public class TblRematesCategorias implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +42,7 @@ public class TblRematesCategorias implements Serializable {
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCategoria")
-    private Collection<TblRematesDetalle> tblRematesDetalleCollection;
+    private List<TblRematesDetalle> tblRematesDetalleList;
 
     public TblRematesCategorias() {
     }
@@ -69,12 +68,12 @@ public class TblRematesCategorias implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblRematesDetalle> getTblRematesDetalleCollection() {
-        return tblRematesDetalleCollection;
+    public List<TblRematesDetalle> getTblRematesDetalleList() {
+        return tblRematesDetalleList;
     }
 
-    public void setTblRematesDetalleCollection(Collection<TblRematesDetalle> tblRematesDetalleCollection) {
-        this.tblRematesDetalleCollection = tblRematesDetalleCollection;
+    public void setTblRematesDetalleList(List<TblRematesDetalle> tblRematesDetalleList) {
+        this.tblRematesDetalleList = tblRematesDetalleList;
     }
 
     @Override
@@ -99,7 +98,7 @@ public class TblRematesCategorias implements Serializable {
 
     @Override
     public String toString() {
-        return descripcion;
+        return "com.lacreacion.mg.domain.TblRematesCategorias[ id=" + id + " ]";
     }
 
 }

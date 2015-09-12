@@ -6,7 +6,6 @@
 package com.lacreacion.mg.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,8 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -27,15 +24,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author adriang
  */
 @Entity
-@Table(name = "TBL_RECIBOS")
+@Table(name = "TBL_COLECTAS_DETALLE")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblRecibos.findAll", query = "SELECT t FROM TblRecibos t"),
-    @NamedQuery(name = "TblRecibos.findById", query = "SELECT t FROM TblRecibos t WHERE t.id = :id"),
-    @NamedQuery(name = "TblRecibos.findByFechahora", query = "SELECT t FROM TblRecibos t WHERE t.fechahora = :fechahora"),
-    @NamedQuery(name = "TblRecibos.findByConcepto", query = "SELECT t FROM TblRecibos t WHERE t.concepto = :concepto"),
-    @NamedQuery(name = "TblRecibos.findByMonto", query = "SELECT t FROM TblRecibos t WHERE t.monto = :monto")})
-public class TblRecibos implements Serializable {
+    @NamedQuery(name = "TblColectasDetalle.findAll", query = "SELECT t FROM TblColectasDetalle t"),
+    @NamedQuery(name = "TblColectasDetalle.findById", query = "SELECT t FROM TblColectasDetalle t WHERE t.id = :id"),
+    @NamedQuery(name = "TblColectasDetalle.findByMonto", query = "SELECT t FROM TblColectasDetalle t WHERE t.monto = :monto")})
+public class TblColectasDetalle implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,34 +38,27 @@ public class TblRecibos implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "FECHAHORA")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechahora;
-    @Column(name = "CONCEPTO")
-    private String concepto;
-    @Basic(optional = false)
     @Column(name = "MONTO")
     private int monto;
+    @JoinColumn(name = "ID_COLECTA", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblColectas idColecta;
     @JoinColumn(name = "ID_MIEMBRO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblMiembros idMiembro;
-    @JoinColumn(name = "ID_REMATE", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private TblRemates idRemate;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
 
-    public TblRecibos() {
+    public TblColectasDetalle() {
     }
 
-    public TblRecibos(Integer id) {
+    public TblColectasDetalle(Integer id) {
         this.id = id;
     }
 
-    public TblRecibos(Integer id, Date fechahora, int monto) {
+    public TblColectasDetalle(Integer id, int monto) {
         this.id = id;
-        this.fechahora = fechahora;
         this.monto = monto;
     }
 
@@ -82,22 +70,6 @@ public class TblRecibos implements Serializable {
         this.id = id;
     }
 
-    public Date getFechahora() {
-        return fechahora;
-    }
-
-    public void setFechahora(Date fechahora) {
-        this.fechahora = fechahora;
-    }
-
-    public String getConcepto() {
-        return concepto;
-    }
-
-    public void setConcepto(String concepto) {
-        this.concepto = concepto;
-    }
-
     public int getMonto() {
         return monto;
     }
@@ -106,20 +78,20 @@ public class TblRecibos implements Serializable {
         this.monto = monto;
     }
 
+    public TblColectas getIdColecta() {
+        return idColecta;
+    }
+
+    public void setIdColecta(TblColectas idColecta) {
+        this.idColecta = idColecta;
+    }
+
     public TblMiembros getIdMiembro() {
         return idMiembro;
     }
 
     public void setIdMiembro(TblMiembros idMiembro) {
         this.idMiembro = idMiembro;
-    }
-
-    public TblRemates getIdRemate() {
-        return idRemate;
-    }
-
-    public void setIdRemate(TblRemates idRemate) {
-        this.idRemate = idRemate;
     }
 
     public TblUsers getIdUser() {
@@ -140,10 +112,10 @@ public class TblRecibos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblRecibos)) {
+        if (!(object instanceof TblColectasDetalle)) {
             return false;
         }
-        TblRecibos other = (TblRecibos) object;
+        TblColectasDetalle other = (TblColectasDetalle) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -152,7 +124,7 @@ public class TblRecibos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblRecibos[ id=" + id + " ]";
+        return "com.lacreacion.mg.domain.TblColectasDetalle[ id=" + id + " ]";
     }
 
 }

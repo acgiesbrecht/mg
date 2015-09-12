@@ -22,13 +22,15 @@ public class NormalTableCellRenderer extends DefaultTableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         if (this.isEnProceso()) {
-            if (table.getValueAt(row, 2) != null) {
-                if (table.getValueAt(row, 1).toString().equals("En Proceso...")) {
-                    setBackground(Color.pink);
-                    setForeground(Color.black);
-                } else {
-                    setBackground(table.getBackground());
-                    setForeground(table.getForeground());
+            if (table.getColumnCount() > 2) {
+                if (table.getValueAt(row, 2) != null) {
+                    if (table.getValueAt(row, 1).toString().equals("En Proceso...")) {
+                        setBackground(Color.pink);
+                        setForeground(Color.black);
+                    } else {
+                        setBackground(table.getBackground());
+                        setForeground(table.getForeground());
+                    }
                 }
             }
 

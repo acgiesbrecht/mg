@@ -5,11 +5,10 @@
  */
 package com.lacreacion.mg.domain;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,14 +19,14 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Industria
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_USERS")
@@ -38,9 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblUsers.findByNombre", query = "SELECT t FROM TblUsers t WHERE t.nombre = :nombre"),
     @NamedQuery(name = "TblUsers.findByPassword", query = "SELECT t FROM TblUsers t WHERE t.password = :password")})
 public class TblUsers implements Serializable {
-
-    @Transient
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,11 +49,25 @@ public class TblUsers implements Serializable {
     @Basic(optional = false)
     @Column(name = "PASSWORD")
     private String password;
-    @JoinTable(name = "TBL_ROLES_USERS", joinColumns = {
+    @ManyToMany(mappedBy = "tblUsersList")
+    private List<TblRoles> tblRolesList;
+    @JoinTable(name = "TBL_GRUPOS_USERS", joinColumns = {
         @JoinColumn(name = "ID_USER", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "ID_ROLE", referencedColumnName = "ID")})
+        @JoinColumn(name = "ID_GRUPO", referencedColumnName = "ID")})
     @ManyToMany
-    private List<TblRoles> tblRolesCollection;
+    private List<TblGrupos> tblGruposList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblColectas> tblColectasList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblRecibos> tblRecibosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblTransferencias> tblTransferenciasList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblRemates> tblRematesList;
+    @OneToMany(mappedBy = "idUser")
+    private List<TblMiembros> tblMiembrosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblColectasDetalle> tblColectasDetalleList;
 
     public TblUsers() {
     }
@@ -77,9 +87,7 @@ public class TblUsers implements Serializable {
     }
 
     public void setId(Integer id) {
-        Integer oldId = this.id;
         this.id = id;
-        changeSupport.firePropertyChange("id", oldId, id);
     }
 
     public String getNombre() {
@@ -87,9 +95,7 @@ public class TblUsers implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        String oldNombre = this.nombre;
         this.nombre = nombre;
-        changeSupport.firePropertyChange("nombre", oldNombre, nombre);
     }
 
     public String getPassword() {
@@ -97,18 +103,79 @@ public class TblUsers implements Serializable {
     }
 
     public void setPassword(String password) {
-        String oldPassword = this.password;
         this.password = password;
-        changeSupport.firePropertyChange("password", oldPassword, password);
     }
 
     @XmlTransient
-    public List<TblRoles> getTblRolesCollection() {
-        return tblRolesCollection;
+    public List<TblRoles> getTblRolesList() {
+        return tblRolesList;
     }
 
-    public void setTblRolesCollection(List<TblRoles> tblRolesCollection) {
-        this.tblRolesCollection = tblRolesCollection;
+    public void setTblRolesList(List<TblRoles> tblRolesList) {
+        this.tblRolesList = tblRolesList;
+    }
+
+    @XmlTransient
+    public List<TblGrupos> getTblGruposList() {
+        return tblGruposList;
+    }
+
+    public void setTblGruposList(List<TblGrupos> tblGruposList) {
+        this.tblGruposList = tblGruposList;
+    }
+
+    @XmlTransient
+    public List<TblColectas> getTblColectasList() {
+        return tblColectasList;
+    }
+
+    public void setTblColectasList(List<TblColectas> tblColectasList) {
+        this.tblColectasList = tblColectasList;
+    }
+
+    @XmlTransient
+    public List<TblRecibos> getTblRecibosList() {
+        return tblRecibosList;
+    }
+
+    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
+        this.tblRecibosList = tblRecibosList;
+    }
+
+    @XmlTransient
+    public List<TblTransferencias> getTblTransferenciasList() {
+        return tblTransferenciasList;
+    }
+
+    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
+        this.tblTransferenciasList = tblTransferenciasList;
+    }
+
+    @XmlTransient
+    public List<TblRemates> getTblRematesList() {
+        return tblRematesList;
+    }
+
+    public void setTblRematesList(List<TblRemates> tblRematesList) {
+        this.tblRematesList = tblRematesList;
+    }
+
+    @XmlTransient
+    public List<TblMiembros> getTblMiembrosList() {
+        return tblMiembrosList;
+    }
+
+    public void setTblMiembrosList(List<TblMiembros> tblMiembrosList) {
+        this.tblMiembrosList = tblMiembrosList;
+    }
+
+    @XmlTransient
+    public List<TblColectasDetalle> getTblColectasDetalleList() {
+        return tblColectasDetalleList;
+    }
+
+    public void setTblColectasDetalleList(List<TblColectasDetalle> tblColectasDetalleList) {
+        this.tblColectasDetalleList = tblColectasDetalleList;
     }
 
     @Override
@@ -134,14 +201,6 @@ public class TblUsers implements Serializable {
     @Override
     public String toString() {
         return "com.lacreacion.mg.domain.TblUsers[ id=" + id + " ]";
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(listener);
     }
 
 }

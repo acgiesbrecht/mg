@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Industria
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_REMATES_DETALLE")
@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblRematesDetalle.findById", query = "SELECT t FROM TblRematesDetalle t WHERE t.id = :id"),
     @NamedQuery(name = "TblRematesDetalle.findByFechahora", query = "SELECT t FROM TblRematesDetalle t WHERE t.fechahora = :fechahora"),
     @NamedQuery(name = "TblRematesDetalle.findByObservacion", query = "SELECT t FROM TblRematesDetalle t WHERE t.observacion = :observacion"),
-    @NamedQuery(name = "TblRematesDetalle.findByMonto", query = "SELECT t FROM TblRematesDetalle t WHERE t.monto = :monto")})
+    @NamedQuery(name = "TblRematesDetalle.findByMonto", query = "SELECT t FROM TblRematesDetalle t WHERE t.monto = :monto"),
+    @NamedQuery(name = "TblRematesDetalle.findByIdUser", query = "SELECT t FROM TblRematesDetalle t WHERE t.idUser = :idUser")})
 public class TblRematesDetalle implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,6 +52,8 @@ public class TblRematesDetalle implements Serializable {
     @Basic(optional = false)
     @Column(name = "MONTO")
     private int monto;
+    @Column(name = "ID_USER")
+    private Integer idUser;
     @JoinColumn(name = "ID_MIEMBRO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblMiembros idMiembro;
@@ -104,6 +107,14 @@ public class TblRematesDetalle implements Serializable {
 
     public void setMonto(int monto) {
         this.monto = monto;
+    }
+
+    public Integer getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Integer idUser) {
+        this.idUser = idUser;
     }
 
     public TblMiembros getIdMiembro() {

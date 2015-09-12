@@ -7,7 +7,9 @@ package com.lacreacion.mg.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,14 +19,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Industria
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_COLECTAS")
@@ -35,6 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblColectas.findByFecha", query = "SELECT t FROM TblColectas t WHERE t.fecha = :fecha"),
     @NamedQuery(name = "TblColectas.findByDescripcion", query = "SELECT t FROM TblColectas t WHERE t.descripcion = :descripcion")})
 public class TblColectas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +55,14 @@ public class TblColectas implements Serializable {
     @JoinColumn(name = "ID_CATEGORIA_TRIBUTARIA", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCategoriasTributarias idCategoriaTributaria;
+    @JoinColumn(name = "ID_GRUPO", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblGrupos idGrupo;
+    @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblUsers idUser;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idColecta")
+    private List<TblColectasDetalle> tblColectasDetalleList;
 
     public TblColectas() {
     }
@@ -95,6 +108,31 @@ public class TblColectas implements Serializable {
         this.idCategoriaTributaria = idCategoriaTributaria;
     }
 
+    public TblGrupos getIdGrupo() {
+        return idGrupo;
+    }
+
+    public void setIdGrupo(TblGrupos idGrupo) {
+        this.idGrupo = idGrupo;
+    }
+
+    public TblUsers getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(TblUsers idUser) {
+        this.idUser = idUser;
+    }
+
+    @XmlTransient
+    public List<TblColectasDetalle> getTblColectasDetalleList() {
+        return tblColectasDetalleList;
+    }
+
+    public void setTblColectasDetalleList(List<TblColectasDetalle> tblColectasDetalleList) {
+        this.tblColectasDetalleList = tblColectasDetalleList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -117,7 +155,7 @@ public class TblColectas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblColectas[ id=" + id + " ]";
+        return descripcion + " - " + fecha.toString();
     }
 
 }

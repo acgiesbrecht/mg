@@ -10,7 +10,6 @@ import java.awt.EventQueue;
 import java.beans.Beans;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Persistence;
@@ -28,7 +27,7 @@ public class FrameRolesAdmin extends JInternalFrame {
     Map<String, String> persistenceMap = new HashMap<>();
 
     public FrameRolesAdmin() {
-        super("Administrar Grupos",
+        super("Administrar Roles",
                 true, //resizable
                 true, //closable
                 true, //maximizable

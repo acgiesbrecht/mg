@@ -5,6 +5,10 @@
  */
 package com.lacreacion.mg;
 
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.matchers.TextMatcherEditor;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.EventQueue;
 import java.beans.Beans;
@@ -23,6 +27,7 @@ import javax.swing.JInternalFrame;
  */
 public class FrameColectasAdmin extends JInternalFrame {
 
+    CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
@@ -34,6 +39,10 @@ public class FrameColectasAdmin extends JInternalFrame {
                 true);//iconifiable
         persistenceMap = Varios.getDatabaseIP();
         initComponents();
+        AutoCompleteSupport support1 = AutoCompleteSupport.install(cboGrupo, GlazedLists.eventListOf(listGrupos.toArray()));
+        support1.setFilterMode(TextMatcherEditor.CONTAINS);
+        AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCatTrib, GlazedLists.eventListOf(listCatTrib.toArray()));
+        support2.setFilterMode(TextMatcherEditor.CONTAINS);
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
@@ -54,6 +63,10 @@ public class FrameColectasAdmin extends JInternalFrame {
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         dateToStringConverter1 = new com.lacreacion.mg.utils.DateToStringConverter();
         dateTableCellRenderer1 = new com.lacreacion.mg.utils.DateTimeTableCellRenderer();
+        queryGrupos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblGrupos t");
+        queryCatTrib = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCategoriasTributarias t");
+        listCatTrib = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCatTrib.getResultList());
+        listGrupos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryGrupos.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         fechaLabel = new javax.swing.JLabel();
@@ -64,6 +77,10 @@ public class FrameColectasAdmin extends JInternalFrame {
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
+        cboGrupo = new javax.swing.JComboBox();
+        descripcionLabel1 = new javax.swing.JLabel();
+        cboCatTrib = new javax.swing.JComboBox();
+        descripcionLabel2 = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
@@ -76,6 +93,12 @@ public class FrameColectasAdmin extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descripcion}"));
         columnBinding.setColumnName("Descripcion");
         columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idGrupo}"));
+        columnBinding.setColumnName("Grupo");
+        columnBinding.setColumnClass(com.lacreacion.mg.domain.TblGrupos.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCategoriaTributaria}"));
+        columnBinding.setColumnName("Cat. Tributaria");
+        columnBinding.setColumnClass(com.lacreacion.mg.domain.TblCategoriasTributarias.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
@@ -118,13 +141,50 @@ public class FrameColectasAdmin extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), jXDatePicker1, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        cboGrupo.setEditable(true);
+        cboGrupo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listGrupos, cboGrupo);
+        bindingGroup.addBinding(jComboBoxBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idGrupo}"), cboGrupo, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboGrupo, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        descripcionLabel1.setText("Grupo:");
+
+        cboCatTrib.setEditable(true);
+        cboCatTrib.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listCatTrib, cboCatTrib);
+        bindingGroup.addBinding(jComboBoxBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCategoriaTributaria}"), cboCatTrib, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboCatTrib, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        descripcionLabel2.setText("Categoria Tributaria:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fechaLabel)
+                            .addComponent(descripcionLabel))
+                        .addGap(103, 103, 103)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(descripcionField)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(newButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteButton)
@@ -133,19 +193,13 @@ public class FrameColectasAdmin extends JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(fechaLabel)
-                                    .addComponent(descripcionLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(descripcionField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))))
-                            .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE))))
+                            .addComponent(descripcionLabel2)
+                            .addComponent(descripcionLabel1))
+                        .addGap(43, 43, 43)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cboGrupo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cboCatTrib, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
@@ -155,7 +209,7 @@ public class FrameColectasAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fechaLabel)
@@ -164,7 +218,15 @@ public class FrameColectasAdmin extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(descripcionLabel)
                     .addComponent(descripcionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(descripcionLabel1)
+                    .addComponent(cboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(descripcionLabel2)
+                    .addComponent(cboCatTrib, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
@@ -221,6 +283,7 @@ public class FrameColectasAdmin extends JInternalFrame {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         com.lacreacion.mg.domain.TblColectas t = new com.lacreacion.mg.domain.TblColectas();
+        t.setIdUser(currentUser.getUser());
         entityManager.persist(t);
         list.add(t);
         int row = list.size() - 1;
@@ -251,19 +314,27 @@ public class FrameColectasAdmin extends JInternalFrame {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox cboCatTrib;
+    private javax.swing.JComboBox cboGrupo;
     private com.lacreacion.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.lacreacion.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField descripcionField;
     private javax.swing.JLabel descripcionLabel;
+    private javax.swing.JLabel descripcionLabel1;
+    private javax.swing.JLabel descripcionLabel2;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fechaLabel;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
     private java.util.List<com.lacreacion.mg.domain.TblColectas> list;
+    private java.util.List<com.lacreacion.mg.domain.TblCategoriasTributarias> listCatTrib;
+    private java.util.List<com.lacreacion.mg.domain.TblGrupos> listGrupos;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
     private javax.persistence.Query query;
+    private javax.persistence.Query queryCatTrib;
+    private javax.persistence.Query queryGrupos;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;

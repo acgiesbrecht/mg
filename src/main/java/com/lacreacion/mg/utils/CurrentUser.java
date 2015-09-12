@@ -8,8 +8,22 @@ package com.lacreacion.mg.utils;
 import com.lacreacion.mg.domain.TblRoles;
 import com.lacreacion.mg.domain.TblUsers;
 import java.awt.Component;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 public class CurrentUser extends Component {
+
+    private PropertyChangeSupport propChangeSupport = new PropertyChangeSupport(this);
+
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propChangeSupport.removePropertyChangeListener(listener);
+    }
 
     private TblUsers user;
 
@@ -37,11 +51,20 @@ public class CurrentUser extends Component {
      * @param user the user to set
      */
     public void setUser(TblUsers user) {
+        TblUsers userOld = this.user;
         this.user = user;
+        propChangeSupport.firePropertyChange("user", userOld, user);
     }
 
-    public boolean hasRole(TblRoles role) {
-        return user.getTblRolesCollection().contains(role);
+    public boolean hasRole(String roleName) {
+        if (user != null) {
+            for (TblRoles r : user.getTblRolesList()) {
+                if (r.getDescripcion().equals(roleName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

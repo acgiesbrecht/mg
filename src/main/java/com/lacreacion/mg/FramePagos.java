@@ -140,7 +140,7 @@ public class FramePagos extends javax.swing.JInternalFrame {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
+        entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("remates_PU", persistenceMap).createEntityManager();
         dateToStringConverter1 = new com.lacreacion.mg.utils.DateToStringConverter();
         queryRemates = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblRemates t ORDER BY t.fecha");
         listRemates = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryRemates.getResultList());
@@ -333,6 +333,11 @@ public class FramePagos extends javax.swing.JInternalFrame {
         txtTransferencia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtTransferenciaMouseClicked(evt);
+            }
+        });
+        txtTransferencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTransferenciaActionPerformed(evt);
             }
         });
 
@@ -794,6 +799,10 @@ public class FramePagos extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_cboMiembroPopupMenuWillBecomeInvisible
+
+    private void txtTransferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTransferenciaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTransferenciaActionPerformed
 
     /**
      * @param args the command line arguments

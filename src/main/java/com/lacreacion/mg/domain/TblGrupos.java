@@ -8,16 +8,14 @@ package com.lacreacion.mg.domain;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -27,36 +25,37 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author adriang
  */
 @Entity
-@Table(name = "TBL_ROLES")
+@Table(name = "TBL_GRUPOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblRoles.findAll", query = "SELECT t FROM TblRoles t"),
-    @NamedQuery(name = "TblRoles.findById", query = "SELECT t FROM TblRoles t WHERE t.id = :id"),
-    @NamedQuery(name = "TblRoles.findByDescripcion", query = "SELECT t FROM TblRoles t WHERE t.descripcion = :descripcion")})
-public class TblRoles implements Serializable {
+    @NamedQuery(name = "TblGrupos.findAll", query = "SELECT t FROM TblGrupos t"),
+    @NamedQuery(name = "TblGrupos.findById", query = "SELECT t FROM TblGrupos t WHERE t.id = :id"),
+    @NamedQuery(name = "TblGrupos.findByDescripcion", query = "SELECT t FROM TblGrupos t WHERE t.descripcion = :descripcion")})
+public class TblGrupos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @JoinTable(name = "TBL_ROLES_USERS", joinColumns = {
-        @JoinColumn(name = "ID_ROLE", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "ID_USER", referencedColumnName = "ID")})
-    @ManyToMany
+    @ManyToMany(mappedBy = "tblGruposList")
     private List<TblUsers> tblUsersList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGrupo")
+    private List<TblColectas> tblColectasList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGrupo")
+    private List<TblRemates> tblRematesList;
 
-    public TblRoles() {
+    public TblGrupos() {
     }
 
-    public TblRoles(Integer id) {
+    public TblGrupos(Integer id) {
         this.id = id;
     }
 
-    public TblRoles(Integer id, String descripcion) {
+    public TblGrupos(Integer id, String descripcion) {
         this.id = id;
         this.descripcion = descripcion;
     }
@@ -86,6 +85,24 @@ public class TblRoles implements Serializable {
         this.tblUsersList = tblUsersList;
     }
 
+    @XmlTransient
+    public List<TblColectas> getTblColectasList() {
+        return tblColectasList;
+    }
+
+    public void setTblColectasList(List<TblColectas> tblColectasList) {
+        this.tblColectasList = tblColectasList;
+    }
+
+    @XmlTransient
+    public List<TblRemates> getTblRematesList() {
+        return tblRematesList;
+    }
+
+    public void setTblRematesList(List<TblRemates> tblRematesList) {
+        this.tblRematesList = tblRematesList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -96,10 +113,10 @@ public class TblRoles implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblRoles)) {
+        if (!(object instanceof TblGrupos)) {
             return false;
         }
-        TblRoles other = (TblRoles) object;
+        TblGrupos other = (TblGrupos) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -108,7 +125,7 @@ public class TblRoles implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblRoles[ id=" + id + " ]";
+        return descripcion;
     }
 
 }

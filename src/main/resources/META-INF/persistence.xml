@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-    <persistence-unit name="mg_PU" transaction-type="RESOURCE_LOCAL">
-        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <class>com.lacreacion.mg.domain.TblIglesia</class>
-        <class>com.lacreacion.mg.domain.TblRematesCuotas</class>
-        <class>com.lacreacion.mg.domain.TblRemates</class>
-        <class>com.lacreacion.mg.domain.TblRematesCategorias</class>
-        <class>com.lacreacion.mg.domain.TblRematesDetalle</class>
-        <class>com.lacreacion.mg.domain.TblMiembros</class>
-        <class>com.lacreacion.mg.domain.TblPagos</class>
-        <class>com.lacreacion.mg.domain.TblRecibos</class>
-        <class>com.lacreacion.mg.domain.TblTransferencias</class>
-        <class>com.lacreacion.mg.domain.TblIglesia_1</class>
-        <class>com.lacreacion.mg.domain.TblRematesCategorias_1</class>
-        <class>com.lacreacion.mg.domain.TblRecibos_1</class>
-        <class>com.lacreacion.mg.domain.TblRematesCuotas_1</class>
-        <class>com.lacreacion.mg.domain.TblRematesDetalle_1</class>
-        <class>com.lacreacion.mg.domain.TblCategoriasTributarias</class>
-        <class>com.lacreacion.mg.domain.TblColectas</class>
-        <class>com.lacreacion.mg.domain.TBLroles</class>
-        <class>com.lacreacion.mg.domain.TBLusers</class>
-        <class>com.lacreacion.mg.domain.TblRoles</class>
-        <class>com.lacreacion.mg.domain.TblUsers</class>
-        <class>com.lacreacion.mg.domain.TblRolesUsers</class>
-        <properties>
-            <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/mgdb"/>
-            <property name="javax.persistence.jdbc.user" value="mg"/>
-            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
-            <property name="javax.persistence.jdbc.password" value="123456"/>
-            <property name="eclipselink.logging.level" value="FINE"/>
-        </properties>
-    </persistence-unit>
+  <persistence-unit name="mg_PU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.lacreacion.mg.domain.TblIglesia</class>
+    <class>com.lacreacion.mg.domain.TblRematesCuotas</class>
+    <class>com.lacreacion.mg.domain.TblRemates</class>
+    <class>com.lacreacion.mg.domain.TblRematesCategorias</class>
+    <class>com.lacreacion.mg.domain.TblRematesDetalle</class>
+    <class>com.lacreacion.mg.domain.TblPagos</class>
+    <class>com.lacreacion.mg.domain.TblRecibos</class>
+    <class>com.lacreacion.mg.domain.TblTransferencias</class>
+    <class>com.lacreacion.mg.domain.TblIglesia</class>
+    <class>com.lacreacion.mg.domain.TblRematesCategorias_1</class>
+    <class>com.lacreacion.mg.domain.TblRecibos</class>
+    <class>com.lacreacion.mg.domain.TblRematesCuotas</class>
+    <class>com.lacreacion.mg.domain.TblRematesDetalle</class>
+    <class>com.lacreacion.mg.domain.TblRoles</class>
+    <class>com.lacreacion.mg.domain.TblUsers</class>
+    <class>com.lacreacion.mg.domain.TblRolesUsers</class>
+    <class>com.lacreacion.mg.domain.TblCategoriasTributarias</class>
+    <class>com.lacreacion.mg.domain.PendientesTotal</class>
+    <class>com.lacreacion.mg.domain.Recibo</class>
+    <class>com.lacreacion.mg.domain.Transferencia</class>
+    <class>com.lacreacion.mg.domain.TblColectasDetalle</class>
+    <class>com.lacreacion.mg.domain.TblColectas</class>
+    <class>com.lacreacion.mg.domain.TblMiembros</class>
+    <class>com.lacreacion.mg.domain.TblGrupos</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/mgdb"/>
+      <property name="javax.persistence.jdbc.user" value="mg"/>
+      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
+      <property name="javax.persistence.jdbc.password" value="123456"/>
+      <property name="eclipselink.logging.level" value="FINE"/>
+    </properties>
+  </persistence-unit>
 </persistence>

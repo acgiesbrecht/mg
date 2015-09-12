@@ -5,6 +5,7 @@
  */
 package com.lacreacion.mg;
 
+import com.lacreacion.mg.domain.TblGrupos;
 import com.lacreacion.mg.domain.TblRoles;
 import com.lacreacion.mg.domain.TblUsers;
 import com.lacreacion.mg.utils.Varios;
@@ -14,7 +15,6 @@ import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Persistence;
@@ -51,11 +51,19 @@ public class FrameUsuariosAdmin extends JInternalFrame {
             masterTable.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
                 if (lse.getValueIsAdjusting() && masterTable.getSelectedRow() > -1) {
                     jlistRoles.getSelectionModel().clearSelection();
-                    List<TblRoles> selectedUserRoles = list.get(masterTable.getSelectedRow()).getTblRolesCollection();
+                    List<TblRoles> selectedUserRoles = list.get(masterTable.getSelectedRow()).getTblRolesList();
                     for (TblRoles role : selectedUserRoles) {
                         int index = Varios.getIndexOfModel(jlistRoles.getModel(), role);
                         if (index >= 0) {
                             jlistRoles.addSelectionInterval(index, index);
+                        }
+                    }
+                    jlistGrupos.getSelectionModel().clearSelection();
+                    List<TblGrupos> selectedUserGrupos = list.get(masterTable.getSelectedRow()).getTblGruposList();
+                    for (TblGrupos grupo : selectedUserGrupos) {
+                        int index = Varios.getIndexOfModel(jlistGrupos.getModel(), grupo);
+                        if (index >= 0) {
+                            jlistGrupos.addSelectionInterval(index, index);
                         }
                     }
 
@@ -64,7 +72,14 @@ public class FrameUsuariosAdmin extends JInternalFrame {
             jlistRoles.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
                 if (lse.getValueIsAdjusting() && masterTable.getSelectedRow() > -1) {
                     TblUsers user = list.get(masterTable.getSelectedRow());
-                    user.setTblRolesCollection((List<TblRoles>) jlistRoles.getSelectedValuesList());
+                    user.setTblRolesList((List<TblRoles>) jlistRoles.getSelectedValuesList());
+                    list.set(masterTable.getSelectedRow(), user);
+                }
+            });
+            jlistGrupos.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
+                if (lse.getValueIsAdjusting() && masterTable.getSelectedRow() > -1) {
+                    TblUsers user = list.get(masterTable.getSelectedRow());
+                    user.setTblGruposList((List<TblGrupos>) jlistGrupos.getSelectedValuesList());
                     list.set(masterTable.getSelectedRow(), user);
                 }
             });
@@ -98,6 +113,8 @@ public class FrameUsuariosAdmin extends JInternalFrame {
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         queryRoles = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblRoles t");
         listRoles = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryRoles.getResultList());
+        queryGrupos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblGrupos t");
+        listGrupos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryGrupos.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         idLabel = new javax.swing.JLabel();
@@ -116,6 +133,9 @@ public class FrameUsuariosAdmin extends JInternalFrame {
         txtP = new javax.swing.JPasswordField();
         passwordLabel2 = new javax.swing.JLabel();
         txtP2 = new javax.swing.JPasswordField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jlistGrupos = new javax.swing.JList();
+        passwordLabel3 = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
@@ -129,10 +149,13 @@ public class FrameUsuariosAdmin extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${password}"));
         columnBinding.setColumnName("Password");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tblRolesCollection}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tblRolesList}"));
         columnBinding.setColumnName("Roles");
         columnBinding.setColumnClass(java.util.List.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tblGruposList}"));
+        columnBinding.setColumnName("Grupos");
+        columnBinding.setColumnClass(java.util.List.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
@@ -163,16 +186,16 @@ public class FrameUsuariosAdmin extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), passwordField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        saveButton.setText("Save");
+        saveButton.setText("Guardar");
         saveButton.addActionListener(formListener);
 
-        refreshButton.setText("Refresh");
+        refreshButton.setText("Actualizar");
         refreshButton.addActionListener(formListener);
 
-        newButton.setText("New");
+        newButton.setText("Nuevo");
         newButton.addActionListener(formListener);
 
-        deleteButton.setText("Delete");
+        deleteButton.setText("Eliminar");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -186,13 +209,20 @@ public class FrameUsuariosAdmin extends JInternalFrame {
 
         jScrollPane1.setViewportView(jlistRoles);
 
-        passwordLabel1.setText("Grupos:");
+        passwordLabel1.setText("Roles:");
 
         txtP.addFocusListener(formListener);
 
         passwordLabel2.setText("Regingresar Contraseña:");
 
         txtP2.addFocusListener(formListener);
+
+        jListBinding = org.jdesktop.swingbinding.SwingBindings.createJListBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listGrupos, jlistGrupos);
+        bindingGroup.addBinding(jListBinding);
+
+        jScrollPane2.setViewportView(jlistGrupos);
+
+        passwordLabel3.setText("Grupos:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -210,22 +240,18 @@ public class FrameUsuariosAdmin extends JInternalFrame {
                             .addComponent(idLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(passwordLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(passwordLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(passwordLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(passwordLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(passwordLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(newButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deleteButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(refreshButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(saveButton))
+                                .addComponent(txtP, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jScrollPane2)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtP2, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -234,10 +260,17 @@ public class FrameUsuariosAdmin extends JInternalFrame {
                                                 .addGap(60, 60, 60)
                                                 .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGap(0, 0, Short.MAX_VALUE)))
-                                .addGap(164, 164, 164))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtP, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())))))
+                                .addGap(376, 376, 376))))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(newButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(deleteButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(refreshButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saveButton)
+                .addContainerGap())
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, newButton, refreshButton, saveButton});
@@ -247,7 +280,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(idLabel))
@@ -268,15 +301,20 @@ public class FrameUsuariosAdmin extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(passwordLabel1)
-                        .addGap(0, 47, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(72, 72, 72))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(passwordLabel3)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
                     .addComponent(deleteButton)
                     .addComponent(newButton))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -328,7 +366,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int[] selected = masterTable.getSelectedRows();
-        List<com.lacreacion.mg.domain.TblUsers> toRemove = new ArrayList<com.lacreacion.mg.domain.TblUsers>(selected.length);
+        List<com.lacreacion.mg.domain.TblUsers> toRemove = new ArrayList<>(selected.length);
         for (int idx = 0; idx < selected.length; idx++) {
             com.lacreacion.mg.domain.TblUsers t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
             toRemove.add(t);
@@ -384,9 +422,12 @@ public class FrameUsuariosAdmin extends JInternalFrame {
     private javax.swing.JTextField idField;
     private javax.swing.JLabel idLabel;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList jlistGrupos;
     private javax.swing.JList jlistRoles;
     private java.util.List<com.lacreacion.mg.domain.TblUsers> list;
-    private java.util.List<com.lacreacion.mg.domain.TblUsers> listRoles;
+    private java.util.List<com.lacreacion.mg.domain.TblGrupos> listGrupos;
+    private java.util.List<com.lacreacion.mg.domain.TblRoles> listRoles;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
@@ -396,7 +437,9 @@ public class FrameUsuariosAdmin extends JInternalFrame {
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JLabel passwordLabel1;
     private javax.swing.JLabel passwordLabel2;
+    private javax.swing.JLabel passwordLabel3;
     private javax.persistence.Query query;
+    private javax.persistence.Query queryGrupos;
     private javax.persistence.Query queryRoles;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;

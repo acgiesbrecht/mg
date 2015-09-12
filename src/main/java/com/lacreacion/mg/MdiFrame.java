@@ -8,10 +8,13 @@ package com.lacreacion.mg;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.prefs.Preferences;
+import javax.imageio.ImageIO;
 import javax.swing.DesktopManager;
+import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -22,6 +25,8 @@ import org.apache.derby.drda.NetworkServerControl;
  * @author user
  */
 public class MdiFrame extends javax.swing.JFrame {
+
+    CurrentUser currentUser = CurrentUser.getInstance();
 
     JDesktopPane desktop;
     DesktopManager manager;
@@ -40,16 +45,42 @@ public class MdiFrame extends javax.swing.JFrame {
                 server.start(null);
             }
             initComponents();
-
+            lblBG.setIcon(new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/g4204.png"))));
             desktop = new JDesktopPane();
             desktop.setBackground(Color.white);
             setContentPane(desktop);
             this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
+            currentUser.addPropertyChangeListener((PropertyChangeEvent event) -> {
+                if ("user".equals(event.getPropertyName())) {
+                    mnuOpRemates.setEnabled(currentUser.hasRole("Cajero"));
+                    mnuOpPagos.setEnabled(currentUser.hasRole("Cajero"));
+                    mnuOpColectas.setEnabled(currentUser.hasRole("Cajero"));
+
+                    mnuAdMiembros.setEnabled(currentUser.hasRole("Admin"));
+                    mnuAdCategoriasTributarias.setEnabled(currentUser.hasRole("Master"));
+                    mnuAdColectas.setEnabled(currentUser.hasRole("Master"));
+                    mnuAdRemates.setEnabled(currentUser.hasRole("Master"));
+                    mnuAdCuotas.setEnabled(currentUser.hasRole("Master"));
+                    mnuAdCat.setEnabled(currentUser.hasRole("Admin"));
+                    mnuAdMiembros.setEnabled(currentUser.hasRole("Admin"));
+
+                    mnuAdTransf.setEnabled(currentUser.hasRole("Admin"));
+                    mnuAdRecibos.setEnabled(currentUser.hasRole("Admin"));
+
+                    mnuAdIglesia.setEnabled(currentUser.hasRole("Master"));
+                    mnuAdConfig.setEnabled(currentUser.hasRole("Master"));
+                    mnuAdUsuarios.setEnabled(currentUser.hasRole("Master"));
+                    mnuAdGrupos.setEnabled(currentUser.hasRole("Master"));
+                    mnuAdRoles.setEnabled(currentUser.hasRole("Master"));
+
+                    mnuAdInformes.setEnabled(currentUser.hasRole("Cajero"));
+                }
+            });
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
-
     }
 
     /**
@@ -60,30 +91,38 @@ public class MdiFrame extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        lblBG = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnuLogin = new javax.swing.JMenuItem();
         mnuOp = new javax.swing.JMenu();
         mnuOpRemates = new javax.swing.JMenuItem();
         mnuOpPagos = new javax.swing.JMenuItem();
-        mnuOpRemates1 = new javax.swing.JMenuItem();
+        mnuOpColectas = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        mnuMiembros = new javax.swing.JMenuItem();
+        mnuAdMiembros = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        mnuAdColectas = new javax.swing.JMenuItem();
+        mnuAdCategoriasTributarias = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
         mnuAdRemates = new javax.swing.JMenuItem();
         mnuAdCuotas = new javax.swing.JMenuItem();
         mnuAdCat = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
         mnuAdTransf = new javax.swing.JMenuItem();
         mnuAdRecibos = new javax.swing.JMenuItem();
-        mnuAdIglesia = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        mnuAdConfig = new javax.swing.JMenuItem();
+        mnuAdIglesia = new javax.swing.JMenuItem();
         mnuAdUsuarios = new javax.swing.JMenuItem();
+        mnuAdGrupos = new javax.swing.JMenuItem();
         mnuAdRoles = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        mnuAdConfig = new javax.swing.JMenuItem();
+        jSeparator5 = new javax.swing.JPopupMenu.Separator();
         mnuAdInformes = new javax.swing.JMenuItem();
 
         jMenu3.setText("jMenu3");
@@ -96,7 +135,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
         jMenu1.setText("Usuario");
 
-        mnuLogin.setText("Login");
+        mnuLogin.setText("Iniciar Sesion");
         mnuLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuLoginActionPerformed(evt);
@@ -109,6 +148,7 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOp.setText("Operaciones");
 
         mnuOpRemates.setText("Remates");
+        mnuOpRemates.setEnabled(false);
         mnuOpRemates.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuOpRematesActionPerformed(evt);
@@ -117,6 +157,7 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOp.add(mnuOpRemates);
 
         mnuOpPagos.setText("Pagos");
+        mnuOpPagos.setEnabled(false);
         mnuOpPagos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuOpPagosActionPerformed(evt);
@@ -124,27 +165,50 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         mnuOp.add(mnuOpPagos);
 
-        mnuOpRemates1.setText("Colectas");
-        mnuOpRemates1.addActionListener(new java.awt.event.ActionListener() {
+        mnuOpColectas.setText("Colectas");
+        mnuOpColectas.setEnabled(false);
+        mnuOpColectas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuOpRemates1ActionPerformed(evt);
+                mnuOpColectasActionPerformed(evt);
             }
         });
-        mnuOp.add(mnuOpRemates1);
+        mnuOp.add(mnuOpColectas);
 
         jMenuBar1.add(mnuOp);
 
         jMenu2.setText("Administracion");
 
-        mnuMiembros.setText("Administrar Miembros");
-        mnuMiembros.addActionListener(new java.awt.event.ActionListener() {
+        mnuAdMiembros.setText("Administrar Miembros");
+        mnuAdMiembros.setEnabled(false);
+        mnuAdMiembros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuMiembrosActionPerformed(evt);
+                mnuAdMiembrosActionPerformed(evt);
             }
         });
-        jMenu2.add(mnuMiembros);
+        jMenu2.add(mnuAdMiembros);
+        jMenu2.add(jSeparator2);
+
+        mnuAdColectas.setText("Administrar Colectas");
+        mnuAdColectas.setEnabled(false);
+        mnuAdColectas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdColectasActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuAdColectas);
+
+        mnuAdCategoriasTributarias.setText("Administrar Categorias Tributarias");
+        mnuAdCategoriasTributarias.setEnabled(false);
+        mnuAdCategoriasTributarias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdCategoriasTributariasActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuAdCategoriasTributarias);
+        jMenu2.add(jSeparator3);
 
         mnuAdRemates.setText("Administrar Remates");
+        mnuAdRemates.setEnabled(false);
         mnuAdRemates.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuAdRematesActionPerformed(evt);
@@ -153,6 +217,7 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenu2.add(mnuAdRemates);
 
         mnuAdCuotas.setText("Administrar Cuotas de Remates");
+        mnuAdCuotas.setEnabled(false);
         mnuAdCuotas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuAdCuotasActionPerformed(evt);
@@ -161,14 +226,17 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenu2.add(mnuAdCuotas);
 
         mnuAdCat.setText("Administrar Categorias de Articulos");
+        mnuAdCat.setEnabled(false);
         mnuAdCat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuAdCatActionPerformed(evt);
             }
         });
         jMenu2.add(mnuAdCat);
+        jMenu2.add(jSeparator4);
 
         mnuAdTransf.setText("Administrar Transferencias");
+        mnuAdTransf.setEnabled(false);
         mnuAdTransf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuAdTransfActionPerformed(evt);
@@ -177,31 +245,26 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenu2.add(mnuAdTransf);
 
         mnuAdRecibos.setText("Administrar Recibos");
+        mnuAdRecibos.setEnabled(false);
         mnuAdRecibos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuAdRecibosActionPerformed(evt);
             }
         });
         jMenu2.add(mnuAdRecibos);
+        jMenu2.add(jSeparator1);
 
         mnuAdIglesia.setText("Administrar Iglesia");
+        mnuAdIglesia.setEnabled(false);
         mnuAdIglesia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuAdIglesiaActionPerformed(evt);
             }
         });
         jMenu2.add(mnuAdIglesia);
-        jMenu2.add(jSeparator1);
-
-        mnuAdConfig.setText("Configuracion del Sistema");
-        mnuAdConfig.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuAdConfigActionPerformed(evt);
-            }
-        });
-        jMenu2.add(mnuAdConfig);
 
         mnuAdUsuarios.setText("Administrar Usuarios");
+        mnuAdUsuarios.setEnabled(false);
         mnuAdUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuAdUsuariosActionPerformed(evt);
@@ -209,16 +272,39 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         jMenu2.add(mnuAdUsuarios);
 
-        mnuAdRoles.setText("Administrar Grupos");
+        mnuAdGrupos.setText("Administrar Grupos");
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jMenu1, org.jdesktop.beansbinding.ELProperty.create("${selected}"), mnuAdGrupos, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        mnuAdGrupos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdGruposActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuAdGrupos);
+
+        mnuAdRoles.setText("Administrar Roles");
+        mnuAdRoles.setEnabled(false);
         mnuAdRoles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuAdRolesActionPerformed(evt);
             }
         });
         jMenu2.add(mnuAdRoles);
-        jMenu2.add(jSeparator2);
+
+        mnuAdConfig.setText("Configuracion del Sistema");
+        mnuAdConfig.setEnabled(false);
+        mnuAdConfig.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdConfigActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuAdConfig);
+        jMenu2.add(jSeparator5);
 
         mnuAdInformes.setText("Informes");
+        mnuAdInformes.setEnabled(false);
         mnuAdInformes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuAdInformesActionPerformed(evt);
@@ -234,17 +320,25 @@ public class MdiFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 934, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblBG, javax.swing.GroupLayout.DEFAULT_SIZE, 1067, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 760, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblBG, javax.swing.GroupLayout.DEFAULT_SIZE, 728, Short.MAX_VALUE)
+                .addContainerGap())
         );
+
+        bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void mnuMiembrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMiembrosActionPerformed
+    private void mnuAdMiembrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdMiembrosActionPerformed
         try {
             FrameMiembros frame = new FrameMiembros();
             frame.setVisible(true);
@@ -253,10 +347,11 @@ public class MdiFrame extends javax.swing.JFrame {
 
             frame.setSelected(true);
             frame.setMaximum(true);
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
-    }//GEN-LAST:event_mnuMiembrosActionPerformed
+    }//GEN-LAST:event_mnuAdMiembrosActionPerformed
 
     private void mnuAdCatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdCatActionPerformed
         try {
@@ -402,9 +497,20 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuAdInformesActionPerformed
 
-    private void mnuOpRemates1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpRemates1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_mnuOpRemates1ActionPerformed
+    private void mnuOpColectasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpColectasActionPerformed
+        try {
+            FrameColectasDetalle frame = new FrameColectasDetalle();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_mnuOpColectasActionPerformed
 
     private void mnuAdUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdUsuariosActionPerformed
         try {
@@ -421,6 +527,71 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuAdUsuariosActionPerformed
 
+    private void mnuAdGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdGruposActionPerformed
+        try {
+            FrameGruposAdmin frame = new FrameGruposAdmin();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_mnuAdGruposActionPerformed
+
+    private void mnuLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuLoginActionPerformed
+        try {
+            if (mnuLogin.getText().equals("Iniciar Sesion")) {
+                FormLogin frame = new FormLogin(this, true);
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
+                if (currentUser.getUser() != null) {
+                    mnuLogin.setText("Cerrar Sesion: " + currentUser.getUser().getNombre());
+                }
+            } else {
+                mnuLogin.setText("Iniciar Sesion");
+                currentUser.setUser(null);
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_mnuLoginActionPerformed
+
+    private void mnuAdColectasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdColectasActionPerformed
+        try {
+            FrameColectasAdmin frame = new FrameColectasAdmin();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_mnuAdColectasActionPerformed
+
+    private void mnuAdCategoriasTributariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdCategoriasTributariasActionPerformed
+        try {
+            FrameAdminCatTributarias frame = new FrameAdminCatTributarias();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_mnuAdCategoriasTributariasActionPerformed
+
     private void mnuAdRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdRolesActionPerformed
         try {
             FrameRolesAdmin frame = new FrameRolesAdmin();
@@ -435,18 +606,6 @@ public class MdiFrame extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_mnuAdRolesActionPerformed
-
-    private void mnuLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuLoginActionPerformed
-        try {
-            FormLogin frame = new FormLogin(this, true);
-            frame.setVisible(true);
-            CurrentUser currentUser = CurrentUser.getInstance();
-            JOptionPane.showMessageDialog(null, currentUser.getUser().getNombre());
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
-        }
-    }//GEN-LAST:event_mnuLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -495,22 +654,30 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JPopupMenu.Separator jSeparator5;
+    private javax.swing.JLabel lblBG;
     private javax.swing.JMenuItem mnuAdCat;
+    private javax.swing.JMenuItem mnuAdCategoriasTributarias;
+    private javax.swing.JMenuItem mnuAdColectas;
     private javax.swing.JMenuItem mnuAdConfig;
     private javax.swing.JMenuItem mnuAdCuotas;
+    private javax.swing.JMenuItem mnuAdGrupos;
     private javax.swing.JMenuItem mnuAdIglesia;
     private javax.swing.JMenuItem mnuAdInformes;
+    private javax.swing.JMenuItem mnuAdMiembros;
     private javax.swing.JMenuItem mnuAdRecibos;
     private javax.swing.JMenuItem mnuAdRemates;
     private javax.swing.JMenuItem mnuAdRoles;
     private javax.swing.JMenuItem mnuAdTransf;
     private javax.swing.JMenuItem mnuAdUsuarios;
     private javax.swing.JMenuItem mnuLogin;
-    private javax.swing.JMenuItem mnuMiembros;
     private javax.swing.JMenu mnuOp;
+    private javax.swing.JMenuItem mnuOpColectas;
     private javax.swing.JMenuItem mnuOpPagos;
     private javax.swing.JMenuItem mnuOpRemates;
-    private javax.swing.JMenuItem mnuOpRemates1;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
     /**

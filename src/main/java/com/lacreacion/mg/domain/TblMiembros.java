@@ -6,7 +6,7 @@
 package com.lacreacion.mg.domain;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -23,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Industria
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_MIEMBROS")
@@ -53,11 +55,16 @@ public class TblMiembros implements Serializable {
     @Column(name = "BOX")
     private Integer box;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
-    private Collection<TblRematesDetalle> tblRematesDetalleCollection;
+    private List<TblRecibos> tblRecibosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
-    private Collection<TblRecibos> tblRecibosCollection;
+    private List<TblTransferencias> tblTransferenciasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
-    private Collection<TblTransferencias> tblTransferenciasCollection;
+    private List<TblRematesDetalle> tblRematesDetalleList;
+    @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
+    @ManyToOne
+    private TblUsers idUser;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
+    private List<TblColectasDetalle> tblColectasDetalleList;
 
     public TblMiembros() {
     }
@@ -112,30 +119,47 @@ public class TblMiembros implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblRematesDetalle> getTblRematesDetalleCollection() {
-        return tblRematesDetalleCollection;
+    public List<TblRecibos> getTblRecibosList() {
+        return tblRecibosList;
     }
 
-    public void setTblRematesDetalleCollection(Collection<TblRematesDetalle> tblRematesDetalleCollection) {
-        this.tblRematesDetalleCollection = tblRematesDetalleCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblRecibos> getTblRecibosCollection() {
-        return tblRecibosCollection;
-    }
-
-    public void setTblRecibosCollection(Collection<TblRecibos> tblRecibosCollection) {
-        this.tblRecibosCollection = tblRecibosCollection;
+    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
+        this.tblRecibosList = tblRecibosList;
     }
 
     @XmlTransient
-    public Collection<TblTransferencias> getTblTransferenciasCollection() {
-        return tblTransferenciasCollection;
+    public List<TblTransferencias> getTblTransferenciasList() {
+        return tblTransferenciasList;
     }
 
-    public void setTblTransferenciasCollection(Collection<TblTransferencias> tblTransferenciasCollection) {
-        this.tblTransferenciasCollection = tblTransferenciasCollection;
+    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
+        this.tblTransferenciasList = tblTransferenciasList;
+    }
+
+    @XmlTransient
+    public List<TblRematesDetalle> getTblRematesDetalleList() {
+        return tblRematesDetalleList;
+    }
+
+    public void setTblRematesDetalleList(List<TblRematesDetalle> tblRematesDetalleList) {
+        this.tblRematesDetalleList = tblRematesDetalleList;
+    }
+
+    public TblUsers getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(TblUsers idUser) {
+        this.idUser = idUser;
+    }
+
+    @XmlTransient
+    public List<TblColectasDetalle> getTblColectasDetalleList() {
+        return tblColectasDetalleList;
+    }
+
+    public void setTblColectasDetalleList(List<TblColectasDetalle> tblColectasDetalleList) {
+        this.tblColectasDetalleList = tblColectasDetalleList;
     }
 
     @Override
