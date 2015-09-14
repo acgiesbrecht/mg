@@ -297,7 +297,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="nombreLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Nombre:"/>
+        <Property name="text" type="java.lang.String" value="Usuario:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="passwordLabel">
@@ -428,6 +428,7 @@
         <Component class="javax.swing.JList" name="jlistGrupos">
           <BindingProperties>
             <BindingProperty name="elements" source="listGrupos" target="jlistGrupos" targetPath="elements" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="jlistGrupos" targetPath="enabled" updateStrategy="0" immediately="false"/>
           </BindingProperties>
         </Component>
       </SubComponents>

@@ -56,10 +56,11 @@ public class CurrentUser extends Component {
         propChangeSupport.firePropertyChange("user", userOld, user);
     }
 
-    public boolean hasRole(String roleName) {
+    public boolean hasRole(Integer roleLevel) {
+
         if (user != null) {
             for (TblRoles r : user.getTblRolesList()) {
-                if (r.getDescripcion().equals(roleName)) {
+                if (r.getId() >= roleLevel) {
                     return true;
                 }
             }

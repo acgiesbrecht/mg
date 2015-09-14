@@ -8,7 +8,6 @@ package com.lacreacion.mg.domain;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,14 +18,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author adriang
+ * @author Adrian Giesbrecht
  */
 @Entity
 @Table(name = "TBL_USERS")
@@ -50,25 +48,16 @@ public class TblUsers implements Serializable {
     @Basic(optional = false)
     @Column(name = "PASSWORD")
     private String password;
-    @ManyToMany(mappedBy = "tblUsersList")
-    private List<TblRoles> tblRolesList;
     @JoinTable(name = "TBL_GRUPOS_USERS", joinColumns = {
         @JoinColumn(name = "ID_USER", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_GRUPO", referencedColumnName = "ID")})
     @ManyToMany
     private List<TblGrupos> tblGruposList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private List<TblColectas> tblColectasList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private List<TblRecibos> tblRecibosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private List<TblTransferencias> tblTransferenciasList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private List<TblRemates> tblRematesList;
-    @OneToMany(mappedBy = "idUser")
-    private List<TblMiembros> tblMiembrosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private List<TblColectasDetalle> tblColectasDetalleList;
+    @JoinTable(name = "TBL_ROLES_USERS", joinColumns = {
+        @JoinColumn(name = "ID_USER", referencedColumnName = "ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "ID_ROLE", referencedColumnName = "ID")})
+    @ManyToMany
+    private List<TblRoles> tblRolesList;
 
     public TblUsers() {
     }
@@ -108,15 +97,6 @@ public class TblUsers implements Serializable {
     }
 
     @XmlTransient
-    public List<TblRoles> getTblRolesList() {
-        return tblRolesList;
-    }
-
-    public void setTblRolesList(List<TblRoles> tblRolesList) {
-        this.tblRolesList = tblRolesList;
-    }
-
-    @XmlTransient
     public List<TblGrupos> getTblGruposList() {
         return tblGruposList;
     }
@@ -126,57 +106,12 @@ public class TblUsers implements Serializable {
     }
 
     @XmlTransient
-    public List<TblColectas> getTblColectasList() {
-        return tblColectasList;
+    public List<TblRoles> getTblRolesList() {
+        return tblRolesList;
     }
 
-    public void setTblColectasList(List<TblColectas> tblColectasList) {
-        this.tblColectasList = tblColectasList;
-    }
-
-    @XmlTransient
-    public List<TblRecibos> getTblRecibosList() {
-        return tblRecibosList;
-    }
-
-    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
-        this.tblRecibosList = tblRecibosList;
-    }
-
-    @XmlTransient
-    public List<TblTransferencias> getTblTransferenciasList() {
-        return tblTransferenciasList;
-    }
-
-    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
-        this.tblTransferenciasList = tblTransferenciasList;
-    }
-
-    @XmlTransient
-    public List<TblRemates> getTblRematesList() {
-        return tblRematesList;
-    }
-
-    public void setTblRematesList(List<TblRemates> tblRematesList) {
-        this.tblRematesList = tblRematesList;
-    }
-
-    @XmlTransient
-    public List<TblMiembros> getTblMiembrosList() {
-        return tblMiembrosList;
-    }
-
-    public void setTblMiembrosList(List<TblMiembros> tblMiembrosList) {
-        this.tblMiembrosList = tblMiembrosList;
-    }
-
-    @XmlTransient
-    public List<TblColectasDetalle> getTblColectasDetalleList() {
-        return tblColectasDetalleList;
-    }
-
-    public void setTblColectasDetalleList(List<TblColectasDetalle> tblColectasDetalleList) {
-        this.tblColectasDetalleList = tblColectasDetalleList;
+    public void setTblRolesList(List<TblRoles> tblRolesList) {
+        this.tblRolesList = tblRolesList;
     }
 
     @Override

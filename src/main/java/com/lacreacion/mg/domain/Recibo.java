@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author adriang
+ * @author Adrian Giesbrecht
  */
 @Entity
 @Table(name = "RECIBO")
@@ -33,7 +33,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Recibo.findByConcepto", query = "SELECT r FROM Recibo r WHERE r.concepto = :concepto"),
     @NamedQuery(name = "Recibo.findByMonto", query = "SELECT r FROM Recibo r WHERE r.monto = :monto")})
 public class Recibo implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -94,5 +93,5 @@ public class Recibo implements Serializable {
     public void setMonto(int monto) {
         this.monto = monto;
     }
-
+    
 }

@@ -26,6 +26,7 @@
     <class>com.lacreacion.mg.domain.TblColectas</class>
     <class>com.lacreacion.mg.domain.TblMiembros</class>
     <class>com.lacreacion.mg.domain.TblGrupos</class>
+    <class>com.lacreacion.mg.domain.TblGruposUsers</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/mgdb"/>
       <property name="javax.persistence.jdbc.user" value="mg"/>

@@ -8,21 +8,21 @@ package com.lacreacion.mg.domain;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author adriang
+ * @author Adrian Giesbrecht
  */
 @Entity
 @Table(name = "TBL_GRUPOS")
@@ -35,6 +35,7 @@ public class TblGrupos implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
@@ -43,10 +44,6 @@ public class TblGrupos implements Serializable {
     private String descripcion;
     @ManyToMany(mappedBy = "tblGruposList")
     private List<TblUsers> tblUsersList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGrupo")
-    private List<TblColectas> tblColectasList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGrupo")
-    private List<TblRemates> tblRematesList;
 
     public TblGrupos() {
     }
@@ -83,24 +80,6 @@ public class TblGrupos implements Serializable {
 
     public void setTblUsersList(List<TblUsers> tblUsersList) {
         this.tblUsersList = tblUsersList;
-    }
-
-    @XmlTransient
-    public List<TblColectas> getTblColectasList() {
-        return tblColectasList;
-    }
-
-    public void setTblColectasList(List<TblColectas> tblColectasList) {
-        this.tblColectasList = tblColectasList;
-    }
-
-    @XmlTransient
-    public List<TblRemates> getTblRematesList() {
-        return tblRematesList;
-    }
-
-    public void setTblRematesList(List<TblRemates> tblRematesList) {
-        this.tblRematesList = tblRematesList;
     }
 
     @Override

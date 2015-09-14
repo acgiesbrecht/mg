@@ -13,8 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -24,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author adriang
+ * @author Adrian Giesbrecht
  */
 @Entity
 @Table(name = "TBL_ROLES")
@@ -44,10 +42,7 @@ public class TblRoles implements Serializable {
     @Basic(optional = false)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @JoinTable(name = "TBL_ROLES_USERS", joinColumns = {
-        @JoinColumn(name = "ID_ROLE", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "ID_USER", referencedColumnName = "ID")})
-    @ManyToMany
+    @ManyToMany(mappedBy = "tblRolesList")
     private List<TblUsers> tblUsersList;
 
     public TblRoles() {

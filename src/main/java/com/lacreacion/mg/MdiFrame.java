@@ -53,28 +53,28 @@ public class MdiFrame extends javax.swing.JFrame {
 
             currentUser.addPropertyChangeListener((PropertyChangeEvent event) -> {
                 if ("user".equals(event.getPropertyName())) {
-                    mnuOpRemates.setEnabled(currentUser.hasRole("Cajero"));
-                    mnuOpPagos.setEnabled(currentUser.hasRole("Cajero"));
-                    mnuOpColectas.setEnabled(currentUser.hasRole("Cajero"));
+                    mnuOpRemates.setEnabled(currentUser.hasRole(1));
+                    mnuOpPagos.setEnabled(currentUser.hasRole(1));
+                    mnuOpColectas.setEnabled(currentUser.hasRole(1));
 
-                    mnuAdMiembros.setEnabled(currentUser.hasRole("Admin"));
-                    mnuAdCategoriasTributarias.setEnabled(currentUser.hasRole("Master"));
-                    mnuAdColectas.setEnabled(currentUser.hasRole("Master"));
-                    mnuAdRemates.setEnabled(currentUser.hasRole("Master"));
-                    mnuAdCuotas.setEnabled(currentUser.hasRole("Master"));
-                    mnuAdCat.setEnabled(currentUser.hasRole("Admin"));
-                    mnuAdMiembros.setEnabled(currentUser.hasRole("Admin"));
+                    mnuAdMiembros.setEnabled(currentUser.hasRole(2));
+                    mnuAdCategoriasTributarias.setEnabled(currentUser.hasRole(3));
+                    mnuAdColectas.setEnabled(currentUser.hasRole(3));
+                    mnuAdRemates.setEnabled(currentUser.hasRole(3));
+                    mnuAdCuotas.setEnabled(currentUser.hasRole(3));
+                    mnuAdCat.setEnabled(currentUser.hasRole(2));
+                    mnuAdMiembros.setEnabled(currentUser.hasRole(2));
 
-                    mnuAdTransf.setEnabled(currentUser.hasRole("Admin"));
-                    mnuAdRecibos.setEnabled(currentUser.hasRole("Admin"));
+                    mnuAdTransf.setEnabled(currentUser.hasRole(2));
+                    mnuAdRecibos.setEnabled(currentUser.hasRole(2));
 
-                    mnuAdIglesia.setEnabled(currentUser.hasRole("Master"));
-                    mnuAdConfig.setEnabled(currentUser.hasRole("Master"));
-                    mnuAdUsuarios.setEnabled(currentUser.hasRole("Master"));
-                    mnuAdGrupos.setEnabled(currentUser.hasRole("Master"));
-                    mnuAdRoles.setEnabled(currentUser.hasRole("Master"));
+                    mnuAdIglesia.setEnabled(currentUser.hasRole(3));
+                    mnuAdConfig.setEnabled(currentUser.hasRole(3));
+                    mnuAdUsuarios.setEnabled(currentUser.hasRole(3));
+                    mnuAdGrupos.setEnabled(currentUser.hasRole(3));
+                    mnuAdRoles.setEnabled(currentUser.hasRole(3));
 
-                    mnuAdInformes.setEnabled(currentUser.hasRole("Cajero"));
+                    mnuAdInformes.setEnabled(currentUser.hasRole(1));
                 }
             });
 

@@ -45,6 +45,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
         try {
             persistenceMap = Varios.getDatabaseIP();
             initComponents();
+            passwordField.setVisible(false);
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
             }
@@ -162,7 +163,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
 
         idLabel.setText("Id:");
 
-        nombreLabel.setText("Nombre:");
+        nombreLabel.setText("Usuario:");
 
         passwordLabel.setText("Contraseña:");
 
@@ -219,6 +220,8 @@ public class FrameUsuariosAdmin extends JInternalFrame {
 
         jListBinding = org.jdesktop.swingbinding.SwingBindings.createJListBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listGrupos, jlistGrupos);
         bindingGroup.addBinding(jListBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), jlistGrupos, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
 
         jScrollPane2.setViewportView(jlistGrupos);
 
