@@ -8,6 +8,7 @@ package com.lacreacion.mg.domain;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -35,7 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblUsers.findByNombre", query = "SELECT t FROM TblUsers t WHERE t.nombre = :nombre"),
     @NamedQuery(name = "TblUsers.findByPassword", query = "SELECT t FROM TblUsers t WHERE t.password = :password")})
 public class TblUsers implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,16 +49,26 @@ public class TblUsers implements Serializable {
     @Basic(optional = false)
     @Column(name = "PASSWORD")
     private String password;
-    @JoinTable(name = "TBL_GRUPOS_USERS", joinColumns = {
-        @JoinColumn(name = "ID_USER", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "ID_GRUPO", referencedColumnName = "ID")})
-    @ManyToMany
-    private List<TblGrupos> tblGruposList;
     @JoinTable(name = "TBL_ROLES_USERS", joinColumns = {
         @JoinColumn(name = "ID_USER", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ROLE", referencedColumnName = "ID")})
     @ManyToMany
     private List<TblRoles> tblRolesList;
+    @JoinTable(name = "TBL_GRUPOS_USERS", joinColumns = {
+        @JoinColumn(name = "ID_USER", referencedColumnName = "ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "ID_GRUPO", referencedColumnName = "ID")})
+    @ManyToMany
+    private List<TblGrupos> tblGruposList;
+    @OneToMany(mappedBy = "idUser")
+    private List<TblEventoDetalle> tblEventoDetalleList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblRecibos> tblRecibosList;
+    @OneToMany(mappedBy = "idUser")
+    private List<TblMiembros> tblMiembrosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblEventos> tblEventosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblTransferencias> tblTransferenciasList;
 
     public TblUsers() {
     }
@@ -97,6 +108,15 @@ public class TblUsers implements Serializable {
     }
 
     @XmlTransient
+    public List<TblRoles> getTblRolesList() {
+        return tblRolesList;
+    }
+
+    public void setTblRolesList(List<TblRoles> tblRolesList) {
+        this.tblRolesList = tblRolesList;
+    }
+
+    @XmlTransient
     public List<TblGrupos> getTblGruposList() {
         return tblGruposList;
     }
@@ -106,12 +126,48 @@ public class TblUsers implements Serializable {
     }
 
     @XmlTransient
-    public List<TblRoles> getTblRolesList() {
-        return tblRolesList;
+    public List<TblEventoDetalle> getTblEventoDetalleList() {
+        return tblEventoDetalleList;
     }
 
-    public void setTblRolesList(List<TblRoles> tblRolesList) {
-        this.tblRolesList = tblRolesList;
+    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
+        this.tblEventoDetalleList = tblEventoDetalleList;
+    }
+
+    @XmlTransient
+    public List<TblRecibos> getTblRecibosList() {
+        return tblRecibosList;
+    }
+
+    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
+        this.tblRecibosList = tblRecibosList;
+    }
+
+    @XmlTransient
+    public List<TblMiembros> getTblMiembrosList() {
+        return tblMiembrosList;
+    }
+
+    public void setTblMiembrosList(List<TblMiembros> tblMiembrosList) {
+        this.tblMiembrosList = tblMiembrosList;
+    }
+
+    @XmlTransient
+    public List<TblEventos> getTblEventosList() {
+        return tblEventosList;
+    }
+
+    public void setTblEventosList(List<TblEventos> tblEventosList) {
+        this.tblEventosList = tblEventosList;
+    }
+
+    @XmlTransient
+    public List<TblTransferencias> getTblTransferenciasList() {
+        return tblTransferenciasList;
+    }
+
+    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
+        this.tblTransferenciasList = tblTransferenciasList;
     }
 
     @Override
@@ -136,7 +192,7 @@ public class TblUsers implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "com.lacreacion.mg.domain.TblUsers[ id=" + id + " ]";
     }
 
 }

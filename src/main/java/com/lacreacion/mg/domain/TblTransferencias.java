@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblTransferencias.findById", query = "SELECT t FROM TblTransferencias t WHERE t.id = :id"),
     @NamedQuery(name = "TblTransferencias.findByFechahora", query = "SELECT t FROM TblTransferencias t WHERE t.fechahora = :fechahora"),
     @NamedQuery(name = "TblTransferencias.findByConcepto", query = "SELECT t FROM TblTransferencias t WHERE t.concepto = :concepto"),
-    @NamedQuery(name = "TblTransferencias.findByMonto", query = "SELECT t FROM TblTransferencias t WHERE t.monto = :monto")})
+    @NamedQuery(name = "TblTransferencias.findByMonto", query = "SELECT t FROM TblTransferencias t WHERE t.monto = :monto"),
+    @NamedQuery(name = "TblTransferencias.findByCobrado", query = "SELECT t FROM TblTransferencias t WHERE t.cobrado = :cobrado")})
 public class TblTransferencias implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,12 +52,14 @@ public class TblTransferencias implements Serializable {
     @Basic(optional = false)
     @Column(name = "MONTO")
     private int monto;
+    @Column(name = "COBRADO")
+    private Boolean cobrado;
+    @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblEventos idEvento;
     @JoinColumn(name = "ID_MIEMBRO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblMiembros idMiembro;
-    @JoinColumn(name = "ID_REMATE", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private TblRemates idRemate;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
@@ -106,20 +109,28 @@ public class TblTransferencias implements Serializable {
         this.monto = monto;
     }
 
+    public Boolean getCobrado() {
+        return cobrado;
+    }
+
+    public void setCobrado(Boolean cobrado) {
+        this.cobrado = cobrado;
+    }
+
+    public TblEventos getIdEvento() {
+        return idEvento;
+    }
+
+    public void setIdEvento(TblEventos idEvento) {
+        this.idEvento = idEvento;
+    }
+
     public TblMiembros getIdMiembro() {
         return idMiembro;
     }
 
     public void setIdMiembro(TblMiembros idMiembro) {
         this.idMiembro = idMiembro;
-    }
-
-    public TblRemates getIdRemate() {
-        return idRemate;
-    }
-
-    public void setIdRemate(TblRemates idRemate) {
-        this.idRemate = idRemate;
     }
 
     public TblUsers getIdUser() {

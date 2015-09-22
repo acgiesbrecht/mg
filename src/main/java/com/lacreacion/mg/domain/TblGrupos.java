@@ -8,6 +8,7 @@ package com.lacreacion.mg.domain;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -32,7 +34,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblGrupos.findById", query = "SELECT t FROM TblGrupos t WHERE t.id = :id"),
     @NamedQuery(name = "TblGrupos.findByDescripcion", query = "SELECT t FROM TblGrupos t WHERE t.descripcion = :descripcion")})
 public class TblGrupos implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +45,8 @@ public class TblGrupos implements Serializable {
     private String descripcion;
     @ManyToMany(mappedBy = "tblGruposList")
     private List<TblUsers> tblUsersList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGrupo")
+    private List<TblEventos> tblEventosList;
 
     public TblGrupos() {
     }
@@ -82,6 +85,15 @@ public class TblGrupos implements Serializable {
         this.tblUsersList = tblUsersList;
     }
 
+    @XmlTransient
+    public List<TblEventos> getTblEventosList() {
+        return tblEventosList;
+    }
+
+    public void setTblEventosList(List<TblEventos> tblEventosList) {
+        this.tblEventosList = tblEventosList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -104,7 +116,7 @@ public class TblGrupos implements Serializable {
 
     @Override
     public String toString() {
-        return descripcion;
+        return "com.lacreacion.mg.domain.TblGrupos[ id=" + id + " ]";
     }
 
 }

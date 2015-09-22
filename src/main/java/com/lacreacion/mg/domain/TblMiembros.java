@@ -36,9 +36,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblMiembros.findByNombre", query = "SELECT t FROM TblMiembros t WHERE t.nombre = :nombre"),
     @NamedQuery(name = "TblMiembros.findByCtacte", query = "SELECT t FROM TblMiembros t WHERE t.ctacte = :ctacte"),
     @NamedQuery(name = "TblMiembros.findByDomicilio", query = "SELECT t FROM TblMiembros t WHERE t.domicilio = :domicilio"),
-    @NamedQuery(name = "TblMiembros.findByBox", query = "SELECT t FROM TblMiembros t WHERE t.box = :box")})
+    @NamedQuery(name = "TblMiembros.findByBox", query = "SELECT t FROM TblMiembros t WHERE t.box = :box"),
+    @NamedQuery(name = "TblMiembros.findByAporteMensual", query = "SELECT t FROM TblMiembros t WHERE t.aporteMensual = :aporteMensual")})
 public class TblMiembros implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,17 +54,18 @@ public class TblMiembros implements Serializable {
     private String domicilio;
     @Column(name = "BOX")
     private Integer box;
+    @Basic(optional = false)
+    @Column(name = "APORTE_MENSUAL")
+    private int aporteMensual;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
+    private List<TblEventoDetalle> tblEventoDetalleList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
     private List<TblRecibos> tblRecibosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
-    private List<TblTransferencias> tblTransferenciasList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
-    private List<TblRematesDetalle> tblRematesDetalleList;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne
     private TblUsers idUser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
-    private List<TblColectasDetalle> tblColectasDetalleList;
+    private List<TblTransferencias> tblTransferenciasList;
 
     public TblMiembros() {
     }
@@ -73,9 +74,10 @@ public class TblMiembros implements Serializable {
         this.id = id;
     }
 
-    public TblMiembros(Integer id, String nombre) {
+    public TblMiembros(Integer id, String nombre, int aporteMensual) {
         this.id = id;
         this.nombre = nombre;
+        this.aporteMensual = aporteMensual;
     }
 
     public Integer getId() {
@@ -118,6 +120,23 @@ public class TblMiembros implements Serializable {
         this.box = box;
     }
 
+    public int getAporteMensual() {
+        return aporteMensual;
+    }
+
+    public void setAporteMensual(int aporteMensual) {
+        this.aporteMensual = aporteMensual;
+    }
+
+    @XmlTransient
+    public List<TblEventoDetalle> getTblEventoDetalleList() {
+        return tblEventoDetalleList;
+    }
+
+    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
+        this.tblEventoDetalleList = tblEventoDetalleList;
+    }
+
     @XmlTransient
     public List<TblRecibos> getTblRecibosList() {
         return tblRecibosList;
@@ -125,24 +144,6 @@ public class TblMiembros implements Serializable {
 
     public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
         this.tblRecibosList = tblRecibosList;
-    }
-
-    @XmlTransient
-    public List<TblTransferencias> getTblTransferenciasList() {
-        return tblTransferenciasList;
-    }
-
-    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
-        this.tblTransferenciasList = tblTransferenciasList;
-    }
-
-    @XmlTransient
-    public List<TblRematesDetalle> getTblRematesDetalleList() {
-        return tblRematesDetalleList;
-    }
-
-    public void setTblRematesDetalleList(List<TblRematesDetalle> tblRematesDetalleList) {
-        this.tblRematesDetalleList = tblRematesDetalleList;
     }
 
     public TblUsers getIdUser() {
@@ -154,12 +155,12 @@ public class TblMiembros implements Serializable {
     }
 
     @XmlTransient
-    public List<TblColectasDetalle> getTblColectasDetalleList() {
-        return tblColectasDetalleList;
+    public List<TblTransferencias> getTblTransferenciasList() {
+        return tblTransferenciasList;
     }
 
-    public void setTblColectasDetalleList(List<TblColectasDetalle> tblColectasDetalleList) {
-        this.tblColectasDetalleList = tblColectasDetalleList;
+    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
+        this.tblTransferenciasList = tblTransferenciasList;
     }
 
     @Override
@@ -184,7 +185,7 @@ public class TblMiembros implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "com.lacreacion.mg.domain.TblMiembros[ id=" + id + " ]";
     }
 
 }

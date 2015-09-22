@@ -25,22 +25,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Adrian Giesbrecht
  */
 @Entity
-@Table(name = "TBL_REMATES_CUOTAS")
+@Table(name = "TBL_EVENTO_CUOTAS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblRematesCuotas.findAll", query = "SELECT t FROM TblRematesCuotas t"),
-    @NamedQuery(name = "TblRematesCuotas.findByIdRemate", query = "SELECT t FROM TblRematesCuotas t WHERE t.idRemate = :idRemate"),
-    @NamedQuery(name = "TblRematesCuotas.findByFecha1", query = "SELECT t FROM TblRematesCuotas t WHERE t.fecha1 = :fecha1"),
-    @NamedQuery(name = "TblRematesCuotas.findByFecha2", query = "SELECT t FROM TblRematesCuotas t WHERE t.fecha2 = :fecha2"),
-    @NamedQuery(name = "TblRematesCuotas.findByFecha3", query = "SELECT t FROM TblRematesCuotas t WHERE t.fecha3 = :fecha3"),
-    @NamedQuery(name = "TblRematesCuotas.findByFecha4", query = "SELECT t FROM TblRematesCuotas t WHERE t.fecha4 = :fecha4"),
-    @NamedQuery(name = "TblRematesCuotas.findByIdUser", query = "SELECT t FROM TblRematesCuotas t WHERE t.idUser = :idUser")})
-public class TblRematesCuotas implements Serializable {
+    @NamedQuery(name = "TblEventoCuotas.findAll", query = "SELECT t FROM TblEventoCuotas t"),
+    @NamedQuery(name = "TblEventoCuotas.findByIdEvento", query = "SELECT t FROM TblEventoCuotas t WHERE t.idEvento = :idEvento"),
+    @NamedQuery(name = "TblEventoCuotas.findByFecha1", query = "SELECT t FROM TblEventoCuotas t WHERE t.fecha1 = :fecha1"),
+    @NamedQuery(name = "TblEventoCuotas.findByFecha2", query = "SELECT t FROM TblEventoCuotas t WHERE t.fecha2 = :fecha2"),
+    @NamedQuery(name = "TblEventoCuotas.findByFecha3", query = "SELECT t FROM TblEventoCuotas t WHERE t.fecha3 = :fecha3"),
+    @NamedQuery(name = "TblEventoCuotas.findByFecha4", query = "SELECT t FROM TblEventoCuotas t WHERE t.fecha4 = :fecha4"),
+    @NamedQuery(name = "TblEventoCuotas.findByIdUser", query = "SELECT t FROM TblEventoCuotas t WHERE t.idUser = :idUser")})
+public class TblEventoCuotas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "ID_REMATE")
-    private Integer idRemate;
+    @Column(name = "ID_EVENTO")
+    private Integer idEvento;
     @Column(name = "FECHA_1")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha1;
@@ -55,23 +55,23 @@ public class TblRematesCuotas implements Serializable {
     private Date fecha4;
     @Column(name = "ID_USER")
     private Integer idUser;
-    @JoinColumn(name = "ID_REMATE", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID", insertable = false, updatable = false)
     @OneToOne(optional = false)
-    private TblRemates tblRemates;
+    private TblEventos tblEventos;
 
-    public TblRematesCuotas() {
+    public TblEventoCuotas() {
     }
 
-    public TblRematesCuotas(Integer idRemate) {
-        this.idRemate = idRemate;
+    public TblEventoCuotas(Integer idEvento) {
+        this.idEvento = idEvento;
     }
 
-    public Integer getIdRemate() {
-        return idRemate;
+    public Integer getIdEvento() {
+        return idEvento;
     }
 
-    public void setIdRemate(Integer idRemate) {
-        this.idRemate = idRemate;
+    public void setIdEvento(Integer idEvento) {
+        this.idEvento = idEvento;
     }
 
     public Date getFecha1() {
@@ -114,29 +114,29 @@ public class TblRematesCuotas implements Serializable {
         this.idUser = idUser;
     }
 
-    public TblRemates getTblRemates() {
-        return tblRemates;
+    public TblEventos getTblEventos() {
+        return tblEventos;
     }
 
-    public void setTblRemates(TblRemates tblRemates) {
-        this.tblRemates = tblRemates;
+    public void setTblEventos(TblEventos tblEventos) {
+        this.tblEventos = tblEventos;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idRemate != null ? idRemate.hashCode() : 0);
+        hash += (idEvento != null ? idEvento.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblRematesCuotas)) {
+        if (!(object instanceof TblEventoCuotas)) {
             return false;
         }
-        TblRematesCuotas other = (TblRematesCuotas) object;
-        if ((this.idRemate == null && other.idRemate != null) || (this.idRemate != null && !this.idRemate.equals(other.idRemate))) {
+        TblEventoCuotas other = (TblEventoCuotas) object;
+        if ((this.idEvento == null && other.idEvento != null) || (this.idEvento != null && !this.idEvento.equals(other.idEvento))) {
             return false;
         }
         return true;
@@ -144,7 +144,7 @@ public class TblRematesCuotas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblRematesCuotas[ idRemate=" + idRemate + " ]";
+        return "com.lacreacion.mg.domain.TblEventoCuotas[ idEvento=" + idEvento + " ]";
     }
 
 }

@@ -7,9 +7,7 @@ package com.lacreacion.mg.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,28 +17,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Adrian Giesbrecht
  */
 @Entity
-@Table(name = "TBL_REMATES")
+@Table(name = "TBL_EVENTOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblRemates.findAll", query = "SELECT t FROM TblRemates t"),
-    @NamedQuery(name = "TblRemates.findById", query = "SELECT t FROM TblRemates t WHERE t.id = :id"),
-    @NamedQuery(name = "TblRemates.findByFecha", query = "SELECT t FROM TblRemates t WHERE t.fecha = :fecha"),
-    @NamedQuery(name = "TblRemates.findByDescripcion", query = "SELECT t FROM TblRemates t WHERE t.descripcion = :descripcion")})
-public class TblRemates implements Serializable {
-
+    @NamedQuery(name = "TblEventos.findAll", query = "SELECT t FROM TblEventos t"),
+    @NamedQuery(name = "TblEventos.findById", query = "SELECT t FROM TblEventos t WHERE t.id = :id"),
+    @NamedQuery(name = "TblEventos.findByFecha", query = "SELECT t FROM TblEventos t WHERE t.fecha = :fecha"),
+    @NamedQuery(name = "TblEventos.findByDescripcion", query = "SELECT t FROM TblEventos t WHERE t.descripcion = :descripcion"),
+    @NamedQuery(name = "TblEventos.findByPorcentajeAporte", query = "SELECT t FROM TblEventos t WHERE t.porcentajeAporte = :porcentajeAporte"),
+    @NamedQuery(name = "TblEventos.findByIdTipoEvento", query = "SELECT t FROM TblEventos t WHERE t.idTipoEvento = :idTipoEvento")})
+public class TblEventos implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,31 +49,31 @@ public class TblRemates implements Serializable {
     private Date fecha;
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idRemate")
-    private List<TblRecibos> tblRecibosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idRemate")
-    private List<TblTransferencias> tblTransferenciasList;
+    @Basic(optional = false)
+    @Column(name = "PORCENTAJE_APORTE")
+    private int porcentajeAporte;
+    @Basic(optional = false)
+    @Column(name = "ID_TIPO_EVENTO")
+    private int idTipoEvento;
     @JoinColumn(name = "ID_GRUPO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblGrupos idGrupo;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblRemates")
-    private TblRematesCuotas tblRematesCuotas;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idRemate")
-    private List<TblRematesDetalle> tblRematesDetalleList;
 
-    public TblRemates() {
+    public TblEventos() {
     }
 
-    public TblRemates(Integer id) {
+    public TblEventos(Integer id) {
         this.id = id;
     }
 
-    public TblRemates(Integer id, Date fecha) {
+    public TblEventos(Integer id, Date fecha, int porcentajeAporte, int idTipoEvento) {
         this.id = id;
         this.fecha = fecha;
+        this.porcentajeAporte = porcentajeAporte;
+        this.idTipoEvento = idTipoEvento;
     }
 
     public Integer getId() {
@@ -104,22 +100,20 @@ public class TblRemates implements Serializable {
         this.descripcion = descripcion;
     }
 
-    @XmlTransient
-    public List<TblRecibos> getTblRecibosList() {
-        return tblRecibosList;
+    public int getPorcentajeAporte() {
+        return porcentajeAporte;
     }
 
-    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
-        this.tblRecibosList = tblRecibosList;
+    public void setPorcentajeAporte(int porcentajeAporte) {
+        this.porcentajeAporte = porcentajeAporte;
     }
 
-    @XmlTransient
-    public List<TblTransferencias> getTblTransferenciasList() {
-        return tblTransferenciasList;
+    public int getIdTipoEvento() {
+        return idTipoEvento;
     }
 
-    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
-        this.tblTransferenciasList = tblTransferenciasList;
+    public void setIdTipoEvento(int idTipoEvento) {
+        this.idTipoEvento = idTipoEvento;
     }
 
     public TblGrupos getIdGrupo() {
@@ -138,23 +132,6 @@ public class TblRemates implements Serializable {
         this.idUser = idUser;
     }
 
-    public TblRematesCuotas getTblRematesCuotas() {
-        return tblRematesCuotas;
-    }
-
-    public void setTblRematesCuotas(TblRematesCuotas tblRematesCuotas) {
-        this.tblRematesCuotas = tblRematesCuotas;
-    }
-
-    @XmlTransient
-    public List<TblRematesDetalle> getTblRematesDetalleList() {
-        return tblRematesDetalleList;
-    }
-
-    public void setTblRematesDetalleList(List<TblRematesDetalle> tblRematesDetalleList) {
-        this.tblRematesDetalleList = tblRematesDetalleList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -165,10 +142,10 @@ public class TblRemates implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblRemates)) {
+        if (!(object instanceof TblEventos)) {
             return false;
         }
-        TblRemates other = (TblRemates) object;
+        TblEventos other = (TblEventos) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -177,7 +154,7 @@ public class TblRemates implements Serializable {
 
     @Override
     public String toString() {
-        return descripcion + " - " + fecha.toString();
+        return "com.lacreacion.mg.domain.TblEventos[ id=" + id + " ]";
     }
 
 }

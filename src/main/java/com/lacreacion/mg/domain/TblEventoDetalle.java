@@ -6,6 +6,7 @@
 package com.lacreacion.mg.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -24,13 +27,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Adrian Giesbrecht
  */
 @Entity
-@Table(name = "TBL_COLECTAS_DETALLE")
+@Table(name = "TBL_EVENTO_DETALLE")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblColectasDetalle.findAll", query = "SELECT t FROM TblColectasDetalle t"),
-    @NamedQuery(name = "TblColectasDetalle.findById", query = "SELECT t FROM TblColectasDetalle t WHERE t.id = :id"),
-    @NamedQuery(name = "TblColectasDetalle.findByMonto", query = "SELECT t FROM TblColectasDetalle t WHERE t.monto = :monto")})
-public class TblColectasDetalle implements Serializable {
+    @NamedQuery(name = "TblEventoDetalle.findAll", query = "SELECT t FROM TblEventoDetalle t"),
+    @NamedQuery(name = "TblEventoDetalle.findById", query = "SELECT t FROM TblEventoDetalle t WHERE t.id = :id"),
+    @NamedQuery(name = "TblEventoDetalle.findByFechahora", query = "SELECT t FROM TblEventoDetalle t WHERE t.fechahora = :fechahora"),
+    @NamedQuery(name = "TblEventoDetalle.findByObservacion", query = "SELECT t FROM TblEventoDetalle t WHERE t.observacion = :observacion"),
+    @NamedQuery(name = "TblEventoDetalle.findByMonto", query = "SELECT t FROM TblEventoDetalle t WHERE t.monto = :monto"),
+    @NamedQuery(name = "TblEventoDetalle.findByIdCategoriaArticulo", query = "SELECT t FROM TblEventoDetalle t WHERE t.idCategoriaArticulo = :idCategoriaArticulo")})
+public class TblEventoDetalle implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,28 +44,39 @@ public class TblColectasDetalle implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
+    @Column(name = "FECHAHORA")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechahora;
+    @Column(name = "OBSERVACION")
+    private String observacion;
+    @Basic(optional = false)
     @Column(name = "MONTO")
     private int monto;
-    @JoinColumn(name = "ID_COLECTA", referencedColumnName = "ID")
+    @Basic(optional = false)
+    @Column(name = "ID_CATEGORIA_ARTICULO")
+    private int idCategoriaArticulo;
+    @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private TblColectas idColecta;
+    private TblEventos idEvento;
     @JoinColumn(name = "ID_MIEMBRO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblMiembros idMiembro;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private TblUsers idUser;
 
-    public TblColectasDetalle() {
+    public TblEventoDetalle() {
     }
 
-    public TblColectasDetalle(Integer id) {
+    public TblEventoDetalle(Integer id) {
         this.id = id;
     }
 
-    public TblColectasDetalle(Integer id, int monto) {
+    public TblEventoDetalle(Integer id, Date fechahora, int monto, int idCategoriaArticulo) {
         this.id = id;
+        this.fechahora = fechahora;
         this.monto = monto;
+        this.idCategoriaArticulo = idCategoriaArticulo;
     }
 
     public Integer getId() {
@@ -70,6 +87,22 @@ public class TblColectasDetalle implements Serializable {
         this.id = id;
     }
 
+    public Date getFechahora() {
+        return fechahora;
+    }
+
+    public void setFechahora(Date fechahora) {
+        this.fechahora = fechahora;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+
     public int getMonto() {
         return monto;
     }
@@ -78,12 +111,20 @@ public class TblColectasDetalle implements Serializable {
         this.monto = monto;
     }
 
-    public TblColectas getIdColecta() {
-        return idColecta;
+    public int getIdCategoriaArticulo() {
+        return idCategoriaArticulo;
     }
 
-    public void setIdColecta(TblColectas idColecta) {
-        this.idColecta = idColecta;
+    public void setIdCategoriaArticulo(int idCategoriaArticulo) {
+        this.idCategoriaArticulo = idCategoriaArticulo;
+    }
+
+    public TblEventos getIdEvento() {
+        return idEvento;
+    }
+
+    public void setIdEvento(TblEventos idEvento) {
+        this.idEvento = idEvento;
     }
 
     public TblMiembros getIdMiembro() {
@@ -112,10 +153,10 @@ public class TblColectasDetalle implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblColectasDetalle)) {
+        if (!(object instanceof TblEventoDetalle)) {
             return false;
         }
-        TblColectasDetalle other = (TblColectasDetalle) object;
+        TblEventoDetalle other = (TblEventoDetalle) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -124,7 +165,7 @@ public class TblColectasDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblColectasDetalle[ id=" + id + " ]";
+        return "com.lacreacion.mg.domain.TblEventoDetalle[ id=" + id + " ]";
     }
 
 }
