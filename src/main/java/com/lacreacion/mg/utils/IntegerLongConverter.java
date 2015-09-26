@@ -5,10 +5,6 @@
  */
 package com.lacreacion.mg.utils;
 
-import com.lacreacion.mg.domain.TblRematesCategorias;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.swing.JOptionPane;
 import org.jdesktop.beansbinding.Converter;
 
 /**

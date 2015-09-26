@@ -5,7 +5,7 @@
  */
 package com.lacreacion.mg.utils;
 
-import com.lacreacion.mg.domain.TblRematesCategorias;
+import com.lacreacion.mg.domain.TblCategoriasArticulos;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.swing.JOptionPane;
@@ -21,17 +21,17 @@ public class CategoriasConverter extends Converter {
 
     @Override
     public Object convertForward(Object value) {
-        return ((TblRematesCategorias) value).getDescripcion();
+        return ((TblCategoriasArticulos) value).getDescripcion();
     }
 
     @Override
-    public TblRematesCategorias convertReverse(Object value) {
-        TblRematesCategorias res = new TblRematesCategorias();
+    public TblCategoriasArticulos convertReverse(Object value) {
+        TblCategoriasArticulos res = new TblCategoriasArticulos();
         try {
             System.out.println(value);
             //res = entityManager.find(TblRematesCategorias.class, value);
             if (value.toString().length() > 0) {
-                res = (TblRematesCategorias) entityManager.createQuery("SELECT t FROM TblRematesCategorias t WHERE t.descripcion = '" + value + "'").getSingleResult();
+                res = (TblCategoriasArticulos) entityManager.createQuery("SELECT t FROM TblCategoriasArticulos t WHERE t.descripcion = '" + value + "'").getSingleResult();
             }
         } catch (NoResultException ex) {
             res = null;

@@ -14,29 +14,6 @@
     </Component>
     <Component class="com.lacreacion.mg.utils.DateToStringConverter" name="dateToStringConverter1">
     </Component>
-    <Component class="javax.persistence.Query" name="queryRemates">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblRemates t ORDER BY t.fecha"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="entityManager"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
-        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
-      </AuxValues>
-    </Component>
-    <Component class="java.util.List" name="listRemates">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="queryRemates"/>
-        </Property>
-        <Property name="observable" type="boolean" value="true"/>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.lacreacion.mg.domain.TblRemates&gt;"/>
-      </AuxValues>
-    </Component>
     <Component class="javax.persistence.Query" name="queryMiembros">
       <Properties>
         <Property name="query" type="java.lang.String" value="SELECT t FROM TblMiembros t ORDER BY t.nombre"/>
@@ -44,17 +21,6 @@
           <ComponentRef name="entityManager"/>
         </Property>
       </Properties>
-    </Component>
-    <Component class="javax.persistence.Query" name="queryRematesDetalle">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblRematesDetalle t WHERE t.idRemate = :remate AND t.idMiembro = :miembro ORDER BY t.fechahora"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="entityManager"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="queryRematesDetalle.setParameter(&quot;remate&quot;, null);&#xd;&#xa;queryRematesDetalle.setParameter(&quot;miembro&quot;, null);&#xd;&#xa;"/>
-      </AuxValues>
     </Component>
     <Component class="java.util.List" name="listMiembros">
       <Properties>
@@ -67,17 +33,6 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.lacreacion.mg.domain.TblMiembros&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="java.util.List" name="listRematesDetalle">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="queryRematesDetalle"/>
-        </Property>
-        <Property name="observable" type="boolean" value="true"/>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.lacreacion.mg.domain.TblRematesDetalle&gt;"/>
-      </AuxValues>
-    </Component>
     <Component class="com.lacreacion.mg.utils.DateTimeTableCellRenderer" name="dateTimeTableCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="dateTimeTableCellRenderer1"/>
@@ -88,6 +43,46 @@
         <Property name="horizontalAlignment" type="int" value="4"/>
         <Property name="text" type="java.lang.String" value="numberCellRenderer1"/>
       </Properties>
+    </Component>
+    <Component class="javax.persistence.Query" name="queryEventos">
+      <Properties>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventos t WHERE t.idTipoEvento = 0 AND t.idGrupo IN :grupos ORDER BY t.fecha"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
+      </AuxValues>
+    </Component>
+    <Component class="java.util.List" name="listEventos">
+      <Properties>
+        <Property name="observable" type="boolean" value="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.lacreacion.mg.domain.TblEventos&gt;"/>
+        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.persistence.Query" name="queryEventoDetalle">
+      <Properties>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId ORDER BY t.fechahora"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="queryEventoDetalle.setParameter(&quot;remateId&quot;, null) ;"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value=" "/>
+        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
+      </AuxValues>
+    </Component>
+    <Component class="java.util.List" name="listEventoDetalle">
+      <Properties>
+        <Property name="observable" type="boolean" value="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.lacreacion.mg.domain.TblEventoDetalle&gt;"/>
+        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
+      </AuxValues>
     </Component>
   </NonVisualComponents>
   <Properties>
@@ -282,60 +277,17 @@
       <SubComponents>
         <Component class="javax.swing.JTable" name="masterTable">
           <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="0" rowCount="0"/>
+            </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-              <TableColumnModel selectionModel="0">
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="dateTimeTableCellRenderer1"/>
-                  </Renderer>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="numberCellRenderer1"/>
-                  </Renderer>
-                </Column>
-              </TableColumnModel>
+              <TableColumnModel selectionModel="0"/>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="listRematesDetalle" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
-              <Subbinding sourcePath="${fechahora}">
-                <BindingParameter name="NAME" value="Fecha Hora"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
-              </Subbinding>
-              <Subbinding sourcePath="${idCategoria}">
-                <BindingParameter name="NAME" value="Categoria"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="TblRematesCategorias.class"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
-              </Subbinding>
-              <Subbinding sourcePath="${observacion}">
-                <BindingParameter name="NAME" value="Observaciones"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-              </Subbinding>
-              <Subbinding sourcePath="${monto}">
-                <BindingParameter name="NAME" value="Monto"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
-              </Subbinding>
-            </BindingProperty>
             <BindingProperty name="enabled" source="cboMiembro" sourcePath="${selectedElement != null}" target="masterTable" targetPath="enabled" updateStrategy="0" immediately="false"/>
           </BindingProperties>
           <AuxValues>

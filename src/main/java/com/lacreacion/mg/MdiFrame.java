@@ -355,7 +355,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuAdCatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdCatActionPerformed
         try {
-            FrameRematesCategorias frame = new FrameRematesCategorias();
+            FrameCategoriasArticulos frame = new FrameCategoriasArticulos();
             frame.setVisible(true);
 
             desktop.add(frame);
@@ -384,7 +384,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuOpPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpPagosActionPerformed
         try {
-            FramePagos frame = new FramePagos();
+            FrameRematesPagos frame = new FrameRematesPagos();
             frame.setVisible(true);
 
             desktop.add(frame);
@@ -442,7 +442,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuAdRematesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdRematesActionPerformed
         try {
-            FrameRematesAdmin frame = new FrameRematesAdmin();
+            FrameEventosAdmin frame = new FrameEventosAdmin();
             frame.setVisible(true);
 
             desktop.add(frame);
@@ -456,7 +456,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuAdCuotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdCuotasActionPerformed
         try {
-            FrameCuotasAdmin frame = new FrameCuotasAdmin();
+            FrameEventoCuotasAdmin frame = new FrameEventoCuotasAdmin();
             frame.setVisible(true);
 
             desktop.add(frame);
@@ -564,7 +564,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuAdColectasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdColectasActionPerformed
         try {
-            FrameColectasAdmin frame = new FrameColectasAdmin();
+            FrameEventosAdmin frame = new FrameEventosAdmin();
             frame.setVisible(true);
 
             desktop.add(frame);
@@ -578,18 +578,7 @@ public class MdiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuAdColectasActionPerformed
 
     private void mnuAdCategoriasTributariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdCategoriasTributariasActionPerformed
-        try {
-            FrameAdminCatTributarias frame = new FrameAdminCatTributarias();
-            frame.setVisible(true);
 
-            desktop.add(frame);
-
-            frame.setSelected(true);
-            frame.setMaximum(true);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
-        }
     }//GEN-LAST:event_mnuAdCategoriasTributariasActionPerformed
 
     private void mnuAdRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdRolesActionPerformed

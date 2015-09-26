@@ -34,8 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblEventos.findById", query = "SELECT t FROM TblEventos t WHERE t.id = :id"),
     @NamedQuery(name = "TblEventos.findByFecha", query = "SELECT t FROM TblEventos t WHERE t.fecha = :fecha"),
     @NamedQuery(name = "TblEventos.findByDescripcion", query = "SELECT t FROM TblEventos t WHERE t.descripcion = :descripcion"),
-    @NamedQuery(name = "TblEventos.findByPorcentajeAporte", query = "SELECT t FROM TblEventos t WHERE t.porcentajeAporte = :porcentajeAporte"),
-    @NamedQuery(name = "TblEventos.findByIdTipoEvento", query = "SELECT t FROM TblEventos t WHERE t.idTipoEvento = :idTipoEvento")})
+    @NamedQuery(name = "TblEventos.findByPorcentajeAporte", query = "SELECT t FROM TblEventos t WHERE t.porcentajeAporte = :porcentajeAporte")})
 public class TblEventos implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,9 +51,9 @@ public class TblEventos implements Serializable {
     @Basic(optional = false)
     @Column(name = "PORCENTAJE_APORTE")
     private int porcentajeAporte;
-    @Basic(optional = false)
-    @Column(name = "ID_TIPO_EVENTO")
-    private int idTipoEvento;
+    @JoinColumn(name = "ID_EVENTO_TIPO", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblEventoTipos idEventoTipo;
     @JoinColumn(name = "ID_GRUPO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblGrupos idGrupo;
@@ -69,11 +68,10 @@ public class TblEventos implements Serializable {
         this.id = id;
     }
 
-    public TblEventos(Integer id, Date fecha, int porcentajeAporte, int idTipoEvento) {
+    public TblEventos(Integer id, Date fecha, int porcentajeAporte) {
         this.id = id;
         this.fecha = fecha;
         this.porcentajeAporte = porcentajeAporte;
-        this.idTipoEvento = idTipoEvento;
     }
 
     public Integer getId() {
@@ -108,12 +106,12 @@ public class TblEventos implements Serializable {
         this.porcentajeAporte = porcentajeAporte;
     }
 
-    public int getIdTipoEvento() {
-        return idTipoEvento;
+    public TblEventoTipos getIdEventoTipo() {
+        return idEventoTipo;
     }
 
-    public void setIdTipoEvento(int idTipoEvento) {
-        this.idTipoEvento = idTipoEvento;
+    public void setIdEventoTipo(TblEventoTipos idEventoTipo) {
+        this.idEventoTipo = idEventoTipo;
     }
 
     public TblGrupos getIdGrupo() {

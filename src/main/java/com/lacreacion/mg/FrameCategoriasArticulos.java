@@ -22,12 +22,12 @@ import javax.swing.JOptionPane;
  *
  * @author user
  */
-public class FrameRematesCategorias extends JInternalFrame {
+public class FrameCategoriasArticulos extends JInternalFrame {
 
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
-    public FrameRematesCategorias() {
+    public FrameCategoriasArticulos() {
         super("Administrar Categorias",
                 true, //resizable
                 true, //closable
@@ -52,7 +52,7 @@ public class FrameRematesCategorias extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("remates_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblRematesCategorias t");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCategoriasArticulos t");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
@@ -185,16 +185,16 @@ public class FrameRematesCategorias extends JInternalFrame {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                FrameRematesCategorias.this.saveButtonActionPerformed(evt);
+                FrameCategoriasArticulos.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                FrameRematesCategorias.this.refreshButtonActionPerformed(evt);
+                FrameCategoriasArticulos.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                FrameRematesCategorias.this.newButtonActionPerformed(evt);
+                FrameCategoriasArticulos.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                FrameRematesCategorias.this.deleteButtonActionPerformed(evt);
+                FrameCategoriasArticulos.this.deleteButtonActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -215,9 +215,9 @@ public class FrameRematesCategorias extends JInternalFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             int[] selected = masterTable.getSelectedRows();
-            List<com.lacreacion.mg.domain.TblRematesCategorias> toRemove = new ArrayList<>(selected.length);
+            List<com.lacreacion.mg.domain.TblCategoriasArticulos> toRemove = new ArrayList<>(selected.length);
             for (int idx = 0; idx < selected.length; idx++) {
-                com.lacreacion.mg.domain.TblRematesCategorias t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                com.lacreacion.mg.domain.TblCategoriasArticulos t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
                 entityManager.remove(t);
             }
@@ -229,7 +229,7 @@ public class FrameRematesCategorias extends JInternalFrame {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         try {
-            com.lacreacion.mg.domain.TblRematesCategorias t = new com.lacreacion.mg.domain.TblRematesCategorias();
+            com.lacreacion.mg.domain.TblCategoriasArticulos t = new com.lacreacion.mg.domain.TblCategoriasArticulos();
             entityManager.persist(t);
             list.add(t);
             int row = list.size() - 1;
@@ -253,8 +253,8 @@ public class FrameRematesCategorias extends JInternalFrame {
         } catch (RollbackException rex) {
             JOptionPane.showMessageDialog(null, rex.getMessage());
             entityManager.getTransaction().begin();
-            List<com.lacreacion.mg.domain.TblRematesCategorias> merged = new ArrayList<com.lacreacion.mg.domain.TblRematesCategorias>(list.size());
-            for (com.lacreacion.mg.domain.TblRematesCategorias t : list) {
+            List<com.lacreacion.mg.domain.TblCategoriasArticulos> merged = new ArrayList<>(list.size());
+            for (com.lacreacion.mg.domain.TblCategoriasArticulos t : list) {
                 merged.add(entityManager.merge(t));
             }
             list.clear();
@@ -269,7 +269,7 @@ public class FrameRematesCategorias extends JInternalFrame {
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JTextField idField;
     private javax.swing.JLabel idLabel;
-    private java.util.List<com.lacreacion.mg.domain.TblRematesCategorias> list;
+    private java.util.List<com.lacreacion.mg.domain.TblCategoriasArticulos> list;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
@@ -288,21 +288,22 @@ public class FrameRematesCategorias extends JInternalFrame {
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameRematesCategorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCategoriasArticulos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameRematesCategorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCategoriasArticulos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameRematesCategorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCategoriasArticulos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameRematesCategorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCategoriasArticulos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new FrameRematesCategorias());
+                frame.setContentPane(new FrameCategoriasArticulos());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

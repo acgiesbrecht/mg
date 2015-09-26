@@ -9,7 +9,8 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.lacreacion.mg.domain.TblMiembros;
-import com.lacreacion.mg.domain.TblRemates;
+import com.lacreacion.mg.domain.TblEventos;
+import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.Color;
 import java.sql.Connection;
@@ -37,6 +38,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
     Map<String, String> persistenceMap = new HashMap<>();
     List<TblMiembros> listMiembrosFiltered;
     TblMiembros selectedMiembro;
+    CurrentUser currentUser = CurrentUser.getInstance();
 
     /**
      * Creates new form FramePagos
@@ -74,16 +76,15 @@ public class FrameInformes extends javax.swing.JInternalFrame {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
+        entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("remates_PU", persistenceMap).createEntityManager();
         dateToStringConverter1 = new com.lacreacion.mg.utils.DateToStringConverter();
-        queryRemates = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblRemates t");
-        listRemates = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryRemates.getResultList());
         queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblMiembros t ORDER BY t.nombre");
-        queryRematesDetalle = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblRemates t ORDER BY t.fecha");
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
-        listRematesDetalle = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryRematesDetalle.getResultList());
         dateTimeTableCellRenderer1 = new com.lacreacion.mg.utils.DateTimeTableCellRenderer();
         numberCellRenderer1 = new com.lacreacion.mg.utils.NumberCellRenderer();
+        queryRemates = java.beans.Beans.isDesignTime() ? null : ((javax.persistence.EntityManager)null).createQuery("SELECT t FROM TblEventos t WHERE t.idTipoEvento = 0 AND t.idGrupo IN :grupos ORDER BY t.fecha");
+        queryRemates.setParameter("grupos", currentUser.getUser().getTblGruposList());
+        listRemates = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(((javax.persistence.Query)null).getResultList());
         cboFechaRemate = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -121,7 +122,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
             }
         });
 
-        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listRemates, cboFechaRemate);
+        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, new java.util.List(), cboFechaRemate);
         bindingGroup.addBinding(jComboBoxBinding);
 
         cboFechaRemate.addActionListener(new java.awt.event.ActionListener() {
@@ -310,7 +311,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
 
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/detalle_remate.jrxml"));
             Map parameters = new HashMap();
-            parameters.put("id_remate", ((TblRemates) cboFechaRemate.getSelectedItem()).getId());
+            parameters.put("id_remate", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getConnection());
             JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
             jReportsViewer.setVisible(true);
@@ -326,7 +327,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
 
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/detalle_transferencias.jrxml"));
             Map parameters = new HashMap();
-            parameters.put("id_remate", ((TblRemates) cboFechaRemate.getSelectedItem()).getId());
+            parameters.put("id_remate", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getConnection());
             JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
             jReportsViewer.setVisible(true);
@@ -342,7 +343,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
 
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/detalle_recibos.jrxml"));
             Map parameters = new HashMap();
-            parameters.put("id_remate", ((TblRemates) cboFechaRemate.getSelectedItem()).getId());
+            parameters.put("id_remate", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getConnection());
             JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
             jReportsViewer.setVisible(true);
@@ -358,7 +359,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
 
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/pendientes.jrxml"));
             Map parameters = new HashMap();
-            parameters.put("id_remate", ((TblRemates) cboFechaRemate.getSelectedItem()).getId());
+            parameters.put("id_remate", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getConnection());
             JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
             jReportsViewer.setVisible(true);
@@ -374,7 +375,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
 
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/detalle_compras_miembro.jrxml"));
             Map parameters = new HashMap();
-            parameters.put("id_remate", ((TblRemates) cboFechaRemate.getSelectedItem()).getId());
+            parameters.put("id_remate", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
             parameters.put("id_miembro", ((TblMiembros) cboMiembro.getSelectedItem()).getId());
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getConnection());
             JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
@@ -391,7 +392,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
 
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/detalle_pagos_miembro.jrxml"));
             Map parameters = new HashMap();
-            parameters.put("id_remate", ((TblRemates) cboFechaRemate.getSelectedItem()).getId());
+            parameters.put("id_remate", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
             parameters.put("id_miembro", ((TblMiembros) cboMiembro.getSelectedItem()).getId());
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getConnection());
             JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
@@ -511,12 +512,10 @@ public class FrameInformes extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private java.util.List<com.lacreacion.mg.domain.TblMiembros> listMiembros;
-    private java.util.List<com.lacreacion.mg.domain.TblRemates> listRemates;
-    private java.util.List<com.lacreacion.mg.domain.TblRematesDetalle> listRematesDetalle;
+    private java.util.List<com.lacreacion.mg.domain.TblEventos> listRemates;
     private com.lacreacion.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query queryMiembros;
     private javax.persistence.Query queryRemates;
-    private javax.persistence.Query queryRematesDetalle;
     private javax.swing.JTextField txtCtaCte;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables

@@ -6,7 +6,7 @@
 package com.lacreacion.mg.utils;
 
 import com.lacreacion.mg.domain.CuotaModel;
-import com.lacreacion.mg.domain.TblRematesCuotas;
+import com.lacreacion.mg.domain.TblEventoCuotas;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,8 +23,8 @@ import javax.swing.ListModel;
  */
 public class Varios {
 
-    public static List<CuotaModel> getCuotas(TblRematesCuotas remateCuotas, Integer monto) {
-        List<Date> fechas = getCuotasFechas(remateCuotas);
+    public static List<CuotaModel> getCuotas(TblEventoCuotas eventoCuotas, Integer monto) {
+        List<Date> fechas = getCuotasFechas(eventoCuotas);
         List<CuotaModel> listCuotas = new ArrayList<>();
         float divi = monto * 1.0F / fechas.size();
         Integer montoCuota = Math.round(divi);
@@ -49,7 +49,7 @@ public class Varios {
         return listCuotas;
     }
 
-    public static List<Date> getCuotasFechas(TblRematesCuotas cuotas) {
+    public static List<Date> getCuotasFechas(TblEventoCuotas cuotas) {
         List<Date> cuotasList = new ArrayList<>();
         if (cuotas.getFecha1() != null) {
             cuotasList.add(cuotas.getFecha1());

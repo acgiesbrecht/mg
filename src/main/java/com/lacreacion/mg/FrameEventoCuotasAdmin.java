@@ -23,12 +23,12 @@ import javax.swing.JOptionPane;
  *
  * @author Industria
  */
-public class FrameCuotasAdmin extends JInternalFrame {
+public class FrameEventoCuotasAdmin extends JInternalFrame {
 
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
-    public FrameCuotasAdmin() {
+    public FrameEventoCuotasAdmin() {
         super("Administrar Cuotas de Remates",
                 true, //resizable
                 true, //closable
@@ -66,8 +66,8 @@ public class FrameCuotasAdmin extends JInternalFrame {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblRematesCuotas t");
+        entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("remates_PU", persistenceMap).createEntityManager();
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoCuotas t");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         dateTableCellRenderer1 = new com.lacreacion.mg.utils.DateTableCellRenderer();
         dateToStringConverter1 = new com.lacreacion.mg.utils.DateToStringConverter();
@@ -90,8 +90,8 @@ public class FrameCuotasAdmin extends JInternalFrame {
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tblRemates}"));
-        columnBinding.setColumnName("Remate");
-        columnBinding.setColumnClass(com.lacreacion.mg.domain.TblRemates.class);
+        columnBinding.setColumnName("Evento");
+        columnBinding.setColumnClass(com.lacreacion.mg.domain.TblEventos.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fecha1}"));
         columnBinding.setColumnName("1ª Cuota");
@@ -223,10 +223,10 @@ public class FrameCuotasAdmin extends JInternalFrame {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                FrameCuotasAdmin.this.saveButtonActionPerformed(evt);
+                FrameEventoCuotasAdmin.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                FrameCuotasAdmin.this.refreshButtonActionPerformed(evt);
+                FrameEventoCuotasAdmin.this.refreshButtonActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -256,8 +256,8 @@ public class FrameCuotasAdmin extends JInternalFrame {
         } catch (RollbackException rex) {
             rex.printStackTrace();
             entityManager.getTransaction().begin();
-            List<com.lacreacion.mg.domain.TblRematesCuotas> merged = new ArrayList<com.lacreacion.mg.domain.TblRematesCuotas>(list.size());
-            for (com.lacreacion.mg.domain.TblRematesCuotas t : list) {
+            List<com.lacreacion.mg.domain.TblEventoCuotas> merged = new ArrayList<>(list.size());
+            for (com.lacreacion.mg.domain.TblEventoCuotas t : list) {
                 merged.add(entityManager.merge(t));
             }
             list.clear();
@@ -277,7 +277,7 @@ public class FrameCuotasAdmin extends JInternalFrame {
     private org.jdesktop.swingx.JXDatePicker jXDatePicker2;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker3;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker4;
-    private java.util.List<com.lacreacion.mg.domain.TblRematesCuotas> list;
+    private java.util.List<com.lacreacion.mg.domain.TblEventoCuotas> list;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.persistence.Query query;
@@ -300,21 +300,22 @@ public class FrameCuotasAdmin extends JInternalFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameCuotasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameEventoCuotasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameCuotasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameEventoCuotasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameCuotasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameEventoCuotasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameCuotasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameEventoCuotasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new FrameCuotasAdmin());
+                frame.setContentPane(new FrameEventoCuotasAdmin());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

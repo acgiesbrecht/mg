@@ -10,7 +10,7 @@ import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
-import com.lacreacion.mg.domain.TblColectas;
+import com.lacreacion.mg.domain.TblEventos;
 import com.lacreacion.mg.domain.TblMiembros;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
@@ -68,7 +68,7 @@ public class FrameColectasDetalle extends JInternalFrame {
 
             //AutoCompleteDecorator.decorate(cboFechaRemate);
             //AutoCompleteDecorator.decorate(cboCategoria);
-            AutoCompleteSupport support = AutoCompleteSupport.install(cboFechaColecta, GlazedLists.eventListOf(listColectas.toArray()));
+            AutoCompleteSupport support = AutoCompleteSupport.install(cboFechaColecta, GlazedLists.eventListOf(listEventos.toArray()));
             support.setFilterMode(TextMatcherEditor.CONTAINS);
 
             eventListMiembros.clear();
@@ -79,7 +79,7 @@ public class FrameColectasDetalle extends JInternalFrame {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String s = sdf.format(new Date());
             Date today = sdf.parse(s);
-            Optional<TblColectas> value = listColectas.stream().filter(a -> a.getFecha().equals(today))
+            Optional<TblEventos> value = listEventos.stream().filter(a -> a.getFecha().equals(today))
                     .findFirst();
             if (value.isPresent()) {
                 cboFechaColecta.setSelectedItem(value.get());
@@ -123,12 +123,12 @@ public class FrameColectasDetalle extends JInternalFrame {
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
         normalTableCellRenderer1 = new com.lacreacion.mg.utils.NormalTableCellRenderer();
         categoriasConverter1 = new com.lacreacion.mg.utils.CategoriasConverter();
-        queryColectas = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblColectas t WHERE t.idGrupo IN :grupos ORDER BY t.fecha");
-        queryColectas.setParameter("grupos", currentUser.getUser().getTblGruposList());
-        listColectas = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryColectas.getResultList());
-        queryColectasDetalle = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblColectasDetalle t WHERE t.idColecta = :colectaId ORDER BY t.id");
-        queryColectasDetalle.setParameter("colectaId", null) ;
-        listColectasDetalle = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryColectasDetalle.getResultList());
+        queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idTipoEvento = 1 AND t.idGrupo IN :grupos ORDER BY t.fecha");
+        queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
+        listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
+        queryEventosDetalle = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId ORDER BY t.id");
+        queryEventosDetalle.setParameter("colectaId", null) ;
+        listEventosDetalle = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventosDetalle.getResultList());
         jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
         dateTimeTableCellRenderer1 = new com.lacreacion.mg.utils.DateTimeTableCellRenderer();
         integerLongConverter1 = new com.lacreacion.mg.utils.IntegerLongConverter();
@@ -171,7 +171,7 @@ public class FrameColectasDetalle extends JInternalFrame {
         masterTable.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         masterTable.setRowHeight(20);
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listColectasDetalle, masterTable);
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventosDetalle, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idMiembro}"));
         columnBinding.setColumnName("Miembro");
         columnBinding.setColumnClass(com.lacreacion.mg.domain.TblMiembros.class);
@@ -184,7 +184,6 @@ public class FrameColectasDetalle extends JInternalFrame {
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(0).setPreferredWidth(80);
-            masterTable.getColumnModel().getColumn(0).setCellRenderer(null);
             masterTable.getColumnModel().getColumn(1).setPreferredWidth(20);
             masterTable.getColumnModel().getColumn(1).setCellRenderer(numberCellRenderer1);
         }
@@ -292,7 +291,7 @@ public class FrameColectasDetalle extends JInternalFrame {
 
         jLabel2.setText("Fecha de Colecta:");
 
-        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listColectas, cboFechaColecta);
+        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventos, cboFechaColecta);
         bindingGroup.addBinding(jComboBoxBinding);
 
         cboFechaColecta.addActionListener(formListener);
@@ -514,13 +513,13 @@ public class FrameColectasDetalle extends JInternalFrame {
             if (cboFechaColecta.getSelectedItem() != null && entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
                 entityManager.getTransaction().begin();
-                queryColectasDetalle.setParameter("colectaId", ((TblColectas) cboFechaColecta.getSelectedItem()));
-                java.util.Collection data = queryColectasDetalle.getResultList();
+                queryEventosDetalle.setParameter("colectaId", ((TblEventos) cboFechaColecta.getSelectedItem()));
+                java.util.Collection data = queryEventosDetalle.getResultList();
                 data.stream().forEach((entity) -> {
                     entityManager.refresh(entity);
                 });
-                listColectasDetalle.clear();
-                listColectasDetalle.addAll(data);
+                listEventosDetalle.clear();
+                listEventosDetalle.addAll(data);
 
                 entityManager1.getTransaction().rollback();
                 entityManager1.getTransaction().begin();
@@ -533,8 +532,8 @@ public class FrameColectasDetalle extends JInternalFrame {
                 eventListMiembros.clear();
                 eventListMiembros.addAll(data);
 
-                lblTotal.setText(String.format("%,d", listColectasDetalle.stream().mapToInt(a -> a.getMonto()).sum()));
-                lblTotalOperaciones.setText(String.format("%,d", listColectasDetalle.stream().mapToInt(a -> a.getMonto()).count()));
+                lblTotal.setText(String.format("%,d", listEventosDetalle.stream().mapToInt(a -> a.getMonto()).sum()));
+                lblTotalOperaciones.setText(String.format("%,d", listEventosDetalle.stream().mapToInt(a -> a.getMonto()).count()));
                 txtCtaCte.setText("");
             }
         } catch (Exception ex) {
@@ -545,13 +544,13 @@ public class FrameColectasDetalle extends JInternalFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             int[] selected = masterTable.getSelectedRows();
-            List<com.lacreacion.mg.domain.TblColectasDetalle> toRemove = new ArrayList<>(selected.length);
+            List<com.lacreacion.mg.domain.TblEventoDetalle> toRemove = new ArrayList<>(selected.length);
             for (int idx = 0; idx < selected.length; idx++) {
-                com.lacreacion.mg.domain.TblColectasDetalle t = listColectasDetalle.get(masterTable.convertRowIndexToModel(selected[idx]));
+                com.lacreacion.mg.domain.TblEventoDetalle t = listEventosDetalle.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
                 entityManager.remove(t);
             }
-            listColectasDetalle.removeAll(toRemove);
+            listEventosDetalle.removeAll(toRemove);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
@@ -559,13 +558,13 @@ public class FrameColectasDetalle extends JInternalFrame {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         try {
-            com.lacreacion.mg.domain.TblColectasDetalle t = new com.lacreacion.mg.domain.TblColectasDetalle();
+            com.lacreacion.mg.domain.TblEventoDetalle t = new com.lacreacion.mg.domain.TblEventoDetalle();
             entityManager.persist(t);
-            t.setIdColecta((TblColectas) cboFechaColecta.getSelectedItem());
+            t.setIdEvento((TblEventos) cboFechaColecta.getSelectedItem());
             t.setIdUser(currentUser.getUser());
 
-            listColectasDetalle.add(t);
-            int row = listColectasDetalle.size() - 1;
+            listEventosDetalle.add(t);
+            int row = listEventosDetalle.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
 
@@ -594,12 +593,12 @@ public class FrameColectasDetalle extends JInternalFrame {
             JOptionPane.showMessageDialog(null, rex.getMessage());
 
             entityManager.getTransaction().begin();
-            List<com.lacreacion.mg.domain.TblColectasDetalle> merged = new ArrayList<>(listColectasDetalle.size());
-            listColectasDetalle.stream().forEach((t) -> {
+            List<com.lacreacion.mg.domain.TblEventoDetalle> merged = new ArrayList<>(listEventosDetalle.size());
+            listEventosDetalle.stream().forEach((t) -> {
                 merged.add(entityManager.merge(t));
             });
-            listColectasDetalle.clear();
-            listColectasDetalle.addAll(merged);
+            listEventosDetalle.clear();
+            listEventosDetalle.addAll(merged);
         }
 
     }
@@ -713,8 +712,8 @@ public class FrameColectasDetalle extends JInternalFrame {
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalOperaciones;
-    private java.util.List<com.lacreacion.mg.domain.TblColectas> listColectas;
-    private java.util.List<com.lacreacion.mg.domain.TblColectasDetalle> listColectasDetalle;
+    private java.util.List<com.lacreacion.mg.domain.TblEventos> listEventos;
+    private java.util.List<com.lacreacion.mg.domain.TblEventoDetalle> listEventosDetalle;
     private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
@@ -723,8 +722,8 @@ public class FrameColectasDetalle extends JInternalFrame {
     private javax.swing.JButton newButton;
     private com.lacreacion.mg.utils.NormalTableCellRenderer normalTableCellRenderer1;
     private com.lacreacion.mg.utils.NumberCellRenderer numberCellRenderer1;
-    private javax.persistence.Query queryColectas;
-    private javax.persistence.Query queryColectasDetalle;
+    private javax.persistence.Query queryEventos;
+    private javax.persistence.Query queryEventosDetalle;
     private javax.persistence.Query queryMiembros;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;
@@ -754,6 +753,18 @@ public class FrameColectasDetalle extends JInternalFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(FrameColectasDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

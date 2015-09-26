@@ -8,7 +8,6 @@ package com.lacreacion.mg;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
-import com.lacreacion.mg.domain.TblRematesCuotas;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.EventQueue;
@@ -26,24 +25,24 @@ import javax.swing.JInternalFrame;
  *
  * @author Industria
  */
-public class FrameRematesAdmin extends JInternalFrame {
+public class FrameEventosAdmin extends JInternalFrame {
 
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
-    public FrameRematesAdmin() {
-        super("Administrar Remates",
+    public FrameEventosAdmin() {
+        super("Administrar Colectas",
                 true, //resizable
                 true, //closable
                 true, //maximizable
                 true);//iconifiable
         persistenceMap = Varios.getDatabaseIP();
         initComponents();
-
         AutoCompleteSupport support1 = AutoCompleteSupport.install(cboGrupo, GlazedLists.eventListOf(listGrupos.toArray()));
         support1.setFilterMode(TextMatcherEditor.CONTAINS);
-
+        AutoCompleteSupport support2 = AutoCompleteSupport.install(cboEventoTipo, GlazedLists.eventListOf(listEventoTipos.toArray()));
+        support2.setFilterMode(TextMatcherEditor.CONTAINS);
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
@@ -60,12 +59,14 @@ public class FrameRematesAdmin extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblRemates t");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         dateToStringConverter1 = new com.lacreacion.mg.utils.DateToStringConverter();
         dateTableCellRenderer1 = new com.lacreacion.mg.utils.DateTimeTableCellRenderer();
         queryGrupos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblGrupos t");
         listGrupos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryGrupos.getResultList());
+        queryEventoTipos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoTipos t");
+        listEventoTipos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoTipos.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         fechaLabel = new javax.swing.JLabel();
@@ -76,8 +77,16 @@ public class FrameRematesAdmin extends JInternalFrame {
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
-        descripcionLabel1 = new javax.swing.JLabel();
         cboGrupo = new javax.swing.JComboBox();
+        descripcionLabel1 = new javax.swing.JLabel();
+        descripcionLabel2 = new javax.swing.JLabel();
+        descripcionLabel3 = new javax.swing.JLabel();
+        cboEventoTipo = new javax.swing.JComboBox();
+        sldCatTrib = new javax.swing.JSlider();
+        descripcionLabel4 = new javax.swing.JLabel();
+        descripcionLabel5 = new javax.swing.JLabel();
+        descripcionLabel6 = new javax.swing.JLabel();
+        descripcionLabel7 = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
@@ -87,21 +96,28 @@ public class FrameRematesAdmin extends JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fecha}"));
         columnBinding.setColumnName("Fecha");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idTipoEvento}"));
+        columnBinding.setColumnName("Tipo");
+        columnBinding.setColumnClass(com.lacreacion.mg.domain.TblEventoTipos.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descripcion}"));
         columnBinding.setColumnName("Descripcion");
         columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idGrupo}"));
         columnBinding.setColumnName("Grupo");
         columnBinding.setColumnClass(com.lacreacion.mg.domain.TblGrupos.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${porcentajeAporte}"));
+        columnBinding.setColumnName("% Aporte");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("100-${porcentajeAporte}"));
+        columnBinding.setColumnName("% Donacion");
+        columnBinding.setColumnClass(Integer.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(0).setResizable(false);
-            masterTable.getColumnModel().getColumn(0).setPreferredWidth(20);
             masterTable.getColumnModel().getColumn(0).setCellRenderer(dateTableCellRenderer1);
-            masterTable.getColumnModel().getColumn(1).setResizable(false);
-            masterTable.getColumnModel().getColumn(1).setPreferredWidth(200);
+            masterTable.getColumnModel().getColumn(2).setResizable(false);
         }
 
         fechaLabel.setText("Fecha:");
@@ -109,6 +125,7 @@ public class FrameRematesAdmin extends JInternalFrame {
         descripcionLabel.setText("Descripcion:");
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.descripcion}"), descripcionField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding.setSourceUnreadableValue("null");
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), descripcionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -134,8 +151,6 @@ public class FrameRematesAdmin extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), jXDatePicker1, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        descripcionLabel1.setText("Grupo:");
-
         cboGrupo.setEditable(true);
         cboGrupo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -143,6 +158,30 @@ public class FrameRematesAdmin extends JInternalFrame {
         bindingGroup.addBinding(jComboBoxBinding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idGrupo}"), cboGrupo, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboGrupo, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        descripcionLabel1.setText("Grupo:");
+
+        descripcionLabel2.setText("Categoria Tributaria:");
+
+        descripcionLabel3.setText("Tipo:");
+
+        cboEventoTipo.setEditable(true);
+        cboEventoTipo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        sldCatTrib.setValue(100);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.porcentajeAporte}"), sldCatTrib, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        descripcionLabel4.setText("Donacion");
+
+        descripcionLabel5.setText("Aporte");
+
+        descripcionLabel6.setText("0%");
+
+        descripcionLabel7.setText("100%");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -151,6 +190,12 @@ public class FrameRematesAdmin extends JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(descripcionLabel)
+                        .addGap(85, 85, 85)
+                        .addComponent(descripcionField)
+                        .addGap(342, 342, 342))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(newButton)
@@ -160,23 +205,35 @@ public class FrameRematesAdmin extends JInternalFrame {
                         .addComponent(refreshButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton))
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(fechaLabel)
-                            .addComponent(descripcionLabel)
+                            .addComponent(descripcionLabel3)
+                            .addComponent(fechaLabel))
+                        .addGap(110, 110, 110)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(cboEventoTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(descripcionLabel2)
                             .addComponent(descripcionLabel1))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(descripcionField)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(43, 43, 43)
+                                .addComponent(cboGrupo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(cboGrupo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .addGap(46, 46, 46)
+                                .addComponent(descripcionLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(descripcionLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(sldCatTrib, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(15, 15, 15)
+                                .addComponent(descripcionLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(descripcionLabel5)))))
                 .addContainerGap())
         );
 
@@ -186,11 +243,15 @@ public class FrameRematesAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fechaLabel)
                     .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(descripcionLabel3)
+                    .addComponent(cboEventoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(descripcionLabel)
@@ -200,12 +261,24 @@ public class FrameRematesAdmin extends JInternalFrame {
                     .addComponent(descripcionLabel1)
                     .addComponent(cboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(saveButton)
-                    .addComponent(refreshButton)
-                    .addComponent(deleteButton)
-                    .addComponent(newButton))
-                .addGap(10, 10, 10))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(descripcionLabel2)
+                                .addComponent(descripcionLabel4)
+                                .addComponent(descripcionLabel6))
+                            .addComponent(sldCatTrib, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(saveButton)
+                            .addComponent(refreshButton)
+                            .addComponent(deleteButton)
+                            .addComponent(newButton)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(descripcionLabel5)
+                        .addComponent(descripcionLabel7)))
+                .addContainerGap())
         );
 
         bindingGroup.bind();
@@ -217,16 +290,16 @@ public class FrameRematesAdmin extends JInternalFrame {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                FrameRematesAdmin.this.saveButtonActionPerformed(evt);
+                FrameEventosAdmin.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                FrameRematesAdmin.this.refreshButtonActionPerformed(evt);
+                FrameEventosAdmin.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                FrameRematesAdmin.this.newButtonActionPerformed(evt);
+                FrameEventosAdmin.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                FrameRematesAdmin.this.deleteButtonActionPerformed(evt);
+                FrameEventosAdmin.this.deleteButtonActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -245,9 +318,9 @@ public class FrameRematesAdmin extends JInternalFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int[] selected = masterTable.getSelectedRows();
-        List<com.lacreacion.mg.domain.TblRemates> toRemove = new ArrayList<com.lacreacion.mg.domain.TblRemates>(selected.length);
+        List<com.lacreacion.mg.domain.TblEventos> toRemove = new ArrayList<>(selected.length);
         for (int idx = 0; idx < selected.length; idx++) {
-            com.lacreacion.mg.domain.TblRemates t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+            com.lacreacion.mg.domain.TblEventos t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
             toRemove.add(t);
             entityManager.remove(t);
         }
@@ -255,7 +328,7 @@ public class FrameRematesAdmin extends JInternalFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        com.lacreacion.mg.domain.TblRemates t = new com.lacreacion.mg.domain.TblRemates();
+        com.lacreacion.mg.domain.TblEventos t = new com.lacreacion.mg.domain.TblEventos();
         t.setIdUser(currentUser.getUser());
         entityManager.persist(t);
         list.add(t);
@@ -274,21 +347,11 @@ public class FrameRematesAdmin extends JInternalFrame {
             }
             list.clear();
             list.addAll(data);
-            list.stream().forEach((r) -> {
-                if (entityManager.find(TblRematesCuotas.class, r.getId()) == null) {
-                    TblRematesCuotas cuota = new TblRematesCuotas();
-                    cuota.setIdRemate(r.getId());
-                    entityManager.persist(cuota);
-                    entityManager.flush();
-                    entityManager.getTransaction().commit();
-                    entityManager.getTransaction().begin();
-                }
-            });
         } catch (RollbackException rex) {
             rex.printStackTrace();
             entityManager.getTransaction().begin();
-            List<com.lacreacion.mg.domain.TblRemates> merged = new ArrayList<com.lacreacion.mg.domain.TblRemates>(list.size());
-            for (com.lacreacion.mg.domain.TblRemates t : list) {
+            List<com.lacreacion.mg.domain.TblEventos> merged = new ArrayList<>(list.size());
+            for (com.lacreacion.mg.domain.TblEventos t : list) {
                 merged.add(entityManager.merge(t));
             }
             list.clear();
@@ -297,6 +360,7 @@ public class FrameRematesAdmin extends JInternalFrame {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox cboEventoTipo;
     private javax.swing.JComboBox cboGrupo;
     private com.lacreacion.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.lacreacion.mg.utils.DateToStringConverter dateToStringConverter1;
@@ -304,18 +368,27 @@ public class FrameRematesAdmin extends JInternalFrame {
     private javax.swing.JTextField descripcionField;
     private javax.swing.JLabel descripcionLabel;
     private javax.swing.JLabel descripcionLabel1;
+    private javax.swing.JLabel descripcionLabel2;
+    private javax.swing.JLabel descripcionLabel3;
+    private javax.swing.JLabel descripcionLabel4;
+    private javax.swing.JLabel descripcionLabel5;
+    private javax.swing.JLabel descripcionLabel6;
+    private javax.swing.JLabel descripcionLabel7;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fechaLabel;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
-    private java.util.List<com.lacreacion.mg.domain.TblRemates> list;
+    private java.util.List<com.lacreacion.mg.domain.TblEventos> list;
+    private java.util.List<com.lacreacion.mg.domain.TblEventoTipos> listEventoTipos;
     private java.util.List<com.lacreacion.mg.domain.TblGrupos> listGrupos;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
     private javax.persistence.Query query;
+    private javax.persistence.Query queryEventoTipos;
     private javax.persistence.Query queryGrupos;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;
+    private javax.swing.JSlider sldCatTrib;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
@@ -333,21 +406,24 @@ public class FrameRematesAdmin extends JInternalFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameRematesAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameEventosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameRematesAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameEventosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameRematesAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameEventosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameRematesAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameEventosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new FrameRematesAdmin());
+                frame.setContentPane(new FrameEventosAdmin());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

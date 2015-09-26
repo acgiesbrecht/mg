@@ -45,55 +45,55 @@
     </Component>
     <Component class="com.lacreacion.mg.utils.CategoriasConverter" name="categoriasConverter1">
     </Component>
-    <Component class="javax.persistence.Query" name="queryColectas">
+    <Component class="javax.persistence.Query" name="queryEventos">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblColectas t WHERE t.idGrupo IN :grupos ORDER BY t.fecha"/>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventos t WHERE t.idTipoEvento = 1 AND t.idGrupo IN :grupos ORDER BY t.fecha"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="entityManager"/>
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="queryColectas.setParameter(&quot;grupos&quot;, currentUser.getUser().getTblGruposList());"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="queryEventos.setParameter(&quot;grupos&quot;, currentUser.getUser().getTblGruposList());"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="java.util.List" name="listColectas">
+    <Component class="java.util.List" name="listEventos">
       <Properties>
         <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="queryColectas"/>
+          <ComponentRef name="queryEventos"/>
         </Property>
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.lacreacion.mg.domain.TblColectas&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.lacreacion.mg.domain.TblEventos&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="javax.persistence.Query" name="queryColectasDetalle">
+    <Component class="javax.persistence.Query" name="queryEventosDetalle">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblColectasDetalle t WHERE t.idColecta = :colectaId ORDER BY t.id"/>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId ORDER BY t.id"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="entityManager"/>
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="queryColectasDetalle.setParameter(&quot;colectaId&quot;, null) ;"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="queryEventosDetalle.setParameter(&quot;colectaId&quot;, null) ;"/>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value=" "/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="java.util.List" name="listColectasDetalle">
+    <Component class="java.util.List" name="listEventosDetalle">
       <Properties>
         <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="queryColectasDetalle"/>
+          <ComponentRef name="queryEventosDetalle"/>
         </Property>
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.lacreacion.mg.domain.TblColectasDetalle&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.lacreacion.mg.domain.TblEventoDetalle&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -263,9 +263,7 @@
                 <Column maxWidth="-1" minWidth="-1" prefWidth="80" resizable="true">
                   <Title/>
                   <Editor/>
-                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="null"/>
-                  </Renderer>
+                  <Renderer/>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="true">
                   <Title/>
@@ -282,7 +280,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="listColectasDetalle" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="listEventosDetalle" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${idMiembro}">
                 <BindingParameter name="NAME" value="Miembro"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.lacreacion.mg.domain.TblMiembros.class"/>
@@ -526,7 +524,7 @@
     </Component>
     <Component class="javax.swing.JComboBox" name="cboFechaColecta">
       <BindingProperties>
-        <BindingProperty name="elements" source="listColectas" target="cboFechaColecta" targetPath="elements" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="elements" source="listEventos" target="cboFechaColecta" targetPath="elements" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboFechaColectaActionPerformed"/>
