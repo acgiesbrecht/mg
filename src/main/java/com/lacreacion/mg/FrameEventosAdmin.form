@@ -20,6 +20,7 @@
         </Property>
       </Properties>
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="query.setParameter(&quot;grupos&quot;, currentUser.getUser().getTblGruposList());"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -94,6 +95,11 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
+    <Component class="com.lacreacion.mg.utils.DonacionTableCellRenderer" name="donacionTableCellRenderer1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="donacionTableCellRenderer1"/>
+      </Properties>
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -161,11 +167,11 @@
                               <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                               <Component id="descripcionLabel4" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="descripcionLabel6" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblDonacion" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="sldCatTrib" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                              <Component id="descripcionLabel7" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAporte" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="descripcionLabel5" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -208,7 +214,7 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="descripcionLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="descripcionLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="descripcionLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblDonacion" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="sldCatTrib" pref="0" max="32767" attributes="0"/>
                       </Group>
@@ -222,7 +228,7 @@
                   </Group>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="descripcionLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="descripcionLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblAporte" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -272,7 +278,9 @@
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
-                  <Renderer/>
+                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
+                    <ComponentRef name="donacionTableCellRenderer1"/>
+                  </Renderer>
                 </Column>
               </TableColumnModel>
             </Property>
@@ -302,7 +310,7 @@
                 <BindingParameter name="NAME" value="% Aporte"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
               </Subbinding>
-              <Subbinding sourcePath="100-${porcentajeAporte}">
+              <Subbinding sourcePath="${porcentajeAporte}">
                 <BindingParameter name="NAME" value="% Donacion"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
               </Subbinding>
@@ -435,6 +443,9 @@
           <BindingParameter name="IGNORE_ADJUSTING" value="N"/>
         </BindingProperty>
       </BindingProperties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sldCatTribStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="descripcionLabel4">
       <Properties>
@@ -446,12 +457,12 @@
         <Property name="text" type="java.lang.String" value="Aporte"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="descripcionLabel6">
+    <Component class="javax.swing.JLabel" name="lblDonacion">
       <Properties>
         <Property name="text" type="java.lang.String" value="0%"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="descripcionLabel7">
+    <Component class="javax.swing.JLabel" name="lblAporte">
       <Properties>
         <Property name="text" type="java.lang.String" value="100%"/>
       </Properties>
