@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -20,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_FACTURAS")
@@ -28,9 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "TblFacturas.findAll", query = "SELECT t FROM TblFacturas t"),
     @NamedQuery(name = "TblFacturas.findByNro", query = "SELECT t FROM TblFacturas t WHERE t.tblFacturasPK.nro = :nro"),
-    @NamedQuery(name = "TblFacturas.findByTimbrado", query = "SELECT t FROM TblFacturas t WHERE t.tblFacturasPK.timbrado = :timbrado"),
+    @NamedQuery(name = "TblFacturas.findByIdTimbrado", query = "SELECT t FROM TblFacturas t WHERE t.tblFacturasPK.idTimbrado = :idTimbrado"),
     @NamedQuery(name = "TblFacturas.findByFechahora", query = "SELECT t FROM TblFacturas t WHERE t.fechahora = :fechahora"),
-    @NamedQuery(name = "TblFacturas.findByIdMiembro", query = "SELECT t FROM TblFacturas t WHERE t.idMiembro = :idMiembro"),
     @NamedQuery(name = "TblFacturas.findByMonto", query = "SELECT t FROM TblFacturas t WHERE t.monto = :monto"),
     @NamedQuery(name = "TblFacturas.findByAnulado", query = "SELECT t FROM TblFacturas t WHERE t.anulado = :anulado")})
 public class TblFacturas implements Serializable {
@@ -42,14 +43,17 @@ public class TblFacturas implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechahora;
     @Basic(optional = false)
-    @Column(name = "ID_MIEMBRO")
-    private int idMiembro;
-    @Basic(optional = false)
     @Column(name = "MONTO")
     private int monto;
     @Basic(optional = false)
     @Column(name = "ANULADO")
     private Boolean anulado;
+    @JoinColumn(name = "ID_MIEMBRO", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblMiembros idMiembro;
+    @JoinColumn(name = "ID_TIMBRADO", referencedColumnName = "NRO", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private TblTimbrados tblTimbrados;
 
     public TblFacturas() {
     }
@@ -58,16 +62,15 @@ public class TblFacturas implements Serializable {
         this.tblFacturasPK = tblFacturasPK;
     }
 
-    public TblFacturas(TblFacturasPK tblFacturasPK, Date fechahora, int idMiembro, int monto, Boolean anulado) {
+    public TblFacturas(TblFacturasPK tblFacturasPK, Date fechahora, int monto, Boolean anulado) {
         this.tblFacturasPK = tblFacturasPK;
         this.fechahora = fechahora;
-        this.idMiembro = idMiembro;
         this.monto = monto;
         this.anulado = anulado;
     }
 
-    public TblFacturas(int nro, int timbrado) {
-        this.tblFacturasPK = new TblFacturasPK(nro, timbrado);
+    public TblFacturas(int nro, int idTimbrado) {
+        this.tblFacturasPK = new TblFacturasPK(nro, idTimbrado);
     }
 
     public TblFacturasPK getTblFacturasPK() {
@@ -86,14 +89,6 @@ public class TblFacturas implements Serializable {
         this.fechahora = fechahora;
     }
 
-    public int getIdMiembro() {
-        return idMiembro;
-    }
-
-    public void setIdMiembro(int idMiembro) {
-        this.idMiembro = idMiembro;
-    }
-
     public int getMonto() {
         return monto;
     }
@@ -108,6 +103,22 @@ public class TblFacturas implements Serializable {
 
     public void setAnulado(Boolean anulado) {
         this.anulado = anulado;
+    }
+
+    public TblMiembros getIdMiembro() {
+        return idMiembro;
+    }
+
+    public void setIdMiembro(TblMiembros idMiembro) {
+        this.idMiembro = idMiembro;
+    }
+
+    public TblTimbrados getTblTimbrados() {
+        return tblTimbrados;
+    }
+
+    public void setTblTimbrados(TblTimbrados tblTimbrados) {
+        this.tblTimbrados = tblTimbrados;
     }
 
     @Override

@@ -7,7 +7,7 @@
         <Property name="persistenceUnit" type="java.lang.String" value="mg_PU"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory(&quot;remates_PU&quot;, persistenceMap).createEntityManager();"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory(&quot;mg_PU&quot;, persistenceMap).createEntityManager();"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -186,7 +186,7 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="elements" source="list" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
-              <Subbinding sourcePath="${tblRemates}">
+              <Subbinding sourcePath="${tblEventos}">
                 <BindingParameter name="NAME" value="Evento"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.lacreacion.mg.domain.TblEventos.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>

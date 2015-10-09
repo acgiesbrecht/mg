@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_MIEMBROS")
@@ -57,15 +57,11 @@ public class TblMiembros implements Serializable {
     @Basic(optional = false)
     @Column(name = "APORTE_MENSUAL")
     private int aporteMensual;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
-    private List<TblEventoDetalle> tblEventoDetalleList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
-    private List<TblRecibos> tblRecibosList;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne
     private TblUsers idUser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
-    private List<TblTransferencias> tblTransferenciasList;
+    private List<TblFacturas> tblFacturasList;
 
     public TblMiembros() {
     }
@@ -128,24 +124,6 @@ public class TblMiembros implements Serializable {
         this.aporteMensual = aporteMensual;
     }
 
-    @XmlTransient
-    public List<TblEventoDetalle> getTblEventoDetalleList() {
-        return tblEventoDetalleList;
-    }
-
-    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
-        this.tblEventoDetalleList = tblEventoDetalleList;
-    }
-
-    @XmlTransient
-    public List<TblRecibos> getTblRecibosList() {
-        return tblRecibosList;
-    }
-
-    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
-        this.tblRecibosList = tblRecibosList;
-    }
-
     public TblUsers getIdUser() {
         return idUser;
     }
@@ -155,12 +133,12 @@ public class TblMiembros implements Serializable {
     }
 
     @XmlTransient
-    public List<TblTransferencias> getTblTransferenciasList() {
-        return tblTransferenciasList;
+    public List<TblFacturas> getTblFacturasList() {
+        return tblFacturasList;
     }
 
-    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
-        this.tblTransferenciasList = tblTransferenciasList;
+    public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
+        this.tblFacturasList = tblFacturasList;
     }
 
     @Override

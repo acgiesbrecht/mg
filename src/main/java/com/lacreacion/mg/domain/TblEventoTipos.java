@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblEventoTipos.findById", query = "SELECT t FROM TblEventoTipos t WHERE t.id = :id"),
     @NamedQuery(name = "TblEventoTipos.findByDescripcion", query = "SELECT t FROM TblEventoTipos t WHERE t.descripcion = :descripcion")})
 public class TblEventoTipos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -101,7 +102,7 @@ public class TblEventoTipos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblEventoTipos[ id=" + id + " ]";
+        return descripcion;
     }
 
 }

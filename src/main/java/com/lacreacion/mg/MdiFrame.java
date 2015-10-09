@@ -5,20 +5,24 @@
  */
 package com.lacreacion.mg;
 
+import com.lacreacion.mg.domain.TblUsers;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
 import javax.imageio.ImageIO;
+import javax.persistence.EntityManager;
 import javax.swing.DesktopManager;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.apache.derby.drda.NetworkServerControl;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -58,9 +62,9 @@ public class MdiFrame extends javax.swing.JFrame {
                     mnuOpColectas.setEnabled(currentUser.hasRole(1));
 
                     mnuAdMiembros.setEnabled(currentUser.hasRole(2));
-                    mnuAdCategoriasTributarias.setEnabled(currentUser.hasRole(3));
-                    mnuAdColectas.setEnabled(currentUser.hasRole(3));
-                    mnuAdRemates.setEnabled(currentUser.hasRole(3));
+                    //mnuAdCategoriasTributarias.setEnabled(currentUser.hasRole(3));
+                    mnuAdEventos.setEnabled(currentUser.hasRole(3));
+                    //mnuAdRemates.setEnabled(currentUser.hasRole(3));
                     mnuAdCuotas.setEnabled(currentUser.hasRole(3));
                     mnuAdCat.setEnabled(currentUser.hasRole(2));
                     mnuAdMiembros.setEnabled(currentUser.hasRole(2));
@@ -77,6 +81,19 @@ public class MdiFrame extends javax.swing.JFrame {
                     mnuAdInformes.setEnabled(currentUser.hasRole(1));
                 }
             });
+
+            //AUTO LOGIN-------------------------------
+            currentUser.setUser(null);
+            EntityManager entityManager = javax.persistence.Persistence.createEntityManagerFactory("mg_PU").createEntityManager();
+            List<TblUsers> list = entityManager.createQuery("SELECT t FROM TblUsers t").getResultList();
+            for (TblUsers user : list) {
+                if (user.getNombre().equals("adrian")) {
+                    if (BCrypt.checkpw(String.valueOf("adrian"), user.getPassword())) {
+                        currentUser.setUser(user);
+                    }
+                }
+            }
+            //-------------------------------------
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -100,22 +117,24 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnuLogin = new javax.swing.JMenuItem();
-        mnuOp = new javax.swing.JMenu();
+        mnuOpFacturacion = new javax.swing.JMenu();
         mnuOpRemates = new javax.swing.JMenuItem();
         mnuOpPagos = new javax.swing.JMenuItem();
         mnuOpColectas = new javax.swing.JMenuItem();
+        mnuOpColectas1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mnuAdMiembros = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        mnuAdColectas = new javax.swing.JMenuItem();
-        mnuAdCategoriasTributarias = new javax.swing.JMenuItem();
+        mnuAdEventos = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        mnuAdRemates = new javax.swing.JMenuItem();
         mnuAdCuotas = new javax.swing.JMenuItem();
         mnuAdCat = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         mnuAdTransf = new javax.swing.JMenuItem();
         mnuAdRecibos = new javax.swing.JMenuItem();
+        jSeparator6 = new javax.swing.JPopupMenu.Separator();
+        mnuAdTimbrados = new javax.swing.JMenuItem();
+        mnuAdFacturas = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mnuAdIglesia = new javax.swing.JMenuItem();
         mnuAdUsuarios = new javax.swing.JMenuItem();
@@ -145,7 +164,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        mnuOp.setText("Operaciones");
+        mnuOpFacturacion.setText("Operaciones");
 
         mnuOpRemates.setText("Remates");
         mnuOpRemates.setEnabled(false);
@@ -154,7 +173,7 @@ public class MdiFrame extends javax.swing.JFrame {
                 mnuOpRematesActionPerformed(evt);
             }
         });
-        mnuOp.add(mnuOpRemates);
+        mnuOpFacturacion.add(mnuOpRemates);
 
         mnuOpPagos.setText("Pagos");
         mnuOpPagos.setEnabled(false);
@@ -163,7 +182,7 @@ public class MdiFrame extends javax.swing.JFrame {
                 mnuOpPagosActionPerformed(evt);
             }
         });
-        mnuOp.add(mnuOpPagos);
+        mnuOpFacturacion.add(mnuOpPagos);
 
         mnuOpColectas.setText("Colectas");
         mnuOpColectas.setEnabled(false);
@@ -172,9 +191,18 @@ public class MdiFrame extends javax.swing.JFrame {
                 mnuOpColectasActionPerformed(evt);
             }
         });
-        mnuOp.add(mnuOpColectas);
+        mnuOpFacturacion.add(mnuOpColectas);
 
-        jMenuBar1.add(mnuOp);
+        mnuOpColectas1.setText("Facturacion");
+        mnuOpColectas1.setEnabled(false);
+        mnuOpColectas1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuOpColectas1ActionPerformed(evt);
+            }
+        });
+        mnuOpFacturacion.add(mnuOpColectas1);
+
+        jMenuBar1.add(mnuOpFacturacion);
 
         jMenu2.setText("Administracion");
 
@@ -188,35 +216,17 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenu2.add(mnuAdMiembros);
         jMenu2.add(jSeparator2);
 
-        mnuAdColectas.setText("Administrar Colectas");
-        mnuAdColectas.setEnabled(false);
-        mnuAdColectas.addActionListener(new java.awt.event.ActionListener() {
+        mnuAdEventos.setText("Administrar Eventos");
+        mnuAdEventos.setEnabled(false);
+        mnuAdEventos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuAdColectasActionPerformed(evt);
+                mnuAdEventosActionPerformed(evt);
             }
         });
-        jMenu2.add(mnuAdColectas);
-
-        mnuAdCategoriasTributarias.setText("Administrar Categorias Tributarias");
-        mnuAdCategoriasTributarias.setEnabled(false);
-        mnuAdCategoriasTributarias.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuAdCategoriasTributariasActionPerformed(evt);
-            }
-        });
-        jMenu2.add(mnuAdCategoriasTributarias);
+        jMenu2.add(mnuAdEventos);
         jMenu2.add(jSeparator3);
 
-        mnuAdRemates.setText("Administrar Remates");
-        mnuAdRemates.setEnabled(false);
-        mnuAdRemates.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuAdRematesActionPerformed(evt);
-            }
-        });
-        jMenu2.add(mnuAdRemates);
-
-        mnuAdCuotas.setText("Administrar Cuotas de Remates");
+        mnuAdCuotas.setText("Administrar Cuotas");
         mnuAdCuotas.setEnabled(false);
         mnuAdCuotas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -252,6 +262,25 @@ public class MdiFrame extends javax.swing.JFrame {
             }
         });
         jMenu2.add(mnuAdRecibos);
+        jMenu2.add(jSeparator6);
+
+        mnuAdTimbrados.setText("Administrar Timbrados");
+        mnuAdTimbrados.setEnabled(false);
+        mnuAdTimbrados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdTimbradosActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuAdTimbrados);
+
+        mnuAdFacturas.setText("Administrar Facturas");
+        mnuAdFacturas.setEnabled(false);
+        mnuAdFacturas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdFacturasActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuAdFacturas);
         jMenu2.add(jSeparator1);
 
         mnuAdIglesia.setText("Administrar Iglesia");
@@ -440,20 +469,6 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuAdRecibosActionPerformed
 
-    private void mnuAdRematesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdRematesActionPerformed
-        try {
-            FrameEventosAdmin frame = new FrameEventosAdmin();
-            frame.setVisible(true);
-
-            desktop.add(frame);
-
-            frame.setSelected(true);
-            frame.setMaximum(true);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-        }
-    }//GEN-LAST:event_mnuAdRematesActionPerformed
-
     private void mnuAdCuotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdCuotasActionPerformed
         try {
             FrameEventoCuotasAdmin frame = new FrameEventoCuotasAdmin();
@@ -562,7 +577,7 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuLoginActionPerformed
 
-    private void mnuAdColectasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdColectasActionPerformed
+    private void mnuAdEventosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdEventosActionPerformed
         try {
             FrameEventosAdmin frame = new FrameEventosAdmin();
             frame.setVisible(true);
@@ -575,11 +590,7 @@ public class MdiFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             ex.printStackTrace();
         }
-    }//GEN-LAST:event_mnuAdColectasActionPerformed
-
-    private void mnuAdCategoriasTributariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdCategoriasTributariasActionPerformed
-
-    }//GEN-LAST:event_mnuAdCategoriasTributariasActionPerformed
+    }//GEN-LAST:event_mnuAdEventosActionPerformed
 
     private void mnuAdRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdRolesActionPerformed
         try {
@@ -595,6 +606,18 @@ public class MdiFrame extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_mnuAdRolesActionPerformed
+
+    private void mnuAdTimbradosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdTimbradosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnuAdTimbradosActionPerformed
+
+    private void mnuAdFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdFacturasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnuAdFacturasActionPerformed
+
+    private void mnuOpColectas1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpColectas1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnuOpColectas1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -646,24 +669,26 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
+    private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JLabel lblBG;
     private javax.swing.JMenuItem mnuAdCat;
-    private javax.swing.JMenuItem mnuAdCategoriasTributarias;
-    private javax.swing.JMenuItem mnuAdColectas;
     private javax.swing.JMenuItem mnuAdConfig;
     private javax.swing.JMenuItem mnuAdCuotas;
+    private javax.swing.JMenuItem mnuAdEventos;
+    private javax.swing.JMenuItem mnuAdFacturas;
     private javax.swing.JMenuItem mnuAdGrupos;
     private javax.swing.JMenuItem mnuAdIglesia;
     private javax.swing.JMenuItem mnuAdInformes;
     private javax.swing.JMenuItem mnuAdMiembros;
     private javax.swing.JMenuItem mnuAdRecibos;
-    private javax.swing.JMenuItem mnuAdRemates;
     private javax.swing.JMenuItem mnuAdRoles;
+    private javax.swing.JMenuItem mnuAdTimbrados;
     private javax.swing.JMenuItem mnuAdTransf;
     private javax.swing.JMenuItem mnuAdUsuarios;
     private javax.swing.JMenuItem mnuLogin;
-    private javax.swing.JMenu mnuOp;
     private javax.swing.JMenuItem mnuOpColectas;
+    private javax.swing.JMenuItem mnuOpColectas1;
+    private javax.swing.JMenu mnuOpFacturacion;
     private javax.swing.JMenuItem mnuOpPagos;
     private javax.swing.JMenuItem mnuOpRemates;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;

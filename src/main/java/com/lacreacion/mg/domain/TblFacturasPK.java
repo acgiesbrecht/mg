@@ -12,7 +12,7 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Embeddable
 public class TblFacturasPK implements Serializable {
@@ -20,15 +20,15 @@ public class TblFacturasPK implements Serializable {
     @Column(name = "NRO")
     private int nro;
     @Basic(optional = false)
-    @Column(name = "TIMBRADO")
-    private int timbrado;
+    @Column(name = "ID_TIMBRADO")
+    private int idTimbrado;
 
     public TblFacturasPK() {
     }
 
-    public TblFacturasPK(int nro, int timbrado) {
+    public TblFacturasPK(int nro, int idTimbrado) {
         this.nro = nro;
-        this.timbrado = timbrado;
+        this.idTimbrado = idTimbrado;
     }
 
     public int getNro() {
@@ -39,19 +39,19 @@ public class TblFacturasPK implements Serializable {
         this.nro = nro;
     }
 
-    public int getTimbrado() {
-        return timbrado;
+    public int getIdTimbrado() {
+        return idTimbrado;
     }
 
-    public void setTimbrado(int timbrado) {
-        this.timbrado = timbrado;
+    public void setIdTimbrado(int idTimbrado) {
+        this.idTimbrado = idTimbrado;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) nro;
-        hash += (int) timbrado;
+        hash += (int) idTimbrado;
         return hash;
     }
 
@@ -65,7 +65,7 @@ public class TblFacturasPK implements Serializable {
         if (this.nro != other.nro) {
             return false;
         }
-        if (this.timbrado != other.timbrado) {
+        if (this.idTimbrado != other.idTimbrado) {
             return false;
         }
         return true;
@@ -73,7 +73,7 @@ public class TblFacturasPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblFacturasPK[ nro=" + nro + ", timbrado=" + timbrado + " ]";
+        return "com.lacreacion.mg.domain.TblFacturasPK[ nro=" + nro + ", idTimbrado=" + idTimbrado + " ]";
     }
 
 }
