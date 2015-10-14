@@ -497,7 +497,8 @@ public class FrameTransferencias extends JInternalFrame {
     private void newButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButton1ActionPerformed
         if (masterTable.getSelectedRow() > -1) {
             try {
-                Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
+                //Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
+                Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
                 Map parameters = new HashMap();
                 parameters.put("transferencia_id", Integer.valueOf(idField.getText()));
                 //parameters.put("logo", getClass().getResource("/reports/cclogo200.png").getPath());

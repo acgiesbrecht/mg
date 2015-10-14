@@ -14,13 +14,12 @@
     </Component>
     <Component class="javax.persistence.Query" name="query">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventos t WHERE t.idGrupo IN :grupos ORDER BY t.fecha"/>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblTimbrados t ORDER BY t.nro"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="entityManager"/>
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="query.setParameter(&quot;grupos&quot;, currentUser.getUser().getTblGruposList());"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -33,17 +32,10 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.lacreacion.mg.domain.TblEventos&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.lacreacion.mg.domain.TblTimbrados&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
-    </Component>
-    <Component class="com.lacreacion.mg.utils.DateToStringConverter" name="dateToStringConverter1">
-    </Component>
-    <Component class="com.lacreacion.mg.utils.DateTimeTableCellRenderer" name="dateTableCellRenderer1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="dateTableCellRenderer1"/>
-      </Properties>
     </Component>
     <Component class="javax.persistence.Query" name="queryGrupos">
       <Properties>
@@ -95,11 +87,6 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="com.lacreacion.mg.utils.DonacionTableCellRenderer" name="donacionTableCellRenderer1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="donacionTableCellRenderer1"/>
-      </Properties>
-    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -119,10 +106,10 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="masterScrollPane" max="32767" attributes="0"/>
+                  <Component id="masterScrollPane" pref="821" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="newButton" linkSize="1" min="-2" max="-2" attributes="0"/>
@@ -135,41 +122,21 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="descripcionLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="descripcionLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                              <Component id="descripcionLabel4" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="lblDonacion" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="sldCatTrib" pref="220" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                              <Component id="lblAporte" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="descripcionLabel5" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                              <Component id="cboGrupo" min="-2" pref="149" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="descripcionLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="fechaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="descripcionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="fechaLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="descripcionLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="descripcionLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jXDatePicker2" max="32767" attributes="0"/>
                           <Component id="jXDatePicker1" pref="146" max="32767" attributes="0"/>
-                          <Component id="cboEventoTipo" max="32767" attributes="0"/>
                           <Component id="descripcionField" max="32767" attributes="0"/>
+                          <Component id="descripcionField1" max="32767" attributes="0"/>
+                          <Component id="descripcionField2" max="32767" attributes="0"/>
                       </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -180,50 +147,38 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="142" max="32767" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="masterScrollPane" pref="146" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="descripcionLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="descripcionField2" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="fechaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jXDatePicker1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="descripcionLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cboEventoTipo" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
               <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="fechaLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jXDatePicker2" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="descripcionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="descripcionField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="descripcionLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cboGrupo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="descripcionLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="descripcionField1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="descripcionLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="descripcionLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblDonacion" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="sldCatTrib" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="descripcionLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblAporte" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -245,9 +200,7 @@
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                   <Title/>
                   <Editor/>
-                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="dateTableCellRenderer1"/>
-                  </Renderer>
+                  <Renderer/>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
@@ -267,9 +220,7 @@
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
-                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="donacionTableCellRenderer1"/>
-                  </Renderer>
+                  <Renderer/>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
@@ -284,29 +235,29 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="elements" source="list" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
-              <Subbinding sourcePath="${fecha}">
-                <BindingParameter name="NAME" value="Fecha"/>
+              <Subbinding sourcePath="${nro}">
+                <BindingParameter name="NAME" value="Nro."/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${fechaInicio}">
+                <BindingParameter name="NAME" value="Fecha Inicio"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
               </Subbinding>
-              <Subbinding sourcePath="${idEventoTipo}">
-                <BindingParameter name="NAME" value="Tipo"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.lacreacion.mg.domain.TblEventoTipos.class"/>
+              <Subbinding sourcePath="${fechaVencimiento}">
+                <BindingParameter name="NAME" value="Fecha Vencimiento"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
               </Subbinding>
-              <Subbinding sourcePath="${descripcion}">
-                <BindingParameter name="NAME" value="Descripcion"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-              </Subbinding>
-              <Subbinding sourcePath="${idGrupo}">
-                <BindingParameter name="NAME" value="Grupo"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.lacreacion.mg.domain.TblGrupos.class"/>
-              </Subbinding>
-              <Subbinding sourcePath="${porcentajeAporte}">
-                <BindingParameter name="NAME" value="% Donacion"/>
+              <Subbinding sourcePath="${nroFacturaIncio}">
+                <BindingParameter name="NAME" value="Nro. Factura Inicio"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
               </Subbinding>
-              <Subbinding sourcePath="${porcentajeAporte}">
-                <BindingParameter name="NAME" value="% Aporte"/>
+              <Subbinding sourcePath="${nroFacturaFin}">
+                <BindingParameter name="NAME" value="Nro. Factura Fin"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${activo}">
+                <BindingParameter name="NAME" value="Activo"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Boolean.class"/>
               </Subbinding>
             </BindingProperty>
           </BindingProperties>
@@ -319,17 +270,18 @@
     </Container>
     <Component class="javax.swing.JLabel" name="fechaLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Fecha:"/>
+        <Property name="text" type="java.lang.String" value="Fecha Incio:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="descripcionLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Descripcion:"/>
+        <Property name="text" type="java.lang.String" value="Nro. Factura Incio:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="descripcionField">
       <BindingProperties>
-        <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.descripcion}" target="descripcionField" targetPath="text" updateStrategy="0" immediately="false">
+        <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.nroFacturaIncio}" target="descripcionField" targetPath="text" updateStrategy="0" immediately="false">
+          <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
           <Property name="incompletePathValue" type="java.lang.String" value="null"/>
         </BindingProperty>
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="descripcionField" targetPath="enabled" updateStrategy="0" immediately="false"/>
@@ -388,79 +340,49 @@
     </Component>
     <Component class="org.jdesktop.swingx.JXDatePicker" name="jXDatePicker1">
       <BindingProperties>
-        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fecha}" target="jXDatePicker1" targetPath="date" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fechaInicio}" target="jXDatePicker1" targetPath="date" updateStrategy="0" immediately="false"/>
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="jXDatePicker1" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="cboGrupo">
-      <Properties>
-        <Property name="editable" type="boolean" value="true"/>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Tahoma" size="12" style="0"/>
-        </Property>
-      </Properties>
-      <BindingProperties>
-        <BindingProperty name="elements" source="listGrupos" target="cboGrupo" targetPath="elements" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idGrupo}" target="cboGrupo" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="cboGrupo" targetPath="enabled" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="descripcionLabel1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Grupo:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="descripcionLabel2">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Categoria Tributaria:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="descripcionLabel3">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Tipo:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="cboEventoTipo">
-      <Properties>
-        <Property name="editable" type="boolean" value="true"/>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Tahoma" size="12" style="0"/>
-        </Property>
-      </Properties>
-      <BindingProperties>
-        <BindingProperty name="elements" source="listEventoTipos" target="cboEventoTipo" targetPath="elements" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idEventoTipo}" target="cboEventoTipo" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
-    </Component>
-    <Component class="javax.swing.JSlider" name="sldCatTrib">
-      <BindingProperties>
-        <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.porcentajeAporte}" target="sldCatTrib" targetPath="value" updateStrategy="0" immediately="false">
-          <BindingParameter name="IGNORE_ADJUSTING" value="N"/>
-        </BindingProperty>
-      </BindingProperties>
       <Events>
-        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sldCatTribStateChanged"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jXDatePicker1ActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="descripcionLabel4">
+    <Component class="javax.swing.JLabel" name="fechaLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Donacion"/>
+        <Property name="text" type="java.lang.String" value="Fecha Vencimiento:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="descripcionLabel5">
+    <Component class="org.jdesktop.swingx.JXDatePicker" name="jXDatePicker2">
+      <BindingProperties>
+        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fechaVencimiento}" target="jXDatePicker2" targetPath="date" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="jXDatePicker2" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="descripcionLabel6">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Aporte"/>
+        <Property name="text" type="java.lang.String" value="Nro. Factura Fin:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblDonacion">
+    <Component class="javax.swing.JTextField" name="descripcionField1">
+      <BindingProperties>
+        <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.nroFacturaFin}" target="descripcionField1" targetPath="text" updateStrategy="0" immediately="false">
+          <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+        </BindingProperty>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="descripcionField1" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="descripcionLabel7">
       <Properties>
-        <Property name="text" type="java.lang.String" value="0%"/>
+        <Property name="text" type="java.lang.String" value="Nro. Timbrado:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblAporte">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="100%"/>
-      </Properties>
+    <Component class="javax.swing.JTextField" name="descripcionField2">
+      <BindingProperties>
+        <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.nro}" target="descripcionField2" targetPath="text" updateStrategy="0" immediately="false">
+          <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+        </BindingProperty>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="descripcionField2" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
     </Component>
   </SubComponents>
 </Form>

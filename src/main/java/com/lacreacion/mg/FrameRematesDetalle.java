@@ -145,7 +145,8 @@ public class FrameRematesDetalle extends JInternalFrame {
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
         normalTableCellRenderer1 = new com.lacreacion.mg.utils.NormalTableCellRenderer();
         categoriasConverter1 = new com.lacreacion.mg.utils.CategoriasConverter();
-        queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 0 AND t.idGrupo IN :grupos ORDER BY t.fecha");
+        queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 1 AND t.idGrupo IN :grupos ORDER BY t.fecha");
+        queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
         jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
         dateTimeTableCellRenderer1 = new com.lacreacion.mg.utils.DateTimeTableCellRenderer();
@@ -691,6 +692,7 @@ public class FrameRematesDetalle extends JInternalFrame {
             com.lacreacion.mg.domain.TblEventoDetalle t = new com.lacreacion.mg.domain.TblEventoDetalle();
             entityManager.persist(t);
             t.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
+            t.setIdUser(currentUser.getUser());
             listEventosDetalle.add(t);
             int row = listEventosDetalle.size() - 1;
             masterTable.setRowSelectionInterval(row, row);

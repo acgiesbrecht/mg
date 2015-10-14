@@ -54,16 +54,18 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mnuOpPagos">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Pagos"/>
+                <Property name="text" type="java.lang.String" value="Pagos de Remates"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuOpPagosActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator8">
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mnuOpColectas">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Colectas"/>
+                <Property name="text" type="java.lang.String" value="Colectas Transferencia"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -72,11 +74,42 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mnuOpColectas1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Facturacion"/>
+                <Property name="text" type="java.lang.String" value="Colectas Efectivo"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuOpColectas1ActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator7">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuOpAportes">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Aportes"/>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuOpAportesActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator9">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuOpFacturaUnica">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Facturacion Unica"/>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuOpFacturaUnicaActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuOpFacturaPendientes">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Facturacion Pendientes"/>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuOpFacturaPendientesActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

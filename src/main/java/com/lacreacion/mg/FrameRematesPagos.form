@@ -7,7 +7,7 @@
         <Property name="persistenceUnit" type="java.lang.String" value="mg_PU"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory(&quot;remates_PU&quot;, persistenceMap).createEntityManager();"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory(&quot;mg_PU&quot;, persistenceMap).createEntityManager();"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -46,15 +46,22 @@
     </Component>
     <Component class="javax.persistence.Query" name="queryEventos">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventos t WHERE t.idTipoEvento = 0 AND t.idGrupo IN :grupos ORDER BY t.fecha"/>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 1 AND t.idGrupo IN :grupos ORDER BY t.fecha"/>
+        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
+          <ComponentRef name="entityManager"/>
+        </Property>
       </Properties>
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="queryEventos.setParameter(&quot;grupos&quot;, currentUser.getUser().getTblGruposList());"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
     <Component class="java.util.List" name="listEventos">
       <Properties>
+        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
+          <ComponentRef name="queryEventos"/>
+        </Property>
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
@@ -65,10 +72,13 @@
     </Component>
     <Component class="javax.persistence.Query" name="queryEventoDetalle">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId ORDER BY t.fechahora"/>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId AND t.idMiembro = :miembroId ORDER BY t.fechahora"/>
+        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
+          <ComponentRef name="entityManager"/>
+        </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="queryEventoDetalle.setParameter(&quot;remateId&quot;, null) ;"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="queryEventoDetalle.setParameter(&quot;eventoId&quot;, null) ;queryEventoDetalle.setParameter(&quot;miembroId&quot;, null) ;"/>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value=" "/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
@@ -76,6 +86,9 @@
     </Component>
     <Component class="java.util.List" name="listEventoDetalle">
       <Properties>
+        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
+          <ComponentRef name="queryEventoDetalle"/>
+        </Property>
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
@@ -207,9 +220,6 @@
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JComboBox" name="cboFechaRemate">
-      <BindingProperties>
-        <BindingProperty name="elements" source="listRemates" target="cboFechaRemate" targetPath="elements" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboFechaRemateActionPerformed"/>
       </Events>

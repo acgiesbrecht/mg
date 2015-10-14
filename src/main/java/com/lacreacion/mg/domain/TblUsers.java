@@ -37,6 +37,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblUsers.findByNombre", query = "SELECT t FROM TblUsers t WHERE t.nombre = :nombre"),
     @NamedQuery(name = "TblUsers.findByPassword", query = "SELECT t FROM TblUsers t WHERE t.password = :password")})
 public class TblUsers implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblTimbrados> tblTimbradosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblFacturas> tblFacturasList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -193,6 +197,24 @@ public class TblUsers implements Serializable {
     @Override
     public String toString() {
         return "com.lacreacion.mg.domain.TblUsers[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public List<TblTimbrados> getTblTimbradosList() {
+        return tblTimbradosList;
+    }
+
+    public void setTblTimbradosList(List<TblTimbrados> tblTimbradosList) {
+        this.tblTimbradosList = tblTimbradosList;
+    }
+
+    @XmlTransient
+    public List<TblFacturas> getTblFacturasList() {
+        return tblFacturasList;
+    }
+
+    public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
+        this.tblFacturasList = tblFacturasList;
     }
 
 }

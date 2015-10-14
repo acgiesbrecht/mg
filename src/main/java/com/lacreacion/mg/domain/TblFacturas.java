@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -29,56 +29,71 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblFacturas.findAll", query = "SELECT t FROM TblFacturas t"),
-    @NamedQuery(name = "TblFacturas.findByNro", query = "SELECT t FROM TblFacturas t WHERE t.tblFacturasPK.nro = :nro"),
-    @NamedQuery(name = "TblFacturas.findByIdTimbrado", query = "SELECT t FROM TblFacturas t WHERE t.tblFacturasPK.idTimbrado = :idTimbrado"),
+    @NamedQuery(name = "TblFacturas.findByNro", query = "SELECT t FROM TblFacturas t WHERE t.nro = :nro"),
     @NamedQuery(name = "TblFacturas.findByFechahora", query = "SELECT t FROM TblFacturas t WHERE t.fechahora = :fechahora"),
-    @NamedQuery(name = "TblFacturas.findByMonto", query = "SELECT t FROM TblFacturas t WHERE t.monto = :monto"),
+    @NamedQuery(name = "TblFacturas.findByRazonSocial", query = "SELECT t FROM TblFacturas t WHERE t.razonSocial = :razonSocial"),
+    @NamedQuery(name = "TblFacturas.findByRuc", query = "SELECT t FROM TblFacturas t WHERE t.ruc = :ruc"),
+    @NamedQuery(name = "TblFacturas.findByImporteDonacion", query = "SELECT t FROM TblFacturas t WHERE t.importeDonacion = :importeDonacion"),
+    @NamedQuery(name = "TblFacturas.findByImporteAporte", query = "SELECT t FROM TblFacturas t WHERE t.importeAporte = :importeAporte"),
     @NamedQuery(name = "TblFacturas.findByAnulado", query = "SELECT t FROM TblFacturas t WHERE t.anulado = :anulado")})
 public class TblFacturas implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected TblFacturasPK tblFacturasPK;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "NRO")
+    private Integer nro;
     @Basic(optional = false)
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechahora;
     @Basic(optional = false)
-    @Column(name = "MONTO")
-    private int monto;
+    @Column(name = "RAZON_SOCIAL")
+    private String razonSocial;
+    @Basic(optional = false)
+    @Column(name = "RUC")
+    private int ruc;
+    @Basic(optional = false)
+    @Column(name = "IMPORTE_DONACION")
+    private int importeDonacion;
+    @Basic(optional = false)
+    @Column(name = "IMPORTE_APORTE")
+    private int importeAporte;
     @Basic(optional = false)
     @Column(name = "ANULADO")
     private Boolean anulado;
     @JoinColumn(name = "ID_MIEMBRO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblMiembros idMiembro;
-    @JoinColumn(name = "ID_TIMBRADO", referencedColumnName = "NRO", insertable = false, updatable = false)
+    @JoinColumn(name = "ID_TIMBRADO", referencedColumnName = "NRO")
     @ManyToOne(optional = false)
-    private TblTimbrados tblTimbrados;
+    private TblTimbrados idTimbrado;
+    @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblUsers idUser;
 
     public TblFacturas() {
     }
 
-    public TblFacturas(TblFacturasPK tblFacturasPK) {
-        this.tblFacturasPK = tblFacturasPK;
+    public TblFacturas(Integer nro) {
+        this.nro = nro;
     }
 
-    public TblFacturas(TblFacturasPK tblFacturasPK, Date fechahora, int monto, Boolean anulado) {
-        this.tblFacturasPK = tblFacturasPK;
+    public TblFacturas(Integer nro, Date fechahora, String razonSocial, int ruc, int importeDonacion, int importeAporte, Boolean anulado) {
+        this.nro = nro;
         this.fechahora = fechahora;
-        this.monto = monto;
+        this.razonSocial = razonSocial;
+        this.ruc = ruc;
+        this.importeDonacion = importeDonacion;
+        this.importeAporte = importeAporte;
         this.anulado = anulado;
     }
 
-    public TblFacturas(int nro, int idTimbrado) {
-        this.tblFacturasPK = new TblFacturasPK(nro, idTimbrado);
+    public Integer getNro() {
+        return nro;
     }
 
-    public TblFacturasPK getTblFacturasPK() {
-        return tblFacturasPK;
-    }
-
-    public void setTblFacturasPK(TblFacturasPK tblFacturasPK) {
-        this.tblFacturasPK = tblFacturasPK;
+    public void setNro(Integer nro) {
+        this.nro = nro;
     }
 
     public Date getFechahora() {
@@ -89,12 +104,36 @@ public class TblFacturas implements Serializable {
         this.fechahora = fechahora;
     }
 
-    public int getMonto() {
-        return monto;
+    public String getRazonSocial() {
+        return razonSocial;
     }
 
-    public void setMonto(int monto) {
-        this.monto = monto;
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+
+    public int getRuc() {
+        return ruc;
+    }
+
+    public void setRuc(int ruc) {
+        this.ruc = ruc;
+    }
+
+    public int getImporteDonacion() {
+        return importeDonacion;
+    }
+
+    public void setImporteDonacion(int importeDonacion) {
+        this.importeDonacion = importeDonacion;
+    }
+
+    public int getImporteAporte() {
+        return importeAporte;
+    }
+
+    public void setImporteAporte(int importeAporte) {
+        this.importeAporte = importeAporte;
     }
 
     public Boolean getAnulado() {
@@ -113,18 +152,26 @@ public class TblFacturas implements Serializable {
         this.idMiembro = idMiembro;
     }
 
-    public TblTimbrados getTblTimbrados() {
-        return tblTimbrados;
+    public TblTimbrados getIdTimbrado() {
+        return idTimbrado;
     }
 
-    public void setTblTimbrados(TblTimbrados tblTimbrados) {
-        this.tblTimbrados = tblTimbrados;
+    public void setIdTimbrado(TblTimbrados idTimbrado) {
+        this.idTimbrado = idTimbrado;
+    }
+
+    public TblUsers getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(TblUsers idUser) {
+        this.idUser = idUser;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (tblFacturasPK != null ? tblFacturasPK.hashCode() : 0);
+        hash += (nro != null ? nro.hashCode() : 0);
         return hash;
     }
 
@@ -135,7 +182,7 @@ public class TblFacturas implements Serializable {
             return false;
         }
         TblFacturas other = (TblFacturas) object;
-        if ((this.tblFacturasPK == null && other.tblFacturasPK != null) || (this.tblFacturasPK != null && !this.tblFacturasPK.equals(other.tblFacturasPK))) {
+        if ((this.nro == null && other.nro != null) || (this.nro != null && !this.nro.equals(other.nro))) {
             return false;
         }
         return true;
@@ -143,7 +190,7 @@ public class TblFacturas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblFacturas[ tblFacturasPK=" + tblFacturasPK + " ]";
+        return "com.lacreacion.mg.domain.TblFacturas[ nro=" + nro + " ]";
     }
 
 }

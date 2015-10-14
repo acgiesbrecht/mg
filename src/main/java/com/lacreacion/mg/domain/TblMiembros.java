@@ -28,17 +28,21 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author adriang
  */
 @Entity
-@Table(name = "TBL_MIEMBROS")
+@Table(name = "TBL_MIEMBROS", catalog = "", schema = "MG")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblMiembros.findAll", query = "SELECT t FROM TblMiembros t"),
     @NamedQuery(name = "TblMiembros.findById", query = "SELECT t FROM TblMiembros t WHERE t.id = :id"),
     @NamedQuery(name = "TblMiembros.findByNombre", query = "SELECT t FROM TblMiembros t WHERE t.nombre = :nombre"),
+    @NamedQuery(name = "TblMiembros.findByRuc", query = "SELECT t FROM TblMiembros t WHERE t.ruc = :ruc"),
     @NamedQuery(name = "TblMiembros.findByCtacte", query = "SELECT t FROM TblMiembros t WHERE t.ctacte = :ctacte"),
     @NamedQuery(name = "TblMiembros.findByDomicilio", query = "SELECT t FROM TblMiembros t WHERE t.domicilio = :domicilio"),
     @NamedQuery(name = "TblMiembros.findByBox", query = "SELECT t FROM TblMiembros t WHERE t.box = :box"),
     @NamedQuery(name = "TblMiembros.findByAporteMensual", query = "SELECT t FROM TblMiembros t WHERE t.aporteMensual = :aporteMensual")})
 public class TblMiembros implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
+    private List<TblFacturas> tblFacturasList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +52,8 @@ public class TblMiembros implements Serializable {
     @Basic(optional = false)
     @Column(name = "NOMBRE")
     private String nombre;
+    @Column(name = "RUC")
+    private Integer ruc;
     @Column(name = "CTACTE")
     private Integer ctacte;
     @Column(name = "DOMICILIO")
@@ -60,8 +66,6 @@ public class TblMiembros implements Serializable {
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne
     private TblUsers idUser;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
-    private List<TblFacturas> tblFacturasList;
 
     public TblMiembros() {
     }
@@ -90,6 +94,14 @@ public class TblMiembros implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Integer getRuc() {
+        return ruc;
+    }
+
+    public void setRuc(Integer ruc) {
+        this.ruc = ruc;
     }
 
     public Integer getCtacte() {
@@ -132,15 +144,6 @@ public class TblMiembros implements Serializable {
         this.idUser = idUser;
     }
 
-    @XmlTransient
-    public List<TblFacturas> getTblFacturasList() {
-        return tblFacturasList;
-    }
-
-    public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
-        this.tblFacturasList = tblFacturasList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -163,7 +166,16 @@ public class TblMiembros implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblMiembros[ id=" + id + " ]";
+        return nombre;
+    }
+
+    @XmlTransient
+    public List<TblFacturas> getTblFacturasList() {
+        return tblFacturasList;
+    }
+
+    public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
+        this.tblFacturasList = tblFacturasList;
     }
 
 }

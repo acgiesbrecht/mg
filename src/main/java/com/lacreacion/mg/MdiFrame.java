@@ -61,16 +61,20 @@ public class MdiFrame extends javax.swing.JFrame {
                     mnuOpPagos.setEnabled(currentUser.hasRole(1));
                     mnuOpColectas.setEnabled(currentUser.hasRole(1));
 
+                    mnuOpFacturaUnica.setEnabled(currentUser.hasRole(2));
+                    mnuOpFacturaPendientes.setEnabled(currentUser.hasRole(2));
+
                     mnuAdMiembros.setEnabled(currentUser.hasRole(2));
-                    //mnuAdCategoriasTributarias.setEnabled(currentUser.hasRole(3));
+
                     mnuAdEventos.setEnabled(currentUser.hasRole(3));
-                    //mnuAdRemates.setEnabled(currentUser.hasRole(3));
                     mnuAdCuotas.setEnabled(currentUser.hasRole(3));
                     mnuAdCat.setEnabled(currentUser.hasRole(2));
-                    mnuAdMiembros.setEnabled(currentUser.hasRole(2));
 
                     mnuAdTransf.setEnabled(currentUser.hasRole(2));
                     mnuAdRecibos.setEnabled(currentUser.hasRole(2));
+
+                    mnuAdTimbrados.setEnabled(currentUser.hasRole(2));
+                    mnuAdFacturas.setEnabled(currentUser.hasRole(2));
 
                     mnuAdIglesia.setEnabled(currentUser.hasRole(3));
                     mnuAdConfig.setEnabled(currentUser.hasRole(3));
@@ -120,8 +124,14 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOpFacturacion = new javax.swing.JMenu();
         mnuOpRemates = new javax.swing.JMenuItem();
         mnuOpPagos = new javax.swing.JMenuItem();
+        jSeparator8 = new javax.swing.JPopupMenu.Separator();
         mnuOpColectas = new javax.swing.JMenuItem();
         mnuOpColectas1 = new javax.swing.JMenuItem();
+        jSeparator7 = new javax.swing.JPopupMenu.Separator();
+        mnuOpAportes = new javax.swing.JMenuItem();
+        jSeparator9 = new javax.swing.JPopupMenu.Separator();
+        mnuOpFacturaUnica = new javax.swing.JMenuItem();
+        mnuOpFacturaPendientes = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mnuAdMiembros = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -175,7 +185,7 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         mnuOpFacturacion.add(mnuOpRemates);
 
-        mnuOpPagos.setText("Pagos");
+        mnuOpPagos.setText("Pagos de Remates");
         mnuOpPagos.setEnabled(false);
         mnuOpPagos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -183,8 +193,9 @@ public class MdiFrame extends javax.swing.JFrame {
             }
         });
         mnuOpFacturacion.add(mnuOpPagos);
+        mnuOpFacturacion.add(jSeparator8);
 
-        mnuOpColectas.setText("Colectas");
+        mnuOpColectas.setText("Colectas Transferencia");
         mnuOpColectas.setEnabled(false);
         mnuOpColectas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -193,7 +204,7 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         mnuOpFacturacion.add(mnuOpColectas);
 
-        mnuOpColectas1.setText("Facturacion");
+        mnuOpColectas1.setText("Colectas Efectivo");
         mnuOpColectas1.setEnabled(false);
         mnuOpColectas1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,6 +212,35 @@ public class MdiFrame extends javax.swing.JFrame {
             }
         });
         mnuOpFacturacion.add(mnuOpColectas1);
+        mnuOpFacturacion.add(jSeparator7);
+
+        mnuOpAportes.setText("Aportes");
+        mnuOpAportes.setEnabled(false);
+        mnuOpAportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuOpAportesActionPerformed(evt);
+            }
+        });
+        mnuOpFacturacion.add(mnuOpAportes);
+        mnuOpFacturacion.add(jSeparator9);
+
+        mnuOpFacturaUnica.setText("Facturacion Unica");
+        mnuOpFacturaUnica.setEnabled(false);
+        mnuOpFacturaUnica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuOpFacturaUnicaActionPerformed(evt);
+            }
+        });
+        mnuOpFacturacion.add(mnuOpFacturaUnica);
+
+        mnuOpFacturaPendientes.setText("Facturacion Pendientes");
+        mnuOpFacturaPendientes.setEnabled(false);
+        mnuOpFacturaPendientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuOpFacturaPendientesActionPerformed(evt);
+            }
+        });
+        mnuOpFacturacion.add(mnuOpFacturaPendientes);
 
         jMenuBar1.add(mnuOpFacturacion);
 
@@ -608,12 +648,57 @@ public class MdiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuAdRolesActionPerformed
 
     private void mnuAdTimbradosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdTimbradosActionPerformed
-        // TODO add your handling code here:
+        try {
+            FrameTimbradosAdmin frame = new FrameTimbradosAdmin();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_mnuAdTimbradosActionPerformed
 
     private void mnuAdFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdFacturasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_mnuAdFacturasActionPerformed
+
+    private void mnuOpFacturaUnicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpFacturaUnicaActionPerformed
+        try {
+            FrameFacturacionUnica frame = new FrameFacturacionUnica();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_mnuOpFacturaUnicaActionPerformed
+
+    private void mnuOpAportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpAportesActionPerformed
+        try {
+            FrameAportesDetalle frame = new FrameAportesDetalle();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_mnuOpAportesActionPerformed
+
+    private void mnuOpFacturaPendientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpFacturaPendientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnuOpFacturaPendientesActionPerformed
 
     private void mnuOpColectas1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpColectas1ActionPerformed
         // TODO add your handling code here:
@@ -670,6 +755,9 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
+    private javax.swing.JPopupMenu.Separator jSeparator7;
+    private javax.swing.JPopupMenu.Separator jSeparator8;
+    private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JLabel lblBG;
     private javax.swing.JMenuItem mnuAdCat;
     private javax.swing.JMenuItem mnuAdConfig;
@@ -686,8 +774,11 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAdTransf;
     private javax.swing.JMenuItem mnuAdUsuarios;
     private javax.swing.JMenuItem mnuLogin;
+    private javax.swing.JMenuItem mnuOpAportes;
     private javax.swing.JMenuItem mnuOpColectas;
     private javax.swing.JMenuItem mnuOpColectas1;
+    private javax.swing.JMenuItem mnuOpFacturaPendientes;
+    private javax.swing.JMenuItem mnuOpFacturaUnica;
     private javax.swing.JMenu mnuOpFacturacion;
     private javax.swing.JMenuItem mnuOpPagos;
     private javax.swing.JMenuItem mnuOpRemates;

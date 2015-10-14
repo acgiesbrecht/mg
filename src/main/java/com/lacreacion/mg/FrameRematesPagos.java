@@ -16,6 +16,7 @@ import com.lacreacion.mg.domain.TblEventos;
 import com.lacreacion.mg.domain.TblMiembros;
 import com.lacreacion.mg.domain.TblRecibos;
 import com.lacreacion.mg.domain.TblTransferencias;
+import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.Color;
 import java.awt.KeyboardFocusManager;
@@ -56,10 +57,11 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
     Integer saldoActual;
     Timer timer;
     EventList<TblMiembros> eventListMiembros = new BasicEventList<>();
+    CurrentUser currentUser = CurrentUser.getInstance();
 
     public FrameRematesPagos() {
 
-        super("Pagos",
+        super(" Remates Pagos",
                 true, //resizable
                 true, //closable
                 true, //maximizable
@@ -139,17 +141,18 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("remates_PU", persistenceMap).createEntityManager();
+        entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
         dateToStringConverter1 = new com.lacreacion.mg.utils.DateToStringConverter();
         queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblMiembros t ORDER BY t.nombre");
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
         dateTimeTableCellRenderer1 = new com.lacreacion.mg.utils.DateTimeTableCellRenderer();
         numberCellRenderer1 = new com.lacreacion.mg.utils.NumberCellRenderer();
-        queryEventos = java.beans.Beans.isDesignTime() ? null : ((javax.persistence.EntityManager)null).createQuery("SELECT t FROM TblEventos t WHERE t.idTipoEvento = 0 AND t.idGrupo IN :grupos ORDER BY t.fecha");
-        listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(((javax.persistence.Query)null).getResultList());
-        queryEventoDetalle = java.beans.Beans.isDesignTime() ? null : ((javax.persistence.EntityManager)null).createQuery("SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId ORDER BY t.fechahora");
-        queryEventoDetalle.setParameter("remateId", null) ;
-        listEventoDetalle = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(((javax.persistence.Query)null).getResultList());
+        queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 1 AND t.idGrupo IN :grupos ORDER BY t.fecha");
+        queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
+        listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
+        queryEventoDetalle = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId AND t.idMiembro = :miembroId ORDER BY t.fechahora");
+        queryEventoDetalle.setParameter("eventoId", null) ;queryEventoDetalle.setParameter("miembroId", null) ;
+        listEventoDetalle = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoDetalle.getResultList());
         cboFechaRemate = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         idMiembroLabel = new javax.swing.JLabel();
@@ -200,9 +203,6 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             }
         });
 
-        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, new java.util.List(), cboFechaRemate);
-        bindingGroup.addBinding(jComboBoxBinding);
-
         cboFechaRemate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboFechaRemateActionPerformed(evt);
@@ -242,7 +242,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
 
         cboMiembro.setEnabled(false);
 
-        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listMiembros, cboMiembro);
+        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listMiembros, cboMiembro);
         bindingGroup.addBinding(jComboBoxBinding);
 
         cboMiembro.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
@@ -476,7 +476,6 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
     private void txtCtaCteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCtaCteFocusGained
         txtCtaCte.setSelectionStart(0);
         txtCtaCte.setSelectionEnd(txtCtaCte.getText().length());
-        // TODO add your handling code here:
     }//GEN-LAST:event_txtCtaCteFocusGained
 
     private void txtCtaCteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyPressed
@@ -519,17 +518,30 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             if (cboFechaRemate.getSelectedIndex() > -1) {
                 Integer remateId = ((TblEventos) cboFechaRemate.getSelectedItem()).getId();
                 //queryMiembros = entityManager.createNativeQuery("SELECT m.* FROM tbl_miembros m, tbl_remates_detalle r WHERE r.id_remate = " + remateId.toString() + " AND r.id_miembro = m.id AND m.ctacte <> 11111 GROUP BY m.id ORDER BY m.nombre", TblMiembros.class);
-                queryMiembros = entityManager.createNativeQuery("WITH remates AS "
-                        + "	(SELECT m.*, SUM(rd.monto) AS monto FROM tbl_miembros m "
-                        + "	LEFT JOIN tbl_remates_detalle rd ON m.id = rd.id_miembro "
-                        + "	group by m.id, m.nombre, m.ctacte, m.domicilio, m.box),"
-                        + "     pagos AS"
-                        + "       (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM tbl_miembros m "
-                        + "	LEFT JOIN tbl_pagos p ON m.id = p.id_miembro "
-                        + "	group by m.id, m.nombre, m.ctacte, m.domicilio, m.box)     "
-                        + "SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.box FROM remates, pagos "
-                        + "where remates.id = pagos.id AND (remates.monto - pagos.monto) > 0 "
-                        + "order by remates.nombre", TblMiembros.class);
+                /*queryMiembros = entityManager.createNativeQuery("WITH remates AS "
+                 + "	(SELECT m.*, SUM(rd.monto) AS monto FROM tbl_miembros m "
+                 + "	LEFT JOIN tbl_remates_detalle rd ON m.id = rd.id_miembro "
+                 + "	group by m.id, m.nombre, m.ctacte, m.domicilio, m.box),"
+                 + "     pagos AS"
+                 + "       (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM tbl_miembros m "
+                 + "	LEFT JOIN tbl_pagos p ON m.id = p.id_miembro "
+                 + "	group by m.id, m.nombre, m.ctacte, m.domicilio, m.box)     "
+                 + "SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.box FROM remates, pagos "
+                 + "where remates.id = pagos.id AND (remates.monto - pagos.monto) > 0 "
+                 + "order by remates.nombre", TblMiembros.class);
+                 */
+                queryMiembros = entityManager.createNativeQuery("SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.box FROM "
+                        + "	(SELECT m.*, SUM(rd.monto) AS monto FROM TBL_MIEMBROS m "
+                        + "	LEFT JOIN TBL_EVENTO_DETALLE rd ON m.id = rd.id_miembro "
+                        + "	group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user) remates, "
+                        + "     (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_MIEMBROS m "
+                        + "	LEFT JOIN TBL_TRANSFERENCIAS p ON m.id = p.id_miembro "
+                        + "	group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user) transferencias, "
+                        + "     (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_MIEMBROS m "
+                        + "	LEFT JOIN TBL_RECIBOS p ON m.id = p.id_miembro "
+                        + "	group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user) recibos "
+                        + "WHERE (remates.id = transferencias.id OR remates.id = recibos.id) AND (remates.monto - transferencias.monto - recibos.monto) > 0 "
+                        + "ORDER BY remates.nombre", TblMiembros.class);
 
                 listMiembros.clear();
                 listMiembros.addAll(queryMiembros.getResultList());
@@ -574,8 +586,8 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
              + selectedMiembro.getId().toString() + " ORDER BY fechahora", TblRematesDetalle.class
              );*/
 
-            queryEventoDetalle.setParameter("remate", (TblEventos) cboFechaRemate.getSelectedItem());
-            queryEventoDetalle.setParameter("miembro", selectedMiembro);
+            queryEventoDetalle.setParameter("eventoId", (TblEventos) cboFechaRemate.getSelectedItem());
+            queryEventoDetalle.setParameter("miembroId", selectedMiembro);
             listEventoDetalle.clear();
 
             listEventoDetalle.addAll(queryEventoDetalle.getResultList());
@@ -671,7 +683,9 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
     private void cmdProcesarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdProcesarActionPerformed
         try {
             cmdProcesar.setEnabled(false);
-            Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
+            //Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
+            Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
+
             Date fecha = new Date();
             Integer t_id = 0;
             Integer r_id = 0;
@@ -697,6 +711,8 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                     transferencia.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
                     transferencia.setMonto(cuota.getMonto());
                     transferencia.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
+                    transferencia.setCobrado(false);
+                    transferencia.setIdUser(currentUser.getUser());
                     entityManager.getTransaction().begin();
                     entityManager.persist(transferencia);
                     entityManager.flush();
@@ -728,6 +744,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 recibo.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
                 recibo.setMonto(reciboMonto);
                 recibo.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
+                recibo.setIdUser(currentUser.getUser());
                 entityManager.getTransaction().begin();
                 entityManager.persist(recibo);
                 entityManager.flush();
