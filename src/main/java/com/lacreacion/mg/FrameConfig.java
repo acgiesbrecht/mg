@@ -46,6 +46,8 @@ public class FrameConfig extends javax.swing.JInternalFrame {
         txtDatadir = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         cmdDatadir = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        cboModoImpresion = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -134,6 +136,10 @@ public class FrameConfig extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        jLabel4.setText("Direccion IP de Base de datos:");
+
+        cboModoImpresion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Normal", "Triplicado" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -157,7 +163,11 @@ public class FrameConfig extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(rbServidor)
                                 .addGap(18, 18, 18)
-                                .addComponent(rbRemoto)))
+                                .addComponent(rbRemoto))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(cboModoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -173,7 +183,11 @@ public class FrameConfig extends javax.swing.JInternalFrame {
                     .addComponent(rbRemoto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelDatadir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 292, Short.MAX_VALUE)
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(cboModoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 245, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -189,6 +203,7 @@ public class FrameConfig extends javax.swing.JInternalFrame {
             Preferences.userRoot().node("MG").put("DatabaseIP", txtIP.getText());
             Preferences.userRoot().node("MG").put("Datadir", txtDatadir.getText());
             Preferences.userRoot().node("MG").put("isServer", String.valueOf(rbServidor.isSelected()));
+            Preferences.userRoot().node("MG").put("modoImpresion", cboModoImpresion.getSelectedItem().toString());
 
             this.setVisible(false);
         } catch (Exception ex) {
@@ -205,6 +220,7 @@ public class FrameConfig extends javax.swing.JInternalFrame {
         txtIP.setText(Preferences.userRoot().node("MG").get("DatabaseIP", "127.0.0.1"));
         txtDatadir.setText(Preferences.userRoot().node("MG").get("Datadir", "C:\\javadb"));
         rbServidor.setSelected(Boolean.parseBoolean(Preferences.userRoot().node("MG").get("isServer", "true")));
+        cboModoImpresion.setSelectedItem(Preferences.userRoot().node("MG").get("modoImpresion", "Normal"));
     }//GEN-LAST:event_formInternalFrameActivated
 
     private void cmdDatadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDatadirActionPerformed
@@ -273,11 +289,13 @@ public class FrameConfig extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox cboModoImpresion;
     private javax.swing.JButton cmdDatadir;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private java.awt.Panel panelDatadir;
     private javax.swing.JRadioButton rbRemoto;
     private javax.swing.JRadioButton rbServidor;

@@ -3,10 +3,10 @@
 <!-- 2015-05-27T09:19:39 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="RematePG"/>
-    <parameter name="id_remate" class="java.lang.Integer"/>
+    <parameter name="id_evento" class="java.lang.Integer"/>
     <queryString language="SQL">
 		<![CDATA[select r.descripcion, p.*, m.* from tbl_remates r, tbl_recibos p, tbl_miembros m
-where p.id_remate = r.id AND p.id_miembro = m.id AND r.id =  $P{id_remate}
+where p.id_evento = r.id AND p.id_miembro = m.id AND r.id =  $P{id_evento}
 ORDER BY p.fechahora]]>
     </queryString>
     <field name="nombre" class="java.lang.String"/>
@@ -15,7 +15,7 @@ ORDER BY p.fechahora]]>
     <field name="id" class="java.lang.Integer"/>
     <field name="id_miembro" class="java.lang.Integer"/>
     <field name="monto" class="java.lang.Integer"/>
-    <field name="id_remate" class="java.lang.Integer"/>
+    <field name="id_evento" class="java.lang.Integer"/>
     <field name="descripcion" class="java.lang.String"/>
     <field name="domicilio" class="java.lang.String"/>
     <field name="box" class="java.lang.Integer"/>

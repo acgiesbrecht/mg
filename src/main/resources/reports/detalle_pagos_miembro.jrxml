@@ -3,11 +3,11 @@
 <!-- 2015-05-21T09:50:55 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="RematePG"/>
-    <parameter name="id_remate" class="java.lang.Integer"/>
+    <parameter name="id_evento" class="java.lang.Integer"/>
     <parameter name="id_miembro" class="java.lang.Integer"/>
     <queryString language="SQL">
 		<![CDATA[select r.descripcion, pagos.*, m.* from tbl_remates r, (SELECT * FROM tbl_transferencias UNION ALL SELECT * FROM tbl_recibos r) as pagos,  tbl_miembros m
-where pagos.id_remate = r.id AND pagos.id_miembro = m.id AND r.id = 1 AND pagos.id_miembro = 1
+where pagos.id_evento = r.id AND pagos.id_miembro = m.id AND r.id = 1 AND pagos.id_miembro = 1
 ORDER BY pagos.fechahora]]>
     </queryString>
     <field name="nombre" class="java.lang.String"/>
@@ -16,7 +16,7 @@ ORDER BY pagos.fechahora]]>
     <field name="id" class="java.lang.Integer"/>
     <field name="id_miembro" class="java.lang.Integer"/>
     <field name="monto" class="java.lang.Integer"/>
-    <field name="id_remate" class="java.lang.Integer"/>
+    <field name="id_evento" class="java.lang.Integer"/>
     <field name="descripcion" class="java.lang.String"/>
     <field name="domicilio" class="java.lang.String"/>
     <field name="box" class="java.lang.Integer"/>

@@ -639,24 +639,32 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
              Integer pagos = pagosT + pagosR;
              */
 
-            Integer pagos;
-
+            Integer transferencias;
             try {
-                pagos = Integer.parseInt(entityManager.createNativeQuery("SELECT sum(monto) AS total"
-                        + " FROM tbl_pagos"
+                transferencias = Integer.parseInt(entityManager.createNativeQuery("SELECT sum(monto) AS total"
+                        + " FROM tbl_transferencias"
                         + " WHERE id_miembro = " + selectedMiembro.getId().toString()
-                        + " AND id_remate = " + ((TblEventos) cboFechaRemate.getSelectedItem()).getId().toString()).getSingleResult().toString());
+                        + " AND id_evento = " + ((TblEventos) cboFechaRemate.getSelectedItem()).getId().toString()).getSingleResult().toString());
             } catch (Exception ex) {
-                pagos = 0;
+                transferencias = 0;
+            }
+            Integer recibos;
+            try {
+                recibos = Integer.parseInt(entityManager.createNativeQuery("SELECT sum(monto) AS total"
+                        + " FROM tbl_recibos"
+                        + " WHERE id_miembro = " + selectedMiembro.getId().toString()
+                        + " AND id_evento = " + ((TblEventos) cboFechaRemate.getSelectedItem()).getId().toString()).getSingleResult().toString());
+            } catch (Exception ex) {
+                recibos = 0;
             }
 
-            lblPagos.setText(String.format("%(,d", pagos));
+            lblPagos.setText(String.format("%(,d", recibos + transferencias));
 
-            saldoActual = deuda - pagos;
+            saldoActual = deuda - (recibos + transferencias);
 
             lblSaldo.setText(String.format("%(,d", saldoActual));
 
-            txtTransferencia.setValue(deuda - pagos);
+            txtTransferencia.setValue(saldoActual);
             txtRecibo.setValue(0);
 
             txtTransferencia.selectAll();
@@ -725,12 +733,17 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                         parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
                         parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
 
-                        JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia.jrxml"));
-
-                        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
-                        //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-                        //jReportsViewer.setVisible(true);
-                        JasperPrintManager.printReport(jasperPrint, false);
+                        if (Preferences.userRoot().node("MG").get("modoImpresion", "Normal").equals("Normal")) {
+                            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia.jrxml"));
+                            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
+                            JasperPrintManager.printReport(jasperPrint, false);
+                        } else {
+                            for (int x = 1; x == 3; x++) {
+                                JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia_simple.jrxml"));
+                                JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
+                                JasperPrintManager.printReport(jasperPrint, false);
+                            }
+                        }
                     }
                 }
 

@@ -3,11 +3,11 @@
 <!-- 2015-05-27T09:20:40 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="RematePG"/>
-    <parameter name="id_remate" class="java.lang.Integer"/>
+    <parameter name="id_evento" class="java.lang.Integer"/>
     <queryString language="SQL">
-		<![CDATA[select r.*, rd.*, rc.descripcion as desc_categoria, m.* from tbl_remates r, tbl_remates_detalle rd, tbl_remates_categorias rc, tbl_miembros m
-where rd.id_remate = r.id AND rd.id_miembro = m.id AND rd.id_categoria = rc.id AND r.id =  $P{id_remate}
-ORDER BY rd.fechahora]]>
+		<![CDATA[select e.*, ed.*, ac.descripcion as desc_categoria, m.* from tbl_eventos e, tbl_evento_detalle ed, tbl_categorias_articulos ac, tbl_miembros m
+where ed.id_evento = e.id AND ed.id_miembro = m.id AND ed.ID_CATEGORIA_ARTICULO = ac.id AND e.id =  $P{id_evento}
+ORDER BY ed.fechahora]]>
     </queryString>
     <field name="nombre" class="java.lang.String"/>
     <field name="ctacte" class="java.lang.Integer"/>
@@ -17,7 +17,7 @@ ORDER BY rd.fechahora]]>
     <field name="id_categoria" class="java.lang.Integer"/>
     <field name="monto" class="java.lang.Integer"/>
     <field name="observacion" class="java.lang.String"/>
-    <field name="id_remate" class="java.lang.Integer"/>
+    <field name="id_evento" class="java.lang.Integer"/>
     <field name="descripcion" class="java.lang.String"/>
     <field name="domicilio" class="java.lang.String"/>
     <field name="box" class="java.lang.Integer"/>

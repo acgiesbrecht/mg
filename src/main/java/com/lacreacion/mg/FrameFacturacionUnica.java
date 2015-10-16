@@ -17,8 +17,11 @@ import com.lacreacion.utils.CalcDV;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
+import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +33,11 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.JasperReport;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -50,9 +58,12 @@ public class FrameFacturacionUnica extends JInternalFrame {
                 true, //maximizable
                 true);//iconifiable
         try {
+
             persistenceMap = Varios.getDatabaseIP();
             initComponents();
-
+            if (!Beans.isDesignTime()) {
+                entityManager.getTransaction().begin();
+            }
             eventListMiembros.clear();
             eventListMiembros.addAll(listMiembros);
             AutoCompleteSupport support1 = AutoCompleteSupport.install(cboMiembro, eventListMiembros);
@@ -195,18 +206,12 @@ public class FrameFacturacionUnica extends JInternalFrame {
 
         txtDonacion.setColumns(9);
         txtDonacion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        txtDonacion.addFocusListener(formListener);
-        txtDonacion.addMouseListener(formListener);
-        txtDonacion.addActionListener(formListener);
 
         montoLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel4.setText("Importe Aporte:");
 
         txtAporte.setColumns(9);
         txtAporte.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        txtAporte.addFocusListener(formListener);
-        txtAporte.addMouseListener(formListener);
-        txtAporte.addActionListener(formListener);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -339,12 +344,6 @@ public class FrameFacturacionUnica extends JInternalFrame {
             else if (evt.getSource() == cboMiembro) {
                 FrameFacturacionUnica.this.cboMiembroActionPerformed(evt);
             }
-            else if (evt.getSource() == txtDonacion) {
-                FrameFacturacionUnica.this.txtDonacionActionPerformed(evt);
-            }
-            else if (evt.getSource() == txtAporte) {
-                FrameFacturacionUnica.this.txtAporteActionPerformed(evt);
-            }
         }
 
         public void focusGained(java.awt.event.FocusEvent evt) {
@@ -359,12 +358,6 @@ public class FrameFacturacionUnica extends JInternalFrame {
             }
             else if (evt.getSource() == txtCtaCte) {
                 FrameFacturacionUnica.this.txtCtaCteFocusGained(evt);
-            }
-            else if (evt.getSource() == txtDonacion) {
-                FrameFacturacionUnica.this.txtDonacionFocusGained(evt);
-            }
-            else if (evt.getSource() == txtAporte) {
-                FrameFacturacionUnica.this.txtAporteFocusGained(evt);
             }
         }
 
@@ -408,12 +401,6 @@ public class FrameFacturacionUnica extends JInternalFrame {
             else if (evt.getSource() == txtRazonSocial) {
                 FrameFacturacionUnica.this.txtRazonSocialMouseClicked(evt);
             }
-            else if (evt.getSource() == txtDonacion) {
-                FrameFacturacionUnica.this.txtDonacionMouseClicked(evt);
-            }
-            else if (evt.getSource() == txtAporte) {
-                FrameFacturacionUnica.this.txtAporteMouseClicked(evt);
-            }
         }
 
         public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -437,7 +424,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
         list.clear();
         list.addAll(query.getResultList());
         if (list.size() > 0) {
-            txtNro.setValue(String.valueOf(list.get(list.size() - 1).getNro() + 1));
+            txtNro.setValue(list.get(list.size() - 1).getNro() + 1);
         } else {
             txtNro.setValue(1);
         }
@@ -467,9 +454,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
             return false;
         }
 
-        TblFacturas ultimaFactura = list.get(list.size() - 1);
-
         if (list.size() > 0) {
+            TblFacturas ultimaFactura = list.get(list.size() - 1);
             if ((int) txtNro.getValue() <= ultimaFactura.getNro()) {
                 return false;
             }
@@ -483,6 +469,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
         try {
 
             if (!validar()) {
+                JOptionPane.showMessageDialog(null, "Datos no válidos!");
                 return;
             }
 
@@ -495,9 +482,10 @@ public class FrameFacturacionUnica extends JInternalFrame {
             factura.setIdMiembro((TblMiembros) cboMiembro.getSelectedItem());
             factura.setRazonSocial(txtRazonSocial.getText());
             factura.setRuc(Integer.parseInt(rucField.getText()));
-            factura.setImporteDonacion((int) txtDonacion.getValue());
-            factura.setImporteAporte((int) txtAporte.getValue());
+            factura.setImporteDonacion(((Number) txtDonacion.getValue()).intValue());
+            factura.setImporteAporte(((Number) txtAporte.getValue()).intValue());
             factura.setAnulado(false);
+            factura.setIdUser(currentUser.getUser());
 
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
@@ -508,11 +496,32 @@ public class FrameFacturacionUnica extends JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_imprimirButtonActionPerformed
 
     void print(Integer nro) {
+        try {
+            //Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
+            Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
+            Map parameters = new HashMap();
+            parameters.put("factura_id", nro);
+            //parameters.put("logo", getClass().getResource("/reports/cclogo200.png").getPath());
+            parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
+            parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
+            parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
+            //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/factura.jrxml"));
 
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
+            //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
+            //jReportsViewer.setVisible(true);
+            JasperPrintManager.printReport(jasperPrint, false);
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 
     private void cancelarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarButtonActionPerformed
@@ -577,10 +586,9 @@ public class FrameFacturacionUnica extends JInternalFrame {
             txtCtaCte.setBackground(Color.white);
             if (txtCtaCte.getText().length() > 4) {
                 List<TblMiembros> list = listMiembros;
-                Optional<TblMiembros> value = list.stream().filter(a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
+                Optional<TblMiembros> value = list.stream().filter(
+                        a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
                         .findFirst();
-                System.out.println(Integer.valueOf(txtCtaCte.getText()));
-                System.out.println(value.isPresent());
                 if (value.isPresent()) {
                     cboMiembro.setSelectedItem(value.get());
                     txtCtaCte.setBackground(Color.green);
@@ -613,30 +621,6 @@ public class FrameFacturacionUnica extends JInternalFrame {
             }
         }
     }//GEN-LAST:event_rucFieldKeyReleased
-
-    private void txtDonacionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDonacionFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDonacionFocusGained
-
-    private void txtDonacionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtDonacionMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDonacionMouseClicked
-
-    private void txtDonacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDonacionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDonacionActionPerformed
-
-    private void txtAporteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtAporteFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAporteFocusGained
-
-    private void txtAporteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtAporteMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAporteMouseClicked
-
-    private void txtAporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAporteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAporteActionPerformed
 
     private void txtCtaCteInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtCtaCteInputMethodTextChanged
         // TODO add your handling code here:

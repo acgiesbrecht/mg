@@ -14,7 +14,7 @@
     </Component>
     <Component class="javax.persistence.Query" name="query">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblFacturas t ORDER BY t.fecha"/>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblFacturas t ORDER BY t.fechahora"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="entityManager"/>
         </Property>
@@ -129,6 +129,8 @@
                   <Component id="masterScrollPane" pref="837" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="chkAnulado" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                      <Component id="txtNro" min="-2" pref="42" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="imprimirButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -143,12 +145,13 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="286" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" pref="290" max="32767" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="anularButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="imprimirButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="chkAnulado" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtNro" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -303,6 +306,11 @@
       </Properties>
       <BindingProperties>
         <BindingProperty name="selected" source="masterTable" sourcePath="${selectedElement.anulado}" target="chkAnulado" targetPath="selected" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="txtNro">
+      <BindingProperties>
+        <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.nro}" target="txtNro" targetPath="value" updateStrategy="0" immediately="false"/>
       </BindingProperties>
     </Component>
   </SubComponents>

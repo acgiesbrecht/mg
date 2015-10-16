@@ -115,6 +115,22 @@
     </Component>
     <Component class="com.lacreacion.mg.utils.DateTimeToStringConverter" name="dateTimeToStringConverter1">
     </Component>
+    <Component class="javax.persistence.Query" name="tblCategoriasArticulosQuery">
+      <Properties>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblCategoriasArticulos t ORDER BY t.descripcion"/>
+        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
+          <ComponentRef name="entityManager"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="java.util.List" name="tblCategoriasArticulosList">
+      <Properties>
+        <Property name="observable" type="boolean" value="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.lacreacion.mg.domain.TblCategoriasArticulos&gt;"/>
+      </AuxValues>
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -228,9 +244,9 @@
                   <Component id="cboForma" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="montoLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="montoField" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="montoLabel" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">

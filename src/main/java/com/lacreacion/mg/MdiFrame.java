@@ -663,7 +663,18 @@ public class MdiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuAdTimbradosActionPerformed
 
     private void mnuAdFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdFacturasActionPerformed
-        // TODO add your handling code here:
+        try {
+            FrameFacturasAdmin frame = new FrameFacturasAdmin();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_mnuAdFacturasActionPerformed
 
     private void mnuOpFacturaUnicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpFacturaUnicaActionPerformed

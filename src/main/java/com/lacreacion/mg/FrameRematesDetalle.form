@@ -373,7 +373,7 @@
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.lacreacion.mg.domain.TblMiembros.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${idCategoria}">
+              <Subbinding sourcePath="${idCategoriaArticulo}">
                 <BindingParameter name="NAME" value="Categoria"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.lacreacion.mg.domain.TblCategoriasArticulos.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
@@ -569,7 +569,7 @@
       </Properties>
       <BindingProperties>
         <BindingProperty name="elements" source="tblCategoriasArticulosList" target="cboCategoria" targetPath="elements" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idCategoria}" target="cboCategoria" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idCategoriaArticulo}" target="cboCategoria" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="cboCategoria" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>

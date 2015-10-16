@@ -4,7 +4,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="RematePG"/>
     <queryString>
-		<![CDATA[select * from MG."pendientes_total"]]>
+		<![CDATA[select * from MG.PENDIENTES_TOTAL]]>
     </queryString>
     <field name="nombre" class="java.lang.String"/>
     <field name="ctacte" class="java.lang.Integer"/>

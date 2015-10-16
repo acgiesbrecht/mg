@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_EVENTO_DETALLE")
@@ -34,8 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblEventoDetalle.findById", query = "SELECT t FROM TblEventoDetalle t WHERE t.id = :id"),
     @NamedQuery(name = "TblEventoDetalle.findByFechahora", query = "SELECT t FROM TblEventoDetalle t WHERE t.fechahora = :fechahora"),
     @NamedQuery(name = "TblEventoDetalle.findByObservacion", query = "SELECT t FROM TblEventoDetalle t WHERE t.observacion = :observacion"),
-    @NamedQuery(name = "TblEventoDetalle.findByMonto", query = "SELECT t FROM TblEventoDetalle t WHERE t.monto = :monto"),
-    @NamedQuery(name = "TblEventoDetalle.findByIdCategoriaArticulo", query = "SELECT t FROM TblEventoDetalle t WHERE t.idCategoriaArticulo = :idCategoriaArticulo")})
+    @NamedQuery(name = "TblEventoDetalle.findByMonto", query = "SELECT t FROM TblEventoDetalle t WHERE t.monto = :monto")})
 public class TblEventoDetalle implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,9 +51,9 @@ public class TblEventoDetalle implements Serializable {
     @Basic(optional = false)
     @Column(name = "MONTO")
     private int monto;
-    @Basic(optional = false)
-    @Column(name = "ID_CATEGORIA_ARTICULO")
-    private int idCategoriaArticulo;
+    @JoinColumn(name = "ID_CATEGORIA_ARTICULO", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblCategoriasArticulos idCategoriaArticulo;
     @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEventos idEvento;
@@ -72,11 +71,10 @@ public class TblEventoDetalle implements Serializable {
         this.id = id;
     }
 
-    public TblEventoDetalle(Integer id, Date fechahora, int monto, int idCategoriaArticulo) {
+    public TblEventoDetalle(Integer id, Date fechahora, int monto) {
         this.id = id;
         this.fechahora = fechahora;
         this.monto = monto;
-        this.idCategoriaArticulo = idCategoriaArticulo;
     }
 
     public Integer getId() {
@@ -111,11 +109,11 @@ public class TblEventoDetalle implements Serializable {
         this.monto = monto;
     }
 
-    public int getIdCategoriaArticulo() {
+    public TblCategoriasArticulos getIdCategoriaArticulo() {
         return idCategoriaArticulo;
     }
 
-    public void setIdCategoriaArticulo(int idCategoriaArticulo) {
+    public void setIdCategoriaArticulo(TblCategoriasArticulos idCategoriaArticulo) {
         this.idCategoriaArticulo = idCategoriaArticulo;
     }
 

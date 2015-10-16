@@ -9,6 +9,8 @@ import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.EventQueue;
 import java.beans.Beans;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +19,12 @@ import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.JasperReport;
 
 /**
  *
@@ -35,10 +43,12 @@ public class FrameFacturasAdmin extends JInternalFrame {
                 true, //maximizable
                 true);//iconifiable
         persistenceMap = Varios.getDatabaseIP();
-
+        initComponents();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
+        chkAnulado.setVisible(false);
+        txtNro.setVisible(false);
     }
 
     /**
@@ -52,7 +62,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblFacturas t ORDER BY t.fecha");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblFacturas t ORDER BY t.fechahora");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         dateToStringConverter1 = new com.lacreacion.mg.utils.DateToStringConverter();
         dateTableCellRenderer1 = new com.lacreacion.mg.utils.DateTimeTableCellRenderer();
@@ -67,6 +77,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
         anularButton = new javax.swing.JButton();
         imprimirButton = new javax.swing.JButton();
         chkAnulado = new javax.swing.JCheckBox();
+        txtNro = new javax.swing.JFormattedTextField();
 
         FormListener formListener = new FormListener();
 
@@ -137,6 +148,9 @@ public class FrameFacturasAdmin extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.anulado}"), chkAnulado, org.jdesktop.beansbinding.BeanProperty.create("selected"));
         bindingGroup.addBinding(binding);
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nro}"), txtNro, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -147,6 +161,8 @@ public class FrameFacturasAdmin extends JInternalFrame {
                     .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 837, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(chkAnulado)
+                        .addGap(51, 51, 51)
+                        .addComponent(txtNro, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(imprimirButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -160,12 +176,13 @@ public class FrameFacturasAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(anularButton)
                     .addComponent(imprimirButton)
-                    .addComponent(chkAnulado))
+                    .addComponent(chkAnulado)
+                    .addComponent(txtNro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -188,7 +205,29 @@ public class FrameFacturasAdmin extends JInternalFrame {
 
     @SuppressWarnings("unchecked")
     private void imprimirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirButtonActionPerformed
+        if (masterTable.getSelectedRow() > -1) {
+            try {
+                //Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
+                Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
+                Map parameters = new HashMap();
+                parameters.put("factura_id", txtNro.getValue());
+                //parameters.put("logo", getClass().getResource("/reports/cclogo200.png").getPath());
+                parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
+                parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
+                parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
+                //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
+                JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/factura.jrxml"));
 
+                JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
+                //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
+                //jReportsViewer.setVisible(true);
+                JasperPrintManager.printReport(jasperPrint, false);
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_imprimirButtonActionPerformed
 
     private void anularButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anularButtonActionPerformed
@@ -231,6 +270,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
     private javax.persistence.Query queryEventoTipos;
     private javax.persistence.Query queryGrupos;
     private com.lacreacion.mg.utils.RucTableCellRenderer rucTableCellRenderer1;
+    private javax.swing.JFormattedTextField txtNro;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 

@@ -134,6 +134,8 @@ public class FrameColectasDetalle extends JInternalFrame {
         integerLongConverter1 = new com.lacreacion.mg.utils.IntegerLongConverter();
         numberCellRenderer1 = new com.lacreacion.mg.utils.NumberCellRenderer();
         dateTimeToStringConverter1 = new com.lacreacion.mg.utils.DateTimeToStringConverter();
+        tblCategoriasArticulosQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCategoriasArticulos t ORDER BY t.descripcion");
+        tblCategoriasArticulosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(((javax.persistence.Query)null).getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         montoLabel = new javax.swing.JLabel();
@@ -404,9 +406,9 @@ public class FrameColectasDetalle extends JInternalFrame {
                     .addComponent(montoLabel1)
                     .addComponent(cboForma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(montoLabel)
-                    .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(montoField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(montoLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -584,7 +586,7 @@ public class FrameColectasDetalle extends JInternalFrame {
             com.lacreacion.mg.domain.TblEventoDetalle t = new com.lacreacion.mg.domain.TblEventoDetalle();
             entityManager.persist(t);
             t.setFechahora(new Date());
-            t.setIdCategoriaArticulo(1);
+            t.setIdCategoriaArticulo(tblCategoriasArticulosList.get(tblCategoriasArticulosList.size() - 1));
             t.setIdEvento((TblEventos) cboFechaColecta.getSelectedItem());
             t.setIdUser(currentUser.getUser());
 
@@ -758,6 +760,8 @@ public class FrameColectasDetalle extends JInternalFrame {
     private javax.persistence.Query queryMiembros;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;
+    private java.util.List<com.lacreacion.mg.domain.TblCategoriasArticulos> tblCategoriasArticulosList;
+    private javax.persistence.Query tblCategoriasArticulosQuery;
     private javax.swing.JTextField txtCtaCte;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables

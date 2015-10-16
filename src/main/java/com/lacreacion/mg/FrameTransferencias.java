@@ -506,12 +506,25 @@ public class FrameTransferencias extends JInternalFrame {
                 parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
                 parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
                 //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
-                JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia.jrxml"));
 
-                JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
-                //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-                //jReportsViewer.setVisible(true);
-                JasperPrintManager.printReport(jasperPrint, false);
+                if (Preferences.userRoot().node("MG").get("modoImpresion", "Normal").equals("Normal")) {
+                    JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia.jrxml"));
+                    JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
+                    JasperPrintManager.printReport(jasperPrint, false);
+                } else {
+                    parameters.put("copia", "ORIGINAL");
+                    JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia_simple.jrxml"));
+                    JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
+                    JasperPrintManager.printReport(jasperPrint, false);
+                    parameters.put("copia", "DUPLICADO");
+                    report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia_simple.jrxml"));
+                    jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
+                    JasperPrintManager.printReport(jasperPrint, false);
+                    parameters.put("copia", "TRIPLICADO");
+                    report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia_simple.jrxml"));
+                    jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
+                    JasperPrintManager.printReport(jasperPrint, false);
+                }
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
