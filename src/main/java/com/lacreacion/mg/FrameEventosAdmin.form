@@ -145,7 +145,7 @@
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="lblDonacion" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="sldCatTrib" pref="220" max="32767" attributes="0"/>
+                              <Component id="sldCatTrib" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                               <Component id="lblAporte" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -158,18 +158,24 @@
                           </Group>
                       </Group>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="descripcionLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="fechaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="descripcionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="descripcionLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fechaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="descripcionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jXDatePicker1" pref="146" max="32767" attributes="0"/>
+                                  <Component id="cboEventoTipo" max="32767" attributes="0"/>
+                                  <Component id="descripcionField" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Component id="descripcionLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jXDatePicker1" pref="146" max="32767" attributes="0"/>
-                          <Component id="cboEventoTipo" max="32767" attributes="0"/>
-                          <Component id="descripcionField" max="32767" attributes="0"/>
-                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -180,7 +186,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="142" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" pref="170" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="fechaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -203,27 +209,27 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="descripcionLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="descripcionLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblDonacion" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="sldCatTrib" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="descripcionLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="descripcionLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblDonacion" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="sldCatTrib" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="descripcionLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblAporte" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="descripcionLabel6" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -460,6 +466,14 @@
     <Component class="javax.swing.JLabel" name="lblAporte">
       <Properties>
         <Property name="text" type="java.lang.String" value="100%"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="descripcionLabel6">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="99" green="99" red="99" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Observacion: Cambios en la categoria tributaria solo tendr&#xe1;n efectivo en pagos realizados a partir de ese cambio."/>
       </Properties>
     </Component>
   </SubComponents>

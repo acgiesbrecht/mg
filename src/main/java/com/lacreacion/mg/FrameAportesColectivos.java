@@ -41,14 +41,14 @@ import javax.swing.SwingUtilities;
  *
  * @author user
  */
-public class FrameAportesDetalle extends JInternalFrame {
+public class FrameAportesColectivos extends JInternalFrame {
 
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
     EventList<TblMiembros> eventListMiembros = new BasicEventList<>();
     CurrentUser currentUser = CurrentUser.getInstance();
 
-    public FrameAportesDetalle() {
+    public FrameAportesColectivos() {
         super("Aportes",
                 true, //resizable
                 true, //closable
@@ -443,46 +443,46 @@ public class FrameAportesDetalle extends JInternalFrame {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                FrameAportesDetalle.this.saveButtonActionPerformed(evt);
+                FrameAportesColectivos.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                FrameAportesDetalle.this.refreshButtonActionPerformed(evt);
+                FrameAportesColectivos.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                FrameAportesDetalle.this.newButtonActionPerformed(evt);
+                FrameAportesColectivos.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                FrameAportesDetalle.this.deleteButtonActionPerformed(evt);
+                FrameAportesColectivos.this.deleteButtonActionPerformed(evt);
             }
             else if (evt.getSource() == txtCtaCte) {
-                FrameAportesDetalle.this.txtCtaCteActionPerformed(evt);
+                FrameAportesColectivos.this.txtCtaCteActionPerformed(evt);
             }
             else if (evt.getSource() == cboMiembro) {
-                FrameAportesDetalle.this.cboMiembroActionPerformed(evt);
+                FrameAportesColectivos.this.cboMiembroActionPerformed(evt);
             }
             else if (evt.getSource() == cboFechaColecta) {
-                FrameAportesDetalle.this.cboFechaColectaActionPerformed(evt);
+                FrameAportesColectivos.this.cboFechaColectaActionPerformed(evt);
             }
             else if (evt.getSource() == montoField) {
-                FrameAportesDetalle.this.montoFieldActionPerformed(evt);
+                FrameAportesColectivos.this.montoFieldActionPerformed(evt);
             }
             else if (evt.getSource() == jButton2) {
-                FrameAportesDetalle.this.jButton2ActionPerformed(evt);
+                FrameAportesColectivos.this.jButton2ActionPerformed(evt);
             }
             else if (evt.getSource() == cboForma) {
-                FrameAportesDetalle.this.cboFormaActionPerformed(evt);
+                FrameAportesColectivos.this.cboFormaActionPerformed(evt);
             }
             else if (evt.getSource() == cmdGenerar) {
-                FrameAportesDetalle.this.cmdGenerarActionPerformed(evt);
+                FrameAportesColectivos.this.cmdGenerarActionPerformed(evt);
             }
         }
 
         public void focusGained(java.awt.event.FocusEvent evt) {
             if (evt.getSource() == txtCtaCte) {
-                FrameAportesDetalle.this.txtCtaCteFocusGained(evt);
+                FrameAportesColectivos.this.txtCtaCteFocusGained(evt);
             }
             else if (evt.getSource() == montoField) {
-                FrameAportesDetalle.this.montoFieldFocusGained(evt);
+                FrameAportesColectivos.this.montoFieldFocusGained(evt);
             }
         }
 
@@ -494,7 +494,7 @@ public class FrameAportesDetalle extends JInternalFrame {
 
         public void keyReleased(java.awt.event.KeyEvent evt) {
             if (evt.getSource() == txtCtaCte) {
-                FrameAportesDetalle.this.txtCtaCteKeyReleased(evt);
+                FrameAportesColectivos.this.txtCtaCteKeyReleased(evt);
             }
         }
 
@@ -503,7 +503,7 @@ public class FrameAportesDetalle extends JInternalFrame {
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             if (evt.getSource() == montoField) {
-                FrameAportesDetalle.this.montoFieldMouseClicked(evt);
+                FrameAportesColectivos.this.montoFieldMouseClicked(evt);
             }
         }
 
@@ -520,8 +520,8 @@ public class FrameAportesDetalle extends JInternalFrame {
         }
 
         public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            if (evt.getSource() == FrameAportesDetalle.this) {
-                FrameAportesDetalle.this.formInternalFrameActivated(evt);
+            if (evt.getSource() == FrameAportesColectivos.this) {
+                FrameAportesColectivos.this.formInternalFrameActivated(evt);
             }
         }
 
@@ -812,14 +812,22 @@ public class FrameAportesDetalle extends JInternalFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameAportesDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameAportesColectivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameAportesDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameAportesColectivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameAportesDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameAportesColectivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameAportesDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameAportesColectivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -833,7 +841,7 @@ public class FrameAportesDetalle extends JInternalFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new FrameAportesDetalle());
+                frame.setContentPane(new FrameAportesColectivos());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

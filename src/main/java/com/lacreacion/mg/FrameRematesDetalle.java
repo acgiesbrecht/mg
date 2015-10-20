@@ -13,6 +13,7 @@ import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.lacreacion.mg.domain.CuotaModel;
 import com.lacreacion.mg.domain.TblCategoriasArticulos;
 import com.lacreacion.mg.domain.TblEventoCuotas;
+import com.lacreacion.mg.domain.TblEventoDetalle;
 import com.lacreacion.mg.domain.TblEventos;
 import com.lacreacion.mg.domain.TblMiembros;
 import com.lacreacion.mg.domain.TblTransferencias;
@@ -675,9 +676,9 @@ public class FrameRematesDetalle extends JInternalFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             int[] selected = masterTable.getSelectedRows();
-            List<com.lacreacion.mg.domain.TblEventoDetalle> toRemove = new ArrayList<>(selected.length);
+            List<TblEventoDetalle> toRemove = new ArrayList<>(selected.length);
             for (int idx = 0; idx < selected.length; idx++) {
-                com.lacreacion.mg.domain.TblEventoDetalle t = listEventosDetalle.get(masterTable.convertRowIndexToModel(selected[idx]));
+                TblEventoDetalle t = listEventosDetalle.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
                 entityManager.remove(t);
             }
@@ -689,7 +690,7 @@ public class FrameRematesDetalle extends JInternalFrame {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         try {
-            com.lacreacion.mg.domain.TblEventoDetalle t = new com.lacreacion.mg.domain.TblEventoDetalle();
+            TblEventoDetalle t = new TblEventoDetalle();
             entityManager.persist(t);
             t.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
             t.setIdUser(currentUser.getUser());
@@ -724,7 +725,7 @@ public class FrameRematesDetalle extends JInternalFrame {
             JOptionPane.showMessageDialog(null, rex.getMessage());
 
             entityManager.getTransaction().begin();
-            List<com.lacreacion.mg.domain.TblEventoDetalle> merged = new ArrayList<>(listEventosDetalle.size());
+            List<TblEventoDetalle> merged = new ArrayList<>(listEventosDetalle.size());
             listEventosDetalle.stream().forEach((t) -> {
                 merged.add(entityManager.merge(t));
             });
@@ -890,7 +891,7 @@ public class FrameRematesDetalle extends JInternalFrame {
             JOptionPane.showMessageDialog(null, rex.getMessage());
 
             entityManager.getTransaction().begin();
-            List<com.lacreacion.mg.domain.TblEventoDetalle> merged = new ArrayList<>(listEventosDetalle.size());
+            List<TblEventoDetalle> merged = new ArrayList<>(listEventosDetalle.size());
             listEventosDetalle.stream().forEach((t) -> {
                 merged.add(entityManager.merge(t));
             });

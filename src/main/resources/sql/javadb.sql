@@ -10,6 +10,7 @@ DROP TABLE MG.TBL_EVENTO_TIPOS;
 DROP TABLE MG.TBL_FACTURAS;
 DROP TABLE MG.TBL_TIMBRADOS;
 DROP TABLE MG.TBL_MIEMBROS;
+DROP TABLE MG.TBL_FORMAS_DE_PAGO;
 DROP TABLE MG.TBL_IGLESIA;
 DROP TABLE MG.TBL_ROLES_USERS;
 DROP TABLE MG.TBL_GRUPOS_USERS;
@@ -98,7 +99,14 @@ CREATE TABLE MG.TBL_MIEMBROS (
 	DOMICILIO VARCHAR(50),
 	BOX INTEGER,
         APORTE_MENSUAL INTEGER NOT NULL,
+        ID_FORMA_DE_PAGO_PREFERIDA INTEGER NOT NULL,
 	ID_USER INTEGER,
+	PRIMARY KEY (ID)
+);
+
+CREATE TABLE MG.TBL_FORMAS_DE_PAGO (
+	ID INTEGER NOT NULL,
+	DESCRIPCION VARCHAR(50) NOT NULL,
 	PRIMARY KEY (ID)
 );
 
@@ -107,6 +115,7 @@ CREATE TABLE MG.TBL_RECIBOS (
 	FECHAHORA TIMESTAMP NOT NULL,
 	CONCEPTO VARCHAR(50),
 	MONTO INTEGER NOT NULL,
+	PORCENTAJE_APORTE INTEGER NOT NULL,
 	ID_MIEMBRO INTEGER NOT NULL,
 	ID_EVENTO INTEGER NOT NULL,
 	ID_USER INTEGER NOT NULL,
@@ -136,6 +145,7 @@ CREATE TABLE MG.TBL_TRANSFERENCIAS (
 	FECHAHORA TIMESTAMP NOT NULL,
 	CONCEPTO VARCHAR(50),
 	MONTO INTEGER NOT NULL,
+	PORCENTAJE_APORTE INTEGER NOT NULL,
 	ID_MIEMBRO INTEGER NOT NULL,
         ID_EVENTO INTEGER NOT NULL,
         COBRADO BOOLEAN DEFAULT FALSE,
@@ -209,12 +219,13 @@ ALTER TABLE MG.TBL_EVENTO_CUOTAS
 	REFERENCES MG.TBL_EVENTOS (ID)
         ON DELETE CASCADE;
 
+ALTER TABLE MG.TBL_MIEMBROS
+	ADD FOREIGN KEY (ID_FORMA_DE_PAGO_PREFERIDA)
+        REFERENCES MG.TBL_FORMAS_DE_PAGO (ID);
 
 ALTER TABLE MG.TBL_MIEMBROS
 	ADD FOREIGN KEY (ID_USER)
 	REFERENCES MG.TBL_USERS (ID);
-
-
 
 ALTER TABLE MG.TBL_RECIBOS
 	ADD FOREIGN KEY (ID_MIEMBRO)
@@ -289,6 +300,43 @@ CREATE VIEW TRANSFERENCIA AS
         t.concepto
     FROM tbl_transferencias t, tbl_miembros d, tbl_iglesia i
     WHERE t.id_miembro = d.id;
+
+CREATE VIEW MIEMBROS_CON_PAGOS_PENDIENTES AS
+SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.box FROM
+        (SELECT m.id, m.nombre, m.ctacte, m.domicilio, m.box, SUM(rd.monto) AS monto FROM TBL_MIEMBROS m
+            LEFT JOIN TBL_EVENTO_DETALLE rd ON m.id = rd.id_miembro
+            group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) remates,
+        (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_MIEMBROS m
+            LEFT JOIN TBL_TRANSFERENCIAS p ON m.id = p.id_miembro
+            group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) transferencias,
+        (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_MIEMBROS m
+            LEFT JOIN TBL_RECIBOS p ON m.id = p.id_miembro
+            group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) recibos
+    WHERE remates.id = transferencias.id AND remates.id = recibos.id AND (remates.monto - transferencias.monto - recibos.monto) > 0
+    ORDER BY remates.nombre;
+
+CREATE VIEW PAGOS_REALIZADOS AS
+SELECT TBL_MIEMBROS.id, transferencias.t_aporte, transferencias.t_donacion, recibos.r_aporte, recibos.r_donacion, facturas.f_aporte, facturas.f_donacion FROM
+    (SELECT m.id, COALESCE(SUM(p.monto*p.porcentaje_aporte/100),0) AS t_aporte,
+            COALESCE(SUM(p.monto*(100-p.porcentaje_aporte)/100),0) AS t_donacion
+            FROM TBL_MIEMBROS m
+            LEFT JOIN TBL_TRANSFERENCIAS p ON m.id = p.id_miembro
+            group by m.id) transferencias,
+    (SELECT m.id, COALESCE(SUM(p.monto*p.porcentaje_aporte/100),0) AS r_aporte,
+            COALESCE(SUM(p.monto*(100-p.porcentaje_aporte)/100),0) AS r_donacion
+            FROM TBL_MIEMBROS m
+            LEFT JOIN TBL_RECIBOS p ON m.id = p.id_miembro
+            group by m.id) recibos,
+     (SELECT m.id, COALESCE(SUM(p.importe_aporte),0) AS f_aporte,
+     		COALESCE(SUM(p.importe_donacion),0) AS f_donacion
+     		FROM TBL_MIEMBROS m
+            LEFT JOIN TBL_FACTURAS p ON m.id = p.id_miembro
+            group by m.id) facturas,
+      TBL_MIEMBROS
+    WHERE TBL_MIEMBROS.id = facturas.id AND TBL_MIEMBROS.id = transferencias.id AND TBL_MIEMBROS.id = recibos.id;
+
+INSERT INTO MG.TBL_FORMAS_DE_PAGO (ID, DESCRIPCION) VALUES (1, 'Transferencia');
+INSERT INTO MG.TBL_FORMAS_DE_PAGO (ID, DESCRIPCION) VALUES (2, 'Efectivo');
 
 INSERT INTO MG.TBL_ROLES (DESCRIPCION) VALUES ('Cajero');
 INSERT INTO MG.TBL_ROLES (DESCRIPCION) VALUES ('Admin');

@@ -5,19 +5,20 @@
  */
 package com.lacreacion.mg;
 
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.matchers.TextMatcherEditor;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.lacreacion.mg.domain.TblMiembros;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import com.lacreacion.utils.CalcDV;
 import java.awt.EventQueue;
-import java.awt.HeadlessException;
 import java.awt.KeyboardFocusManager;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,17 +37,18 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
 
 /**
  *
  * @author user
  */
-public class FrameMiembros extends JInternalFrame {
+public class FrameMiembrosAdmin extends JInternalFrame {
 
     Map<String, String> persistenceMap = new HashMap<>();
     CurrentUser currentUser = CurrentUser.getInstance();
 
-    public FrameMiembros() {
+    public FrameMiembrosAdmin() {
         super("Administrar Miembros",
                 true, //resizable
                 true, //closable
@@ -61,6 +63,10 @@ public class FrameMiembros extends JInternalFrame {
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
             }
+
+            AutoCompleteSupport support = AutoCompleteSupport.install(cboFormaDePago, GlazedLists.eventListOf(listFormasDePago.toArray()));
+            support.setFilterMode(TextMatcherEditor.CONTAINS);
+
             KeyboardFocusManager.getCurrentKeyboardFocusManager()
                     .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
                         @Override
@@ -96,6 +102,8 @@ public class FrameMiembros extends JInternalFrame {
         ctaCteTableCellRenderer1 = new com.lacreacion.mg.utils.CtaCteTableCellRenderer();
         numberCellRenderer1 = new com.lacreacion.mg.utils.NumberCellRenderer();
         rucTableCellRenderer1 = new com.lacreacion.mg.utils.RucTableCellRenderer();
+        queryFormasDePago = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblFormasDePago t");
+        listFormasDePago = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryFormasDePago.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         idLabel = new javax.swing.JLabel();
@@ -124,6 +132,8 @@ public class FrameMiembros extends JInternalFrame {
         txtAporteBase = new javax.swing.JFormattedTextField();
         txtAporteBase1 = new javax.swing.JFormattedTextField();
         ctacteLabel6 = new javax.swing.JLabel();
+        idCategoriaLabel = new javax.swing.JLabel();
+        cboFormaDePago = new javax.swing.JComboBox();
 
         FormListener formListener = new FormListener();
 
@@ -158,6 +168,9 @@ public class FrameMiembros extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${aporteMensual}"));
         columnBinding.setColumnName("Aporte Menusal");
         columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idFormaDePagoPreferida}"));
+        columnBinding.setColumnName("Form de Pago pref.");
+        columnBinding.setColumnClass(com.lacreacion.mg.domain.TblFormasDePago.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
@@ -270,6 +283,18 @@ public class FrameMiembros extends JInternalFrame {
 
         ctacteLabel6.setText("Aporte Base:");
 
+        idCategoriaLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        idCategoriaLabel.setText("Forma de Pago preferida:");
+
+        cboFormaDePago.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listFormasDePago, cboFormaDePago);
+        bindingGroup.addBinding(jComboBoxBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idFormaDePagoPreferida}"), cboFormaDePago, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        cboFormaDePago.addActionListener(formListener);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -278,65 +303,75 @@ public class FrameMiembros extends JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(ctacteLabel2)
-                        .addGap(323, 323, 323))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(masterScrollPane)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(direccionLabel1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(ctacteField1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(direccionLabel)
-                                            .addComponent(ctacteLabel6)
-                                            .addComponent(ctacteLabel3))
-                                        .addGap(30, 30, 30)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(nombreField)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(ctacteLabel4)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(txtDV, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addComponent(txtAporteBase1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(ctacteField, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                        .addComponent(ctacteLabel1))
-                                                    .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(0, 0, Short.MAX_VALUE)))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(newButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deleteButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(refreshButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(saveButton))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(nombreLabel)
-                                    .addComponent(ctacteLabel)
-                                    .addComponent(idLabel)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(ctacteLabel5)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtAporteBase, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButton4)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                                    .addComponent(direccionLabel)
+                                    .addComponent(direccionLabel1))
+                                .addGap(83, 83, 83)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ctacteField1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(ctacteLabel3)
+                                .addGap(139, 139, 139)
+                                .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ctacteLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtDV, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(168, 168, 168)
+                                .addComponent(ctacteField, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ctacteLabel1)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(masterScrollPane, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(ctacteLabel6)
+                                            .addComponent(idCategoriaLabel))
+                                        .addGap(30, 30, 30)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtAporteBase1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(cboFormaDePago, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(179, 179, 179)
+                                                .addComponent(newButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(deleteButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(refreshButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(saveButton))))
+                                    .addComponent(ctacteLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(idLabel)
+                                        .addGap(143, 143, 143)
+                                        .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 15, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(nombreLabel)
+                                .addGap(118, 118, 118)
+                                .addComponent(nombreField)))
+                        .addGap(377, 377, 377))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(ctacteLabel2))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(ctacteLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtAporteBase, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton4)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, newButton, refreshButton, saveButton});
@@ -345,14 +380,12 @@ public class FrameMiembros extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(idLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(idLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nombreLabel)
                     .addComponent(nombreField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -361,38 +394,37 @@ public class FrameMiembros extends JInternalFrame {
                     .addComponent(ctacteLabel)
                     .addComponent(ctacteField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ctacteLabel1))
-                .addGap(12, 12, 12)
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ctacteLabel3)
                     .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ctacteLabel4))
+                    .addComponent(ctacteLabel4)
+                    .addComponent(ctacteLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtAporteBase1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ctacteLabel6))
-                .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(direccionLabel)
                     .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(direccionLabel1)
-                            .addComponent(ctacteField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(23, 23, 23))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(saveButton)
-                            .addComponent(refreshButton)
-                            .addComponent(deleteButton)
-                            .addComponent(newButton))
-                        .addGap(11, 11, 11)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(direccionLabel1)
+                    .addComponent(ctacteField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAporteBase1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ctacteLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboFormaDePago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idCategoriaLabel)
+                    .addComponent(saveButton)
+                    .addComponent(refreshButton)
+                    .addComponent(deleteButton)
+                    .addComponent(newButton))
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(ctacteLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4)
                     .addComponent(ctacteLabel5)
@@ -408,43 +440,46 @@ public class FrameMiembros extends JInternalFrame {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                FrameMiembros.this.saveButtonActionPerformed(evt);
+                FrameMiembrosAdmin.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                FrameMiembros.this.refreshButtonActionPerformed(evt);
+                FrameMiembrosAdmin.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                FrameMiembros.this.newButtonActionPerformed(evt);
+                FrameMiembrosAdmin.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                FrameMiembros.this.deleteButtonActionPerformed(evt);
+                FrameMiembrosAdmin.this.deleteButtonActionPerformed(evt);
             }
             else if (evt.getSource() == ctacteField1) {
-                FrameMiembros.this.ctacteField1ActionPerformed(evt);
+                FrameMiembrosAdmin.this.ctacteField1ActionPerformed(evt);
             }
             else if (evt.getSource() == jButton3) {
-                FrameMiembros.this.jButton3ActionPerformed(evt);
+                FrameMiembrosAdmin.this.jButton3ActionPerformed(evt);
             }
             else if (evt.getSource() == jButton4) {
-                FrameMiembros.this.jButton4ActionPerformed(evt);
+                FrameMiembrosAdmin.this.jButton4ActionPerformed(evt);
             }
             else if (evt.getSource() == txtAporteBase) {
-                FrameMiembros.this.txtAporteBaseActionPerformed(evt);
+                FrameMiembrosAdmin.this.txtAporteBaseActionPerformed(evt);
             }
             else if (evt.getSource() == txtAporteBase1) {
-                FrameMiembros.this.txtAporteBase1ActionPerformed(evt);
+                FrameMiembrosAdmin.this.txtAporteBase1ActionPerformed(evt);
+            }
+            else if (evt.getSource() == cboFormaDePago) {
+                FrameMiembrosAdmin.this.cboFormaDePagoActionPerformed(evt);
             }
         }
 
         public void keyPressed(java.awt.event.KeyEvent evt) {
             if (evt.getSource() == rucField) {
-                FrameMiembros.this.rucFieldKeyPressed(evt);
+                FrameMiembrosAdmin.this.rucFieldKeyPressed(evt);
             }
         }
 
         public void keyReleased(java.awt.event.KeyEvent evt) {
             if (evt.getSource() == rucField) {
-                FrameMiembros.this.rucFieldKeyReleased(evt);
+                FrameMiembrosAdmin.this.rucFieldKeyReleased(evt);
             }
         }
 
@@ -453,10 +488,10 @@ public class FrameMiembros extends JInternalFrame {
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             if (evt.getSource() == txtAporteBase) {
-                FrameMiembros.this.txtAporteBaseMouseClicked(evt);
+                FrameMiembrosAdmin.this.txtAporteBaseMouseClicked(evt);
             }
             else if (evt.getSource() == txtAporteBase1) {
-                FrameMiembros.this.txtAporteBase1MouseClicked(evt);
+                FrameMiembrosAdmin.this.txtAporteBase1MouseClicked(evt);
             }
         }
 
@@ -473,8 +508,8 @@ public class FrameMiembros extends JInternalFrame {
         }
 
         public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            if (evt.getSource() == FrameMiembros.this) {
-                FrameMiembros.this.formInternalFrameActivated(evt);
+            if (evt.getSource() == FrameMiembrosAdmin.this) {
+                FrameMiembrosAdmin.this.formInternalFrameActivated(evt);
             }
         }
 
@@ -500,9 +535,9 @@ public class FrameMiembros extends JInternalFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             int[] selected = masterTable.getSelectedRows();
-            List<com.lacreacion.mg.domain.TblMiembros> toRemove = new ArrayList<>(selected.length);
+            List<TblMiembros> toRemove = new ArrayList<>(selected.length);
             for (int idx = 0; idx < selected.length; idx++) {
-                com.lacreacion.mg.domain.TblMiembros t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                TblMiembros t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
                 entityManager.remove(t);
             }
@@ -514,8 +549,9 @@ public class FrameMiembros extends JInternalFrame {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         try {
-            com.lacreacion.mg.domain.TblMiembros t = new com.lacreacion.mg.domain.TblMiembros();
+            TblMiembros t = new TblMiembros();
             entityManager.persist(t);
+            t.setIdUser(currentUser.getUser());
             list.add(t);
             int row = list.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
@@ -606,32 +642,40 @@ public class FrameMiembros extends JInternalFrame {
                 for (int r = 1; r < rows; r++) {
                     row = sheet.getRow(r);
                     if (row != null) {
-                        entityManager.getTransaction().commit();
-                        entityManager.getTransaction().begin();
                         TblMiembros miembro = new TblMiembros();
+
                         miembro.setNombre(row.getCell(0).getStringCellValue());
-                        miembro.setCtacte(Integer.valueOf(row.getCell(1).getStringCellValue().replaceAll("[^\\d.]", "")));
+                        if (row.getCell(1).getCellType() == Cell.CELL_TYPE_STRING) {
+                            miembro.setCtacte(Integer.valueOf(row.getCell(1).getStringCellValue().replaceAll("[^\\d.]", "")));
+                        } else if (row.getCell(1).getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                            miembro.setCtacte((int) (row.getCell(1).getNumericCellValue()));
+                        }
+                        List<TblMiembros> duplicadoList = entityManager.createQuery("SELECT t FROM TblMiembros t where t.nombre = '" + miembro.getNombre() + "' and t.ctacte = " + miembro.getCtacte().toString(), TblMiembros.class).getResultList();
+                        if (duplicadoList.size() > 0) {
+                            miembro = null;
+                            miembro = duplicadoList.get(0);
+                        }
+
                         if (row.getCell(2) != null) {
-                            miembro.setRuc((int) row.getCell(3).getNumericCellValue());
+                            miembro.setRuc((int) row.getCell(2).getNumericCellValue());
                         }
                         if (row.getCell(3) != null) {
-                            miembro.setDomicilio(row.getCell(2).getStringCellValue());
+                            miembro.setDomicilio(row.getCell(3).getStringCellValue());
                         }
                         if (row.getCell(4) != null) {
-                            miembro.setBox((int) row.getCell(3).getNumericCellValue());
+                            miembro.setBox((int) row.getCell(4).getNumericCellValue());
                         }
                         miembro.setAporteMensual(0);
+                        miembro.setIdFormaDePagoPreferida(listFormasDePago.get(0));
                         miembro.setIdUser(currentUser.getUser());
                         entityManager.persist(miembro);
-                        entityManager.flush();
-                        java.util.Collection data = query.getResultList();
-                        list.clear();
-                        list.addAll(data);
+                        list.add(miembro);
+
                     }
                 }
 
             }
-        } catch (HeadlessException | IOException | NumberFormatException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             ex.printStackTrace();
         }
@@ -696,7 +740,12 @@ public class FrameMiembros extends JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAporteBase1ActionPerformed
 
+    private void cboFormaDePagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFormaDePagoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboFormaDePagoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox cboFormaDePago;
     private com.lacreacion.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
     private javax.swing.JTextField ctacteField;
     private javax.swing.JTextField ctacteField1;
@@ -712,11 +761,13 @@ public class FrameMiembros extends JInternalFrame {
     private javax.swing.JLabel direccionLabel;
     private javax.swing.JLabel direccionLabel1;
     private javax.persistence.EntityManager entityManager;
+    private javax.swing.JLabel idCategoriaLabel;
     private javax.swing.JTextField idField;
     private javax.swing.JLabel idLabel;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private java.util.List<com.lacreacion.mg.domain.TblMiembros> list;
+    private java.util.List<com.lacreacion.mg.domain.TblFormasDePago> listFormasDePago;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
@@ -724,6 +775,7 @@ public class FrameMiembros extends JInternalFrame {
     private javax.swing.JLabel nombreLabel;
     private com.lacreacion.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query query;
+    private javax.persistence.Query queryFormasDePago;
     private javax.swing.JButton refreshButton;
     private javax.swing.JTextField rucField;
     private com.lacreacion.mg.utils.RucTableCellRenderer rucTableCellRenderer1;
@@ -743,14 +795,16 @@ public class FrameMiembros extends JInternalFrame {
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameMiembros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameMiembrosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameMiembros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameMiembrosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameMiembros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameMiembrosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameMiembros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameMiembrosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -758,7 +812,7 @@ public class FrameMiembros extends JInternalFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new FrameMiembros());
+                frame.setContentPane(new FrameMiembrosAdmin());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

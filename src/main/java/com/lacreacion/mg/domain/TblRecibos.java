@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_RECIBOS")
@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblRecibos.findById", query = "SELECT t FROM TblRecibos t WHERE t.id = :id"),
     @NamedQuery(name = "TblRecibos.findByFechahora", query = "SELECT t FROM TblRecibos t WHERE t.fechahora = :fechahora"),
     @NamedQuery(name = "TblRecibos.findByConcepto", query = "SELECT t FROM TblRecibos t WHERE t.concepto = :concepto"),
-    @NamedQuery(name = "TblRecibos.findByMonto", query = "SELECT t FROM TblRecibos t WHERE t.monto = :monto")})
+    @NamedQuery(name = "TblRecibos.findByMonto", query = "SELECT t FROM TblRecibos t WHERE t.monto = :monto"),
+    @NamedQuery(name = "TblRecibos.findByPorcentajeAporte", query = "SELECT t FROM TblRecibos t WHERE t.porcentajeAporte = :porcentajeAporte")})
 public class TblRecibos implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,6 +52,9 @@ public class TblRecibos implements Serializable {
     @Basic(optional = false)
     @Column(name = "MONTO")
     private int monto;
+    @Basic(optional = false)
+    @Column(name = "PORCENTAJE_APORTE")
+    private int porcentajeAporte;
     @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEventos idEvento;
@@ -68,10 +72,11 @@ public class TblRecibos implements Serializable {
         this.id = id;
     }
 
-    public TblRecibos(Integer id, Date fechahora, int monto) {
+    public TblRecibos(Integer id, Date fechahora, int monto, int porcentajeAporte) {
         this.id = id;
         this.fechahora = fechahora;
         this.monto = monto;
+        this.porcentajeAporte = porcentajeAporte;
     }
 
     public Integer getId() {
@@ -104,6 +109,14 @@ public class TblRecibos implements Serializable {
 
     public void setMonto(int monto) {
         this.monto = monto;
+    }
+
+    public int getPorcentajeAporte() {
+        return porcentajeAporte;
+    }
+
+    public void setPorcentajeAporte(int porcentajeAporte) {
+        this.porcentajeAporte = porcentajeAporte;
     }
 
     public TblEventos getIdEvento() {

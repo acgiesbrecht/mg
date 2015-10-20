@@ -91,6 +91,7 @@ public class FrameEventosAdmin extends JInternalFrame {
         descripcionLabel5 = new javax.swing.JLabel();
         lblDonacion = new javax.swing.JLabel();
         lblAporte = new javax.swing.JLabel();
+        descripcionLabel6 = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
@@ -195,6 +196,9 @@ public class FrameEventosAdmin extends JInternalFrame {
 
         lblAporte.setText("100%");
 
+        descripcionLabel6.setForeground(new java.awt.Color(153, 153, 153));
+        descripcionLabel6.setText("Observacion: Cambios en la categoria tributaria solo tendrán efectivo en pagos realizados a partir de ese cambio.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -223,7 +227,7 @@ public class FrameEventosAdmin extends JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(lblDonacion)
                                 .addGap(18, 18, 18)
-                                .addComponent(sldCatTrib, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                                .addComponent(sldCatTrib, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(15, 15, 15)
                                 .addComponent(lblAporte)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -234,14 +238,18 @@ public class FrameEventosAdmin extends JInternalFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(descripcionLabel3)
-                            .addComponent(fechaLabel)
-                            .addComponent(descripcionLabel))
-                        .addGap(69, 69, 69)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jXDatePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
-                            .addComponent(cboEventoTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(descripcionField))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(descripcionLabel3)
+                                    .addComponent(fechaLabel)
+                                    .addComponent(descripcionLabel))
+                                .addGap(69, 69, 69)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jXDatePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+                                    .addComponent(cboEventoTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(descripcionField)))
+                            .addComponent(descripcionLabel6))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -251,7 +259,7 @@ public class FrameEventosAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fechaLabel)
@@ -270,22 +278,23 @@ public class FrameEventosAdmin extends JInternalFrame {
                     .addComponent(cboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(descripcionLabel2)
-                                .addComponent(descripcionLabel4)
-                                .addComponent(lblDonacion))
-                            .addComponent(sldCatTrib, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(saveButton)
-                            .addComponent(refreshButton)
-                            .addComponent(deleteButton)
-                            .addComponent(newButton)))
+                            .addComponent(descripcionLabel2)
+                            .addComponent(descripcionLabel4)
+                            .addComponent(lblDonacion))
+                        .addComponent(sldCatTrib, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(descripcionLabel5)
                         .addComponent(lblAporte)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(descripcionLabel6)
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(saveButton)
+                    .addComponent(refreshButton)
+                    .addComponent(deleteButton)
+                    .addComponent(newButton))
                 .addContainerGap())
         );
 
@@ -391,6 +400,7 @@ public class FrameEventosAdmin extends JInternalFrame {
     private javax.swing.JLabel descripcionLabel3;
     private javax.swing.JLabel descripcionLabel4;
     private javax.swing.JLabel descripcionLabel5;
+    private javax.swing.JLabel descripcionLabel6;
     private com.lacreacion.mg.utils.DonacionTableCellRenderer donacionTableCellRenderer1;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fechaLabel;

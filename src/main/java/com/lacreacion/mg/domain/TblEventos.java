@@ -41,6 +41,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblEventos.findByPorcentajeAporte", query = "SELECT t FROM TblEventos t WHERE t.porcentajeAporte = :porcentajeAporte")})
 public class TblEventos implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
+    private List<TblRecibos> tblRecibosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
+    private List<TblTransferencias> tblTransferenciasList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
     private List<TblEventoDetalle> tblEventoDetalleList;
     private static final long serialVersionUID = 1L;
     @Id
@@ -168,6 +172,24 @@ public class TblEventos implements Serializable {
 
     public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
         this.tblEventoDetalleList = tblEventoDetalleList;
+    }
+
+    @XmlTransient
+    public List<TblRecibos> getTblRecibosList() {
+        return tblRecibosList;
+    }
+
+    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
+        this.tblRecibosList = tblRecibosList;
+    }
+
+    @XmlTransient
+    public List<TblTransferencias> getTblTransferenciasList() {
+        return tblTransferenciasList;
+    }
+
+    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
+        this.tblTransferenciasList = tblTransferenciasList;
     }
 
 }

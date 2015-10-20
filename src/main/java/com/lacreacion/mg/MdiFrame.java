@@ -233,7 +233,7 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         mnuOpFacturacion.add(mnuOpFacturaUnica);
 
-        mnuOpFacturaPendientes.setText("Facturacion Pendientes");
+        mnuOpFacturaPendientes.setText("Facturacion Colectiva");
         mnuOpFacturaPendientes.setEnabled(false);
         mnuOpFacturaPendientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -409,7 +409,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuAdMiembrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdMiembrosActionPerformed
         try {
-            FrameMiembros frame = new FrameMiembros();
+            FrameMiembrosAdmin frame = new FrameMiembrosAdmin();
             frame.setVisible(true);
 
             desktop.add(frame);
@@ -694,7 +694,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuOpAportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpAportesActionPerformed
         try {
-            FrameAportesDetalle frame = new FrameAportesDetalle();
+            FrameAportesColectivos frame = new FrameAportesColectivos();
             frame.setVisible(true);
 
             desktop.add(frame);
@@ -708,7 +708,18 @@ public class MdiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuOpAportesActionPerformed
 
     private void mnuOpFacturaPendientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpFacturaPendientesActionPerformed
-        // TODO add your handling code here:
+        try {
+            FrameFacturacionColectiva frame = new FrameFacturacionColectiva();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_mnuOpFacturaPendientesActionPerformed
 
     private void mnuOpColectas1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpColectas1ActionPerformed

@@ -34,6 +34,9 @@
     <class>com.lacreacion.mg.domain.TblCategoriasArticulos</class>
     <class>com.lacreacion.mg.domain.TblEventoTipos</class>
     <class>com.lacreacion.mg.domain.TblTimbrados</class>
+    <class>com.lacreacion.mg.domain.TblFormasDePago</class>
+    <class>com.lacreacion.mg.domain.MiembrosConPagosPendientes</class>
+    <class>com.lacreacion.mg.domain.PagosRealizados</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/mgdb"/>
       <property name="javax.persistence.jdbc.user" value="mg"/>

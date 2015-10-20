@@ -50,6 +50,25 @@
         <Property name="text" type="java.lang.String" value="rucTableCellRenderer1"/>
       </Properties>
     </Component>
+    <Component class="javax.persistence.Query" name="queryFormasDePago">
+      <Properties>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblFormasDePago t"/>
+        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
+          <ComponentRef name="entityManager"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="java.util.List" name="listFormasDePago">
+      <Properties>
+        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
+          <ComponentRef name="queryFormasDePago"/>
+        </Property>
+        <Property name="observable" type="boolean" value="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.lacreacion.mg.domain.TblFormasDePago&gt;"/>
+      </AuxValues>
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -75,81 +94,96 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jButton3" min="-2" pref="221" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="ctacteLabel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="323" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="masterScrollPane" max="32767" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="direccionLabel1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="ctacteField1" min="-2" pref="58" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  </Group>
+                                  <Component id="direccionLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="direccionLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="ctacteField1" min="-2" pref="58" max="-2" attributes="0"/>
+                                  <Component id="direccionField" alignment="0" min="-2" pref="197" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="ctacteLabel3" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="139" max="-2" attributes="0"/>
+                              <Component id="rucField" min="-2" pref="104" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="ctacteLabel4" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtDV" min="-2" pref="28" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="168" max="-2" attributes="0"/>
+                              <Component id="ctacteField" min="-2" pref="58" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="ctacteLabel1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="masterScrollPane" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="direccionLabel" min="-2" max="-2" attributes="0"/>
                                           <Component id="ctacteLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="ctacteLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="idCategoriaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="nombreField" max="32767" attributes="0"/>
-                                          <Group type="102" attributes="0">
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Group type="102" attributes="0">
-                                                      <Component id="rucField" min="-2" pref="104" max="-2" attributes="0"/>
-                                                      <EmptySpace max="-2" attributes="0"/>
-                                                      <Component id="ctacteLabel4" min="-2" max="-2" attributes="0"/>
-                                                      <EmptySpace max="-2" attributes="0"/>
-                                                      <Component id="txtDV" min="-2" pref="28" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <Component id="txtAporteBase1" min="-2" pref="123" max="-2" attributes="0"/>
-                                                  <Group type="102" alignment="0" attributes="0">
-                                                      <Component id="ctacteField" min="-2" pref="58" max="-2" attributes="0"/>
-                                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                      <Component id="ctacteLabel1" min="-2" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <Component id="idField" alignment="0" min="-2" pref="83" max="-2" attributes="0"/>
-                                                  <Component id="direccionField" alignment="0" min="-2" pref="197" max="-2" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                          <Component id="txtAporteBase1" min="-2" pref="123" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="cboFormaDePago" min="-2" pref="197" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="179" max="-2" attributes="0"/>
+                                              <Component id="newButton" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="deleteButton" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="refreshButton" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="saveButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
-                              </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="newButton" linkSize="1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="deleteButton" linkSize="1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="refreshButton" linkSize="1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="saveButton" linkSize="1" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="nombreLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="ctacteLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="idLabel" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="ctacteLabel5" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="txtAporteBase" min="-2" pref="123" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+                                      <Component id="idLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="143" max="-2" attributes="0"/>
+                                      <Component id="idField" min="-2" pref="83" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="15" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="nombreLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="118" max="-2" attributes="0"/>
+                              <Component id="nombreField" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="377" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jButton3" min="-2" pref="221" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="ctacteLabel2" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="ctacteLabel5" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="txtAporteBase" min="-2" pref="123" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -159,16 +193,13 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="215" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="idField" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="3" pref="3" max="-2" attributes="0"/>
-                      <Component id="idLabel" min="-2" pref="12" max="-2" attributes="0"/>
-                  </Group>
+              <Component id="masterScrollPane" pref="171" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="idLabel" alignment="3" min="-2" pref="12" max="-2" attributes="0"/>
+                  <Component id="idField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="nombreLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="nombreField" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -179,47 +210,43 @@
                   <Component id="ctacteField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="ctacteLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="ctacteLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="rucField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtDV" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="ctacteLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ctacteLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="direccionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="direccionField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="direccionLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ctacteField1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="txtAporteBase1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="ctacteLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="direccionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="direccionField" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="direccionLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="ctacteField1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                  </Group>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="cboFormaDePago" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="idCategoriaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="ctacteLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="ctacteLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -282,6 +309,11 @@
                     <ComponentRef name="numberCellRenderer1"/>
                   </Renderer>
                 </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
               </TableColumnModel>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
@@ -318,6 +350,10 @@
               <Subbinding sourcePath="${aporteMensual}">
                 <BindingParameter name="NAME" value="Aporte Menusal"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${idFormaDePagoPreferida}">
+                <BindingParameter name="NAME" value="Form de Pago pref."/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.lacreacion.mg.domain.TblFormasDePago.class"/>
               </Subbinding>
             </BindingProperty>
           </BindingProperties>
@@ -548,6 +584,28 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Aporte Base:"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="idCategoriaLabel">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="12" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Forma de Pago preferida:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cboFormaDePago">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="12" style="0"/>
+        </Property>
+      </Properties>
+      <BindingProperties>
+        <BindingProperty name="elements" source="listFormasDePago" target="cboFormaDePago" targetPath="elements" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idFormaDePagoPreferida}" target="cboFormaDePago" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboFormaDePagoActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

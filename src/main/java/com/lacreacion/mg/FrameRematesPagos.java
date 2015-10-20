@@ -533,14 +533,14 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 queryMiembros = entityManager.createNativeQuery("SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.box FROM "
                         + "	(SELECT m.*, SUM(rd.monto) AS monto FROM TBL_MIEMBROS m "
                         + "	LEFT JOIN TBL_EVENTO_DETALLE rd ON m.id = rd.id_miembro "
-                        + "	group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user) remates, "
+                        + "	group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) remates, "
                         + "     (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_MIEMBROS m "
                         + "	LEFT JOIN TBL_TRANSFERENCIAS p ON m.id = p.id_miembro "
-                        + "	group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user) transferencias, "
+                        + "	group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) transferencias, "
                         + "     (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_MIEMBROS m "
                         + "	LEFT JOIN TBL_RECIBOS p ON m.id = p.id_miembro "
-                        + "	group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user) recibos "
-                        + "WHERE (remates.id = transferencias.id OR remates.id = recibos.id) AND (remates.monto - transferencias.monto - recibos.monto) > 0 "
+                        + "	group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) recibos "
+                        + "WHERE remates.id = transferencias.id AND remates.id = recibos.id AND (remates.monto - transferencias.monto - recibos.monto) > 0 "
                         + "ORDER BY remates.nombre", TblMiembros.class);
 
                 listMiembros.clear();
@@ -718,6 +718,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                     transferencia.setIdMiembro(selectedMiembro);
                     transferencia.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
                     transferencia.setMonto(cuota.getMonto());
+                    transferencia.setPorcentajeAporte(((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte());
                     transferencia.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
                     transferencia.setCobrado(false);
                     transferencia.setIdUser(currentUser.getUser());
@@ -756,6 +757,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 recibo.setIdMiembro(selectedMiembro);
                 recibo.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
                 recibo.setMonto(reciboMonto);
+                recibo.setPorcentajeAporte(((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte());
                 recibo.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
                 recibo.setIdUser(currentUser.getUser());
                 entityManager.getTransaction().begin();

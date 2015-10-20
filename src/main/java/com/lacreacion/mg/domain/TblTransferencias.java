@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_TRANSFERENCIAS")
@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblTransferencias.findByFechahora", query = "SELECT t FROM TblTransferencias t WHERE t.fechahora = :fechahora"),
     @NamedQuery(name = "TblTransferencias.findByConcepto", query = "SELECT t FROM TblTransferencias t WHERE t.concepto = :concepto"),
     @NamedQuery(name = "TblTransferencias.findByMonto", query = "SELECT t FROM TblTransferencias t WHERE t.monto = :monto"),
+    @NamedQuery(name = "TblTransferencias.findByPorcentajeAporte", query = "SELECT t FROM TblTransferencias t WHERE t.porcentajeAporte = :porcentajeAporte"),
     @NamedQuery(name = "TblTransferencias.findByCobrado", query = "SELECT t FROM TblTransferencias t WHERE t.cobrado = :cobrado")})
 public class TblTransferencias implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -52,6 +53,9 @@ public class TblTransferencias implements Serializable {
     @Basic(optional = false)
     @Column(name = "MONTO")
     private int monto;
+    @Basic(optional = false)
+    @Column(name = "PORCENTAJE_APORTE")
+    private int porcentajeAporte;
     @Column(name = "COBRADO")
     private Boolean cobrado;
     @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID")
@@ -71,10 +75,11 @@ public class TblTransferencias implements Serializable {
         this.id = id;
     }
 
-    public TblTransferencias(Integer id, Date fechahora, int monto) {
+    public TblTransferencias(Integer id, Date fechahora, int monto, int porcentajeAporte) {
         this.id = id;
         this.fechahora = fechahora;
         this.monto = monto;
+        this.porcentajeAporte = porcentajeAporte;
     }
 
     public Integer getId() {
@@ -107,6 +112,14 @@ public class TblTransferencias implements Serializable {
 
     public void setMonto(int monto) {
         this.monto = monto;
+    }
+
+    public int getPorcentajeAporte() {
+        return porcentajeAporte;
+    }
+
+    public void setPorcentajeAporte(int porcentajeAporte) {
+        this.porcentajeAporte = porcentajeAporte;
     }
 
     public Boolean getCobrado() {

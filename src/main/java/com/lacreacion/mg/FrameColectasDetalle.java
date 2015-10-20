@@ -589,7 +589,6 @@ public class FrameColectasDetalle extends JInternalFrame {
             t.setIdCategoriaArticulo(tblCategoriasArticulosList.get(tblCategoriasArticulosList.size() - 1));
             t.setIdEvento((TblEventos) cboFechaColecta.getSelectedItem());
             t.setIdUser(currentUser.getUser());
-
             listEventosDetalle.add(t);
             int row = listEventosDetalle.size() - 1;
             masterTable.setRowSelectionInterval(row, row);

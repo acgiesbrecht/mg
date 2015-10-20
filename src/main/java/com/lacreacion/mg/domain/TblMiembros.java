@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author adriang
  */
 @Entity
-@Table(name = "TBL_MIEMBROS", catalog = "", schema = "MG")
+@Table(name = "TBL_MIEMBROS")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblMiembros.findAll", query = "SELECT t FROM TblMiembros t"),
@@ -41,10 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblMiembros.findByAporteMensual", query = "SELECT t FROM TblMiembros t WHERE t.aporteMensual = :aporteMensual")})
 public class TblMiembros implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
-    private List<TblEventoDetalle> tblEventoDetalleList;
+    private List<TblRecibos> tblRecibosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
-    private List<TblFacturas> tblFacturasList;
-
+    private List<TblTransferencias> tblTransferenciasList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,6 +64,9 @@ public class TblMiembros implements Serializable {
     @Basic(optional = false)
     @Column(name = "APORTE_MENSUAL")
     private int aporteMensual;
+    @JoinColumn(name = "ID_FORMA_DE_PAGO_PREFERIDA", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblFormasDePago idFormaDePagoPreferida;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne
     private TblUsers idUser;
@@ -138,6 +140,14 @@ public class TblMiembros implements Serializable {
         this.aporteMensual = aporteMensual;
     }
 
+    public TblFormasDePago getIdFormaDePagoPreferida() {
+        return idFormaDePagoPreferida;
+    }
+
+    public void setIdFormaDePagoPreferida(TblFormasDePago idFormaDePagoPreferida) {
+        this.idFormaDePagoPreferida = idFormaDePagoPreferida;
+    }
+
     public TblUsers getIdUser() {
         return idUser;
     }
@@ -168,25 +178,25 @@ public class TblMiembros implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "com.lacreacion.mg.domain.TblMiembros[ id=" + id + " ]";
     }
 
     @XmlTransient
-    public List<TblFacturas> getTblFacturasList() {
-        return tblFacturasList;
+    public List<TblRecibos> getTblRecibosList() {
+        return tblRecibosList;
     }
 
-    public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
-        this.tblFacturasList = tblFacturasList;
+    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
+        this.tblRecibosList = tblRecibosList;
     }
 
     @XmlTransient
-    public List<TblEventoDetalle> getTblEventoDetalleList() {
-        return tblEventoDetalleList;
+    public List<TblTransferencias> getTblTransferenciasList() {
+        return tblTransferenciasList;
     }
 
-    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
-        this.tblEventoDetalleList = tblEventoDetalleList;
+    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
+        this.tblTransferenciasList = tblTransferenciasList;
     }
 
 }
