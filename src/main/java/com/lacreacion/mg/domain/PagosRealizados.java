@@ -46,6 +46,10 @@ public class PagosRealizados implements Serializable {
     private Integer rAporte;
     @Column(name = "R_DONACION")
     private Integer rDonacion;
+    @Column(name = "F_APORTE")
+    private Integer fAporte;
+    @Column(name = "F_DONACION")
+    private Integer fDonacion;
 
     public PagosRealizados() {
     }
@@ -88,6 +92,34 @@ public class PagosRealizados implements Serializable {
 
     public void setRDonacion(Integer rDonacion) {
         this.rDonacion = rDonacion;
+    }
+
+    /**
+     * @return the fAporte
+     */
+    public Integer getFAporte() {
+        return fAporte;
+    }
+
+    /**
+     * @param fAporte the fAporte to set
+     */
+    public void setFAporte(Integer fAporte) {
+        this.fAporte = fAporte;
+    }
+
+    /**
+     * @return the fDonacion
+     */
+    public Integer getFDonacion() {
+        return fDonacion;
+    }
+
+    /**
+     * @param fDonacion the fDonacion to set
+     */
+    public void setFDonacion(Integer fDonacion) {
+        this.fDonacion = fDonacion;
     }
 
 }

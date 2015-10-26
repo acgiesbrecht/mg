@@ -5,6 +5,7 @@
  */
 package com.lacreacion.mg;
 
+import com.lacreacion.mg.domain.PagosRealizados;
 import com.lacreacion.mg.domain.TblFacturas;
 import com.lacreacion.mg.domain.TblMiembros;
 import com.lacreacion.mg.utils.CurrentUser;
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.persistence.Persistence;
 import javax.swing.JFrame;
@@ -280,15 +282,38 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             cal.set(Calendar.DAY_OF_YEAR, 1);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String fecha = sdf.format(cal.getTime()) + " 00:00:00";
-            for (TblMiembros m : listMiembros) {
 
-                int transferencias_aporte = (int) entityManager.createNativeQuery("SELECT COALESCE(SUM(monto*porcentaje_aporte/100),0) FROM tbl_transferencias WHERE fechahora >= '" + fecha + "' AND cobrado = true AND id_miembro = " + m.getId().toString()).getSingleResult();
-                int transferencias_donacion = (int) entityManager.createNativeQuery("SELECT COALESCE(SUM(monto*(100-porcentaje_aporte)/100),0) FROM tbl_transferencias WHERE fechahora >= '" + fecha + "' AND cobrado = true AND id_miembro = " + m.getId().toString()).getSingleResult();
-                int recibos_aporte = (int) entityManager.createNativeQuery("SELECT COALESCE(SUM(monto*porcentaje_aporte/100),0) FROM tbl_recibos WHERE fechahora >= '" + fecha + "' AND id_miembro = " + m.getId().toString()).getSingleResult();
-                int recibos_donacion = (int) entityManager.createNativeQuery("SELECT COALESCE(SUM(monto*(100-porcentaje_aporte)/100),0) FROM tbl_recibos WHERE fechahora >= '" + fecha + "' AND id_miembro = " + m.getId().toString()).getSingleResult();
-                int facturado_aporte = (int) entityManager.createNativeQuery("SELECT COALESCE(SUM(importe_aporte),0) FROM tbl_facturas WHERE fechahora >= '" + fecha + "' AND id_miembro = " + m.getId().toString()).getSingleResult();
-                int facturado_donacion = (int) entityManager.createNativeQuery("SELECT COALESCE(SUM(importe_donacion),0) FROM tbl_facturas WHERE fechahora >= '" + fecha + "' AND id_miembro = " + m.getId().toString()).getSingleResult();
-                if ((recibos_donacion + transferencias_donacion - facturado_donacion) > 0 || (recibos_aporte + transferencias_aporte - facturado_aporte) > 0) {
+            String ano = String.valueOf(cal.get(Calendar.YEAR));
+            List<PagosRealizados> pagosRealizados = entityManager.createNativeQuery("SELECT m.id, "
+                    + " COALESCE(transferencias.t_aporte,0), "
+                    + " COALESCE(transferencias.t_donacion,0), COALESCE(recibos.r_aporte,0), COALESCE(recibos.r_donacion,0), COALESCE(facturas.f_aporte,0), COALESCE(facturas.f_donacion,0)"
+                    + " FROM TBL_MIEMBROS m"
+                    + " LEFT JOIN (SELECT m.id, COALESCE(SUM(t.monto*t.porcentaje_aporte/100),0) AS t_aporte,"
+                    + "	COALESCE(SUM(t.monto*(100-t.porcentaje_aporte)/100),0) AS t_donacion"
+                    + "	FROM TBL_MIEMBROS m"
+                    + "	LEFT JOIN TBL_TRANSFERENCIAS t ON m.id = t.id_miembro "
+                    + "	WHERE YEAR(t.fechahora) >= " + ano
+                    + "	GROUP BY m.id"
+                    + "	) transferencias ON m.id = transferencias.id"
+                    + " LEFT JOIN (SELECT m.id, COALESCE(SUM(r.monto*r.porcentaje_aporte/100),0) AS r_aporte,"
+                    + "	COALESCE(SUM(r.monto*(100-r.porcentaje_aporte)/100),0) AS r_donacion "
+                    + "	FROM TBL_MIEMBROS m"
+                    + "	LEFT JOIN TBL_RECIBOS r ON m.id = r.id_miembro "
+                    + "	WHERE YEAR(r.fechahora) >= " + ano
+                    + "	GROUP BY m.id"
+                    + "	) recibos ON m.id = recibos.id"
+                    + " LEFT JOIN (SELECT m.id, COALESCE(SUM(f.importe_aporte),0) AS f_aporte, 		"
+                    + "	COALESCE(SUM(f.importe_donacion),0) AS f_donacion 		"
+                    + "	FROM TBL_MIEMBROS m"
+                    + "	LEFT JOIN TBL_FACTURAS f ON m.id = f.id_miembro "
+                    + "	WHERE YEAR(f.fechahora) >= " + ano
+                    + "	GROUP BY m.id"
+                    + "	) facturas ON m.id = facturas.id", PagosRealizados.class).getResultList();
+            TblMiembros m;
+            for (PagosRealizados pr : pagosRealizados) {
+
+                m = entityManager.find(TblMiembros.class, pr.getId());
+                if ((pr.getRDonacion() + pr.getTDonacion() - pr.getFDonacion()) > 0 || (pr.getRAporte() + pr.getTAporte() - pr.getFAporte()) > 0) {
                     TblFacturas f = new TblFacturas();
                     entityManager.persist(f);
                     f.setNro(siguienteFacturaNro);
@@ -298,8 +323,8 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     f.setRazonSocial(m.getNombre());
                     f.setRuc(m.getRuc());
                     f.setAnulado(false);
-                    f.setImporteAporte(recibos_aporte + transferencias_aporte);
-                    f.setImporteDonacion(recibos_donacion + transferencias_donacion);
+                    f.setImporteAporte(pr.getRAporte() + pr.getTAporte() - pr.getFAporte());
+                    f.setImporteDonacion(pr.getRDonacion() + pr.getTDonacion() - pr.getFDonacion());
                     f.setIdUser(currentUser.getUser());
                     list.add(f);
                     int row = list.size() - 1;
