@@ -5,9 +5,21 @@
  */
 package com.lacreacion.mg;
 
+import com.lacreacion.mg.utils.Varios;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
@@ -48,6 +60,7 @@ public class FrameConfig extends javax.swing.JInternalFrame {
         cmdDatadir = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         cboModoImpresion = new javax.swing.JComboBox();
+        cmdReset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -140,6 +153,14 @@ public class FrameConfig extends javax.swing.JInternalFrame {
 
         cboModoImpresion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Normal", "Triplicado" }));
 
+        cmdReset.setBackground(new java.awt.Color(255, 102, 102));
+        cmdReset.setText("Resetear toda la base de datos. OJO: Esto borrará todos los datos existentes!!!");
+        cmdReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdResetActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -167,7 +188,8 @@ public class FrameConfig extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(cboModoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(cboModoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmdReset, javax.swing.GroupLayout.PREFERRED_SIZE, 612, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -187,7 +209,9 @@ public class FrameConfig extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cboModoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 245, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
+                .addComponent(cmdReset, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 183, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -247,6 +271,38 @@ public class FrameConfig extends javax.swing.JInternalFrame {
         panelDatadir.setVisible(rbServidor.isSelected());
     }//GEN-LAST:event_rbRemotoActionPerformed
 
+    private void cmdResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdResetActionPerformed
+        try {
+
+            int reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar todos los datos y limpiar la base de datos?", title, JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+                Map<String, String> persistenceMap = Varios.getDatabaseIP();
+
+                Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
+
+                List<String> sql = Arrays.asList(IOUtils.toString(getClass().getResourceAsStream("/sql/javadb.sql")).split(";"));
+
+                Statement stmt = conn.createStatement();
+                sql.stream().forEach(s -> {
+                    try {
+                        stmt.executeUpdate(s);
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+                    }
+                });
+
+                JOptionPane.showMessageDialog(null, "Base de Datos restablecida!");
+
+                stmt.close();
+                conn.close();
+
+            }
+        } catch (SQLException | IOException ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            Logger.getLogger(FrameConfig.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_cmdResetActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -291,6 +347,7 @@ public class FrameConfig extends javax.swing.JInternalFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox cboModoImpresion;
     private javax.swing.JButton cmdDatadir;
+    private javax.swing.JButton cmdReset;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;

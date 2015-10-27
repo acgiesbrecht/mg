@@ -15,7 +15,6 @@ import java.beans.Beans;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -55,7 +54,10 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
             }
-            list.clear();
+            generate();
+            if (masterTable.getRowCount() > 0) {
+                imprimirButton.setEnabled(true);
+            }
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -85,7 +87,6 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         facturaNroTableCellRenderer1 = new com.lacreacion.mg.utils.FacturaNroTableCellRenderer();
         cancelarButton = new javax.swing.JButton();
         imprimirButton = new javax.swing.JButton();
-        generarButton = new javax.swing.JButton();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
 
@@ -93,6 +94,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
         rucTableCellRenderer1.setText("rucTableCellRenderer1");
 
+        numberCellRenderer1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         numberCellRenderer1.setText("numberCellRenderer1");
 
         facturaNroTableCellRenderer1.setText("facturaNroTableCellRenderer1");
@@ -101,14 +103,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         cancelarButton.addActionListener(formListener);
 
         imprimirButton.setText("Guardar & Imprimir");
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${rowCount}>0"), imprimirButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
         imprimirButton.addActionListener(formListener);
-
-        generarButton.setText("Generar Facturas Pendientes");
-        generarButton.addActionListener(formListener);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nro}"));
@@ -156,16 +151,10 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 540, Short.MAX_VALUE)
-                        .addComponent(imprimirButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cancelarButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(generarButton)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(552, Short.MAX_VALUE)
+                .addComponent(imprimirButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cancelarButton)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -179,18 +168,16 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(generarButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
+                .addContainerGap(329, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(imprimirButton))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(48, 48, 48)
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(52, Short.MAX_VALUE)))
+                    .addContainerGap()
+                    .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(56, Short.MAX_VALUE)))
         );
 
         bindingGroup.bind();
@@ -206,9 +193,6 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             }
             else if (evt.getSource() == imprimirButton) {
                 FrameFacturacionColectiva.this.imprimirButtonActionPerformed(evt);
-            }
-            else if (evt.getSource() == generarButton) {
-                FrameFacturacionColectiva.this.generarButtonActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -266,7 +250,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         }
     }//GEN-LAST:event_cancelarButtonActionPerformed
 
-    private void generarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarButtonActionPerformed
+    private void generate() {
         try {
             list.clear();
             list.addAll(query.getResultList());
@@ -279,35 +263,35 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
             list.clear();
             Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.DAY_OF_YEAR, 1);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String fecha = sdf.format(cal.getTime()) + " 00:00:00";
-
             String ano = String.valueOf(cal.get(Calendar.YEAR));
-            List<PagosRealizados> pagosRealizados = entityManager.createNativeQuery("SELECT m.id, "
-                    + " COALESCE(transferencias.t_aporte,0), "
-                    + " COALESCE(transferencias.t_donacion,0), COALESCE(recibos.r_aporte,0), COALESCE(recibos.r_donacion,0), COALESCE(facturas.f_aporte,0), COALESCE(facturas.f_donacion,0)"
+            List<PagosRealizados> pagosRealizados = entityManager.createNativeQuery("SELECT m.id AS ID, "
+                    + " COALESCE(transferencias.t_aporte,0) AS T_APORTE, "
+                    + " COALESCE(transferencias.t_donacion,0) AS T_DONACION, "
+                    + " COALESCE(recibos.r_aporte,0) AS R_APORTE,"
+                    + " COALESCE(recibos.r_donacion,0) AS R_DONACION,"
+                    + " COALESCE(facturas.f_aporte,0) AS F_APORTE,"
+                    + " COALESCE(facturas.f_donacion,0) AS F_DONACION"
                     + " FROM TBL_MIEMBROS m"
-                    + " LEFT JOIN (SELECT m.id, COALESCE(SUM(t.monto*t.porcentaje_aporte/100),0) AS t_aporte,"
-                    + "	COALESCE(SUM(t.monto*(100-t.porcentaje_aporte)/100),0) AS t_donacion"
-                    + "	FROM TBL_MIEMBROS m"
-                    + "	LEFT JOIN TBL_TRANSFERENCIAS t ON m.id = t.id_miembro "
-                    + "	WHERE YEAR(t.fechahora) >= " + ano
-                    + "	GROUP BY m.id"
+                    + "     LEFT JOIN (SELECT m.id, COALESCE(SUM(t.monto*t.porcentaje_aporte/100),0) AS t_aporte,"
+                    + "     COALESCE(SUM(t.monto*(100-t.porcentaje_aporte)/100),0) AS t_donacion"
+                    + "     FROM TBL_MIEMBROS m"
+                    + "     LEFT JOIN TBL_TRANSFERENCIAS t ON m.id = t.id_miembro "
+                    + "     WHERE YEAR(t.fechahora) >= " + ano
+                    + "     GROUP BY m.id"
                     + "	) transferencias ON m.id = transferencias.id"
-                    + " LEFT JOIN (SELECT m.id, COALESCE(SUM(r.monto*r.porcentaje_aporte/100),0) AS r_aporte,"
-                    + "	COALESCE(SUM(r.monto*(100-r.porcentaje_aporte)/100),0) AS r_donacion "
-                    + "	FROM TBL_MIEMBROS m"
-                    + "	LEFT JOIN TBL_RECIBOS r ON m.id = r.id_miembro "
-                    + "	WHERE YEAR(r.fechahora) >= " + ano
-                    + "	GROUP BY m.id"
+                    + "     LEFT JOIN (SELECT m.id, COALESCE(SUM(r.monto*r.porcentaje_aporte/100),0) AS r_aporte,"
+                    + "     COALESCE(SUM(r.monto*(100-r.porcentaje_aporte)/100),0) AS r_donacion "
+                    + "     FROM TBL_MIEMBROS m"
+                    + "     LEFT JOIN TBL_RECIBOS r ON m.id = r.id_miembro "
+                    + "     WHERE YEAR(r.fechahora) >= " + ano
+                    + "     GROUP BY m.id"
                     + "	) recibos ON m.id = recibos.id"
-                    + " LEFT JOIN (SELECT m.id, COALESCE(SUM(f.importe_aporte),0) AS f_aporte, 		"
-                    + "	COALESCE(SUM(f.importe_donacion),0) AS f_donacion 		"
-                    + "	FROM TBL_MIEMBROS m"
-                    + "	LEFT JOIN TBL_FACTURAS f ON m.id = f.id_miembro "
-                    + "	WHERE YEAR(f.fechahora) >= " + ano
-                    + "	GROUP BY m.id"
+                    + "     LEFT JOIN (SELECT m.id, COALESCE(SUM(f.importe_aporte),0) AS f_aporte, 		"
+                    + "     COALESCE(SUM(f.importe_donacion),0) AS f_donacion 		"
+                    + "     FROM TBL_MIEMBROS m"
+                    + "     LEFT JOIN TBL_FACTURAS f ON m.id = f.id_miembro "
+                    + "     WHERE YEAR(f.fechahora) >= " + ano
+                    + "     GROUP BY m.id"
                     + "	) facturas ON m.id = facturas.id", PagosRealizados.class).getResultList();
             TblMiembros m;
             for (PagosRealizados pr : pagosRealizados) {
@@ -321,7 +305,11 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     f.setFechahora(new Date());
                     f.setIdMiembro(m);
                     f.setRazonSocial(m.getNombre());
-                    f.setRuc(m.getRuc());
+                    if (m.getRuc() != null) {
+                        f.setRuc(m.getRuc());
+                    } else {
+                        f.setRuc(999999);
+                    }
                     f.setAnulado(false);
                     f.setImporteAporte(pr.getRAporte() + pr.getTAporte() - pr.getFAporte());
                     f.setImporteDonacion(pr.getRDonacion() + pr.getTDonacion() - pr.getFDonacion());
@@ -337,13 +325,12 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
-    }//GEN-LAST:event_generarButtonActionPerformed
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelarButton;
     private javax.persistence.EntityManager entityManager;
     private com.lacreacion.mg.utils.FacturaNroTableCellRenderer facturaNroTableCellRenderer1;
-    private javax.swing.JButton generarButton;
     private javax.swing.JButton imprimirButton;
     private java.util.List<com.lacreacion.mg.domain.TblFacturas> list;
     private java.util.List<TblMiembros> listMiembros;

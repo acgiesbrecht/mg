@@ -72,6 +72,8 @@ public class FrameFacturasAdmin extends JInternalFrame {
         listEventoTipos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoTipos.getResultList());
         donacionTableCellRenderer1 = new com.lacreacion.mg.utils.DonacionTableCellRenderer();
         rucTableCellRenderer1 = new com.lacreacion.mg.utils.RucTableCellRenderer();
+        facturaNroTableCellRenderer1 = new com.lacreacion.mg.utils.FacturaNroTableCellRenderer();
+        numberCellRenderer1 = new com.lacreacion.mg.utils.NumberCellRenderer();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         anularButton = new javax.swing.JButton();
@@ -86,6 +88,11 @@ public class FrameFacturasAdmin extends JInternalFrame {
         donacionTableCellRenderer1.setText("donacionTableCellRenderer1");
 
         rucTableCellRenderer1.setText("rucTableCellRenderer1");
+
+        facturaNroTableCellRenderer1.setText("facturaNroTableCellRenderer1");
+
+        numberCellRenderer1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        numberCellRenderer1.setText("numberCellRenderer1");
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nro}"));
@@ -107,8 +114,15 @@ public class FrameFacturasAdmin extends JInternalFrame {
         columnBinding.setColumnName("RUC");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
-        columnBinding.setColumnName("Importe");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${importeAporte}"));
+        columnBinding.setColumnName("Importe Aporte");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${importeDonacion}"));
+        columnBinding.setColumnName("Importe Donacion");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${importeTotal}"));
+        columnBinding.setColumnName("Importe Total");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idMiembro}"));
@@ -123,10 +137,14 @@ public class FrameFacturasAdmin extends JInternalFrame {
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
+            masterTable.getColumnModel().getColumn(0).setCellRenderer(facturaNroTableCellRenderer1);
             masterTable.getColumnModel().getColumn(2).setResizable(false);
             masterTable.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer1);
             masterTable.getColumnModel().getColumn(4).setResizable(false);
             masterTable.getColumnModel().getColumn(4).setCellRenderer(rucTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(5).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(7).setCellRenderer(numberCellRenderer1);
         }
 
         anularButton.setText("Anular");
@@ -260,12 +278,14 @@ public class FrameFacturasAdmin extends JInternalFrame {
     private com.lacreacion.mg.utils.DateToStringConverter dateToStringConverter1;
     private com.lacreacion.mg.utils.DonacionTableCellRenderer donacionTableCellRenderer1;
     private javax.persistence.EntityManager entityManager;
+    private com.lacreacion.mg.utils.FacturaNroTableCellRenderer facturaNroTableCellRenderer1;
     private javax.swing.JButton imprimirButton;
     private java.util.List<com.lacreacion.mg.domain.TblFacturas> list;
     private java.util.List<com.lacreacion.mg.domain.TblEventoTipos> listEventoTipos;
     private java.util.List<com.lacreacion.mg.domain.TblGrupos> listGrupos;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
+    private com.lacreacion.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query query;
     private javax.persistence.Query queryEventoTipos;
     private javax.persistence.Query queryGrupos;

@@ -1,5 +1,6 @@
 DROP VIEW MG.RECIBO;
 DROP VIEW MG.TRANSFERENCIA;
+DROP VIEW MG.MIEMBROS_CON_PAGOS_PENDIENTES;
 DROP TABLE MG.TBL_RECIBOS;
 DROP TABLE MG.TBL_TRANSFERENCIAS;
 DROP TABLE MG.TBL_EVENTO_DETALLE;
@@ -315,25 +316,6 @@ SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.bo
     WHERE remates.id = transferencias.id AND remates.id = recibos.id AND (remates.monto - transferencias.monto - recibos.monto) > 0
     ORDER BY remates.nombre;
 
-CREATE VIEW PAGOS_REALIZADOS AS
-SELECT TBL_MIEMBROS.id, transferencias.t_aporte, transferencias.t_donacion, recibos.r_aporte, recibos.r_donacion, facturas.f_aporte, facturas.f_donacion FROM
-    (SELECT m.id, COALESCE(SUM(p.monto*p.porcentaje_aporte/100),0) AS t_aporte,
-            COALESCE(SUM(p.monto*(100-p.porcentaje_aporte)/100),0) AS t_donacion
-            FROM TBL_MIEMBROS m
-            LEFT JOIN TBL_TRANSFERENCIAS p ON m.id = p.id_miembro
-            group by m.id) transferencias,
-    (SELECT m.id, COALESCE(SUM(p.monto*p.porcentaje_aporte/100),0) AS r_aporte,
-            COALESCE(SUM(p.monto*(100-p.porcentaje_aporte)/100),0) AS r_donacion
-            FROM TBL_MIEMBROS m
-            LEFT JOIN TBL_RECIBOS p ON m.id = p.id_miembro
-            group by m.id) recibos,
-     (SELECT m.id, COALESCE(SUM(p.importe_aporte),0) AS f_aporte,
-     		COALESCE(SUM(p.importe_donacion),0) AS f_donacion
-     		FROM TBL_MIEMBROS m
-            LEFT JOIN TBL_FACTURAS p ON m.id = p.id_miembro
-            group by m.id) facturas,
-      TBL_MIEMBROS
-    WHERE TBL_MIEMBROS.id = facturas.id AND TBL_MIEMBROS.id = transferencias.id AND TBL_MIEMBROS.id = recibos.id;
 
 INSERT INTO MG.TBL_FORMAS_DE_PAGO (ID, DESCRIPCION) VALUES (1, 'Transferencia');
 INSERT INTO MG.TBL_FORMAS_DE_PAGO (ID, DESCRIPCION) VALUES (2, 'Efectivo');

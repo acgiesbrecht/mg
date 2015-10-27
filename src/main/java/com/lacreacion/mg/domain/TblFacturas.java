@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblFacturas.findByImporteAporte", query = "SELECT t FROM TblFacturas t WHERE t.importeAporte = :importeAporte"),
     @NamedQuery(name = "TblFacturas.findByAnulado", query = "SELECT t FROM TblFacturas t WHERE t.anulado = :anulado")})
 public class TblFacturas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -173,6 +174,10 @@ public class TblFacturas implements Serializable {
         int hash = 0;
         hash += (nro != null ? nro.hashCode() : 0);
         return hash;
+    }
+
+    public Integer getImporteTotal() {
+        return importeAporte + importeDonacion;
     }
 
     @Override

@@ -69,7 +69,7 @@ public class FrameAportesColectivos extends JInternalFrame {
 
             //AutoCompleteDecorator.decorate(cboFechaRemate);
             //AutoCompleteDecorator.decorate(cboCategoria);
-            AutoCompleteSupport support = AutoCompleteSupport.install(cboFechaColecta, GlazedLists.eventListOf(listEventos.toArray()));
+            AutoCompleteSupport support = AutoCompleteSupport.install(cboFechaAporte, GlazedLists.eventListOf(listEventos.toArray()));
             support.setFilterMode(TextMatcherEditor.CONTAINS);
 
             eventListMiembros.clear();
@@ -83,9 +83,9 @@ public class FrameAportesColectivos extends JInternalFrame {
             Optional<TblEventos> value = listEventos.stream().filter(a -> a.getFecha().equals(today))
                     .findFirst();
             if (value.isPresent()) {
-                cboFechaColecta.setSelectedItem(value.get());
+                cboFechaAporte.setSelectedItem(value.get());
             } else {
-                cboFechaColecta.setSelectedIndex(-1);
+                cboFechaAporte.setSelectedIndex(-1);
             }
 
             KeyboardFocusManager.getCurrentKeyboardFocusManager()
@@ -156,7 +156,7 @@ public class FrameAportesColectivos extends JInternalFrame {
         lblTotalOperaciones = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        cboFechaColecta = new javax.swing.JComboBox();
+        cboFechaAporte = new javax.swing.JComboBox();
         montoField = new javax.swing.JFormattedTextField();
         jButton2 = new javax.swing.JButton();
         montoLabel1 = new javax.swing.JLabel();
@@ -297,10 +297,10 @@ public class FrameAportesColectivos extends JInternalFrame {
 
         jLabel2.setText("Fecha de Aporte:");
 
-        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventos, cboFechaColecta);
+        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventos, cboFechaAporte);
         bindingGroup.addBinding(jComboBoxBinding);
 
-        cboFechaColecta.addActionListener(formListener);
+        cboFechaAporte.addActionListener(formListener);
 
         montoField.setColumns(9);
         montoField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
@@ -362,7 +362,7 @@ public class FrameAportesColectivos extends JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cboFechaColecta, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cboFechaAporte, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(cmdGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
@@ -396,7 +396,7 @@ public class FrameAportesColectivos extends JInternalFrame {
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(cboFechaColecta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboFechaAporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmdGenerar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -460,8 +460,8 @@ public class FrameAportesColectivos extends JInternalFrame {
             else if (evt.getSource() == cboMiembro) {
                 FrameAportesColectivos.this.cboMiembroActionPerformed(evt);
             }
-            else if (evt.getSource() == cboFechaColecta) {
-                FrameAportesColectivos.this.cboFechaColectaActionPerformed(evt);
+            else if (evt.getSource() == cboFechaAporte) {
+                FrameAportesColectivos.this.cboFechaAporteActionPerformed(evt);
             }
             else if (evt.getSource() == montoField) {
                 FrameAportesColectivos.this.montoFieldActionPerformed(evt);
@@ -547,11 +547,11 @@ public class FrameAportesColectivos extends JInternalFrame {
     @SuppressWarnings("unchecked")
     void refresh() {
         try {
-            if (cboFechaColecta.getSelectedItem() != null && entityManager.getTransaction().isActive()) {
+            if (cboFechaAporte.getSelectedItem() != null && entityManager.getTransaction().isActive()) {
                 cmdGenerar.setEnabled(true);
                 entityManager.getTransaction().rollback();
                 entityManager.getTransaction().begin();
-                queryEventosDetalle.setParameter("eventoId", ((TblEventos) cboFechaColecta.getSelectedItem()));
+                queryEventosDetalle.setParameter("eventoId", ((TblEventos) cboFechaAporte.getSelectedItem()));
                 java.util.List data = queryEventosDetalle.getResultList();
                 data.stream().forEach((entity) -> {
                     entityManager.refresh(entity);
@@ -598,7 +598,7 @@ public class FrameAportesColectivos extends JInternalFrame {
         try {
             TblEventoDetalle t = new TblEventoDetalle();
             entityManager.persist(t);
-            t.setIdEvento((TblEventos) cboFechaColecta.getSelectedItem());
+            t.setIdEvento((TblEventos) cboFechaAporte.getSelectedItem());
             t.setIdUser(currentUser.getUser());
 
             listEventosDetalle.add(t);
@@ -682,7 +682,7 @@ public class FrameAportesColectivos extends JInternalFrame {
         refresh();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
-    private void cboFechaColectaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFechaColectaActionPerformed
+    private void cboFechaAporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFechaAporteActionPerformed
         try {
             refresh();
 
@@ -690,7 +690,7 @@ public class FrameAportesColectivos extends JInternalFrame {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             ex.printStackTrace();
         }
-    }//GEN-LAST:event_cboFechaColectaActionPerformed
+    }//GEN-LAST:event_cboFechaAporteActionPerformed
 
     private void montoFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_montoFieldFocusGained
         montoField.selectAll();
@@ -734,27 +734,29 @@ public class FrameAportesColectivos extends JInternalFrame {
 
     private void cmdGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdGenerarActionPerformed
 
-        if (cboFechaColecta.getSelectedItem() != null) {
+        if (cboFechaAporte.getSelectedItem() != null) {
 
             listMiembros.stream().forEach((miembro) -> {
-                TblEventoDetalle t = new TblEventoDetalle();
-                entityManager.persist(t);
-                t.setIdEvento((TblEventos) cboFechaColecta.getSelectedItem());
-                t.setIdUser(currentUser.getUser());
-                t.setIdCategoriaArticulo(tblCategoriasArticulosList.get(tblCategoriasArticulosList.size() - 1));
-                t.setIdMiembro((TblMiembros) miembro);
-                t.setMonto(((TblMiembros) miembro).getAporteMensual());
-                listEventosDetalle.add(t);
-                int row = listEventosDetalle.size() - 1;
-                masterTable.setRowSelectionInterval(row, row);
-                masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+                if (miembro.getAporteMensual() > 0) {
+                    TblEventoDetalle t = new TblEventoDetalle();
+                    entityManager.persist(t);
+                    t.setIdEvento((TblEventos) cboFechaAporte.getSelectedItem());
+                    t.setIdUser(currentUser.getUser());
+                    t.setIdCategoriaArticulo(tblCategoriasArticulosList.get(tblCategoriasArticulosList.size() - 1));
+                    t.setIdMiembro(miembro);
+                    t.setMonto(miembro.getAporteMensual());
+                    listEventosDetalle.add(t);
+                    int row = listEventosDetalle.size() - 1;
+                    masterTable.setRowSelectionInterval(row, row);
+                    masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+                }
             });
         }
     }//GEN-LAST:event_cmdGenerarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.lacreacion.mg.utils.CategoriasConverter categoriasConverter1;
-    private javax.swing.JComboBox cboFechaColecta;
+    private javax.swing.JComboBox cboFechaAporte;
     private javax.swing.JComboBox cboForma;
     private javax.swing.JComboBox cboMiembro;
     private javax.swing.JButton cmdGenerar;
@@ -778,7 +780,7 @@ public class FrameAportesColectivos extends JInternalFrame {
     private javax.swing.JLabel lblTotalOperaciones;
     private java.util.List<com.lacreacion.mg.domain.TblEventos> listEventos;
     private java.util.List<com.lacreacion.mg.domain.TblEventoDetalle> listEventosDetalle;
-    private java.util.List listMiembros;
+    private java.util.List<TblMiembros> listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JFormattedTextField montoField;

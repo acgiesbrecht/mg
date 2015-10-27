@@ -5,8 +5,6 @@
  */
 package com.lacreacion.mg.utils;
 
-import java.text.SimpleDateFormat;
-
 /**
  *
  * @author user

@@ -57,6 +57,7 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="cboModoImpresion" min="-2" pref="177" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="cmdReset" alignment="0" min="-2" pref="612" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -84,7 +85,9 @@
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cboModoImpresion" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="245" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <Component id="cmdReset" min="-2" pref="36" max="-2" attributes="0"/>
+              <EmptySpace pref="183" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -206,6 +209,17 @@
           </StringArray>
         </Property>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="cmdReset">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="66" green="66" red="ff" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Resetear toda la base de datos. OJO: Esto borrar&#xe1; todos los datos existentes!!!"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdResetActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

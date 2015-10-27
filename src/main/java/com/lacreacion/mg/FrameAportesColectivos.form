@@ -37,6 +37,9 @@
         </Property>
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;TblMiembros&gt;"/>
+      </AuxValues>
     </Component>
     <Component class="com.lacreacion.mg.utils.NormalTableCellRenderer" name="normalTableCellRenderer1">
       <Properties>
@@ -183,7 +186,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cboFechaColecta" min="-2" pref="347" max="-2" attributes="0"/>
+                              <Component id="cboFechaAporte" min="-2" pref="347" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="cmdGenerar" min="-2" pref="198" max="-2" attributes="0"/>
                           </Group>
@@ -224,7 +227,7 @@
               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cboFechaColecta" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cboFechaAporte" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmdGenerar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -551,12 +554,12 @@
         <Property name="text" type="java.lang.String" value="Fecha de Aporte:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="cboFechaColecta">
+    <Component class="javax.swing.JComboBox" name="cboFechaAporte">
       <BindingProperties>
-        <BindingProperty name="elements" source="listEventos" target="cboFechaColecta" targetPath="elements" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="elements" source="listEventos" target="cboFechaAporte" targetPath="elements" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboFechaColectaActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboFechaAporteActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="montoField">
