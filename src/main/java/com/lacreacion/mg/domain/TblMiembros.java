@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblMiembros.findByBox", query = "SELECT t FROM TblMiembros t WHERE t.box = :box"),
     @NamedQuery(name = "TblMiembros.findByAporteMensual", query = "SELECT t FROM TblMiembros t WHERE t.aporteMensual = :aporteMensual")})
 public class TblMiembros implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
     private List<TblRecibos> tblRecibosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMiembro")
@@ -178,7 +179,7 @@ public class TblMiembros implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblMiembros[ id=" + id + " ]";
+        return nombre;
     }
 
     @XmlTransient

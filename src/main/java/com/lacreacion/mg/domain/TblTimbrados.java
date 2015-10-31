@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblTimbrados.findByNroFacturaFin", query = "SELECT t FROM TblTimbrados t WHERE t.nroFacturaFin = :nroFacturaFin"),
     @NamedQuery(name = "TblTimbrados.findByActivo", query = "SELECT t FROM TblTimbrados t WHERE t.activo = :activo")})
 public class TblTimbrados implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -171,7 +172,7 @@ public class TblTimbrados implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblTimbrados[ nro=" + nro + " ]";
+        return String.valueOf(nro);
     }
 
 }
