@@ -8,8 +8,8 @@ package com.lacreacion.mg;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblEventos;
-import com.lacreacion.mg.domain.TblMiembros;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.Color;
@@ -35,8 +35,8 @@ import net.sf.jasperreports.view.JasperViewer;
 public class FrameInformes extends javax.swing.JInternalFrame {
 
     Map<String, String> persistenceMap = new HashMap<>();
-    List<TblMiembros> listMiembrosFiltered;
-    TblMiembros selectedMiembro;
+    List<TblEntidades> listMiembrosFiltered;
+    TblEntidades selectedMiembro;
     CurrentUser currentUser = CurrentUser.getInstance();
 
     /**
@@ -77,7 +77,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
         dateToStringConverter1 = new com.lacreacion.mg.utils.DateToStringConverter();
-        queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblMiembros t ORDER BY t.nombre");
+        queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
         dateTimeTableCellRenderer1 = new com.lacreacion.mg.utils.DateTimeTableCellRenderer();
         numberCellRenderer1 = new com.lacreacion.mg.utils.NumberCellRenderer();
@@ -375,7 +375,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/detalle_compras_miembro.jrxml"));
             Map parameters = new HashMap();
             parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
-            parameters.put("id_miembro", ((TblMiembros) cboMiembro.getSelectedItem()).getId());
+            parameters.put("id_miembro", ((TblEntidades) cboMiembro.getSelectedItem()).getId());
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getConnection());
             JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
             jReportsViewer.setVisible(true);
@@ -392,7 +392,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/detalle_pagos_miembro.jrxml"));
             Map parameters = new HashMap();
             parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
-            parameters.put("id_miembro", ((TblMiembros) cboMiembro.getSelectedItem()).getId());
+            parameters.put("id_miembro", ((TblEntidades) cboMiembro.getSelectedItem()).getId());
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getConnection());
             JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
             jReportsViewer.setVisible(true);
@@ -422,7 +422,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
             txtCtaCte.setBackground(Color.white);
             if (txtCtaCte.getText().length() > 4) {
                 listMiembrosFiltered = listMiembros;
-                Optional<TblMiembros> value = listMiembrosFiltered.stream().filter(a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
+                Optional<TblEntidades> value = listMiembrosFiltered.stream().filter(a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
                         .findFirst();
                 if (value.isPresent()) {
                     cboMiembro.setSelectedItem(value.get());
@@ -449,7 +449,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
 
     private void cboMiembroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMiembroActionPerformed
         if (cboMiembro.getSelectedItem() != null) {
-            txtCtaCte.setText(((TblMiembros) cboMiembro.getSelectedItem()).getCtacte().toString());
+            txtCtaCte.setText(((TblEntidades) cboMiembro.getSelectedItem()).getCtacte().toString());
         }
     }//GEN-LAST:event_cboMiembroActionPerformed
 
@@ -511,7 +511,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private java.util.List<com.lacreacion.mg.domain.TblEventos> listEventos;
-    private java.util.List<com.lacreacion.mg.domain.TblMiembros> listMiembros;
+    private java.util.List<com.lacreacion.mg.domain.TblEntidades> listMiembros;
     private com.lacreacion.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryMiembros;

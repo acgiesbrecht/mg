@@ -18,6 +18,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -37,34 +39,41 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblFacturas.findByImporteAporte", query = "SELECT t FROM TblFacturas t WHERE t.importeAporte = :importeAporte"),
     @NamedQuery(name = "TblFacturas.findByAnulado", query = "SELECT t FROM TblFacturas t WHERE t.anulado = :anulado")})
 public class TblFacturas implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @NotNull
     @Column(name = "NRO")
     private Integer nro;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechahora;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
     @Column(name = "RAZON_SOCIAL")
     private String razonSocial;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "RUC")
     private int ruc;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "IMPORTE_DONACION")
     private int importeDonacion;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "IMPORTE_APORTE")
     private int importeAporte;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "ANULADO")
     private Boolean anulado;
-    @JoinColumn(name = "ID_MIEMBRO", referencedColumnName = "ID")
+    @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private TblMiembros idMiembro;
+    private TblEntidades idEntidad;
     @JoinColumn(name = "ID_TIMBRADO", referencedColumnName = "NRO")
     @ManyToOne(optional = false)
     private TblTimbrados idTimbrado;
@@ -145,12 +154,12 @@ public class TblFacturas implements Serializable {
         this.anulado = anulado;
     }
 
-    public TblMiembros getIdMiembro() {
-        return idMiembro;
+    public TblEntidades getIdEntidad() {
+        return idEntidad;
     }
 
-    public void setIdMiembro(TblMiembros idMiembro) {
-        this.idMiembro = idMiembro;
+    public void setIdEntidad(TblEntidades idEntidad) {
+        this.idEntidad = idEntidad;
     }
 
     public TblTimbrados getIdTimbrado() {
@@ -174,10 +183,6 @@ public class TblFacturas implements Serializable {
         int hash = 0;
         hash += (nro != null ? nro.hashCode() : 0);
         return hash;
-    }
-
-    public Integer getImporteTotal() {
-        return importeAporte + importeDonacion;
     }
 
     @Override

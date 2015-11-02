@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -40,34 +41,39 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblTimbrados.findByNroFacturaFin", query = "SELECT t FROM TblTimbrados t WHERE t.nroFacturaFin = :nroFacturaFin"),
     @NamedQuery(name = "TblTimbrados.findByActivo", query = "SELECT t FROM TblTimbrados t WHERE t.activo = :activo")})
 public class TblTimbrados implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @NotNull
     @Column(name = "NRO")
     private Integer nro;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_INICIO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicio;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA_VENCIMIENTO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaVencimiento;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "NRO_FACTURA_INCIO")
     private int nroFacturaIncio;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "NRO_FACTURA_FIN")
     private int nroFacturaFin;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "ACTIVO")
     private Boolean activo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTimbrado")
+    private List<TblFacturas> tblFacturasList;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTimbrado")
-    private List<TblFacturas> tblFacturasList;
 
     public TblTimbrados() {
     }
@@ -133,14 +139,6 @@ public class TblTimbrados implements Serializable {
         this.activo = activo;
     }
 
-    public TblUsers getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(TblUsers idUser) {
-        this.idUser = idUser;
-    }
-
     @XmlTransient
     public List<TblFacturas> getTblFacturasList() {
         return tblFacturasList;
@@ -148,6 +146,14 @@ public class TblTimbrados implements Serializable {
 
     public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
         this.tblFacturasList = tblFacturasList;
+    }
+
+    public TblUsers getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(TblUsers idUser) {
+        this.idUser = idUser;
     }
 
     @Override
@@ -172,7 +178,7 @@ public class TblTimbrados implements Serializable {
 
     @Override
     public String toString() {
-        return String.valueOf(nro);
+        return "com.lacreacion.mg.domain.TblTimbrados[ nro=" + nro + " ]";
     }
 
 }

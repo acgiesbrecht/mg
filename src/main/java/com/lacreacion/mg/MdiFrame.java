@@ -409,7 +409,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuAdMiembrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdMiembrosActionPerformed
         try {
-            FrameMiembrosAdmin frame = new FrameMiembrosAdmin();
+            FrameEntidadesAdmin frame = new FrameEntidadesAdmin();
             frame.setVisible(true);
 
             desktop.add(frame);

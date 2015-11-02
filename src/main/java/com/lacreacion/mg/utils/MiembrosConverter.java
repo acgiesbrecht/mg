@@ -5,7 +5,7 @@
  */
 package com.lacreacion.mg.utils;
 
-import com.lacreacion.mg.domain.TblMiembros;
+import com.lacreacion.mg.domain.TblEntidades;
 import javax.persistence.EntityManager;
 import org.jdesktop.beansbinding.Converter;
 
@@ -19,15 +19,15 @@ public class MiembrosConverter extends Converter {
 
     @Override
     public Object convertForward(Object value) {
-        return ((TblMiembros) value).getNombre();
+        return ((TblEntidades) value).getNombreCompleto();
     }
 
     @Override
-    public TblMiembros convertReverse(Object value) {
-        TblMiembros res = new TblMiembros();
+    public TblEntidades convertReverse(Object value) {
+        TblEntidades res = new TblEntidades();
         try {
             System.out.println(value);
-            res = entityManager.find(TblMiembros.class, value);
+            res = entityManager.find(TblEntidades.class, value);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }

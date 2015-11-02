@@ -20,15 +20,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_EVENTOS")
@@ -40,13 +43,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblEventos.findByDescripcion", query = "SELECT t FROM TblEventos t WHERE t.descripcion = :descripcion"),
     @NamedQuery(name = "TblEventos.findByPorcentajeAporte", query = "SELECT t FROM TblEventos t WHERE t.porcentajeAporte = :porcentajeAporte")})
 public class TblEventos implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
-    private List<TblRecibos> tblRecibosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
-    private List<TblTransferencias> tblTransferenciasList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
-    private List<TblEventoDetalle> tblEventoDetalleList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,14 +50,21 @@ public class TblEventos implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    @Size(max = 100)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "PORCENTAJE_APORTE")
     private int porcentajeAporte;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
+    private List<TblEventoDetalle> tblEventoDetalleList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
+    private List<TblRecibos> tblRecibosList;
     @JoinColumn(name = "ID_EVENTO_TIPO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEventoTipos idEventoTipo;
@@ -71,6 +74,10 @@ public class TblEventos implements Serializable {
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblEventos")
+    private TblEventoCuotas tblEventoCuotas;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
+    private List<TblTransferencias> tblTransferenciasList;
 
     public TblEventos() {
     }
@@ -117,6 +124,24 @@ public class TblEventos implements Serializable {
         this.porcentajeAporte = porcentajeAporte;
     }
 
+    @XmlTransient
+    public List<TblEventoDetalle> getTblEventoDetalleList() {
+        return tblEventoDetalleList;
+    }
+
+    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
+        this.tblEventoDetalleList = tblEventoDetalleList;
+    }
+
+    @XmlTransient
+    public List<TblRecibos> getTblRecibosList() {
+        return tblRecibosList;
+    }
+
+    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
+        this.tblRecibosList = tblRecibosList;
+    }
+
     public TblEventoTipos getIdEventoTipo() {
         return idEventoTipo;
     }
@@ -141,6 +166,23 @@ public class TblEventos implements Serializable {
         this.idUser = idUser;
     }
 
+    public TblEventoCuotas getTblEventoCuotas() {
+        return tblEventoCuotas;
+    }
+
+    public void setTblEventoCuotas(TblEventoCuotas tblEventoCuotas) {
+        this.tblEventoCuotas = tblEventoCuotas;
+    }
+
+    @XmlTransient
+    public List<TblTransferencias> getTblTransferenciasList() {
+        return tblTransferenciasList;
+    }
+
+    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
+        this.tblTransferenciasList = tblTransferenciasList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -163,34 +205,7 @@ public class TblEventos implements Serializable {
 
     @Override
     public String toString() {
-        return descripcion;
-    }
-
-    @XmlTransient
-    public List<TblEventoDetalle> getTblEventoDetalleList() {
-        return tblEventoDetalleList;
-    }
-
-    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
-        this.tblEventoDetalleList = tblEventoDetalleList;
-    }
-
-    @XmlTransient
-    public List<TblRecibos> getTblRecibosList() {
-        return tblRecibosList;
-    }
-
-    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
-        this.tblRecibosList = tblRecibosList;
-    }
-
-    @XmlTransient
-    public List<TblTransferencias> getTblTransferenciasList() {
-        return tblTransferenciasList;
-    }
-
-    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
-        this.tblTransferenciasList = tblTransferenciasList;
+        return "com.lacreacion.mg.domain.TblEventos[ id=" + id + " ]";
     }
 
 }

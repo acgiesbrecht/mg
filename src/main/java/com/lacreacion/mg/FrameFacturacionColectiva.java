@@ -6,8 +6,8 @@
 package com.lacreacion.mg;
 
 import com.lacreacion.mg.domain.PagosRealizados;
+import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblFacturas;
-import com.lacreacion.mg.domain.TblMiembros;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.EventQueue;
@@ -78,7 +78,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblFacturas t ORDER BY t.nro");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
-        queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblMiembros t ORDER BY t.ctacte");
+        queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
         queryTimbrados = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTimbrados t WHERE t.activo = true");
         listTimbrados = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTimbrados.getResultList());
@@ -116,7 +116,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idMiembro}"));
         columnBinding.setColumnName("Miembro");
-        columnBinding.setColumnClass(com.lacreacion.mg.domain.TblMiembros.class);
+        columnBinding.setColumnClass(com.lacreacion.mg.domain.TblEntidades.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${razonSocial}"));
         columnBinding.setColumnName("Razon Social");
@@ -293,18 +293,18 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     + "     WHERE YEAR(f.fechahora) >= " + ano
                     + "     GROUP BY m.id"
                     + "	) facturas ON m.id = facturas.id", PagosRealizados.class).getResultList();
-            TblMiembros m;
+            TblEntidades m;
             for (PagosRealizados pr : pagosRealizados) {
 
-                m = entityManager.find(TblMiembros.class, pr.getId());
+                m = entityManager.find(TblEntidades.class, pr.getId());
                 if ((pr.getRDonacion() + pr.getTDonacion() - pr.getFDonacion()) > 0 || (pr.getRAporte() + pr.getTAporte() - pr.getFAporte()) > 0) {
                     TblFacturas f = new TblFacturas();
                     entityManager.persist(f);
                     f.setNro(siguienteFacturaNro);
                     f.setIdTimbrado(listTimbrados.get(0));
                     f.setFechahora(new Date());
-                    f.setIdMiembro(m);
-                    f.setRazonSocial(m.getNombre());
+                    f.setIdEntidad(m);
+                    f.setRazonSocial(m.getNombres() + " " + m.getApellidos());
                     if (m.getRuc() != null) {
                         f.setRuc(m.getRuc());
                     } else {
@@ -333,7 +333,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
     private com.lacreacion.mg.utils.FacturaNroTableCellRenderer facturaNroTableCellRenderer1;
     private javax.swing.JButton imprimirButton;
     private java.util.List<com.lacreacion.mg.domain.TblFacturas> list;
-    private java.util.List<TblMiembros> listMiembros;
+    private java.util.List<com.lacreacion.mg.domain.TblEntidades> listMiembros;
     private java.util.List<com.lacreacion.mg.domain.TblTimbrados> listTimbrados;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;

@@ -1,6 +1,6 @@
 DROP VIEW MG.RECIBO;
 DROP VIEW MG.TRANSFERENCIA;
-DROP VIEW MG.MIEMBROS_CON_PAGOS_PENDIENTES;
+DROP VIEW MG.ENTIDADES_CON_PAGOS_PENDIENTES;
 DROP TABLE MG.TBL_RECIBOS;
 DROP TABLE MG.TBL_TRANSFERENCIAS;
 DROP TABLE MG.TBL_EVENTO_DETALLE;
@@ -10,7 +10,7 @@ DROP TABLE MG.TBL_EVENTOS;
 DROP TABLE MG.TBL_EVENTO_TIPOS;
 DROP TABLE MG.TBL_FACTURAS;
 DROP TABLE MG.TBL_TIMBRADOS;
-DROP TABLE MG.TBL_MIEMBROS;
+DROP TABLE MG.TBL_ENTIDADES;
 DROP TABLE MG.TBL_FORMAS_DE_PAGO;
 DROP TABLE MG.TBL_IGLESIA;
 DROP TABLE MG.TBL_ROLES_USERS;
@@ -52,7 +52,7 @@ CREATE TABLE MG.TBL_EVENTO_DETALLE (
 	FECHAHORA TIMESTAMP NOT NULL,
 	OBSERVACION VARCHAR(50),
 	MONTO INTEGER NOT NULL,
-	ID_MIEMBRO INTEGER NOT NULL,
+	ID_ENTIDAD INTEGER NOT NULL,
 	ID_EVENTO INTEGER NOT NULL,
 	ID_CATEGORIA_ARTICULO INTEGER NOT NULL,
 	ID_USER INTEGER,
@@ -92,9 +92,10 @@ CREATE TABLE MG.TBL_IGLESIA (
 	PRIMARY KEY (ID)
 );
 
-CREATE TABLE MG.TBL_MIEMBROS (
+CREATE TABLE MG.TBL_ENTIDADES (
 	ID INTEGER GENERATED ALWAYS AS IDENTITY NOT NULL,
-	NOMBRE VARCHAR(50) NOT NULL,
+	NOMBRES VARCHAR(50) NOT NULL,
+        APELLIDOS VARCHAR(50) NOT NULL DEFAULT '',
         RUC INTEGER,
 	CTACTE INTEGER,
 	DOMICILIO VARCHAR(50),
@@ -117,7 +118,7 @@ CREATE TABLE MG.TBL_RECIBOS (
 	CONCEPTO VARCHAR(50),
 	MONTO INTEGER NOT NULL,
 	PORCENTAJE_APORTE INTEGER NOT NULL,
-	ID_MIEMBRO INTEGER NOT NULL,
+	ID_ENTIDAD INTEGER NOT NULL,
 	ID_EVENTO INTEGER NOT NULL,
 	ID_USER INTEGER NOT NULL,
 	PRIMARY KEY (ID)
@@ -147,7 +148,7 @@ CREATE TABLE MG.TBL_TRANSFERENCIAS (
 	CONCEPTO VARCHAR(50),
 	MONTO INTEGER NOT NULL,
 	PORCENTAJE_APORTE INTEGER NOT NULL,
-	ID_MIEMBRO INTEGER NOT NULL,
+	ID_ENTIDAD INTEGER NOT NULL,
         ID_EVENTO INTEGER NOT NULL,
         COBRADO BOOLEAN DEFAULT FALSE,
 	ID_USER INTEGER NOT NULL,
@@ -165,7 +166,7 @@ CREATE TABLE MG.TBL_FACTURAS (
         NRO INTEGER NOT NULL,
         ID_TIMBRADO INTEGER NOT NULL,
         FECHAHORA TIMESTAMP NOT NULL,
-        ID_MIEMBRO INTEGER NOT NULL,
+        ID_ENTIDAD INTEGER NOT NULL,
         RAZON_SOCIAL VARCHAR(50) NOT NULL,
         RUC INTEGER NOT NULL,
         IMPORTE_DONACION INTEGER NOT NULL,
@@ -208,8 +209,8 @@ ALTER TABLE MG.TBL_EVENTO_DETALLE
 	REFERENCES MG.TBL_CATEGORIAS_ARTICULOS (ID);
 
 ALTER TABLE MG.TBL_EVENTO_DETALLE
-	ADD FOREIGN KEY (ID_MIEMBRO)
-	REFERENCES MG.TBL_MIEMBROS (ID);
+	ADD FOREIGN KEY (ID_ENTIDAD)
+	REFERENCES MG.TBL_ENTIDADES (ID);
 
 ALTER TABLE MG.TBL_EVENTO_DETALLE
 	ADD FOREIGN KEY (ID_USER)
@@ -220,17 +221,17 @@ ALTER TABLE MG.TBL_EVENTO_CUOTAS
 	REFERENCES MG.TBL_EVENTOS (ID)
         ON DELETE CASCADE;
 
-ALTER TABLE MG.TBL_MIEMBROS
+ALTER TABLE MG.TBL_ENTIDADES
 	ADD FOREIGN KEY (ID_FORMA_DE_PAGO_PREFERIDA)
         REFERENCES MG.TBL_FORMAS_DE_PAGO (ID);
 
-ALTER TABLE MG.TBL_MIEMBROS
+ALTER TABLE MG.TBL_ENTIDADES
 	ADD FOREIGN KEY (ID_USER)
 	REFERENCES MG.TBL_USERS (ID);
 
 ALTER TABLE MG.TBL_RECIBOS
-	ADD FOREIGN KEY (ID_MIEMBRO)
-	REFERENCES MG.TBL_MIEMBROS (ID);
+	ADD FOREIGN KEY (ID_ENTIDAD)
+	REFERENCES MG.TBL_ENTIDADES (ID);
 
 ALTER TABLE MG.TBL_RECIBOS
 	ADD FOREIGN KEY (ID_EVENTO)
@@ -241,8 +242,8 @@ ALTER TABLE MG.TBL_RECIBOS
 	REFERENCES MG.TBL_USERS (ID);
 
 ALTER TABLE MG.TBL_FACTURAS
-	ADD FOREIGN KEY (ID_MIEMBRO)
-	REFERENCES MG.TBL_MIEMBROS (ID);
+	ADD FOREIGN KEY (ID_ENTIDAD)
+	REFERENCES MG.TBL_ENTIDADES (ID);
 
 ALTER TABLE MG.TBL_FACTURAS
 	ADD FOREIGN KEY (ID_TIMBRADO)
@@ -273,8 +274,8 @@ ALTER TABLE MG.TBL_GRUPOS_USERS
 	REFERENCES MG.TBL_GRUPOS (ID);
 
 ALTER TABLE MG.TBL_TRANSFERENCIAS
-	ADD FOREIGN KEY (ID_MIEMBRO)
-	REFERENCES MG.TBL_MIEMBROS (ID);
+	ADD FOREIGN KEY (ID_ENTIDAD)
+	REFERENCES MG.TBL_ENTIDADES (ID);
 
 ALTER TABLE MG.TBL_TRANSFERENCIAS
 	ADD FOREIGN KEY (ID_EVENTO)
@@ -284,35 +285,35 @@ ALTER TABLE MG.TBL_TRANSFERENCIAS
 	ADD FOREIGN KEY (ID_USER)
 	REFERENCES MG.TBL_USERS (ID);
 
-CREATE VIEW MG.RECIBO AS SELECT p.id, p.fechahora, d.nombre, p.concepto, p.monto FROM tbl_RECIBOS p, tbl_miembros d WHERE ((p.id_miembro = d.id));
+CREATE VIEW MG.RECIBO AS SELECT p.id, p.fechahora, d.nombres || d.apellidos AS nombre, p.concepto, p.monto FROM TBL_RECIBOS p, TBL_ENTIDADES d WHERE ((p.ID_ENTIDAD = d.id));
 
-CREATE VIEW TRANSFERENCIA AS
+CREATE VIEW MG.TRANSFERENCIA AS
     SELECT t.id,
         t.fechahora,
         d.ctacte AS cta_debito,
         i.ctacte AS cta_credito,
-        d.nombre AS d_nombre,
-        i.nombre AS c_nombre,
+        d.nombres || ' ' || d.apellidos  AS d_nombre,
+        i.nombre  AS c_nombre,
         d.domicilio AS d_domicilio,
         i.domicilio AS c_domicilio,
         d.box AS d_box,
         i.box AS c_box,
         t.monto,
         t.concepto
-    FROM tbl_transferencias t, tbl_miembros d, tbl_iglesia i
-    WHERE t.id_miembro = d.id;
+    FROM TBL_TRANSFERENCIAS t, TBL_ENTIDADES d, TBL_IGLESIA i
+    WHERE t.ID_ENTIDAD = d.ID;
 
-CREATE VIEW MIEMBROS_CON_PAGOS_PENDIENTES AS
+CREATE VIEW MG.ENTIDADES_CON_PAGOS_PENDIENTES AS
 SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.box FROM
-        (SELECT m.id, m.nombre, m.ctacte, m.domicilio, m.box, SUM(rd.monto) AS monto FROM TBL_MIEMBROS m
-            LEFT JOIN TBL_EVENTO_DETALLE rd ON m.id = rd.id_miembro
-            group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) remates,
-        (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_MIEMBROS m
-            LEFT JOIN TBL_TRANSFERENCIAS p ON m.id = p.id_miembro
-            group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) transferencias,
-        (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_MIEMBROS m
-            LEFT JOIN TBL_RECIBOS p ON m.id = p.id_miembro
-            group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) recibos
+        (SELECT m.id, m.nombres || ' ' || m.apellidos AS nombre, m.ctacte, m.domicilio, m.box, SUM(rd.monto) AS monto FROM TBL_ENTIDADES m
+            LEFT JOIN TBL_EVENTO_DETALLE rd ON m.id = rd.ID_ENTIDAD
+            group by m.id, m.nombres, m.apellidos, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) remates,
+        (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_ENTIDADES m
+            LEFT JOIN TBL_TRANSFERENCIAS p ON m.id = p.ID_ENTIDAD
+            group by m.id, m.nombres, m.apellidos, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) transferencias,
+        (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_ENTIDADES m
+            LEFT JOIN TBL_RECIBOS p ON m.id = p.ID_ENTIDAD
+            group by m.id, m.nombres, m.apellidos, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) recibos
     WHERE remates.id = transferencias.id AND remates.id = recibos.id AND (remates.monto - transferencias.monto - recibos.monto) > 0
     ORDER BY remates.nombre;
 
@@ -327,6 +328,8 @@ INSERT INTO MG.TBL_ROLES (DESCRIPCION) VALUES ('Master');
 INSERT INTO MG.TBL_EVENTO_TIPOS (ID, DESCRIPCION) VALUES (1, 'Remate');
 INSERT INTO MG.TBL_EVENTO_TIPOS (ID, DESCRIPCION) VALUES (2, 'Colecta');
 INSERT INTO MG.TBL_EVENTO_TIPOS (ID, DESCRIPCION) VALUES (3, 'Aporte');
+
+INSERT INTO MG.TBL_GRUPOS (ID, DESCRIPCION) VALUES (1, 'Gemeinde');
 
 CREATE TRIGGER MG.EVENTO_CUOTA_TRIG
 AFTER

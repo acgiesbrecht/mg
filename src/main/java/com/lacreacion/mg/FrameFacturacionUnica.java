@@ -9,8 +9,8 @@ import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblFacturas;
-import com.lacreacion.mg.domain.TblMiembros;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import com.lacreacion.utils.CalcDV;
@@ -49,7 +49,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
-    EventList<TblMiembros> eventListMiembros = new BasicEventList<>();
+    EventList<TblEntidades> eventListMiembros = new BasicEventList<>();
 
     public FrameFacturacionUnica() {
         super("Facturacion Unica",
@@ -65,11 +65,11 @@ public class FrameFacturacionUnica extends JInternalFrame {
                 entityManager.getTransaction().begin();
             }
             eventListMiembros.clear();
-            eventListMiembros.addAll(listMiembros);
-            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboMiembro, eventListMiembros);
+            eventListMiembros.addAll(listEntidades);
+            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboEntidad, eventListMiembros);
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            cboMiembro.setSelectedIndex(-1);
+            cboEntidad.setSelectedIndex(-1);
             KeyboardFocusManager.getCurrentKeyboardFocusManager()
                     .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
                         @Override
@@ -108,8 +108,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
         queryEventoTipos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoTipos t");
         listEventoTipos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoTipos.getResultList());
         entityManager1 = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager1.createQuery("SELECT t FROM TblMiembros t ORDER BY t.ctacte");
-        listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
+        queryEntidades = java.beans.Beans.isDesignTime() ? null : entityManager1.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
+        listEntidades = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEntidades.getResultList());
         queryTimbrados = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTimbrados t WHERE t.activo = true");
         listTimbrados = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTimbrados.getResultList());
         cancelarButton = new javax.swing.JButton();
@@ -125,7 +125,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
         idMiembroLabel1 = new javax.swing.JLabel();
         txtCtaCte = new javax.swing.JTextField();
         idMiembroLabel2 = new javax.swing.JLabel();
-        cboMiembro = new javax.swing.JComboBox();
+        cboEntidad = new javax.swing.JComboBox();
         idMiembroLabel = new javax.swing.JLabel();
         rucField = new javax.swing.JTextField();
         txtDV = new javax.swing.JTextField();
@@ -186,8 +186,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
         idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel2.setText("Nombre:");
 
-        cboMiembro.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cboMiembro.addActionListener(formListener);
+        cboEntidad.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cboEntidad.addActionListener(formListener);
 
         idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel.setText("Miembro:");
@@ -263,7 +263,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                                 .addGap(12, 12, 12)
                                 .addComponent(idMiembroLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -291,7 +291,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     .addComponent(idMiembroLabel1)
                     .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(idMiembroLabel2)
-                    .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -341,8 +341,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
             else if (evt.getSource() == txtCtaCte) {
                 FrameFacturacionUnica.this.txtCtaCteActionPerformed(evt);
             }
-            else if (evt.getSource() == cboMiembro) {
-                FrameFacturacionUnica.this.cboMiembroActionPerformed(evt);
+            else if (evt.getSource() == cboEntidad) {
+                FrameFacturacionUnica.this.cboEntidadActionPerformed(evt);
             }
         }
 
@@ -430,7 +430,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
         }
         dtpFecha.setDate(new Date());
         txtCtaCte.setText("");
-        cboMiembro.setSelectedItem(null);
+        cboEntidad.setSelectedItem(null);
         txtRazonSocial.setText("");
         rucField.setText("");
         txtDV.setText("");
@@ -479,7 +479,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
             factura.setNro((int) txtNro.getValue());
             factura.setIdTimbrado(listTimbrados.get(0));
             factura.setFechahora(dtpFecha.getDate());
-            factura.setIdMiembro((TblMiembros) cboMiembro.getSelectedItem());
+            factura.setIdEntidad((TblEntidades) cboEntidad.getSelectedItem());
             factura.setRazonSocial(txtRazonSocial.getText());
             factura.setRuc(Integer.parseInt(rucField.getText()));
             factura.setImporteDonacion(((Number) txtDonacion.getValue()).intValue());
@@ -585,12 +585,12 @@ public class FrameFacturacionUnica extends JInternalFrame {
         try {
             txtCtaCte.setBackground(Color.white);
             if (txtCtaCte.getText().length() > 4) {
-                List<TblMiembros> list = listMiembros;
-                Optional<TblMiembros> value = list.stream().filter(
+                List<TblEntidades> list = listEntidades;
+                Optional<TblEntidades> value = list.stream().filter(
                         a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
                         .findFirst();
                 if (value.isPresent()) {
-                    cboMiembro.setSelectedItem(value.get());
+                    cboEntidad.setSelectedItem(value.get());
                     txtCtaCte.setBackground(Color.green);
                     rucField.requestFocus();
                     txtDonacion.requestFocus();
@@ -604,15 +604,15 @@ public class FrameFacturacionUnica extends JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCtaCteKeyReleased
 
-    private void cboMiembroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMiembroActionPerformed
-        if (cboMiembro.getSelectedItem() != null) {
-            txtCtaCte.setText(((TblMiembros) cboMiembro.getSelectedItem()).getCtacte().toString());
-            txtRazonSocial.setText(((TblMiembros) cboMiembro.getSelectedItem()).getNombre());
-            rucField.setText(((TblMiembros) cboMiembro.getSelectedItem()).getRuc().toString());
+    private void cboEntidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEntidadActionPerformed
+        if (cboEntidad.getSelectedItem() != null) {
+            txtCtaCte.setText(((TblEntidades) cboEntidad.getSelectedItem()).getCtacte().toString());
+            txtRazonSocial.setText(((TblEntidades) cboEntidad.getSelectedItem()).getNombres() + " " + ((TblEntidades) cboEntidad.getSelectedItem()).getApellidos());
+            rucField.setText(((TblEntidades) cboEntidad.getSelectedItem()).getRuc().toString());
         } else {
             txtCtaCte.setText("");
         }
-    }//GEN-LAST:event_cboMiembroActionPerformed
+    }//GEN-LAST:event_cboEntidadActionPerformed
 
     private void rucFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rucFieldKeyReleased
         if (rucField.getText().length() > 0) {
@@ -636,7 +636,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelarButton;
-    private javax.swing.JComboBox cboMiembro;
+    private javax.swing.JComboBox cboEntidad;
     private javax.swing.JLabel ctacteLabel3;
     private javax.swing.JLabel ctacteLabel4;
     private org.jdesktop.swingx.JXDatePicker dtpFecha;
@@ -648,9 +648,9 @@ public class FrameFacturacionUnica extends JInternalFrame {
     private javax.swing.JLabel idMiembroLabel2;
     private javax.swing.JButton imprimirButton;
     private java.util.List<com.lacreacion.mg.domain.TblFacturas> list;
+    private java.util.List listEntidades;
     private java.util.List<com.lacreacion.mg.domain.TblEventoTipos> listEventoTipos;
     private java.util.List<com.lacreacion.mg.domain.TblGrupos> listGrupos;
-    private java.util.List listMiembros;
     private java.util.List<com.lacreacion.mg.domain.TblTimbrados> listTimbrados;
     private javax.swing.JLabel montoLabel;
     private javax.swing.JLabel montoLabel1;
@@ -658,9 +658,9 @@ public class FrameFacturacionUnica extends JInternalFrame {
     private javax.swing.JLabel montoLabel3;
     private javax.swing.JLabel montoLabel4;
     private javax.persistence.Query query;
+    private javax.persistence.Query queryEntidades;
     private javax.persistence.Query queryEventoTipos;
     private javax.persistence.Query queryGrupos;
-    private javax.persistence.Query queryMiembros;
     private javax.persistence.Query queryTimbrados;
     private javax.swing.JTextField rucField;
     private javax.swing.JFormattedTextField txtAporte;

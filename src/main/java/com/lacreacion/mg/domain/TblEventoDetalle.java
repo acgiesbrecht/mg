@@ -20,6 +20,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -43,23 +45,26 @@ public class TblEventoDetalle implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechahora;
+    @Size(max = 50)
     @Column(name = "OBSERVACION")
     private String observacion;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "MONTO")
     private int monto;
     @JoinColumn(name = "ID_CATEGORIA_ARTICULO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCategoriasArticulos idCategoriaArticulo;
+    @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblEntidades idEntidad;
     @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEventos idEvento;
-    @JoinColumn(name = "ID_MIEMBRO", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private TblMiembros idMiembro;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne
     private TblUsers idUser;
@@ -117,20 +122,20 @@ public class TblEventoDetalle implements Serializable {
         this.idCategoriaArticulo = idCategoriaArticulo;
     }
 
+    public TblEntidades getIdEntidad() {
+        return idEntidad;
+    }
+
+    public void setIdEntidad(TblEntidades idEntidad) {
+        this.idEntidad = idEntidad;
+    }
+
     public TblEventos getIdEvento() {
         return idEvento;
     }
 
     public void setIdEvento(TblEventos idEvento) {
         this.idEvento = idEvento;
-    }
-
-    public TblMiembros getIdMiembro() {
-        return idMiembro;
-    }
-
-    public void setIdMiembro(TblMiembros idMiembro) {
-        this.idMiembro = idMiembro;
     }
 
     public TblUsers getIdUser() {

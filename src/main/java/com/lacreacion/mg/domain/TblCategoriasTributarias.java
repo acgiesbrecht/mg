@@ -6,37 +6,35 @@
 package com.lacreacion.mg.domain;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author adriang
  */
 @Entity
-@Table(name = "TBL_EVENTO_TIPOS")
+@Table(name = "TBL_CATEGORIAS_TRIBUTARIAS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblEventoTipos.findAll", query = "SELECT t FROM TblEventoTipos t"),
-    @NamedQuery(name = "TblEventoTipos.findById", query = "SELECT t FROM TblEventoTipos t WHERE t.id = :id"),
-    @NamedQuery(name = "TblEventoTipos.findByDescripcion", query = "SELECT t FROM TblEventoTipos t WHERE t.descripcion = :descripcion")})
-public class TblEventoTipos implements Serializable {
+    @NamedQuery(name = "TblCategoriasTributarias.findAll", query = "SELECT t FROM TblCategoriasTributarias t"),
+    @NamedQuery(name = "TblCategoriasTributarias.findById", query = "SELECT t FROM TblCategoriasTributarias t WHERE t.id = :id"),
+    @NamedQuery(name = "TblCategoriasTributarias.findByDescripcion", query = "SELECT t FROM TblCategoriasTributarias t WHERE t.descripcion = :descripcion")})
+public class TblCategoriasTributarias implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
@@ -44,17 +42,15 @@ public class TblEventoTipos implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEventoTipo")
-    private List<TblEventos> tblEventosList;
 
-    public TblEventoTipos() {
+    public TblCategoriasTributarias() {
     }
 
-    public TblEventoTipos(Integer id) {
+    public TblCategoriasTributarias(Integer id) {
         this.id = id;
     }
 
-    public TblEventoTipos(Integer id, String descripcion) {
+    public TblCategoriasTributarias(Integer id, String descripcion) {
         this.id = id;
         this.descripcion = descripcion;
     }
@@ -75,15 +71,6 @@ public class TblEventoTipos implements Serializable {
         this.descripcion = descripcion;
     }
 
-    @XmlTransient
-    public List<TblEventos> getTblEventosList() {
-        return tblEventosList;
-    }
-
-    public void setTblEventosList(List<TblEventos> tblEventosList) {
-        this.tblEventosList = tblEventosList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -94,10 +81,10 @@ public class TblEventoTipos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblEventoTipos)) {
+        if (!(object instanceof TblCategoriasTributarias)) {
             return false;
         }
-        TblEventoTipos other = (TblEventoTipos) object;
+        TblCategoriasTributarias other = (TblCategoriasTributarias) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -106,7 +93,7 @@ public class TblEventoTipos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblEventoTipos[ id=" + id + " ]";
+        return "com.lacreacion.mg.domain.TblCategoriasTributarias[ id=" + id + " ]";
     }
 
 }

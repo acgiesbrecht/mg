@@ -18,12 +18,13 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_CATEGORIAS_ARTICULOS")
@@ -33,17 +34,17 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblCategoriasArticulos.findById", query = "SELECT t FROM TblCategoriasArticulos t WHERE t.id = :id"),
     @NamedQuery(name = "TblCategoriasArticulos.findByDescripcion", query = "SELECT t FROM TblCategoriasArticulos t WHERE t.descripcion = :descripcion")})
 public class TblCategoriasArticulos implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCategoriaArticulo")
-    private List<TblEventoDetalle> tblEventoDetalleList;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    @Size(max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCategoriaArticulo")
+    private List<TblEventoDetalle> tblEventoDetalleList;
 
     public TblCategoriasArticulos() {
     }
@@ -68,6 +69,15 @@ public class TblCategoriasArticulos implements Serializable {
         this.descripcion = descripcion;
     }
 
+    @XmlTransient
+    public List<TblEventoDetalle> getTblEventoDetalleList() {
+        return tblEventoDetalleList;
+    }
+
+    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
+        this.tblEventoDetalleList = tblEventoDetalleList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -90,16 +100,7 @@ public class TblCategoriasArticulos implements Serializable {
 
     @Override
     public String toString() {
-        return descripcion;
-    }
-
-    @XmlTransient
-    public List<TblEventoDetalle> getTblEventoDetalleList() {
-        return tblEventoDetalleList;
-    }
-
-    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
-        this.tblEventoDetalleList = tblEventoDetalleList;
+        return "com.lacreacion.mg.domain.TblCategoriasArticulos[ id=" + id + " ]";
     }
 
 }

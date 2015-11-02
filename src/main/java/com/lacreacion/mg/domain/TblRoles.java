@@ -17,12 +17,14 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_ROLES")
@@ -32,7 +34,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblRoles.findById", query = "SELECT t FROM TblRoles t WHERE t.id = :id"),
     @NamedQuery(name = "TblRoles.findByDescripcion", query = "SELECT t FROM TblRoles t WHERE t.descripcion = :descripcion")})
 public class TblRoles implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +41,8 @@ public class TblRoles implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @ManyToMany(mappedBy = "tblRolesList")
@@ -104,7 +107,7 @@ public class TblRoles implements Serializable {
 
     @Override
     public String toString() {
-        return descripcion;
+        return "com.lacreacion.mg.domain.TblRoles[ id=" + id + " ]";
     }
 
 }

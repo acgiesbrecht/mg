@@ -12,10 +12,10 @@ import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.lacreacion.mg.domain.CuotaModel;
 import com.lacreacion.mg.domain.TblCategoriasArticulos;
+import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblEventoCuotas;
 import com.lacreacion.mg.domain.TblEventoDetalle;
 import com.lacreacion.mg.domain.TblEventos;
-import com.lacreacion.mg.domain.TblMiembros;
 import com.lacreacion.mg.domain.TblTransferencias;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
@@ -58,7 +58,7 @@ public class FrameRematesDetalle extends JInternalFrame {
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
-    EventList<TblMiembros> eventListMiembros = new BasicEventList<>();
+    EventList<TblEntidades> eventListEntidades = new BasicEventList<>();
     EventList<TblCategoriasArticulos> eventListTblCategoriasArticulos = new BasicEventList<>();
 
     public FrameRematesDetalle() {
@@ -89,9 +89,9 @@ public class FrameRematesDetalle extends JInternalFrame {
             AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCategoria, eventListTblCategoriasArticulos);
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            eventListMiembros.clear();
-            eventListMiembros.addAll(listMiembros);
-            AutoCompleteSupport support2 = AutoCompleteSupport.install(cboMiembro, eventListMiembros);
+            eventListEntidades.clear();
+            eventListEntidades.addAll(listEntidades);
+            AutoCompleteSupport support2 = AutoCompleteSupport.install(cboEntidad, eventListEntidades);
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -142,8 +142,8 @@ public class FrameRematesDetalle extends JInternalFrame {
         listEventosDetalle = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventosDetalle.getResultList());
         tblCategoriasArticulosQuery = java.beans.Beans.isDesignTime() ? null : entityManager1.createQuery("SELECT t FROM TblCategoriasArticulos t ORDER BY t.descripcion");
         tblCategoriasArticulosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(tblCategoriasArticulosQuery.getResultList());
-        queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager1.createQuery("SELECT t FROM TblMiembros t ORDER BY t.ctacte");
-        listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
+        queryEntidades = java.beans.Beans.isDesignTime() ? null : entityManager1.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
+        listEntidades = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEntidades.getResultList());
         normalTableCellRenderer1 = new com.lacreacion.mg.utils.NormalTableCellRenderer();
         categoriasConverter1 = new com.lacreacion.mg.utils.CategoriasConverter();
         queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 1 AND t.idGrupo IN :grupos ORDER BY t.fecha");
@@ -172,7 +172,7 @@ public class FrameRematesDetalle extends JInternalFrame {
         idMiembroLabel2 = new javax.swing.JLabel();
         dateTableCellRenderer1 = new com.lacreacion.mg.utils.DateTimeTableCellRenderer();
         cboCategoria = new javax.swing.JComboBox();
-        cboMiembro = new javax.swing.JComboBox();
+        cboEntidad = new javax.swing.JComboBox();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
@@ -205,7 +205,7 @@ public class FrameRematesDetalle extends JInternalFrame {
         columnBinding.setColumnClass(java.util.Date.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idMiembro}"));
         columnBinding.setColumnName("Miembro");
-        columnBinding.setColumnClass(com.lacreacion.mg.domain.TblMiembros.class);
+        columnBinding.setColumnClass(com.lacreacion.mg.domain.TblEntidades.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCategoriaArticulo}"));
         columnBinding.setColumnName("Categoria");
@@ -241,7 +241,7 @@ public class FrameRematesDetalle extends JInternalFrame {
         observacionLabel.setText("Observacion:");
 
         idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        idMiembroLabel.setText("Miembro:");
+        idMiembroLabel.setText("Cliente:");
 
         fechahoraField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -306,16 +306,16 @@ public class FrameRematesDetalle extends JInternalFrame {
 
         cboCategoria.addActionListener(formListener);
 
-        cboMiembro.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cboEntidad.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listMiembros, cboMiembro);
+        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEntidades, cboEntidad);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idMiembro}"), cboMiembro, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idMiembro}"), cboEntidad, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboMiembro, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboEntidad, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        cboMiembro.addActionListener(formListener);
+        cboEntidad.addActionListener(formListener);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -423,7 +423,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                                                     .addGap(12, 12, 12)
                                                     .addComponent(idMiembroLabel2)
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                    .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                     .addComponent(jButton2)))
                                             .addGroup(layout.createSequentialGroup()
@@ -499,7 +499,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                             .addComponent(idMiembroLabel1)
                             .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(idMiembroLabel2)
-                            .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -543,8 +543,8 @@ public class FrameRematesDetalle extends JInternalFrame {
             else if (evt.getSource() == cboCategoria) {
                 FrameRematesDetalle.this.cboCategoriaActionPerformed(evt);
             }
-            else if (evt.getSource() == cboMiembro) {
-                FrameRematesDetalle.this.cboMiembroActionPerformed(evt);
+            else if (evt.getSource() == cboEntidad) {
+                FrameRematesDetalle.this.cboEntidadActionPerformed(evt);
             }
             else if (evt.getSource() == cboFechaRemate) {
                 FrameRematesDetalle.this.cboFechaRemateActionPerformed(evt);
@@ -646,14 +646,14 @@ public class FrameRematesDetalle extends JInternalFrame {
 
                 entityManager1.getTransaction().rollback();
                 entityManager1.getTransaction().begin();
-                data = queryMiembros.getResultList();
+                data = queryEntidades.getResultList();
                 data.stream().forEach((entity) -> {
                     entityManager1.refresh(entity);
                 });
-                listMiembros.clear();
-                listMiembros.addAll(data);
-                eventListMiembros.clear();
-                eventListMiembros.addAll(data);
+                listEntidades.clear();
+                listEntidades.addAll(data);
+                eventListEntidades.clear();
+                eventListEntidades.addAll(data);
 
                 data = tblCategoriasArticulosQuery.getResultList();
                 data.stream().forEach((entity) -> {
@@ -738,13 +738,13 @@ public class FrameRematesDetalle extends JInternalFrame {
         try {
             txtCtaCte.setBackground(Color.white);
             if (txtCtaCte.getText().length() > 4) {
-                List<TblMiembros> list = listMiembros;
-                Optional<TblMiembros> value = list.stream().filter(a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
+                List<TblEntidades> list = listEntidades;
+                Optional<TblEntidades> value = list.stream().filter(a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
                         .findFirst();
                 System.out.println(Integer.valueOf(txtCtaCte.getText()));
                 System.out.println(value.isPresent());
                 if (value.isPresent()) {
-                    cboMiembro.setSelectedItem(value.get());
+                    cboEntidad.setSelectedItem(value.get());
                     txtCtaCte.setBackground(Color.green);
                     saveButton.requestFocus();
                 }
@@ -821,23 +821,23 @@ public class FrameRematesDetalle extends JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        Collection data = queryMiembros.getResultList();
+        Collection data = queryEntidades.getResultList();
         data.stream().forEach((entity) -> {
             entityManager1.refresh(entity);
         });
-        listMiembros.clear();
-        listMiembros.addAll(data);
-        eventListMiembros.clear();
-        eventListMiembros.addAll(data);
+        listEntidades.clear();
+        listEntidades.addAll(data);
+        eventListEntidades.clear();
+        eventListEntidades.addAll(data);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void cboMiembroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMiembroActionPerformed
-        if (cboMiembro.getSelectedItem() != null) {
-            txtCtaCte.setText(((TblMiembros) cboMiembro.getSelectedItem()).getCtacte().toString());
+    private void cboEntidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEntidadActionPerformed
+        if (cboEntidad.getSelectedItem() != null) {
+            txtCtaCte.setText(((TblEntidades) cboEntidad.getSelectedItem()).getCtacte().toString());
         } else {
             txtCtaCte.setText("");
         }
-    }//GEN-LAST:event_cboMiembroActionPerformed
+    }//GEN-LAST:event_cboEntidadActionPerformed
 
     private void saveButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButton1ActionPerformed
         try {
@@ -858,7 +858,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                 for (CuotaModel cuota : cuotasList) {
                     TblTransferencias transferencia = new TblTransferencias();
                     transferencia.setFechahora(cuota.getFecha());
-                    transferencia.setIdMiembro((TblMiembros) cboMiembro.getSelectedItem());
+                    transferencia.setIdEntidad((TblEntidades) cboEntidad.getSelectedItem());
                     transferencia.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
                     transferencia.setMonto(cuota.getMonto());
                     transferencia.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
@@ -923,8 +923,8 @@ public class FrameRematesDetalle extends JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.lacreacion.mg.utils.CategoriasConverter categoriasConverter1;
     private javax.swing.JComboBox cboCategoria;
+    private javax.swing.JComboBox cboEntidad;
     private javax.swing.JComboBox cboFechaRemate;
-    private javax.swing.JComboBox cboMiembro;
     private com.lacreacion.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.lacreacion.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
     private com.lacreacion.mg.utils.DateTimeToStringConverter dateTimeToStringConverter1;
@@ -947,9 +947,9 @@ public class FrameRematesDetalle extends JInternalFrame {
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalOperaciones;
+    private java.util.List listEntidades;
     private java.util.List<com.lacreacion.mg.domain.TblEventos> listEventos;
     private java.util.List<com.lacreacion.mg.domain.TblEventoDetalle> listEventosDetalle;
-    private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JFormattedTextField montoField;
@@ -959,9 +959,9 @@ public class FrameRematesDetalle extends JInternalFrame {
     private com.lacreacion.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.swing.JTextField observacionField;
     private javax.swing.JLabel observacionLabel;
+    private javax.persistence.Query queryEntidades;
     private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryEventosDetalle;
-    private javax.persistence.Query queryMiembros;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;
     private javax.swing.JButton saveButton1;

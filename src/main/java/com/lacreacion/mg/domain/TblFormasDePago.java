@@ -16,6 +16,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -34,13 +36,16 @@ public class TblFormasDePago implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @NotNull
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFormaDePagoPreferida")
-    private List<TblMiembros> tblMiembrosList;
+    private List<TblEntidades> tblEntidadesList;
 
     public TblFormasDePago() {
     }
@@ -71,12 +76,12 @@ public class TblFormasDePago implements Serializable {
     }
 
     @XmlTransient
-    public List<TblMiembros> getTblMiembrosList() {
-        return tblMiembrosList;
+    public List<TblEntidades> getTblEntidadesList() {
+        return tblEntidadesList;
     }
 
-    public void setTblMiembrosList(List<TblMiembros> tblMiembrosList) {
-        this.tblMiembrosList = tblMiembrosList;
+    public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
+        this.tblEntidadesList = tblEntidadesList;
     }
 
     @Override
