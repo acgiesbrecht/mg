@@ -80,7 +80,7 @@
                     <keypass>123456</keypass>
                 </configuration>
             </plugin>
-            
+
         </plugins>
     </build>
     <dependencies>
