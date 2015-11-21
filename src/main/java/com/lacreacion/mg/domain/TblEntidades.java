@@ -6,6 +6,7 @@
 package com.lacreacion.mg.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -20,6 +21,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,7 +44,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblEntidades.findByCtacte", query = "SELECT t FROM TblEntidades t WHERE t.ctacte = :ctacte"),
     @NamedQuery(name = "TblEntidades.findByDomicilio", query = "SELECT t FROM TblEntidades t WHERE t.domicilio = :domicilio"),
     @NamedQuery(name = "TblEntidades.findByBox", query = "SELECT t FROM TblEntidades t WHERE t.box = :box"),
-    @NamedQuery(name = "TblEntidades.findByAporteMensual", query = "SELECT t FROM TblEntidades t WHERE t.aporteMensual = :aporteMensual")})
+    @NamedQuery(name = "TblEntidades.findByIsMiembroActivo", query = "SELECT t FROM TblEntidades t WHERE t.isMiembroActivo = :isMiembroActivo"),
+    @NamedQuery(name = "TblEntidades.findByAporteMensual", query = "SELECT t FROM TblEntidades t WHERE t.aporteMensual = :aporteMensual"),
+    @NamedQuery(name = "TblEntidades.findByFechaNacimiento", query = "SELECT t FROM TblEntidades t WHERE t.fechaNacimiento = :fechaNacimiento"),
+    @NamedQuery(name = "TblEntidades.findByFechaBautismo", query = "SELECT t FROM TblEntidades t WHERE t.fechaBautismo = :fechaBautismo"),
+    @NamedQuery(name = "TblEntidades.findByFechaEntradaCongregacion", query = "SELECT t FROM TblEntidades t WHERE t.fechaEntradaCongregacion = :fechaEntradaCongregacion"),
+    @NamedQuery(name = "TblEntidades.findByFechaSalidaCongregacion", query = "SELECT t FROM TblEntidades t WHERE t.fechaSalidaCongregacion = :fechaSalidaCongregacion"),
+    @NamedQuery(name = "TblEntidades.findByFechaDefuncion", query = "SELECT t FROM TblEntidades t WHERE t.fechaDefuncion = :fechaDefuncion")})
 public class TblEntidades implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -71,8 +80,29 @@ public class TblEntidades implements Serializable {
     private Integer box;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "IS_MIEMBRO_ACTIVO")
+    private Boolean isMiembroActivo;
     @Column(name = "APORTE_MENSUAL")
-    private int aporteMensual;
+    private Integer aporteMensual;
+    @Column(name = "FECHA_NACIMIENTO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaNacimiento;
+    @Column(name = "FECHA_BAUTISMO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaBautismo;
+    @Column(name = "FECHA_ENTRADA_CONGREGACION")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaEntradaCongregacion;
+    @Column(name = "FECHA_SALIDA_CONGREGACION")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaSalidaCongregacion;
+    @Column(name = "FECHA_DEFUNCION")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaDefuncion;
+    @OneToMany(mappedBy = "idEntidad2")
+    private List<TblMiembrosRelaciones> tblMiembrosRelacionesList;
+    @OneToMany(mappedBy = "idEntidad1")
+    private List<TblMiembrosRelaciones> tblMiembrosRelacionesList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
     private List<TblEventoDetalle> tblEventoDetalleList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
@@ -81,9 +111,18 @@ public class TblEntidades implements Serializable {
     private List<TblTransferencias> tblTransferenciasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
     private List<TblFacturas> tblFacturasList;
+    @JoinColumn(name = "ID_AREA_SERVICIO_EN_IGLESIA", referencedColumnName = "ID")
+    @ManyToOne
+    private TblAreasServicioEnIglesia idAreaServicioEnIglesia;
     @JoinColumn(name = "ID_FORMA_DE_PAGO_PREFERIDA", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private TblFormasDePago idFormaDePagoPreferida;
+    @JoinColumn(name = "ID_MIEMBROS_ALERGIA", referencedColumnName = "ID")
+    @ManyToOne
+    private TblMiembrosAlergias idMiembrosAlergia;
+    @JoinColumn(name = "ID_MIEMBROS_CATEGORIA_DE_PAGO", referencedColumnName = "ID")
+    @ManyToOne
+    private TblMiembrosCategoriasDePago idMiembrosCategoriaDePago;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne
     private TblUsers idUser;
@@ -95,11 +134,11 @@ public class TblEntidades implements Serializable {
         this.id = id;
     }
 
-    public TblEntidades(Integer id, String nombres, String apellidos, int aporteMensual) {
+    public TblEntidades(Integer id, String nombres, String apellidos, Boolean isMiembroActivo) {
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
-        this.aporteMensual = aporteMensual;
+        this.isMiembroActivo = isMiembroActivo;
     }
 
     public Integer getId() {
@@ -124,10 +163,6 @@ public class TblEntidades implements Serializable {
 
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
-    }
-
-    public String getNombreCompleto() {
-        return nombres + " " + apellidos;
     }
 
     public Integer getRuc() {
@@ -162,12 +197,78 @@ public class TblEntidades implements Serializable {
         this.box = box;
     }
 
-    public int getAporteMensual() {
+    public Boolean getIsMiembroActivo() {
+        return isMiembroActivo;
+    }
+
+    public void setIsMiembroActivo(Boolean isMiembroActivo) {
+        this.isMiembroActivo = isMiembroActivo;
+    }
+
+    public Integer getAporteMensual() {
         return aporteMensual;
     }
 
-    public void setAporteMensual(int aporteMensual) {
+    public void setAporteMensual(Integer aporteMensual) {
         this.aporteMensual = aporteMensual;
+    }
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public Date getFechaBautismo() {
+        return fechaBautismo;
+    }
+
+    public void setFechaBautismo(Date fechaBautismo) {
+        this.fechaBautismo = fechaBautismo;
+    }
+
+    public Date getFechaEntradaCongregacion() {
+        return fechaEntradaCongregacion;
+    }
+
+    public void setFechaEntradaCongregacion(Date fechaEntradaCongregacion) {
+        this.fechaEntradaCongregacion = fechaEntradaCongregacion;
+    }
+
+    public Date getFechaSalidaCongregacion() {
+        return fechaSalidaCongregacion;
+    }
+
+    public void setFechaSalidaCongregacion(Date fechaSalidaCongregacion) {
+        this.fechaSalidaCongregacion = fechaSalidaCongregacion;
+    }
+
+    public Date getFechaDefuncion() {
+        return fechaDefuncion;
+    }
+
+    public void setFechaDefuncion(Date fechaDefuncion) {
+        this.fechaDefuncion = fechaDefuncion;
+    }
+
+    @XmlTransient
+    public List<TblMiembrosRelaciones> getTblMiembrosRelacionesList() {
+        return tblMiembrosRelacionesList;
+    }
+
+    public void setTblMiembrosRelacionesList(List<TblMiembrosRelaciones> tblMiembrosRelacionesList) {
+        this.tblMiembrosRelacionesList = tblMiembrosRelacionesList;
+    }
+
+    @XmlTransient
+    public List<TblMiembrosRelaciones> getTblMiembrosRelacionesList1() {
+        return tblMiembrosRelacionesList1;
+    }
+
+    public void setTblMiembrosRelacionesList1(List<TblMiembrosRelaciones> tblMiembrosRelacionesList1) {
+        this.tblMiembrosRelacionesList1 = tblMiembrosRelacionesList1;
     }
 
     @XmlTransient
@@ -206,6 +307,14 @@ public class TblEntidades implements Serializable {
         this.tblFacturasList = tblFacturasList;
     }
 
+    public TblAreasServicioEnIglesia getIdAreaServicioEnIglesia() {
+        return idAreaServicioEnIglesia;
+    }
+
+    public void setIdAreaServicioEnIglesia(TblAreasServicioEnIglesia idAreaServicioEnIglesia) {
+        this.idAreaServicioEnIglesia = idAreaServicioEnIglesia;
+    }
+
     public TblFormasDePago getIdFormaDePagoPreferida() {
         return idFormaDePagoPreferida;
     }
@@ -214,12 +323,32 @@ public class TblEntidades implements Serializable {
         this.idFormaDePagoPreferida = idFormaDePagoPreferida;
     }
 
+    public TblMiembrosAlergias getIdMiembrosAlergia() {
+        return idMiembrosAlergia;
+    }
+
+    public void setIdMiembrosAlergia(TblMiembrosAlergias idMiembrosAlergia) {
+        this.idMiembrosAlergia = idMiembrosAlergia;
+    }
+
+    public TblMiembrosCategoriasDePago getIdMiembrosCategoriaDePago() {
+        return idMiembrosCategoriaDePago;
+    }
+
+    public void setIdMiembrosCategoriaDePago(TblMiembrosCategoriasDePago idMiembrosCategoriaDePago) {
+        this.idMiembrosCategoriaDePago = idMiembrosCategoriaDePago;
+    }
+
     public TblUsers getIdUser() {
         return idUser;
     }
 
     public void setIdUser(TblUsers idUser) {
         this.idUser = idUser;
+    }
+
+    public String getNombreCompleto() {
+        return nombres + " " + apellidos;
     }
 
     @Override

@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblEventoCuotas.findByFecha4", query = "SELECT t FROM TblEventoCuotas t WHERE t.fecha4 = :fecha4"),
     @NamedQuery(name = "TblEventoCuotas.findByIdUser", query = "SELECT t FROM TblEventoCuotas t WHERE t.idUser = :idUser")})
 public class TblEventoCuotas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)

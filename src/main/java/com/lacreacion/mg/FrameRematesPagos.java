@@ -10,7 +10,7 @@ import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
-import com.lacreacion.mg.domain.CuotaModel;
+import com.lacreacion.mg.domain.models.CuotaModel;
 import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblEventoCuotas;
 import com.lacreacion.mg.domain.TblEventos;

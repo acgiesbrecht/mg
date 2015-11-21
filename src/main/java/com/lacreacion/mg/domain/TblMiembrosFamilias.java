@@ -8,18 +8,16 @@ package com.lacreacion.mg.domain;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -29,13 +27,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author adriang
  */
 @Entity
-@Table(name = "TBL_GRUPOS")
+@Table(name = "TBL_MIEMBROS_FAMILIAS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblGrupos.findAll", query = "SELECT t FROM TblGrupos t"),
-    @NamedQuery(name = "TblGrupos.findById", query = "SELECT t FROM TblGrupos t WHERE t.id = :id"),
-    @NamedQuery(name = "TblGrupos.findByDescripcion", query = "SELECT t FROM TblGrupos t WHERE t.descripcion = :descripcion")})
-public class TblGrupos implements Serializable {
+    @NamedQuery(name = "TblMiembrosFamilias.findAll", query = "SELECT t FROM TblMiembrosFamilias t"),
+    @NamedQuery(name = "TblMiembrosFamilias.findById", query = "SELECT t FROM TblMiembrosFamilias t WHERE t.id = :id"),
+    @NamedQuery(name = "TblMiembrosFamilias.findByDescripcion", query = "SELECT t FROM TblMiembrosFamilias t WHERE t.descripcion = :descripcion")})
+public class TblMiembrosFamilias implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -43,26 +41,20 @@ public class TblGrupos implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @ManyToMany(mappedBy = "tblGruposList")
-    private List<TblUsers> tblUsersList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGrupo")
-    private List<TblEventos> tblEventosList;
+    @Lob
+    @Column(name = "FOTO")
+    private Serializable foto;
+    @OneToMany(mappedBy = "idMiembrosFamilia")
+    private List<TblMiembrosRelaciones> tblMiembrosRelacionesList;
 
-    public TblGrupos() {
+    public TblMiembrosFamilias() {
     }
 
-    public TblGrupos(Integer id) {
+    public TblMiembrosFamilias(Integer id) {
         this.id = id;
-    }
-
-    public TblGrupos(Integer id, String descripcion) {
-        this.id = id;
-        this.descripcion = descripcion;
     }
 
     public Integer getId() {
@@ -81,22 +73,21 @@ public class TblGrupos implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public Serializable getFoto() {
+        return foto;
+    }
+
+    public void setFoto(Serializable foto) {
+        this.foto = foto;
+    }
+
     @XmlTransient
-    public List<TblUsers> getTblUsersList() {
-        return tblUsersList;
+    public List<TblMiembrosRelaciones> getTblMiembrosRelacionesList() {
+        return tblMiembrosRelacionesList;
     }
 
-    public void setTblUsersList(List<TblUsers> tblUsersList) {
-        this.tblUsersList = tblUsersList;
-    }
-
-    @XmlTransient
-    public List<TblEventos> getTblEventosList() {
-        return tblEventosList;
-    }
-
-    public void setTblEventosList(List<TblEventos> tblEventosList) {
-        this.tblEventosList = tblEventosList;
+    public void setTblMiembrosRelacionesList(List<TblMiembrosRelaciones> tblMiembrosRelacionesList) {
+        this.tblMiembrosRelacionesList = tblMiembrosRelacionesList;
     }
 
     @Override
@@ -109,10 +100,10 @@ public class TblGrupos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblGrupos)) {
+        if (!(object instanceof TblMiembrosFamilias)) {
             return false;
         }
-        TblGrupos other = (TblGrupos) object;
+        TblMiembrosFamilias other = (TblMiembrosFamilias) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -121,7 +112,7 @@ public class TblGrupos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblGrupos[ id=" + id + " ]";
+        return "com.lacreacion.mg.domain.TblMiembrosFamilias[ id=" + id + " ]";
     }
 
 }

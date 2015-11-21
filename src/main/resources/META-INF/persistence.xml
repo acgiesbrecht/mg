@@ -19,9 +19,6 @@
     <class>com.lacreacion.mg.domain.TblUsers</class>
     <class>com.lacreacion.mg.domain.TblRolesUsers</class>
     <class>com.lacreacion.mg.domain.TblCategoriasTributarias</class>
-    <class>com.lacreacion.mg.domain.PendientesTotal</class>
-    <class>com.lacreacion.mg.domain.Recibo</class>
-    <class>com.lacreacion.mg.domain.Transferencia</class>
     <class>com.lacreacion.mg.domain.TblColectasDetalle</class>
     <class>com.lacreacion.mg.domain.TblColectas</class>
     <class>com.lacreacion.mg.domain.TblGrupos</class>
@@ -34,9 +31,19 @@
     <class>com.lacreacion.mg.domain.TblEventoTipos</class>
     <class>com.lacreacion.mg.domain.TblTimbrados</class>
     <class>com.lacreacion.mg.domain.TblFormasDePago</class>
-    <class>com.lacreacion.mg.domain.MiembrosConPagosPendientes</class>
-    <class>com.lacreacion.mg.domain.PagosRealizados</class>
     <class>com.lacreacion.mg.domain.TblEntidades</class>
+    <class>com.lacreacion.mg.domain.TblMiembrosCategoriasDePago</class>
+    <class>com.lacreacion.mg.domain.TblAreasServicioEnIglesia</class>
+    <class>com.lacreacion.mg.domain.TblMiembrosAlergias</class>
+    <class>com.lacreacion.mg.domain.models.MiembrosConPagosPendientes</class>
+    <class>com.lacreacion.mg.domain.models.Transferencia</class>
+    <class>com.lacreacion.mg.domain.models.PagosRealizados</class>
+    <class>com.lacreacion.mg.domain.models.PendientesTotal</class>
+    <class>com.lacreacion.mg.domain.models.Recibo</class>
+    <class>com.lacreacion.mg.domain.TblMiembrosRelacionesRoles</class>
+    <class>com.lacreacion.mg.domain.TblMiembrosFamilias</class>
+    <class>com.lacreacion.mg.domain.TblMiembrosRelaciones</class>
+    <class>com.lacreacion.mg.domain.TblMiembrosRelacionesTipos</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/mgdb"/>
       <property name="javax.persistence.jdbc.user" value="mg"/>

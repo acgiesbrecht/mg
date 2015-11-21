@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblEventoDetalle.findByObservacion", query = "SELECT t FROM TblEventoDetalle t WHERE t.observacion = :observacion"),
     @NamedQuery(name = "TblEventoDetalle.findByMonto", query = "SELECT t FROM TblEventoDetalle t WHERE t.monto = :monto")})
 public class TblEventoDetalle implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,6 +66,12 @@ public class TblEventoDetalle implements Serializable {
     @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEventos idEvento;
+    @JoinColumn(name = "ID_EVENTO_TIPO", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblEventoTipos idEventoTipo;
+    @JoinColumn(name = "ID_FORMA_DE_PAGO_PREFERIDA", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblFormasDePago idFormaDePagoPreferida;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne
     private TblUsers idUser;
@@ -136,6 +143,22 @@ public class TblEventoDetalle implements Serializable {
 
     public void setIdEvento(TblEventos idEvento) {
         this.idEvento = idEvento;
+    }
+
+    public TblEventoTipos getIdEventoTipo() {
+        return idEventoTipo;
+    }
+
+    public void setIdEventoTipo(TblEventoTipos idEventoTipo) {
+        this.idEventoTipo = idEventoTipo;
+    }
+
+    public TblFormasDePago getIdFormaDePagoPreferida() {
+        return idFormaDePagoPreferida;
+    }
+
+    public void setIdFormaDePagoPreferida(TblFormasDePago idFormaDePagoPreferida) {
+        this.idFormaDePagoPreferida = idFormaDePagoPreferida;
     }
 
     public TblUsers getIdUser() {

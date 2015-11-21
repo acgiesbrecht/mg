@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblCategoriasArticulos.findById", query = "SELECT t FROM TblCategoriasArticulos t WHERE t.id = :id"),
     @NamedQuery(name = "TblCategoriasArticulos.findByDescripcion", query = "SELECT t FROM TblCategoriasArticulos t WHERE t.descripcion = :descripcion")})
 public class TblCategoriasArticulos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

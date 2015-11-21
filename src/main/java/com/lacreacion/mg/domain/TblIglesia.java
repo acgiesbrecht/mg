@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblIglesia.findByDomicilio", query = "SELECT t FROM TblIglesia t WHERE t.domicilio = :domicilio"),
     @NamedQuery(name = "TblIglesia.findByBox", query = "SELECT t FROM TblIglesia t WHERE t.box = :box")})
 public class TblIglesia implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)

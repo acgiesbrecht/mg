@@ -273,7 +273,7 @@ public class FrameConfig extends javax.swing.JInternalFrame {
 
     private void cmdResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdResetActionPerformed
         try {
-
+            Boolean error = false;
             int reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar todos los datos y limpiar la base de datos?", title, JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
                 Map<String, String> persistenceMap = Varios.getDatabaseIP();
@@ -283,13 +283,19 @@ public class FrameConfig extends javax.swing.JInternalFrame {
                 List<String> sql = Arrays.asList(IOUtils.toString(getClass().getResourceAsStream("/sql/javadb.sql")).split(";"));
 
                 Statement stmt = conn.createStatement();
-                sql.stream().forEach(s -> {
+                for (String s : sql) {
+                    System.out.println(s);
+                    stmt.executeUpdate(s);
+                }
+                /*sql.stream().forEach(s -> {
                     try {
                         stmt.executeUpdate(s);
                     } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+                        Logger.getLogger(FrameConfig.class.getName()).log(Level.SEVERE, null, ex);
+                        error = true;
                     }
-                });
+                });*/
 
                 JOptionPane.showMessageDialog(null, "Base de Datos restablecida!");
 

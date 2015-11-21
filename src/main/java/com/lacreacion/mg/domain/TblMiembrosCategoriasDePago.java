@@ -8,13 +8,11 @@ package com.lacreacion.mg.domain;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -29,13 +27,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author adriang
  */
 @Entity
-@Table(name = "TBL_GRUPOS")
+@Table(name = "TBL_MIEMBROS_CATEGORIAS_DE_PAGO")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblGrupos.findAll", query = "SELECT t FROM TblGrupos t"),
-    @NamedQuery(name = "TblGrupos.findById", query = "SELECT t FROM TblGrupos t WHERE t.id = :id"),
-    @NamedQuery(name = "TblGrupos.findByDescripcion", query = "SELECT t FROM TblGrupos t WHERE t.descripcion = :descripcion")})
-public class TblGrupos implements Serializable {
+    @NamedQuery(name = "TblMiembrosCategoriasDePago.findAll", query = "SELECT t FROM TblMiembrosCategoriasDePago t"),
+    @NamedQuery(name = "TblMiembrosCategoriasDePago.findById", query = "SELECT t FROM TblMiembrosCategoriasDePago t WHERE t.id = :id"),
+    @NamedQuery(name = "TblMiembrosCategoriasDePago.findByDescripcion", query = "SELECT t FROM TblMiembrosCategoriasDePago t WHERE t.descripcion = :descripcion")})
+public class TblMiembrosCategoriasDePago implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,19 +46,17 @@ public class TblGrupos implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @ManyToMany(mappedBy = "tblGruposList")
-    private List<TblUsers> tblUsersList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGrupo")
-    private List<TblEventos> tblEventosList;
+    @OneToMany(mappedBy = "idMiembrosCategoriaDePago")
+    private List<TblEntidades> tblEntidadesList;
 
-    public TblGrupos() {
+    public TblMiembrosCategoriasDePago() {
     }
 
-    public TblGrupos(Integer id) {
+    public TblMiembrosCategoriasDePago(Integer id) {
         this.id = id;
     }
 
-    public TblGrupos(Integer id, String descripcion) {
+    public TblMiembrosCategoriasDePago(Integer id, String descripcion) {
         this.id = id;
         this.descripcion = descripcion;
     }
@@ -82,21 +78,12 @@ public class TblGrupos implements Serializable {
     }
 
     @XmlTransient
-    public List<TblUsers> getTblUsersList() {
-        return tblUsersList;
+    public List<TblEntidades> getTblEntidadesList() {
+        return tblEntidadesList;
     }
 
-    public void setTblUsersList(List<TblUsers> tblUsersList) {
-        this.tblUsersList = tblUsersList;
-    }
-
-    @XmlTransient
-    public List<TblEventos> getTblEventosList() {
-        return tblEventosList;
-    }
-
-    public void setTblEventosList(List<TblEventos> tblEventosList) {
-        this.tblEventosList = tblEventosList;
+    public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
+        this.tblEntidadesList = tblEntidadesList;
     }
 
     @Override
@@ -109,10 +96,10 @@ public class TblGrupos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblGrupos)) {
+        if (!(object instanceof TblMiembrosCategoriasDePago)) {
             return false;
         }
-        TblGrupos other = (TblGrupos) object;
+        TblMiembrosCategoriasDePago other = (TblMiembrosCategoriasDePago) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -121,7 +108,7 @@ public class TblGrupos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblGrupos[ id=" + id + " ]";
+        return "com.lacreacion.mg.domain.TblMiembrosCategoriasDePago[ id=" + id + " ]";
     }
 
 }

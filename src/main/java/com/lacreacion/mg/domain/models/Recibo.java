@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lacreacion.mg.domain;
+package com.lacreacion.mg.domain.models;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -23,16 +23,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Adrian Giesbrecht
  */
 @Entity
-@Table(name = "TRANSFERENCIA")
+@Table(name = "RECIBO")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Transferencia.findAll", query = "SELECT t FROM Transferencia t"),
-    @NamedQuery(name = "Transferencia.findById", query = "SELECT t FROM Transferencia t WHERE t.id = :id"),
-    @NamedQuery(name = "Transferencia.findByFechahora", query = "SELECT t FROM Transferencia t WHERE t.fechahora = :fechahora"),
-    @NamedQuery(name = "Transferencia.findByNombre", query = "SELECT t FROM Transferencia t WHERE t.nombre = :nombre"),
-    @NamedQuery(name = "Transferencia.findByConcepto", query = "SELECT t FROM Transferencia t WHERE t.concepto = :concepto"),
-    @NamedQuery(name = "Transferencia.findByMonto", query = "SELECT t FROM Transferencia t WHERE t.monto = :monto")})
-public class Transferencia implements Serializable {
+    @NamedQuery(name = "Recibo.findAll", query = "SELECT r FROM Recibo r"),
+    @NamedQuery(name = "Recibo.findById", query = "SELECT r FROM Recibo r WHERE r.id = :id"),
+    @NamedQuery(name = "Recibo.findByFechahora", query = "SELECT r FROM Recibo r WHERE r.fechahora = :fechahora"),
+    @NamedQuery(name = "Recibo.findByNombre", query = "SELECT r FROM Recibo r WHERE r.nombre = :nombre"),
+    @NamedQuery(name = "Recibo.findByConcepto", query = "SELECT r FROM Recibo r WHERE r.concepto = :concepto"),
+    @NamedQuery(name = "Recibo.findByMonto", query = "SELECT r FROM Recibo r WHERE r.monto = :monto")})
+public class Recibo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -51,7 +51,7 @@ public class Transferencia implements Serializable {
     @Column(name = "MONTO")
     private int monto;
 
-    public Transferencia() {
+    public Recibo() {
     }
 
     public int getId() {

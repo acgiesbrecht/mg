@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblTransferencias.findByPorcentajeAporte", query = "SELECT t FROM TblTransferencias t WHERE t.porcentajeAporte = :porcentajeAporte"),
     @NamedQuery(name = "TblTransferencias.findByCobrado", query = "SELECT t FROM TblTransferencias t WHERE t.cobrado = :cobrado")})
 public class TblTransferencias implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

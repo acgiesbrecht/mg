@@ -5,8 +5,9 @@
  */
 package com.lacreacion.mg.utils;
 
-import com.lacreacion.mg.domain.CuotaModel;
+import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblEventoCuotas;
+import com.lacreacion.mg.domain.models.CuotaModel;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -95,4 +96,7 @@ public class Varios {
         return -1;
     }
 
+    public static String getNombreCompleto(TblEntidades ent) {
+        return ent.getNombres() + " " + ent.getApellidos();
+    }
 }

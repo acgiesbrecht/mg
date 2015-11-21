@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblFacturas.findByImporteAporte", query = "SELECT t FROM TblFacturas t WHERE t.importeAporte = :importeAporte"),
     @NamedQuery(name = "TblFacturas.findByAnulado", query = "SELECT t FROM TblFacturas t WHERE t.anulado = :anulado")})
 public class TblFacturas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)

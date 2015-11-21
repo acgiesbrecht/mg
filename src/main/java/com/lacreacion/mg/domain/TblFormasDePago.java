@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblFormasDePago.findById", query = "SELECT t FROM TblFormasDePago t WHERE t.id = :id"),
     @NamedQuery(name = "TblFormasDePago.findByDescripcion", query = "SELECT t FROM TblFormasDePago t WHERE t.descripcion = :descripcion")})
 public class TblFormasDePago implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -45,6 +46,8 @@ public class TblFormasDePago implements Serializable {
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFormaDePagoPreferida")
+    private List<TblEventoDetalle> tblEventoDetalleList;
+    @OneToMany(mappedBy = "idFormaDePagoPreferida")
     private List<TblEntidades> tblEntidadesList;
 
     public TblFormasDePago() {
@@ -73,6 +76,15 @@ public class TblFormasDePago implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @XmlTransient
+    public List<TblEventoDetalle> getTblEventoDetalleList() {
+        return tblEventoDetalleList;
+    }
+
+    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
+        this.tblEventoDetalleList = tblEventoDetalleList;
     }
 
     @XmlTransient

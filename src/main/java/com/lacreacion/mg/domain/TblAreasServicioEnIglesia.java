@@ -8,13 +8,11 @@ package com.lacreacion.mg.domain;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -29,13 +27,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author adriang
  */
 @Entity
-@Table(name = "TBL_GRUPOS")
+@Table(name = "TBL_AREAS_SERVICIO_EN_IGLESIA")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblGrupos.findAll", query = "SELECT t FROM TblGrupos t"),
-    @NamedQuery(name = "TblGrupos.findById", query = "SELECT t FROM TblGrupos t WHERE t.id = :id"),
-    @NamedQuery(name = "TblGrupos.findByDescripcion", query = "SELECT t FROM TblGrupos t WHERE t.descripcion = :descripcion")})
-public class TblGrupos implements Serializable {
+    @NamedQuery(name = "TblAreasServicioEnIglesia.findAll", query = "SELECT t FROM TblAreasServicioEnIglesia t"),
+    @NamedQuery(name = "TblAreasServicioEnIglesia.findById", query = "SELECT t FROM TblAreasServicioEnIglesia t WHERE t.id = :id"),
+    @NamedQuery(name = "TblAreasServicioEnIglesia.findByDescripcion", query = "SELECT t FROM TblAreasServicioEnIglesia t WHERE t.descripcion = :descripcion")})
+public class TblAreasServicioEnIglesia implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,19 +46,17 @@ public class TblGrupos implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @ManyToMany(mappedBy = "tblGruposList")
-    private List<TblUsers> tblUsersList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGrupo")
-    private List<TblEventos> tblEventosList;
+    @OneToMany(mappedBy = "idAreaServicioEnIglesia")
+    private List<TblEntidades> tblEntidadesList;
 
-    public TblGrupos() {
+    public TblAreasServicioEnIglesia() {
     }
 
-    public TblGrupos(Integer id) {
+    public TblAreasServicioEnIglesia(Integer id) {
         this.id = id;
     }
 
-    public TblGrupos(Integer id, String descripcion) {
+    public TblAreasServicioEnIglesia(Integer id, String descripcion) {
         this.id = id;
         this.descripcion = descripcion;
     }
@@ -82,21 +78,12 @@ public class TblGrupos implements Serializable {
     }
 
     @XmlTransient
-    public List<TblUsers> getTblUsersList() {
-        return tblUsersList;
+    public List<TblEntidades> getTblEntidadesList() {
+        return tblEntidadesList;
     }
 
-    public void setTblUsersList(List<TblUsers> tblUsersList) {
-        this.tblUsersList = tblUsersList;
-    }
-
-    @XmlTransient
-    public List<TblEventos> getTblEventosList() {
-        return tblEventosList;
-    }
-
-    public void setTblEventosList(List<TblEventos> tblEventosList) {
-        this.tblEventosList = tblEventosList;
+    public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
+        this.tblEntidadesList = tblEntidadesList;
     }
 
     @Override
@@ -109,10 +96,10 @@ public class TblGrupos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblGrupos)) {
+        if (!(object instanceof TblAreasServicioEnIglesia)) {
             return false;
         }
-        TblGrupos other = (TblGrupos) object;
+        TblAreasServicioEnIglesia other = (TblAreasServicioEnIglesia) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -121,7 +108,7 @@ public class TblGrupos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblGrupos[ id=" + id + " ]";
+        return "com.lacreacion.mg.domain.TblAreasServicioEnIglesia[ id=" + id + " ]";
     }
 
 }

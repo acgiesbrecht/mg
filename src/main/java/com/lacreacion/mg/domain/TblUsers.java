@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblUsers.findByNombre", query = "SELECT t FROM TblUsers t WHERE t.nombre = :nombre"),
     @NamedQuery(name = "TblUsers.findByPassword", query = "SELECT t FROM TblUsers t WHERE t.password = :password")})
 public class TblUsers implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,16 +56,18 @@ public class TblUsers implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "PASSWORD")
     private String password;
-    @JoinTable(name = "TBL_ROLES_USERS", joinColumns = {
-        @JoinColumn(name = "ID_USER", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "ID_ROLE", referencedColumnName = "ID")})
-    @ManyToMany
-    private List<TblRoles> tblRolesList;
     @JoinTable(name = "TBL_GRUPOS_USERS", joinColumns = {
         @JoinColumn(name = "ID_USER", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_GRUPO", referencedColumnName = "ID")})
     @ManyToMany
     private List<TblGrupos> tblGruposList;
+    @JoinTable(name = "TBL_ROLES_USERS", joinColumns = {
+        @JoinColumn(name = "ID_USER", referencedColumnName = "ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "ID_ROLE", referencedColumnName = "ID")})
+    @ManyToMany
+    private List<TblRoles> tblRolesList;
+    @OneToMany(mappedBy = "idUser")
+    private List<TblMiembrosRelaciones> tblMiembrosRelacionesList;
     @OneToMany(mappedBy = "idUser")
     private List<TblEventoDetalle> tblEventoDetalleList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
@@ -118,6 +121,15 @@ public class TblUsers implements Serializable {
     }
 
     @XmlTransient
+    public List<TblGrupos> getTblGruposList() {
+        return tblGruposList;
+    }
+
+    public void setTblGruposList(List<TblGrupos> tblGruposList) {
+        this.tblGruposList = tblGruposList;
+    }
+
+    @XmlTransient
     public List<TblRoles> getTblRolesList() {
         return tblRolesList;
     }
@@ -127,12 +139,12 @@ public class TblUsers implements Serializable {
     }
 
     @XmlTransient
-    public List<TblGrupos> getTblGruposList() {
-        return tblGruposList;
+    public List<TblMiembrosRelaciones> getTblMiembrosRelacionesList() {
+        return tblMiembrosRelacionesList;
     }
 
-    public void setTblGruposList(List<TblGrupos> tblGruposList) {
-        this.tblGruposList = tblGruposList;
+    public void setTblMiembrosRelacionesList(List<TblMiembrosRelaciones> tblMiembrosRelacionesList) {
+        this.tblMiembrosRelacionesList = tblMiembrosRelacionesList;
     }
 
     @XmlTransient

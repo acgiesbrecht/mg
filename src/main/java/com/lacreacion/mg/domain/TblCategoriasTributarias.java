@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblCategoriasTributarias.findById", query = "SELECT t FROM TblCategoriasTributarias t WHERE t.id = :id"),
     @NamedQuery(name = "TblCategoriasTributarias.findByDescripcion", query = "SELECT t FROM TblCategoriasTributarias t WHERE t.descripcion = :descripcion")})
 public class TblCategoriasTributarias implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,7 +5,7 @@
  */
 package com.lacreacion.mg;
 
-import com.lacreacion.mg.domain.PagosRealizados;
+import com.lacreacion.mg.domain.models.PagosRealizados;
 import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblFacturas;
 import com.lacreacion.mg.utils.CurrentUser;

@@ -43,6 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblEventos.findByDescripcion", query = "SELECT t FROM TblEventos t WHERE t.descripcion = :descripcion"),
     @NamedQuery(name = "TblEventos.findByPorcentajeAporte", query = "SELECT t FROM TblEventos t WHERE t.porcentajeAporte = :porcentajeAporte")})
 public class TblEventos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,6 +66,8 @@ public class TblEventos implements Serializable {
     private List<TblEventoDetalle> tblEventoDetalleList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
     private List<TblRecibos> tblRecibosList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblEventos")
+    private TblEventoCuotas tblEventoCuotas;
     @JoinColumn(name = "ID_EVENTO_TIPO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEventoTipos idEventoTipo;
@@ -74,8 +77,6 @@ public class TblEventos implements Serializable {
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblEventos")
-    private TblEventoCuotas tblEventoCuotas;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
     private List<TblTransferencias> tblTransferenciasList;
 
@@ -142,6 +143,14 @@ public class TblEventos implements Serializable {
         this.tblRecibosList = tblRecibosList;
     }
 
+    public TblEventoCuotas getTblEventoCuotas() {
+        return tblEventoCuotas;
+    }
+
+    public void setTblEventoCuotas(TblEventoCuotas tblEventoCuotas) {
+        this.tblEventoCuotas = tblEventoCuotas;
+    }
+
     public TblEventoTipos getIdEventoTipo() {
         return idEventoTipo;
     }
@@ -164,14 +173,6 @@ public class TblEventos implements Serializable {
 
     public void setIdUser(TblUsers idUser) {
         this.idUser = idUser;
-    }
-
-    public TblEventoCuotas getTblEventoCuotas() {
-        return tblEventoCuotas;
-    }
-
-    public void setTblEventoCuotas(TblEventoCuotas tblEventoCuotas) {
-        this.tblEventoCuotas = tblEventoCuotas;
     }
 
     @XmlTransient

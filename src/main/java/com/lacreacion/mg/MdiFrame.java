@@ -609,6 +609,7 @@ public class MdiFrame extends javax.swing.JFrame {
             } else {
                 mnuLogin.setText("Iniciar Sesion");
                 currentUser.setUser(null);
+                desktop.removeAll();
             }
 
         } catch (Exception ex) {

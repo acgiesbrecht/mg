@@ -687,6 +687,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                         miembro.setAporteMensual(0);
                         miembro.setIdFormaDePagoPreferida(listFormasDePago.get(0));
                         miembro.setIdUser(currentUser.getUser());
+                        miembro.setIsMiembroActivo(false);
                         entityManager.persist(miembro);
                         list.add(miembro);
 

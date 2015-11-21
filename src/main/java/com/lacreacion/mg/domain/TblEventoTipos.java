@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblEventoTipos.findById", query = "SELECT t FROM TblEventoTipos t WHERE t.id = :id"),
     @NamedQuery(name = "TblEventoTipos.findByDescripcion", query = "SELECT t FROM TblEventoTipos t WHERE t.descripcion = :descripcion")})
 public class TblEventoTipos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -44,6 +45,8 @@ public class TblEventoTipos implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEventoTipo")
+    private List<TblEventoDetalle> tblEventoDetalleList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEventoTipo")
     private List<TblEventos> tblEventosList;
 
@@ -73,6 +76,15 @@ public class TblEventoTipos implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @XmlTransient
+    public List<TblEventoDetalle> getTblEventoDetalleList() {
+        return tblEventoDetalleList;
+    }
+
+    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
+        this.tblEventoDetalleList = tblEventoDetalleList;
     }
 
     @XmlTransient
