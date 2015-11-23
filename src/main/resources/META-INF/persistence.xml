@@ -1,55 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-  <persistence-unit name="mg_PU" transaction-type="RESOURCE_LOCAL">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>com.lacreacion.mg.domain.TblIglesia</class>
-    <class>com.lacreacion.mg.domain.TblRematesCuotas</class>
-    <class>com.lacreacion.mg.domain.TblRemates</class>
-    <class>com.lacreacion.mg.domain.TblRematesCategorias</class>
-    <class>com.lacreacion.mg.domain.TblRematesDetalle</class>
-    <class>com.lacreacion.mg.domain.TblPagos</class>
-    <class>com.lacreacion.mg.domain.TblRecibos</class>
-    <class>com.lacreacion.mg.domain.TblTransferencias</class>
-    <class>com.lacreacion.mg.domain.TblIglesia</class>
-    <class>com.lacreacion.mg.domain.TblRematesCategorias_1</class>
-    <class>com.lacreacion.mg.domain.TblRecibos</class>
-    <class>com.lacreacion.mg.domain.TblRematesCuotas</class>
-    <class>com.lacreacion.mg.domain.TblRematesDetalle</class>
-    <class>com.lacreacion.mg.domain.TblRoles</class>
-    <class>com.lacreacion.mg.domain.TblUsers</class>
-    <class>com.lacreacion.mg.domain.TblRolesUsers</class>
-    <class>com.lacreacion.mg.domain.TblCategoriasTributarias</class>
-    <class>com.lacreacion.mg.domain.TblColectasDetalle</class>
-    <class>com.lacreacion.mg.domain.TblColectas</class>
-    <class>com.lacreacion.mg.domain.TblGrupos</class>
-    <class>com.lacreacion.mg.domain.TblGruposUsers</class>
-    <class>com.lacreacion.mg.domain.TblEventos</class>
-    <class>com.lacreacion.mg.domain.TblFacturas</class>
-    <class>com.lacreacion.mg.domain.TblEventoCuotas</class>
-    <class>com.lacreacion.mg.domain.TblEventoDetalle</class>
-    <class>com.lacreacion.mg.domain.TblCategoriasArticulos</class>
-    <class>com.lacreacion.mg.domain.TblEventoTipos</class>
-    <class>com.lacreacion.mg.domain.TblTimbrados</class>
-    <class>com.lacreacion.mg.domain.TblFormasDePago</class>
-    <class>com.lacreacion.mg.domain.TblEntidades</class>
-    <class>com.lacreacion.mg.domain.TblMiembrosCategoriasDePago</class>
-    <class>com.lacreacion.mg.domain.TblAreasServicioEnIglesia</class>
-    <class>com.lacreacion.mg.domain.TblMiembrosAlergias</class>
-    <class>com.lacreacion.mg.domain.models.MiembrosConPagosPendientes</class>
-    <class>com.lacreacion.mg.domain.models.Transferencia</class>
-    <class>com.lacreacion.mg.domain.models.PagosRealizados</class>
-    <class>com.lacreacion.mg.domain.models.PendientesTotal</class>
-    <class>com.lacreacion.mg.domain.models.Recibo</class>
-    <class>com.lacreacion.mg.domain.TblMiembrosRelacionesRoles</class>
-    <class>com.lacreacion.mg.domain.TblMiembrosFamilias</class>
-    <class>com.lacreacion.mg.domain.TblMiembrosRelaciones</class>
-    <class>com.lacreacion.mg.domain.TblMiembrosRelacionesTipos</class>
-    <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/mgdb"/>
-      <property name="javax.persistence.jdbc.user" value="mg"/>
-      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
-      <property name="javax.persistence.jdbc.password" value="123456"/>
-      <property name="eclipselink.logging.level" value="FINE"/>
-    </properties>
-  </persistence-unit>
+    <persistence-unit name="mg_PU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>com.lacreacion.mg.domain.TblIglesia</class>
+        <class>com.lacreacion.mg.domain.TblRematesCuotas</class>
+        <class>com.lacreacion.mg.domain.TblRemates</class>
+        <class>com.lacreacion.mg.domain.TblRematesCategorias</class>
+        <class>com.lacreacion.mg.domain.TblRematesDetalle</class>
+        <class>com.lacreacion.mg.domain.TblPagos</class>
+        <class>com.lacreacion.mg.domain.TblRecibos</class>
+        <class>com.lacreacion.mg.domain.TblTransferencias</class>
+        <class>com.lacreacion.mg.domain.TblIglesia</class>
+        <class>com.lacreacion.mg.domain.TblRecibos</class>
+        <class>com.lacreacion.mg.domain.TblRematesCuotas</class>
+        <class>com.lacreacion.mg.domain.TblRematesDetalle</class>
+        <class>com.lacreacion.mg.domain.TblRoles</class>
+        <class>com.lacreacion.mg.domain.TblUsers</class>
+        <class>com.lacreacion.mg.domain.TblRolesUsers</class>
+        <class>com.lacreacion.mg.domain.TblCategoriasTributarias</class>
+        <class>com.lacreacion.mg.domain.TblColectasDetalle</class>
+        <class>com.lacreacion.mg.domain.TblGrupos</class>
+        <class>com.lacreacion.mg.domain.TblGruposUsers</class>
+        <class>com.lacreacion.mg.domain.TblEventos</class>
+        <class>com.lacreacion.mg.domain.TblFacturas</class>
+        <class>com.lacreacion.mg.domain.TblEventoCuotas</class>
+        <class>com.lacreacion.mg.domain.TblEventoDetalle</class>
+        <class>com.lacreacion.mg.domain.TblCategoriasArticulos</class>
+        <class>com.lacreacion.mg.domain.TblEventoTipos</class>
+        <class>com.lacreacion.mg.domain.TblTimbrados</class>
+        <class>com.lacreacion.mg.domain.TblFormasDePago</class>
+        <class>com.lacreacion.mg.domain.TblEntidades</class>
+        <class>com.lacreacion.mg.domain.TblMiembrosCategoriasDePago</class>
+        <class>com.lacreacion.mg.domain.TblAreasServicioEnIglesia</class>
+        <class>com.lacreacion.mg.domain.TblMiembrosAlergias</class>
+        <class>com.lacreacion.mg.domain.models.MiembrosConPagosPendientes</class>
+        <class>com.lacreacion.mg.domain.models.Transferencia</class>
+        <class>com.lacreacion.mg.domain.models.PagosRealizados</class>
+        <class>com.lacreacion.mg.domain.models.PendientesTotal</class>
+        <class>com.lacreacion.mg.domain.models.Recibo</class>
+        <class>com.lacreacion.mg.domain.TblMiembrosRelacionesRoles</class>
+        <class>com.lacreacion.mg.domain.TblMiembrosFamilias</class>
+        <class>com.lacreacion.mg.domain.TblMiembrosRelaciones</class>
+        <class>com.lacreacion.mg.domain.TblMiembrosRelacionesTipos</class>
+        <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/mgdb"/>
+            <property name="javax.persistence.jdbc.user" value="mg"/>
+            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
+            <property name="javax.persistence.jdbc.password" value="123456"/>
+            <property name="eclipselink.logging.level" value="FINE"/>
+        </properties>
+    </persistence-unit>
 </persistence>

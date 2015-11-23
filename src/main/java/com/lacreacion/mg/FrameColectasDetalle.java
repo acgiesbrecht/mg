@@ -10,9 +10,13 @@ import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.lacreacion.mg.domain.TblCategoriasArticulos;
 import com.lacreacion.mg.domain.TblEntidades;
+import com.lacreacion.mg.domain.TblEventoDetalle;
 import com.lacreacion.mg.domain.TblEventoTipos;
 import com.lacreacion.mg.domain.TblEventos;
+import com.lacreacion.mg.domain.TblRecibos;
+import com.lacreacion.mg.domain.TblTransferencias;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.Color;
@@ -130,9 +134,9 @@ public class FrameColectasDetalle extends JInternalFrame {
         queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 2 AND t.idGrupo IN :grupos ORDER BY t.fecha");
         queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
-        queryEventosDetalle = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId ORDER BY t.id");
-        queryEventosDetalle.setParameter("eventoId", null) ;
-        listEventosDetalle = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventosDetalle.getResultList());
+        queryEventoDetalle = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId ORDER BY t.id");
+        queryEventoDetalle.setParameter("eventoId", null) ;
+        listEventoDetalle = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoDetalle.getResultList());
         jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
         dateTimeTableCellRenderer1 = new com.lacreacion.mg.utils.DateTimeTableCellRenderer();
         integerLongConverter1 = new com.lacreacion.mg.utils.IntegerLongConverter();
@@ -181,7 +185,7 @@ public class FrameColectasDetalle extends JInternalFrame {
         masterTable.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         masterTable.setRowHeight(20);
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventosDetalle, masterTable);
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventoDetalle, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
         columnBinding.setColumnName("Donador");
         columnBinding.setColumnClass(com.lacreacion.mg.domain.TblEntidades.class);
@@ -217,12 +221,16 @@ public class FrameColectasDetalle extends JInternalFrame {
 
         newButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         newButton.setText("Nuevo");
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventos, org.jdesktop.beansbinding.ELProperty.create("${size!=null}"), newButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
         newButton.addActionListener(formListener);
 
         deleteButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         deleteButton.setText("Eliminar");
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         deleteButton.addActionListener(formListener);
@@ -311,6 +319,8 @@ public class FrameColectasDetalle extends JInternalFrame {
 
         montoField.setColumns(9);
         montoField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        montoField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        montoField.setText("0");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.monto}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("value"));
         binding.setConverter(integerLongConverter1);
@@ -549,13 +559,13 @@ public class FrameColectasDetalle extends JInternalFrame {
             if (cboFechaColecta.getSelectedItem() != null && entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
                 entityManager.getTransaction().begin();
-                queryEventosDetalle.setParameter("eventoId", ((TblEventos) cboFechaColecta.getSelectedItem()));
-                java.util.Collection data = queryEventosDetalle.getResultList();
+                queryEventoDetalle.setParameter("eventoId", ((TblEventos) cboFechaColecta.getSelectedItem()));
+                java.util.Collection data = queryEventoDetalle.getResultList();
                 data.stream().forEach((entity) -> {
                     entityManager.refresh(entity);
                 });
-                listEventosDetalle.clear();
-                listEventosDetalle.addAll(data);
+                listEventoDetalle.clear();
+                listEventoDetalle.addAll(data);
 
                 entityManager1.getTransaction().rollback();
                 entityManager1.getTransaction().begin();
@@ -568,8 +578,8 @@ public class FrameColectasDetalle extends JInternalFrame {
                 eventListMiembros.clear();
                 eventListMiembros.addAll(data);
 
-                lblTotal.setText(String.format("%,d", listEventosDetalle.stream().mapToInt(a -> a.getMonto()).sum()));
-                lblTotalOperaciones.setText(String.format("%,d", listEventosDetalle.stream().mapToInt(a -> a.getMonto()).count()));
+                lblTotal.setText(String.format("%,d", listEventoDetalle.stream().mapToInt(a -> a.getMonto()).sum()));
+                lblTotalOperaciones.setText(String.format("%,d", listEventoDetalle.stream().mapToInt(a -> a.getMonto()).count()));
                 txtCtaCte.setText("");
             }
         } catch (Exception ex) {
@@ -580,13 +590,13 @@ public class FrameColectasDetalle extends JInternalFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             int[] selected = masterTable.getSelectedRows();
-            List<com.lacreacion.mg.domain.TblEventoDetalle> toRemove = new ArrayList<>(selected.length);
+            List<TblEventoDetalle> toRemove = new ArrayList<>(selected.length);
             for (int idx = 0; idx < selected.length; idx++) {
-                com.lacreacion.mg.domain.TblEventoDetalle t = listEventosDetalle.get(masterTable.convertRowIndexToModel(selected[idx]));
+                TblEventoDetalle t = listEventoDetalle.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
                 entityManager.remove(t);
             }
-            listEventosDetalle.removeAll(toRemove);
+            listEventoDetalle.removeAll(toRemove);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
@@ -597,12 +607,11 @@ public class FrameColectasDetalle extends JInternalFrame {
             com.lacreacion.mg.domain.TblEventoDetalle t = new com.lacreacion.mg.domain.TblEventoDetalle();
             entityManager.persist(t);
             t.setFechahora(new Date());
-            t.setIdCategoriaArticulo(tblCategoriasArticulosList.get(tblCategoriasArticulosList.size() - 1));
+            t.setIdCategoriaArticulo(entityManager.find(TblCategoriasArticulos.class, 1));
             t.setIdEvento((TblEventos) cboFechaColecta.getSelectedItem());
-            t.setIdEventoTipo(idEventoTipo);
             t.setIdUser(currentUser.getUser());
-            listEventosDetalle.add(t);
-            int row = listEventosDetalle.size() - 1;
+            listEventoDetalle.add(t);
+            int row = listEventoDetalle.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
 
@@ -625,6 +634,37 @@ public class FrameColectasDetalle extends JInternalFrame {
                 montoField.requestFocusInWindow();
                 return;
             }
+            TblEventos currentEvento = (TblEventos) cboFechaColecta.getSelectedItem();
+
+            //actialuazr transferencias y recibos
+            int res = entityManager.createQuery("DELETE FROM TblTransferencias t WHERE t.idEvento.id = " + String.valueOf(currentEvento.getId())).executeUpdate();
+            res = entityManager.createQuery("DELETE FROM TblRecibos t WHERE t.idEvento.id = " + String.valueOf(currentEvento.getId())).executeUpdate();
+
+            for (TblEventoDetalle t : listEventoDetalle) {
+                if (t.getIdFormaDePagoPreferida().getId().equals(1)) {
+                    TblTransferencias transf = new TblTransferencias();
+                    transf.setFechahora(t.getFechahora());
+                    transf.setConcepto(currentEvento.getDescripcion());
+                    transf.setIdEntidad(t.getIdEntidad());
+                    transf.setIdEvento(currentEvento);
+                    transf.setMonto(t.getMonto());
+                    transf.setPorcentajeAporte(currentEvento.getPorcentajeAporte());
+                    transf.setIdUser(t.getIdUser());
+                    entityManager.persist(transf);
+                } else {
+                    TblRecibos recibo = new TblRecibos();
+                    recibo.setFechahora(t.getFechahora());
+                    recibo.setConcepto(currentEvento.getDescripcion());
+                    recibo.setIdEntidad(t.getIdEntidad());
+                    recibo.setIdEvento(currentEvento);
+                    recibo.setMonto(t.getMonto());
+                    recibo.setPorcentajeAporte(currentEvento.getPorcentajeAporte());
+                    recibo.setIdUser(t.getIdUser());
+                    entityManager.persist(recibo);
+                }
+            }
+
+            //------------------------------------
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
             refresh();
@@ -633,12 +673,12 @@ public class FrameColectasDetalle extends JInternalFrame {
             JOptionPane.showMessageDialog(null, rex.getMessage());
 
             entityManager.getTransaction().begin();
-            List<com.lacreacion.mg.domain.TblEventoDetalle> merged = new ArrayList<>(listEventosDetalle.size());
-            listEventosDetalle.stream().forEach((t) -> {
+            List<com.lacreacion.mg.domain.TblEventoDetalle> merged = new ArrayList<>(listEventoDetalle.size());
+            listEventoDetalle.stream().forEach((t) -> {
                 merged.add(entityManager.merge(t));
             });
-            listEventosDetalle.clear();
-            listEventosDetalle.addAll(merged);
+            listEventoDetalle.clear();
+            listEventoDetalle.addAll(merged);
         }
 
     }
@@ -757,8 +797,8 @@ public class FrameColectasDetalle extends JInternalFrame {
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalOperaciones;
+    private java.util.List<com.lacreacion.mg.domain.TblEventoDetalle> listEventoDetalle;
     private java.util.List<com.lacreacion.mg.domain.TblEventos> listEventos;
-    private java.util.List<com.lacreacion.mg.domain.TblEventoDetalle> listEventosDetalle;
     private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
@@ -768,8 +808,8 @@ public class FrameColectasDetalle extends JInternalFrame {
     private javax.swing.JButton newButton;
     private com.lacreacion.mg.utils.NormalTableCellRenderer normalTableCellRenderer1;
     private com.lacreacion.mg.utils.NumberCellRenderer numberCellRenderer1;
+    private javax.persistence.Query queryEventoDetalle;
     private javax.persistence.Query queryEventos;
-    private javax.persistence.Query queryEventosDetalle;
     private javax.persistence.Query queryMiembros;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;

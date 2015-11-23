@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase=
+"https://github.com/acgiesbrecht/mg/releases/download/2/"
+      href="mg.jnlp">
+    <information>
+        <title>MG</title>
+        <vendor>LA CREACION SRL</vendor>
+    </information>
+    <resources>
+        <!-- Application Resources -->
+        <j2se version="1.8+"
+              href="http://java.sun.com/products/autodl/j2se"/>
+        <jar href="MG-2.0.jar"
+             main="true" />
+    </resources>
+    <application-desc
+        name="MG"
+        main-class="com.lacreacion.mg.MdiFrame"
+        width="300"
+        height="300">
+    </application-desc>
+    <update check="background"/>
+</jnlp>

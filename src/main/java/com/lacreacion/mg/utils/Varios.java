@@ -8,7 +8,13 @@ package com.lacreacion.mg.utils;
 import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblEventoCuotas;
 import com.lacreacion.mg.domain.models.CuotaModel;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +22,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.prefs.Preferences;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
@@ -99,4 +107,5 @@ public class Varios {
     public static String getNombreCompleto(TblEntidades ent) {
         return ent.getNombres() + " " + ent.getApellidos();
     }
+
 }

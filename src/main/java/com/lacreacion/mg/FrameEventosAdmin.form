@@ -437,6 +437,9 @@
         <BindingProperty name="elements" source="listEventoTipos" target="cboEventoTipo" targetPath="elements" updateStrategy="0" immediately="false"/>
         <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idEventoTipo}" target="cboEventoTipo" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
       </BindingProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboEventoTipoActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSlider" name="sldCatTrib">
       <BindingProperties>

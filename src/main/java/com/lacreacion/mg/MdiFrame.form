@@ -65,20 +65,11 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mnuOpColectas">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Colectas Transferencia"/>
+                <Property name="text" type="java.lang.String" value="Colectas"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuOpColectasActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuOpColectas1">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Colectas Efectivo"/>
-                <Property name="enabled" type="boolean" value="false"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuOpColectas1ActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator7">

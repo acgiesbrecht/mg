@@ -35,7 +35,7 @@
                   <Group type="102" attributes="0">
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="txtIP" pref="172" max="32767" attributes="0"/>
+                      <Component id="txtIP" max="32767" attributes="0"/>
                       <EmptySpace min="-2" pref="275" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">

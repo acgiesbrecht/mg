@@ -10,6 +10,12 @@ import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import org.apache.commons.io.IOUtils;
 import org.apache.derby.drda.NetworkServerControl;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -60,6 +67,7 @@ public class MdiFrame extends javax.swing.JFrame {
                     mnuOpRemates.setEnabled(currentUser.hasRole(1));
                     mnuOpPagos.setEnabled(currentUser.hasRole(1));
                     mnuOpColectas.setEnabled(currentUser.hasRole(1));
+                    mnuOpAportes.setEnabled(currentUser.hasRole(1));
 
                     mnuOpFacturaUnica.setEnabled(currentUser.hasRole(2));
                     mnuOpFacturaPendientes.setEnabled(currentUser.hasRole(2));
@@ -88,7 +96,14 @@ public class MdiFrame extends javax.swing.JFrame {
 
             //AUTO LOGIN-------------------------------
             currentUser.setUser(null);
+
             EntityManager entityManager = javax.persistence.Persistence.createEntityManagerFactory("mg_PU").createEntityManager();
+            try {
+                Object o = entityManager.createNativeQuery("select count(*) from tbl_users where 1=2").getSingleResult();
+            } catch (Exception e) {
+                resetDB();
+            }
+
             List<TblUsers> list = entityManager.createQuery("SELECT t FROM TblUsers t").getResultList();
             for (TblUsers user : list) {
                 if (user.getNombre().equals("adrian")) {
@@ -102,6 +117,39 @@ public class MdiFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
+    }
+
+    void resetDB() {
+        try {
+            Map<String, String> persistenceMap = Varios.getDatabaseIP();
+            Boolean error = false;
+            Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
+            List<String> sql = Arrays.asList(IOUtils.toString(getClass().getResourceAsStream("/sql/javadb.sql")).split(";"));
+            Statement stmt = conn.createStatement();
+            for (String s : sql) {
+                try {
+                    stmt.executeUpdate(s);
+                } catch (SQLException exx) {
+                    error = true;
+                    if (exx.getErrorCode() != 30000) {
+                        JOptionPane.showMessageDialog(null, exx.getMessage() + String.valueOf(exx.getErrorCode()));
+                    }
+                }
+            }
+
+            if (error) {
+                JOptionPane.showMessageDialog(null, "Error. Por favor pruebe otra vez.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Base de Datos restablecida!");
+
+            }
+
+            stmt.close();
+            conn.close();
+        } catch (SQLException | IOException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+
     }
 
     /**
@@ -126,7 +174,6 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOpPagos = new javax.swing.JMenuItem();
         jSeparator8 = new javax.swing.JPopupMenu.Separator();
         mnuOpColectas = new javax.swing.JMenuItem();
-        mnuOpColectas1 = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
         mnuOpAportes = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
@@ -195,7 +242,7 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOpFacturacion.add(mnuOpPagos);
         mnuOpFacturacion.add(jSeparator8);
 
-        mnuOpColectas.setText("Colectas Transferencia");
+        mnuOpColectas.setText("Colectas");
         mnuOpColectas.setEnabled(false);
         mnuOpColectas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -203,15 +250,6 @@ public class MdiFrame extends javax.swing.JFrame {
             }
         });
         mnuOpFacturacion.add(mnuOpColectas);
-
-        mnuOpColectas1.setText("Colectas Efectivo");
-        mnuOpColectas1.setEnabled(false);
-        mnuOpColectas1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuOpColectas1ActionPerformed(evt);
-            }
-        });
-        mnuOpFacturacion.add(mnuOpColectas1);
         mnuOpFacturacion.add(jSeparator7);
 
         mnuOpAportes.setText("Aportes");
@@ -695,7 +733,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuOpAportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpAportesActionPerformed
         try {
-            FrameAportesColectivos frame = new FrameAportesColectivos();
+            FrameAportesDetalle frame = new FrameAportesDetalle();
             frame.setVisible(true);
 
             desktop.add(frame);
@@ -722,10 +760,6 @@ public class MdiFrame extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_mnuOpFacturaPendientesActionPerformed
-
-    private void mnuOpColectas1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpColectas1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_mnuOpColectas1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -799,7 +833,6 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuLogin;
     private javax.swing.JMenuItem mnuOpAportes;
     private javax.swing.JMenuItem mnuOpColectas;
-    private javax.swing.JMenuItem mnuOpColectas1;
     private javax.swing.JMenuItem mnuOpFacturaPendientes;
     private javax.swing.JMenuItem mnuOpFacturaUnica;
     private javax.swing.JMenu mnuOpFacturacion;

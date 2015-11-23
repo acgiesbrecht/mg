@@ -71,7 +71,7 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="javax.persistence.Query" name="queryEventosDetalle">
+    <Component class="javax.persistence.Query" name="queryEventoDetalle">
       <Properties>
         <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId ORDER BY t.id"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
@@ -79,16 +79,16 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="queryEventosDetalle.setParameter(&quot;eventoId&quot;, null) ;"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="queryEventoDetalle.setParameter(&quot;eventoId&quot;, null) ;"/>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value=" "/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="java.util.List" name="listEventosDetalle">
+    <Component class="java.util.List" name="listEventoDetalle">
       <Properties>
         <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="queryEventosDetalle"/>
+          <ComponentRef name="queryEventoDetalle"/>
         </Property>
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
@@ -329,7 +329,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="listEventosDetalle" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="listEventoDetalle" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${idEntidad}">
                 <BindingParameter name="NAME" value="Donador"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.lacreacion.mg.domain.TblEntidades.class"/>
@@ -405,6 +405,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Nuevo"/>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="listEventos" sourcePath="${size!=null}" target="newButton" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newButtonActionPerformed"/>
       </Events>
@@ -589,6 +592,8 @@
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
           <Format subtype="1" type="0"/>
         </Property>
+        <Property name="horizontalAlignment" type="int" value="11"/>
+        <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
       <BindingProperties>
         <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.monto}" target="montoField" targetPath="value" updateStrategy="0" immediately="false">

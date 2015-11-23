@@ -50,7 +50,7 @@
     </Component>
     <Component class="javax.persistence.Query" name="queryEventos">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventos t WHERE t.idEventoTipo = 3 AND t.idGrupo IN :grupos ORDER BY t.fecha"/>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 3 AND t.idGrupo IN :grupos ORDER BY t.fecha"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="entityManager"/>
         </Property>
@@ -74,7 +74,7 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="javax.persistence.Query" name="queryEventosDetalle">
+    <Component class="javax.persistence.Query" name="queryEventoDetalle">
       <Properties>
         <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId ORDER BY t.id"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
@@ -82,16 +82,16 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="queryEventosDetalle.setParameter(&quot;eventoId&quot;, null) ;"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="queryEventoDetalle.setParameter(&quot;eventoId&quot;, null) ;"/>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value=" "/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="java.util.List" name="listEventosDetalle">
+    <Component class="java.util.List" name="listEventoDetalle">
       <Properties>
         <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="queryEventosDetalle"/>
+          <ComponentRef name="queryEventoDetalle"/>
         </Property>
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
@@ -128,6 +128,28 @@
     </Component>
     <Component class="java.util.List" name="tblCategoriasArticulosList">
       <Properties>
+        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
+          <ComponentRef name="tblCategoriasArticulosQuery"/>
+        </Property>
+        <Property name="observable" type="boolean" value="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.lacreacion.mg.domain.TblCategoriasArticulos&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.persistence.Query" name="tblFormasDePagoQuery">
+      <Properties>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblFormasDePago t ORDER BY t.id"/>
+        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
+          <ComponentRef name="entityManager"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="java.util.List" name="tblFormasDePagoList">
+      <Properties>
+        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
+          <ComponentRef name="tblFormasDePagoQuery"/>
+        </Property>
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
@@ -164,7 +186,7 @@
                           <Component id="masterScrollPane" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="62" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="newButton" min="-2" pref="105" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="saveButton" min="-2" pref="99" max="-2" attributes="0"/>
@@ -201,6 +223,8 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="montoField" min="-2" pref="124" max="-2" attributes="0"/>
+                          <Component id="cboForma" min="-2" pref="324" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="idMiembroLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -210,10 +234,8 @@
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="cboEntidad" min="-2" pref="324" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="montoField" min="-2" pref="124" max="-2" attributes="0"/>
-                          <Component id="cboForma" min="-2" pref="324" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="427" max="-2" attributes="0"/>
                       <Component id="jButton2" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -235,27 +257,25 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="montoLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cboForma" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="montoField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="montoLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="montoLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cboForma" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
                   <Group type="103" alignment="1" groupAlignment="0" attributes="0">
@@ -272,7 +292,7 @@
               </Group>
               <EmptySpace min="-2" pref="97" max="-2" attributes="0"/>
               <Component id="dateTableCellRenderer1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="20" max="32767" attributes="0"/>
+              <EmptySpace pref="22" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -312,8 +332,8 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="listEventosDetalle" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
-              <Subbinding sourcePath="${idMiembro}">
+            <BindingProperty name="elements" source="listEventoDetalle" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
+              <Subbinding sourcePath="${idEntidad}">
                 <BindingParameter name="NAME" value="Miembro"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.lacreacion.mg.domain.TblEntidades.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
@@ -400,7 +420,7 @@
         <Property name="text" type="java.lang.String" value="Eliminar"/>
       </Properties>
       <BindingProperties>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="deleteButton" targetPath="enabled" updateStrategy="1" immediately="false"/>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="deleteButton" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteButtonActionPerformed"/>
@@ -568,6 +588,8 @@
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
           <Format subtype="1" type="0"/>
         </Property>
+        <Property name="horizontalAlignment" type="int" value="11"/>
+        <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
       <BindingProperties>
         <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.monto}" target="montoField" targetPath="value" updateStrategy="0" immediately="false">
@@ -604,14 +626,10 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
-            <StringItem index="0" value="Transferencia"/>
-            <StringItem index="1" value="Efectivo"/>
-          </StringArray>
-        </Property>
       </Properties>
       <BindingProperties>
+        <BindingProperty name="elements" source="tblFormasDePagoList" target="cboForma" targetPath="elements" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idFormaDePagoPreferida}" target="cboForma" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="cboForma" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>

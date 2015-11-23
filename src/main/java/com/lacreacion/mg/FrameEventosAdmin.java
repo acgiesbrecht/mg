@@ -8,6 +8,7 @@ package com.lacreacion.mg;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.lacreacion.mg.domain.TblEventoTipos;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Varios;
 import java.awt.EventQueue;
@@ -183,6 +184,8 @@ public class FrameEventosAdmin extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idEventoTipo}"), cboEventoTipo, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
+        cboEventoTipo.addActionListener(formListener);
+
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.porcentajeAporte}"), sldCatTrib, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
@@ -318,6 +321,9 @@ public class FrameEventosAdmin extends JInternalFrame {
             else if (evt.getSource() == deleteButton) {
                 FrameEventosAdmin.this.deleteButtonActionPerformed(evt);
             }
+            else if (evt.getSource() == cboEventoTipo) {
+                FrameEventosAdmin.this.cboEventoTipoActionPerformed(evt);
+            }
         }
 
         public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -386,6 +392,14 @@ public class FrameEventosAdmin extends JInternalFrame {
         lblDonacion.setText(String.valueOf(100 - sldCatTrib.getValue()) + "%");
         lblAporte.setText(String.valueOf(sldCatTrib.getValue()) + "%");
     }//GEN-LAST:event_sldCatTribStateChanged
+
+    private void cboEventoTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEventoTipoActionPerformed
+        if (cboEventoTipo.getSelectedItem() != null) {
+            if (((TblEventoTipos) cboEventoTipo.getSelectedItem()).getDescripcion().equals("Aporte")) {
+                sldCatTrib.setValue(100);
+            }
+        }
+    }//GEN-LAST:event_cboEventoTipoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboEventoTipo;

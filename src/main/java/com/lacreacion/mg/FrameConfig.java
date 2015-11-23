@@ -273,41 +273,55 @@ public class FrameConfig extends javax.swing.JInternalFrame {
 
     private void cmdResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdResetActionPerformed
         try {
-            Boolean error = false;
+
             int reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar todos los datos y limpiar la base de datos?", title, JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
-                Map<String, String> persistenceMap = Varios.getDatabaseIP();
-
-                Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
-
-                List<String> sql = Arrays.asList(IOUtils.toString(getClass().getResourceAsStream("/sql/javadb.sql")).split(";"));
-
-                Statement stmt = conn.createStatement();
-                for (String s : sql) {
-                    System.out.println(s);
-                    stmt.executeUpdate(s);
-                }
-                /*sql.stream().forEach(s -> {
-                    try {
-                        stmt.executeUpdate(s);
-                    } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-                        Logger.getLogger(FrameConfig.class.getName()).log(Level.SEVERE, null, ex);
-                        error = true;
-                    }
-                });*/
-
-                JOptionPane.showMessageDialog(null, "Base de Datos restablecida!");
-
-                stmt.close();
-                conn.close();
-
+                resetDB();
             }
-        } catch (SQLException | IOException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             Logger.getLogger(FrameConfig.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_cmdResetActionPerformed
+
+    void resetDB() {
+        try {
+            Map<String, String> persistenceMap = Varios.getDatabaseIP();
+            Boolean error = false;
+            Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
+            List<String> sql = Arrays.asList(IOUtils.toString(getClass().getResourceAsStream("/sql/javadb.sql")).split(";"));
+            Statement stmt = conn.createStatement();
+            for (String s : sql) {
+                try {
+                    stmt.executeUpdate(s);
+                } catch (SQLException exx) {
+                    error = true;
+                    JOptionPane.showMessageDialog(null, exx.getMessage() + String.valueOf(exx.getErrorCode()));
+                }
+            }
+            /*sql.stream().forEach(s -> {
+             try {
+             stmt.executeUpdate(s);
+             } catch (SQLException ex) {
+             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+             Logger.getLogger(FrameConfig.class.getName()).log(Level.SEVERE, null, ex);
+             error = true;
+             }
+             });*/
+            if (error) {
+                JOptionPane.showMessageDialog(null, "Error. Por favor pruebe otra vez.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Base de Datos restablecida!");
+
+            }
+
+            stmt.close();
+            conn.close();
+        } catch (SQLException | IOException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+
+    }
 
     /**
      * @param args the command line arguments

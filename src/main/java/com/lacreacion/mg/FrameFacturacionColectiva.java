@@ -78,8 +78,8 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblFacturas t ORDER BY t.nro");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
-        queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
-        listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
+        queryEntidades = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
+        listEntidades = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEntidades.getResultList());
         queryTimbrados = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTimbrados t WHERE t.activo = true");
         listTimbrados = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTimbrados.getResultList());
         rucTableCellRenderer1 = new com.lacreacion.mg.utils.RucTableCellRenderer();
@@ -151,16 +151,15 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(552, Short.MAX_VALUE)
-                .addComponent(imprimirButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancelarButton)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 585, Short.MAX_VALUE)
+                        .addComponent(imprimirButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cancelarButton))
+                    .addComponent(masterScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 837, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 837, Short.MAX_VALUE)
-                    .addContainerGap()))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelarButton, imprimirButton});
@@ -168,16 +167,13 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(329, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(imprimirButton))
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(56, Short.MAX_VALUE)))
         );
 
         bindingGroup.bind();
@@ -271,25 +267,25 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     + " COALESCE(recibos.r_donacion,0) AS R_DONACION,"
                     + " COALESCE(facturas.f_aporte,0) AS F_APORTE,"
                     + " COALESCE(facturas.f_donacion,0) AS F_DONACION"
-                    + " FROM TBL_MIEMBROS m"
+                    + " FROM TBL_ENTIDADES m"
                     + "     LEFT JOIN (SELECT m.id, COALESCE(SUM(t.monto*t.porcentaje_aporte/100),0) AS t_aporte,"
                     + "     COALESCE(SUM(t.monto*(100-t.porcentaje_aporte)/100),0) AS t_donacion"
-                    + "     FROM TBL_MIEMBROS m"
-                    + "     LEFT JOIN TBL_TRANSFERENCIAS t ON m.id = t.id_miembro "
+                    + "     FROM TBL_ENTIDADES m"
+                    + "     LEFT JOIN TBL_TRANSFERENCIAS t ON m.id = t.id_entidad "
                     + "     WHERE YEAR(t.fechahora) >= " + ano
                     + "     GROUP BY m.id"
                     + "	) transferencias ON m.id = transferencias.id"
                     + "     LEFT JOIN (SELECT m.id, COALESCE(SUM(r.monto*r.porcentaje_aporte/100),0) AS r_aporte,"
                     + "     COALESCE(SUM(r.monto*(100-r.porcentaje_aporte)/100),0) AS r_donacion "
-                    + "     FROM TBL_MIEMBROS m"
-                    + "     LEFT JOIN TBL_RECIBOS r ON m.id = r.id_miembro "
+                    + "     FROM TBL_ENTIDADES m"
+                    + "     LEFT JOIN TBL_RECIBOS r ON m.id = r.id_entidad "
                     + "     WHERE YEAR(r.fechahora) >= " + ano
                     + "     GROUP BY m.id"
                     + "	) recibos ON m.id = recibos.id"
                     + "     LEFT JOIN (SELECT m.id, COALESCE(SUM(f.importe_aporte),0) AS f_aporte, 		"
                     + "     COALESCE(SUM(f.importe_donacion),0) AS f_donacion 		"
-                    + "     FROM TBL_MIEMBROS m"
-                    + "     LEFT JOIN TBL_FACTURAS f ON m.id = f.id_miembro "
+                    + "     FROM TBL_ENTIDADES m"
+                    + "     LEFT JOIN TBL_FACTURAS f ON m.id = f.id_entidad "
                     + "     WHERE YEAR(f.fechahora) >= " + ano
                     + "     GROUP BY m.id"
                     + "	) facturas ON m.id = facturas.id", PagosRealizados.class).getResultList();
@@ -333,13 +329,13 @@ public class FrameFacturacionColectiva extends JInternalFrame {
     private com.lacreacion.mg.utils.FacturaNroTableCellRenderer facturaNroTableCellRenderer1;
     private javax.swing.JButton imprimirButton;
     private java.util.List<com.lacreacion.mg.domain.TblFacturas> list;
-    private java.util.List<com.lacreacion.mg.domain.TblEntidades> listMiembros;
+    private java.util.List<com.lacreacion.mg.domain.TblEntidades> listEntidades;
     private java.util.List<com.lacreacion.mg.domain.TblTimbrados> listTimbrados;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private com.lacreacion.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query query;
-    private javax.persistence.Query queryMiembros;
+    private javax.persistence.Query queryEntidades;
     private javax.persistence.Query queryTimbrados;
     private com.lacreacion.mg.utils.RucTableCellRenderer rucTableCellRenderer1;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
