@@ -422,7 +422,8 @@ public class FrameRecibos extends JInternalFrame {
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
         if (masterTable.getSelectedRow() > 0) {
             try {
-                Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
+                //Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
+                Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
                 Map parameters = new HashMap();
                 parameters.put("recibo_id", Integer.valueOf(idField.getText()));
 
