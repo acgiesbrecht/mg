@@ -11,7 +11,7 @@ import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblEventos;
 import com.lacreacion.mg.utils.CurrentUser;
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -51,7 +51,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
                 true);//iconifiable
         try {
 
-            persistenceMap = Varios.getDatabaseIP();
+            persistenceMap = Utils.getInstance().getDatabaseIP();
             initComponents();
 
             AutoCompleteSupport support = AutoCompleteSupport.install(cboFechaRemate, GlazedLists.eventListOf(listEventos.toArray()));

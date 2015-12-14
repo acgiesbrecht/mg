@@ -8,7 +8,7 @@ package com.lacreacion.mg;
 import com.lacreacion.mg.domain.TblGrupos;
 import com.lacreacion.mg.domain.TblRoles;
 import com.lacreacion.mg.domain.TblUsers;
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
 import java.beans.Beans;
@@ -43,7 +43,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
                 true);//iconifiable
 
         try {
-            persistenceMap = Varios.getDatabaseIP();
+            persistenceMap = Utils.getInstance().getDatabaseIP();
             initComponents();
             passwordField.setVisible(false);
             if (!Beans.isDesignTime()) {
@@ -54,7 +54,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
                     jlistRoles.getSelectionModel().clearSelection();
                     List<TblRoles> selectedUserRoles = list.get(masterTable.getSelectedRow()).getTblRolesList();
                     for (TblRoles role : selectedUserRoles) {
-                        int index = Varios.getIndexOfModel(jlistRoles.getModel(), role);
+                        int index = Utils.getInstance().getIndexOfModel(jlistRoles.getModel(), role);
                         if (index >= 0) {
                             jlistRoles.addSelectionInterval(index, index);
                         }
@@ -62,7 +62,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
                     jlistGrupos.getSelectionModel().clearSelection();
                     List<TblGrupos> selectedUserGrupos = list.get(masterTable.getSelectedRow()).getTblGruposList();
                     for (TblGrupos grupo : selectedUserGrupos) {
-                        int index = Varios.getIndexOfModel(jlistGrupos.getModel(), grupo);
+                        int index = Utils.getInstance().getIndexOfModel(jlistGrupos.getModel(), grupo);
                         if (index >= 0) {
                             jlistGrupos.addSelectionInterval(index, index);
                         }

@@ -10,7 +10,7 @@ import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.lacreacion.mg.domain.TblEventoTipos;
 import com.lacreacion.mg.utils.CurrentUser;
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import java.awt.EventQueue;
 import java.beans.Beans;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class FrameEventosAdmin extends JInternalFrame {
                 true, //closable
                 true, //maximizable
                 true);//iconifiable
-        persistenceMap = Varios.getDatabaseIP();
+        persistenceMap = Utils.getInstance().getDatabaseIP();
 
         //System.out.print(currentUser.getUser().getTblGruposList().size());
         initComponents();

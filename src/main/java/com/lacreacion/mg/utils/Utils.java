@@ -7,15 +7,9 @@ package com.lacreacion.mg.utils;
 
 import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblEventoCuotas;
-import com.lacreacion.mg.domain.TblFacturas;
 import com.lacreacion.mg.domain.models.CuotaModel;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.awt.Component;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,22 +17,28 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.prefs.Preferences;
 import javax.swing.DefaultListModel;
-import javax.swing.JOptionPane;
 import javax.swing.ListModel;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
-import org.apache.commons.io.IOUtils;
 
 /**
  *
  * @author user
  */
-public class Varios {
+public class Utils extends Component {
 
-    public static List<CuotaModel> getCuotas(TblEventoCuotas eventoCuotas, Integer monto) {
+    private static Utils utils = new Utils();
+
+    /* A private Constructor prevents any other
+     * class from instantiating.
+     */
+    private Utils() {
+    }
+
+    /* Static 'instance' method */
+    public static Utils getInstance() {
+        return utils;
+    }
+
+    public List<CuotaModel> getCuotas(TblEventoCuotas eventoCuotas, Integer monto) {
         List<Date> fechas = getCuotasFechas(eventoCuotas);
         List<CuotaModel> listCuotas = new ArrayList<>();
         float divi = monto * 1.0F / fechas.size();
@@ -64,7 +64,7 @@ public class Varios {
         return listCuotas;
     }
 
-    public static List<Date> getCuotasFechas(TblEventoCuotas cuotas) {
+    public List<Date> getCuotasFechas(TblEventoCuotas cuotas) {
         List<Date> cuotasList = new ArrayList<>();
         if (cuotas.getFecha1() != null) {
             cuotasList.add(cuotas.getFecha1());
@@ -81,7 +81,7 @@ public class Varios {
         return cuotasList;
     }
 
-    public static Map<String, String> getDatabaseIP() {
+    public Map<String, String> getDatabaseIP() {
         Properties p = System.getProperties();
         p.setProperty("derby.system.home", Preferences.userRoot().node("MG").get("Datadir", "C:\\javadb"));
         p.setProperty("derby.drda.host", "0.0.0.0");
@@ -95,7 +95,7 @@ public class Varios {
         return persistenceMap;
     }
 
-    public static int getIndexOfModel(ListModel model, Object value) {
+    public int getIndexOfModel(ListModel model, Object value) {
         if (value == null) {
             return -1;
         }
@@ -110,7 +110,7 @@ public class Varios {
         return -1;
     }
 
-    public static String getNombreCompleto(TblEntidades ent) {
+    public String getNombreCompleto(TblEntidades ent) {
         return ent.getNombres() + " " + ent.getApellidos();
     }
 

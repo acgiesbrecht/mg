@@ -118,7 +118,7 @@ public class TblFormasDePago implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblFormasDePago[ id=" + id + " ]";
+        return descripcion;
     }
 
 }

@@ -121,7 +121,7 @@ public class TblGrupos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblGrupos[ id=" + id + " ]";
+        return descripcion;
     }
 
 }

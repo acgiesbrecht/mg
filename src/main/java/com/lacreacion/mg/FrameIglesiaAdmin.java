@@ -6,7 +6,7 @@
 package com.lacreacion.mg;
 
 import com.lacreacion.mg.domain.TblIglesia;
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.HashMap;
@@ -53,7 +53,7 @@ public class FrameIglesiaAdmin extends javax.swing.JInternalFrame {
                 true, //maximizable
                 true);//iconifiable
 
-        persistenceMap = Varios.getDatabaseIP();
+        persistenceMap = Utils.getInstance().getDatabaseIP();
         initComponents();
         TblIglesia iglesia = entityManager.find(TblIglesia.class, 1);
         if (iglesia != null) {

@@ -9,7 +9,7 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.lacreacion.mg.utils.CurrentUser;
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
 import java.beans.Beans;
@@ -52,7 +52,7 @@ public class FrameRecibos extends JInternalFrame {
                 true, //maximizable
                 true);//iconifiable
         try {
-            persistenceMap = Varios.getDatabaseIP();
+            persistenceMap = Utils.getInstance().getDatabaseIP();
             initComponents();
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();

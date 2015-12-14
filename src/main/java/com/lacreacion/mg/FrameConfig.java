@@ -5,7 +5,7 @@
  */
 package com.lacreacion.mg;
 
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -364,7 +364,7 @@ public class FrameConfig extends javax.swing.JInternalFrame {
 
     void resetDB() {
         try {
-            Map<String, String> persistenceMap = Varios.getDatabaseIP();
+            Map<String, String> persistenceMap = Utils.getInstance().getDatabaseIP();
             Boolean error = false;
             Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
             List<String> sql = Arrays.asList(IOUtils.toString(getClass().getResourceAsStream("/sql/javadb.sql")).split(";"));

@@ -5,7 +5,7 @@
  */
 package com.lacreacion.mg;
 
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import java.awt.EventQueue;
 import java.beans.Beans;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class FrameGruposAdmin extends JInternalFrame {
                 true, //maximizable
                 true);//iconifiable
         try {
-            persistenceMap = Varios.getDatabaseIP();
+            persistenceMap = Utils.getInstance().getDatabaseIP();
             initComponents();
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();

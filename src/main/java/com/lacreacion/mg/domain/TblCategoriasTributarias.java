@@ -94,7 +94,7 @@ public class TblCategoriasTributarias implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblCategoriasTributarias[ id=" + id + " ]";
+        return descripcion;
     }
 
 }

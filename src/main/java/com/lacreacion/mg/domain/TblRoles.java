@@ -108,7 +108,7 @@ public class TblRoles implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblRoles[ id=" + id + " ]";
+        return descripcion;
     }
 
 }

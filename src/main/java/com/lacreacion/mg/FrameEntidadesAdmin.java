@@ -10,7 +10,7 @@ import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.utils.CurrentUser;
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import com.lacreacion.utils.CalcDV;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
@@ -57,7 +57,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
 
         try {
 
-            persistenceMap = Varios.getDatabaseIP();
+            persistenceMap = Utils.getInstance().getDatabaseIP();
             initComponents();
             txtAporteBase.setValue(0);
             if (!Beans.isDesignTime()) {

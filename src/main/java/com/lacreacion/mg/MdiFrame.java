@@ -7,7 +7,7 @@ package com.lacreacion.mg;
 
 import com.lacreacion.mg.domain.TblUsers;
 import com.lacreacion.mg.utils.CurrentUser;
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class MdiFrame extends javax.swing.JFrame {
      */
     public MdiFrame() {
         try {
-            persistenceMap = Varios.getDatabaseIP();
+            persistenceMap = Utils.getInstance().getDatabaseIP();
 
             if (Boolean.parseBoolean(Preferences.userRoot().node("MG").get("isServer", "true"))) {
                 NetworkServerControl server = new NetworkServerControl();
@@ -121,7 +121,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     void resetDB() {
         try {
-            Map<String, String> persistenceMap = Varios.getDatabaseIP();
+            Map<String, String> persistenceMap = Utils.getInstance().getDatabaseIP();
             Boolean error = false;
             Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
             List<String> sql = Arrays.asList(IOUtils.toString(getClass().getResourceAsStream("/sql/javadb.sql")).split(";"));

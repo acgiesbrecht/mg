@@ -17,7 +17,7 @@ import com.lacreacion.mg.domain.TblEventos;
 import com.lacreacion.mg.domain.TblRecibos;
 import com.lacreacion.mg.domain.TblTransferencias;
 import com.lacreacion.mg.utils.CurrentUser;
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import java.awt.Color;
 import java.awt.KeyboardFocusManager;
 import java.beans.PropertyChangeEvent;
@@ -68,7 +68,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 true);//iconifiable
         try {
 
-            persistenceMap = Varios.getDatabaseIP();
+            persistenceMap = Utils.getInstance().getDatabaseIP();
             initComponents();
             txtCtaCte.setEnabled(false);
             cboEntidad.setEnabled(false);
@@ -559,7 +559,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
 
                 remateCuotas = entityManager.find(TblEventoCuotas.class, remateId);
                 String fechas = "Las transferencias seran imprimidas con fechas de";
-                listFechasCuotas = Varios.getCuotasFechas(remateCuotas);
+                listFechasCuotas = Utils.getInstance().getCuotasFechas(remateCuotas);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 for (Date fecha : listFechasCuotas) {
                     fechas += ", " + sdf.format(fecha);
@@ -711,7 +711,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             Integer transferenciaMonto = ((Number) txtTransferencia.getValue()).intValue();
             if (transferenciaMonto > 0) {
                 //List<CuotaModel> cuotasList = Varios.getCuotas(remateCuotas, Integer.valueOf(txtTransferencia1.getText()));
-                List<CuotaModel> cuotasList = Varios.getCuotas(remateCuotas, transferenciaMonto);
+                List<CuotaModel> cuotasList = Utils.getInstance().getCuotas(remateCuotas, transferenciaMonto);
                 for (CuotaModel cuota : cuotasList) {
                     TblTransferencias transferencia = new TblTransferencias();
                     transferencia.setFechahora(cuota.getFecha());

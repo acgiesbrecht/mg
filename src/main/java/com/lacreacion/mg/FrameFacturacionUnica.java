@@ -12,7 +12,7 @@ import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblFacturas;
 import com.lacreacion.mg.utils.CurrentUser;
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import com.lacreacion.utils.CalcDV;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -57,7 +57,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                 true);//iconifiable
         try {
 
-            persistenceMap = Varios.getDatabaseIP();
+            persistenceMap = Utils.getInstance().getDatabaseIP();
             initComponents();
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();

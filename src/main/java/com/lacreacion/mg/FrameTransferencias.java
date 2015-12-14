@@ -10,7 +10,7 @@ import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.utils.CurrentUser;
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.beans.Beans;
@@ -49,7 +49,7 @@ public class FrameTransferencias extends JInternalFrame {
                 true, //closable
                 true, //maximizable
                 true);//iconifiable
-        persistenceMap = Varios.getDatabaseIP();
+        persistenceMap = Utils.getInstance().getDatabaseIP();
         initComponents();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();

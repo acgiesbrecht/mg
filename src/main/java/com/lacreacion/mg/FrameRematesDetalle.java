@@ -18,7 +18,7 @@ import com.lacreacion.mg.domain.TblEventos;
 import com.lacreacion.mg.domain.TblTransferencias;
 import com.lacreacion.mg.domain.models.CuotaModel;
 import com.lacreacion.mg.utils.CurrentUser;
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
@@ -68,7 +68,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                 true, //maximizable
                 true);//iconifiable
         try {
-            persistenceMap = Varios.getDatabaseIP();
+            persistenceMap = Utils.getInstance().getDatabaseIP();
             initComponents();
             this.dateTimeTableCellRenderer1.setEnProceso(true);
             this.numberCellRenderer1.setEnProceso(true);
@@ -856,7 +856,7 @@ public class FrameRematesDetalle extends JInternalFrame {
             Integer transferenciaMonto = ((Number) montoField.getValue()).intValue();
             if (transferenciaMonto > 0) {
                 //List<CuotaModel> cuotasList = Varios.getCuotas(remateCuotas, Integer.valueOf(txtTransferencia1.getText()));
-                List<CuotaModel> cuotasList = Varios.getCuotas(remateCuotas, transferenciaMonto);
+                List<CuotaModel> cuotasList = Utils.getInstance().getCuotas(remateCuotas, transferenciaMonto);
                 for (CuotaModel cuota : cuotasList) {
                     TblTransferencias transferencia = new TblTransferencias();
                     transferencia.setFechahora(cuota.getFecha());

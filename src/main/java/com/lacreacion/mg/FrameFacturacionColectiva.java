@@ -9,7 +9,7 @@ import com.lacreacion.mg.domain.models.PagosRealizados;
 import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblFacturas;
 import com.lacreacion.mg.utils.CurrentUser;
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import java.awt.EventQueue;
 import java.beans.Beans;
 import java.sql.Connection;
@@ -49,7 +49,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 true);//iconifiable
         try {
 
-            persistenceMap = Varios.getDatabaseIP();
+            persistenceMap = Utils.getInstance().getDatabaseIP();
             initComponents();
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();

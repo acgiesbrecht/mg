@@ -108,7 +108,7 @@ public class TblMiembrosRelacionesTipos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblMiembrosRelacionesTipos[ id=" + id + " ]";
+        return descripcion;
     }
 
 }

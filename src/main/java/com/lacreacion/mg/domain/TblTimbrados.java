@@ -179,7 +179,7 @@ public class TblTimbrados implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblTimbrados[ nro=" + nro + " ]";
+        return nro.toString();
     }
 
 }

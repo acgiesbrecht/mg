@@ -5,7 +5,7 @@
  */
 package com.lacreacion.mg;
 
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import java.awt.EventQueue;
 import java.beans.Beans;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class FrameCategoriasArticulos extends JInternalFrame {
                 true, //closable
                 true, //maximizable
                 true);//iconifiable
-        persistenceMap = Varios.getDatabaseIP();
+        persistenceMap = Utils.getInstance().getDatabaseIP();
         initComponents();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();

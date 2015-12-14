@@ -17,7 +17,7 @@ import com.lacreacion.mg.domain.TblEventos;
 import com.lacreacion.mg.domain.TblRecibos;
 import com.lacreacion.mg.domain.TblTransferencias;
 import com.lacreacion.mg.utils.CurrentUser;
-import com.lacreacion.mg.utils.Varios;
+import com.lacreacion.mg.utils.Utils;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
@@ -58,7 +58,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                 true, //maximizable
                 true);//iconifiable
         try {
-            persistenceMap = Varios.getDatabaseIP();
+            persistenceMap = Utils.getInstance().getDatabaseIP();
 
             initComponents();
             this.dateTimeTableCellRenderer1.setEnProceso(true);

@@ -232,7 +232,7 @@ public class TblUsers implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblUsers[ id=" + id + " ]";
+        return nombre;
     }
 
 }
