@@ -20,8 +20,6 @@ import java.awt.KeyboardFocusManager;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,8 +34,8 @@ import javax.swing.SwingUtilities;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -490,7 +488,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
 
-            print((int) txtNro.getValue());
+            print(factura);
 
             refresh();
 
@@ -500,23 +498,27 @@ public class FrameFacturacionUnica extends JInternalFrame {
         }
     }//GEN-LAST:event_imprimirButtonActionPerformed
 
-    void print(Integer nro) {
+    void print(TblFacturas factura) {
         try {
-            //Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
-            Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
+
             Map parameters = new HashMap();
-            parameters.put("factura_id", nro);
-            //parameters.put("logo", getClass().getResource("/reports/cclogo200.png").getPath());
+            parameters.put("factura_id", factura.getNro());
+            parameters.put("fechahora", factura.getFechahora());
+            parameters.put("razon_social", factura.getRazonSocial());
+            parameters.put("ruc", factura.getRuc());
+            parameters.put("importe_aporte", factura.getImporteAporte());
+            parameters.put("importe_donacion", factura.getImporteDonacion());
+
             parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
             parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
             parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
             //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/factura.jrxml"));
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
-            //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-            //jReportsViewer.setVisible(true);
-            JasperPrintManager.printReport(jasperPrint, false);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters);
+            JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
+            jReportsViewer.setVisible(true);
+            //JasperPrintManager.printReport(jasperPrint, false);
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());

@@ -22,6 +22,7 @@ import com.lacreacion.mg.utils.Varios;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -30,15 +31,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
+import javax.swing.InputMap;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 /**
@@ -53,6 +58,9 @@ public class FrameColectasDetalle extends JInternalFrame {
     CurrentUser currentUser = CurrentUser.getInstance();
     TblEventoTipos idEventoTipo;
 
+    Set forwardKeys = getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS);
+    Set newForwardKeys = new HashSet(forwardKeys);
+
     public FrameColectasDetalle() {
         super("Colectas",
                 true, //resizable
@@ -62,6 +70,11 @@ public class FrameColectasDetalle extends JInternalFrame {
         try {
             persistenceMap = Varios.getDatabaseIP();
 
+            newForwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
+            setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, newForwardKeys);
+            //InputMap im = newButton.getInputMap(WIDTH).getInputMap();
+            //im.put(KeyStroke.getKeyStroke("ENTER"), "pressed");
+            //im.put(KeyStroke.getKeyStroke("released ENTER"), "released");
             initComponents();
             this.dateTimeTableCellRenderer1.setEnProceso(true);
             this.numberCellRenderer1.setEnProceso(true);

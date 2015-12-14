@@ -7,6 +7,7 @@ package com.lacreacion.mg.utils;
 
 import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblEventoCuotas;
+import com.lacreacion.mg.domain.TblFacturas;
 import com.lacreacion.mg.domain.models.CuotaModel;
 import java.io.IOException;
 import java.sql.Connection;
@@ -24,6 +25,11 @@ import java.util.prefs.Preferences;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 import org.apache.commons.io.IOUtils;
 
 /**
