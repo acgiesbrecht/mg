@@ -200,6 +200,7 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuAdConfig = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         mnuAdInformes = new javax.swing.JMenuItem();
+        mnuAdInformes1 = new javax.swing.JMenuItem();
 
         jMenu3.setText("jMenu3");
 
@@ -410,7 +411,7 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenu2.add(mnuAdConfig);
         jMenu2.add(jSeparator5);
 
-        mnuAdInformes.setText("Informes");
+        mnuAdInformes.setText("Informes Remates");
         mnuAdInformes.setEnabled(false);
         mnuAdInformes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -418,6 +419,15 @@ public class MdiFrame extends javax.swing.JFrame {
             }
         });
         jMenu2.add(mnuAdInformes);
+
+        mnuAdInformes1.setText("Informes Colectas y Aportes");
+        mnuAdInformes1.setEnabled(false);
+        mnuAdInformes1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdInformes1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuAdInformes1);
 
         jMenuBar1.add(jMenu2);
 
@@ -761,6 +771,10 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuOpFacturaPendientesActionPerformed
 
+    private void mnuAdInformes1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdInformes1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnuAdInformes1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -824,6 +838,7 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAdGrupos;
     private javax.swing.JMenuItem mnuAdIglesia;
     private javax.swing.JMenuItem mnuAdInformes;
+    private javax.swing.JMenuItem mnuAdInformes1;
     private javax.swing.JMenuItem mnuAdMiembros;
     private javax.swing.JMenuItem mnuAdRecibos;
     private javax.swing.JMenuItem mnuAdRoles;

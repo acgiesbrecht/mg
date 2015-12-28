@@ -44,7 +44,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
      */
     public FrameInformes() {
 
-        super("Informes",
+        super("Informes Remates",
                 true, //resizable
                 true, //closable
                 true, //maximizable
@@ -130,7 +130,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel1.setText("Evento");
+        jLabel1.setText("Remate");
 
         jButton1.setText("Listado de Deudas pendientes");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
