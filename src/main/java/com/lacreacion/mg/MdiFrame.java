@@ -27,6 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.derby.drda.NetworkServerControl;
 import org.mindrot.jbcrypt.BCrypt;
@@ -791,7 +792,8 @@ public class MdiFrame extends javax.swing.JFrame {
              javax.swing.UIManager.setLookAndFeel(info.getClassName());
              break;
              }*/
-            javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+            UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(MdiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);

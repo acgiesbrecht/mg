@@ -21,6 +21,8 @@ import com.lacreacion.mg.utils.Utils;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -61,10 +63,19 @@ public class FrameAportesDetalle extends JInternalFrame {
             persistenceMap = Utils.getInstance().getDatabaseIP();
 
             initComponents();
-            this.dateTimeTableCellRenderer1.setEnProceso(true);
-            this.numberCellRenderer1.setEnProceso(true);
-            this.normalTableCellRenderer1.setEnProceso(true);
 
+            cboEntidad.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyReleased(java.awt.event.KeyEvent evt) {
+                    if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                        montoField.requestFocusInWindow();
+                    }
+                }
+            });
+            /*this.dateTimeTableCellRenderer1.setEnProceso(true);
+             this.numberCellRenderer1.setEnProceso(true);
+             this.normalTableCellRenderer1.setEnProceso(true);
+             */
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
                 entityManager1.getTransaction().begin();
@@ -215,6 +226,7 @@ public class FrameAportesDetalle extends JInternalFrame {
 
         newButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         newButton.setText("Nuevo");
+        newButton.addFocusListener(formListener);
         newButton.addActionListener(formListener);
 
         deleteButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -244,7 +256,7 @@ public class FrameAportesDetalle extends JInternalFrame {
 
         org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEntidades, cboEntidad);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idMiembro}"), cboEntidad, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idEntidad}"), cboEntidad, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboEntidad, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -321,6 +333,7 @@ public class FrameAportesDetalle extends JInternalFrame {
         montoField.addFocusListener(formListener);
         montoField.addMouseListener(formListener);
         montoField.addActionListener(formListener);
+        montoField.addKeyListener(formListener);
 
         jButton2.setText("Actualizar");
         jButton2.addActionListener(formListener);
@@ -338,6 +351,7 @@ public class FrameAportesDetalle extends JInternalFrame {
         bindingGroup.addBinding(binding);
 
         cboForma.addActionListener(formListener);
+        cboForma.addKeyListener(formListener);
 
         cmdGenerar.setText("Generar Aportes");
         cmdGenerar.setEnabled(false);
@@ -419,15 +433,15 @@ public class FrameAportesDetalle extends JInternalFrame {
                         .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(idMiembroLabel2)
                         .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(montoLabel))
-                .addGap(9, 9, 9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(montoLabel1)
                     .addComponent(cboForma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(montoLabel))
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -440,7 +454,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                             .addComponent(refreshButton))))
                 .addGap(97, 97, 97)
                 .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -496,6 +510,9 @@ public class FrameAportesDetalle extends JInternalFrame {
         }
 
         public void focusLost(java.awt.event.FocusEvent evt) {
+            if (evt.getSource() == newButton) {
+                FrameAportesDetalle.this.newButtonFocusLost(evt);
+            }
         }
 
         public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -504,6 +521,12 @@ public class FrameAportesDetalle extends JInternalFrame {
         public void keyReleased(java.awt.event.KeyEvent evt) {
             if (evt.getSource() == txtCtaCte) {
                 FrameAportesDetalle.this.txtCtaCteKeyReleased(evt);
+            }
+            else if (evt.getSource() == montoField) {
+                FrameAportesDetalle.this.montoFieldKeyReleased(evt);
+            }
+            else if (evt.getSource() == cboForma) {
+                FrameAportesDetalle.this.cboFormaKeyReleased(evt);
             }
         }
 
@@ -596,9 +619,9 @@ public class FrameAportesDetalle extends JInternalFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             int[] selected = masterTable.getSelectedRows();
-            List<com.lacreacion.mg.domain.TblEventoDetalle> toRemove = new ArrayList<>(selected.length);
+            List<TblEventoDetalle> toRemove = new ArrayList<>(selected.length);
             for (int idx = 0; idx < selected.length; idx++) {
-                com.lacreacion.mg.domain.TblEventoDetalle t = listEventoDetalle.get(masterTable.convertRowIndexToModel(selected[idx]));
+                TblEventoDetalle t = listEventoDetalle.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
                 entityManager.remove(t);
             }
@@ -608,7 +631,7 @@ public class FrameAportesDetalle extends JInternalFrame {
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+    private void newDetalle() {
         try {
             TblEventoDetalle t = new TblEventoDetalle();
             entityManager.persist(t);
@@ -624,6 +647,10 @@ public class FrameAportesDetalle extends JInternalFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
+    }
+
+    private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        newDetalle();
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
@@ -687,17 +714,18 @@ public class FrameAportesDetalle extends JInternalFrame {
     }
     private void txtCtaCteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyReleased
         try {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                cboEntidad.requestFocusInWindow();
+            }
             txtCtaCte.setBackground(Color.white);
             if (txtCtaCte.getText().length() > 4) {
                 List<TblEntidades> list = listEntidades;
                 Optional<TblEntidades> value = list.stream().filter(a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
                         .findFirst();
-                System.out.println(Integer.valueOf(txtCtaCte.getText()));
-                System.out.println(value.isPresent());
                 if (value.isPresent()) {
                     cboEntidad.setSelectedItem(value.get());
                     txtCtaCte.setBackground(Color.green);
-                    saveButton.requestFocus();
+                    montoField.requestFocus();
                 }
 
             }
@@ -764,6 +792,7 @@ public class FrameAportesDetalle extends JInternalFrame {
     private void cboEntidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEntidadActionPerformed
         if (cboEntidad.getSelectedItem() != null) {
             txtCtaCte.setText(((TblEntidades) cboEntidad.getSelectedItem()).getCtacte().toString());
+            montoField.requestFocusInWindow();
         } else {
             txtCtaCte.setText("");
         }
@@ -781,6 +810,11 @@ public class FrameAportesDetalle extends JInternalFrame {
         try {
             if (cboFechaAporte.getSelectedItem() != null) {
                 TblEventos currEvento = (TblEventos) cboFechaAporte.getSelectedItem();
+                listEventoDetalle.stream().forEach((aporte) -> {
+                    entityManager.remove(aporte);
+
+                });
+                listEventoDetalle.clear();
                 listEntidades.stream().forEach((miembro) -> {
                     if (miembro.getAporteMensual() > 0) {
                         TblEventoDetalle t = new TblEventoDetalle();
@@ -795,7 +829,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                         listEventoDetalle.add(t);
                         int row = listEventoDetalle.size() - 1;
                         masterTable.setRowSelectionInterval(row, row);
-                        masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+                        //masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
                     }
                 });
             }
@@ -805,6 +839,28 @@ public class FrameAportesDetalle extends JInternalFrame {
         }
 
     }//GEN-LAST:event_cmdGenerarActionPerformed
+
+    private void newButtonFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_newButtonFocusLost
+        cboEntidad.requestFocusInWindow();
+    }//GEN-LAST:event_newButtonFocusLost
+
+    private void montoFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoFieldKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (((Number) montoField.getValue()).intValue() == 0) {
+                JOptionPane.showMessageDialog(null, "El monto no puede ser 0.");
+                montoField.requestFocusInWindow();
+                return;
+            }
+            save();
+            newDetalle();
+        }
+    }//GEN-LAST:event_montoFieldKeyReleased
+
+    private void cboFormaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cboFormaKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            montoField.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_cboFormaKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.lacreacion.mg.utils.CategoriasConverter categoriasConverter1;

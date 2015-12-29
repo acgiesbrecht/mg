@@ -22,6 +22,7 @@ import com.lacreacion.mg.utils.Utils;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
@@ -38,13 +39,12 @@ import java.util.Optional;
 import java.util.Set;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
-import javax.swing.InputMap;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  *
@@ -70,15 +70,30 @@ public class FrameColectasDetalle extends JInternalFrame {
         try {
             persistenceMap = Utils.getInstance().getDatabaseIP();
 
-            newForwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
-            setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, newForwardKeys);
+            //newForwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
+            //setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, newForwardKeys);
             //InputMap im = newButton.getInputMap(WIDTH).getInputMap();
             //im.put(KeyStroke.getKeyStroke("ENTER"), "pressed");
             //im.put(KeyStroke.getKeyStroke("released ENTER"), "released");
             initComponents();
-            this.dateTimeTableCellRenderer1.setEnProceso(true);
-            this.numberCellRenderer1.setEnProceso(true);
-            this.normalTableCellRenderer1.setEnProceso(true);
+
+            cboMiembro.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyReleased(java.awt.event.KeyEvent evt) {
+                    if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                        montoField.requestFocusInWindow();
+                    }
+                }
+            });
+
+            this.dateTimeTableCellRenderer1.setEnProceso(
+                    true);
+
+            this.numberCellRenderer1.setEnProceso(
+                    true);
+
+            this.normalTableCellRenderer1.setEnProceso(
+                    true);
 
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
@@ -88,11 +103,14 @@ public class FrameColectasDetalle extends JInternalFrame {
             //AutoCompleteDecorator.decorate(cboFechaRemate);
             //AutoCompleteDecorator.decorate(cboCategoria);
             AutoCompleteSupport support = AutoCompleteSupport.install(cboFechaColecta, GlazedLists.eventListOf(listEventos.toArray()));
+
             support.setFilterMode(TextMatcherEditor.CONTAINS);
 
             eventListMiembros.clear();
+
             eventListMiembros.addAll(listMiembros);
             AutoCompleteSupport support2 = AutoCompleteSupport.install(cboMiembro, eventListMiembros);
+
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -100,6 +118,7 @@ public class FrameColectasDetalle extends JInternalFrame {
             Date today = sdf.parse(s);
             Optional<TblEventos> value = listEventos.stream().filter(a -> a.getFecha().equals(today))
                     .findFirst();
+
             if (value.isPresent()) {
                 cboFechaColecta.setSelectedItem(value.get());
             } else {
@@ -111,7 +130,8 @@ public class FrameColectasDetalle extends JInternalFrame {
             KeyboardFocusManager.getCurrentKeyboardFocusManager()
                     .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
                         @Override
-                        public void propertyChange(final PropertyChangeEvent e) {
+                        public void propertyChange(final PropertyChangeEvent e
+                        ) {
                             if (e.getNewValue() instanceof JFormattedTextField) {
                                 SwingUtilities.invokeLater(new Runnable() {
                                     public void run() {
@@ -121,7 +141,8 @@ public class FrameColectasDetalle extends JInternalFrame {
                                 });
                             }
                         }
-                    });
+                    }
+                    );
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             ex.printStackTrace();
@@ -257,7 +278,6 @@ public class FrameColectasDetalle extends JInternalFrame {
         bindingGroup.addBinding(binding);
 
         txtCtaCte.addFocusListener(formListener);
-        txtCtaCte.addActionListener(formListener);
         txtCtaCte.addKeyListener(formListener);
 
         idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -272,7 +292,9 @@ public class FrameColectasDetalle extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboMiembro, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        cboMiembro.addPopupMenuListener(formListener);
         cboMiembro.addActionListener(formListener);
+        cboMiembro.addKeyListener(formListener);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -344,6 +366,7 @@ public class FrameColectasDetalle extends JInternalFrame {
         montoField.addFocusListener(formListener);
         montoField.addMouseListener(formListener);
         montoField.addActionListener(formListener);
+        montoField.addKeyListener(formListener);
 
         jButton2.setText("Actualizar");
         jButton2.addActionListener(formListener);
@@ -361,6 +384,7 @@ public class FrameColectasDetalle extends JInternalFrame {
         bindingGroup.addBinding(binding);
 
         cboForma.addActionListener(formListener);
+        cboForma.addKeyListener(formListener);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -437,13 +461,13 @@ public class FrameColectasDetalle extends JInternalFrame {
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(montoLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(montoLabel1)
                     .addComponent(cboForma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(montoLabel))
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -464,7 +488,7 @@ public class FrameColectasDetalle extends JInternalFrame {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener, java.awt.event.MouseListener, javax.swing.event.InternalFrameListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener, java.awt.event.MouseListener, javax.swing.event.InternalFrameListener, javax.swing.event.PopupMenuListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -478,9 +502,6 @@ public class FrameColectasDetalle extends JInternalFrame {
             }
             else if (evt.getSource() == deleteButton) {
                 FrameColectasDetalle.this.deleteButtonActionPerformed(evt);
-            }
-            else if (evt.getSource() == txtCtaCte) {
-                FrameColectasDetalle.this.txtCtaCteActionPerformed(evt);
             }
             else if (evt.getSource() == cboMiembro) {
                 FrameColectasDetalle.this.cboMiembroActionPerformed(evt);
@@ -517,6 +538,15 @@ public class FrameColectasDetalle extends JInternalFrame {
         public void keyReleased(java.awt.event.KeyEvent evt) {
             if (evt.getSource() == txtCtaCte) {
                 FrameColectasDetalle.this.txtCtaCteKeyReleased(evt);
+            }
+            else if (evt.getSource() == montoField) {
+                FrameColectasDetalle.this.montoFieldKeyReleased(evt);
+            }
+            else if (evt.getSource() == cboForma) {
+                FrameColectasDetalle.this.cboFormaKeyReleased(evt);
+            }
+            else if (evt.getSource() == cboMiembro) {
+                FrameColectasDetalle.this.cboMiembroKeyReleased(evt);
             }
         }
 
@@ -563,6 +593,18 @@ public class FrameColectasDetalle extends JInternalFrame {
         }
 
         public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+        }
+
+        public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+        }
+
+        public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            if (evt.getSource() == cboMiembro) {
+                FrameColectasDetalle.this.cboMiembroPopupMenuWillBecomeInvisible(evt);
+            }
+        }
+
+        public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
         }
     }// </editor-fold>//GEN-END:initComponents
 
@@ -615,7 +657,7 @@ public class FrameColectasDetalle extends JInternalFrame {
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+    private void newDetalle() {
         try {
             com.lacreacion.mg.domain.TblEventoDetalle t = new com.lacreacion.mg.domain.TblEventoDetalle();
             entityManager.persist(t);
@@ -628,12 +670,16 @@ public class FrameColectasDetalle extends JInternalFrame {
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
 
-            cboMiembro.requestFocusInWindow();
+            txtCtaCte.requestFocusInWindow();
             cboForma.setSelectedIndex(0);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             ex.printStackTrace();
         }
+    }
+
+    private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        newDetalle();
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
@@ -697,17 +743,18 @@ public class FrameColectasDetalle extends JInternalFrame {
     }
     private void txtCtaCteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyReleased
         try {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                cboMiembro.requestFocusInWindow();
+            }
             txtCtaCte.setBackground(Color.white);
             if (txtCtaCte.getText().length() > 4) {
                 List<TblEntidades> list = listMiembros;
                 Optional<TblEntidades> value = list.stream().filter(a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
                         .findFirst();
-                System.out.println(Integer.valueOf(txtCtaCte.getText()));
-                System.out.println(value.isPresent());
                 if (value.isPresent()) {
                     cboMiembro.setSelectedItem(value.get());
                     txtCtaCte.setBackground(Color.green);
-                    saveButton.requestFocus();
+                    montoField.requestFocus();
                 }
 
             }
@@ -774,18 +821,42 @@ public class FrameColectasDetalle extends JInternalFrame {
     private void cboMiembroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMiembroActionPerformed
         if (cboMiembro.getSelectedItem() != null) {
             txtCtaCte.setText(((TblEntidades) cboMiembro.getSelectedItem()).getCtacte().toString());
+
         } else {
             txtCtaCte.setText("");
         }
-    }//GEN-LAST:event_cboMiembroActionPerformed
 
-    private void txtCtaCteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCtaCteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCtaCteActionPerformed
+    }//GEN-LAST:event_cboMiembroActionPerformed
 
     private void cboFormaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFormaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cboFormaActionPerformed
+
+    private void montoFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoFieldKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (((Number) montoField.getValue()).intValue() == 0) {
+                JOptionPane.showMessageDialog(null, "El monto no puede ser 0.");
+                montoField.requestFocusInWindow();
+                return;
+            }
+            save();
+            newDetalle();
+        }
+    }//GEN-LAST:event_montoFieldKeyReleased
+
+    private void cboFormaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cboFormaKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            montoField.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_cboFormaKeyReleased
+
+    private void cboMiembroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cboMiembroKeyReleased
+
+    }//GEN-LAST:event_cboMiembroKeyReleased
+
+    private void cboMiembroPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_cboMiembroPopupMenuWillBecomeInvisible
+
+    }//GEN-LAST:event_cboMiembroPopupMenuWillBecomeInvisible
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.lacreacion.mg.utils.CategoriasConverter categoriasConverter1;
@@ -841,9 +912,11 @@ public class FrameColectasDetalle extends JInternalFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
+            UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
+
                     break;
                 }
             }
