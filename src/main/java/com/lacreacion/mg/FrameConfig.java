@@ -5,6 +5,7 @@
  */
 package com.lacreacion.mg;
 
+import com.lacreacion.mg.domain.TblFacturas;
 import com.lacreacion.mg.utils.Utils;
 import java.io.IOException;
 import java.sql.Connection;
@@ -13,7 +14,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -21,12 +21,6 @@ import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperPrintManager;
-import net.sf.jasperreports.engine.JasperReport;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -175,10 +169,20 @@ public class FrameConfig extends javax.swing.JInternalFrame {
         });
 
         txtFacturaX.setText("0");
+        txtFacturaX.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFacturaXKeyReleased(evt);
+            }
+        });
 
         jLabel5.setText("Ajuste Factura Izquierda:");
 
         txtFacturaY.setText("0");
+        txtFacturaY.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFacturaYKeyReleased(evt);
+            }
+        });
 
         jLabel6.setText("Ajuste Factura Superior:");
 
@@ -278,8 +282,11 @@ public class FrameConfig extends javax.swing.JInternalFrame {
             Preferences.userRoot().node("MG").put("Datadir", txtDatadir.getText());
             Preferences.userRoot().node("MG").put("isServer", String.valueOf(rbServidor.isSelected()));
             Preferences.userRoot().node("MG").put("modoImpresion", cboModoImpresion.getSelectedItem().toString());
+            Preferences.userRoot().node("MG").put("facturaLeftMargin", txtFacturaX.getText());
+            Preferences.userRoot().node("MG").put("facturaTopMargin", txtFacturaY.getText());
 
             this.setVisible(false);
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
@@ -295,6 +302,10 @@ public class FrameConfig extends javax.swing.JInternalFrame {
         txtDatadir.setText(Preferences.userRoot().node("MG").get("Datadir", "C:\\javadb"));
         rbServidor.setSelected(Boolean.parseBoolean(Preferences.userRoot().node("MG").get("isServer", "true")));
         cboModoImpresion.setSelectedItem(Preferences.userRoot().node("MG").get("modoImpresion", "Normal"));
+        txtFacturaX.setText(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0"));
+        txtFacturaY.setText(Preferences.userRoot().node("MG").get("facturaTopMargin", "0"));
+
+        Preferences.userRoot().node("MG").put("facturaTopMargin", txtFacturaY.getText());
     }//GEN-LAST:event_formInternalFrameActivated
 
     private void cmdDatadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDatadirActionPerformed
@@ -336,31 +347,61 @@ public class FrameConfig extends javax.swing.JInternalFrame {
 
     private void cmdFacturaPrintTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdFacturaPrintTestActionPerformed
         try {
+            TblFacturas testF = new TblFacturas();
+            testF.setNro(1234567);
+            testF.setFechahora(new java.sql.Date((new Date()).getTime()));
+            testF.setRazonSocial("Empresa SA");
+            testF.setRuc(88888888);
+            testF.setImporteAporte(15000000);
+            testF.setImporteDonacion(25000000);
 
-            Map parameters = new HashMap();
-            parameters.put("factura_id", 1324567);
-            parameters.put("fechahora", new java.sql.Date((new Date()).getTime()));
-            parameters.put("razon_social", "Empresa SA");
-            parameters.put("ruc", 88888888);
-            parameters.put("importe_aporte", 1250000);
-            parameters.put("importe_donacion", 10000000);
+            Utils.getInstance().printFactura(testF);
 
-            parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
-            parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
-            parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
-            //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
-            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/factura.jrxml"));
+            /*
+             Map parameters = new HashMap();
+             parameters.put("factura_id", 1324567);
+             parameters.put("fechahora", new java.sql.Date((new Date()).getTime()));
+             parameters.put("razon_social", "Empresa SA");
+             parameters.put("ruc", 88888888);
+             parameters.put("importe_aporte", 1250000);
+             parameters.put("importe_donacion", 10000000);
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
-            //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-            //jReportsViewer.setVisible(true);
-            JasperPrintManager.printReport(jasperPrint, false);
+             parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
+             parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
+             parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
+             //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
+             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/factura.jrxml"));
 
+             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
+             //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
+             //jReportsViewer.setVisible(true);
+             jasperPrint.setLeftMargin(Integer.getInteger(txtFacturaX.getText()));
+             jasperPrint.setTopMargin(Integer.getInteger(txtFacturaY.getText()));
+             JasperPrintManager.printReport(jasperPrint, false);
+             */
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             ex.printStackTrace();
         }
     }//GEN-LAST:event_cmdFacturaPrintTestActionPerformed
+
+    private void txtFacturaXKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFacturaXKeyReleased
+        try {
+            Preferences.userRoot().node("MG").put("facturaLeftMargin", txtFacturaX.getText());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_txtFacturaXKeyReleased
+
+    private void txtFacturaYKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFacturaYKeyReleased
+        try {
+            Preferences.userRoot().node("MG").put("facturaTopMargin", txtFacturaY.getText());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_txtFacturaYKeyReleased
 
     void resetDB() {
         try {

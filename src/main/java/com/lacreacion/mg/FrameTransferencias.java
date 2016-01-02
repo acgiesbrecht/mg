@@ -27,6 +27,8 @@ import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import net.coderazzi.filters.gui.AutoChoices;
+import net.coderazzi.filters.gui.TableFilterHeader;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -54,6 +56,10 @@ public class FrameTransferencias extends JInternalFrame {
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
+
+        TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
+        filterHeader.setInstantFiltering(true);
+
         //AutoCompleteDecorator.decorate(cboMiembro);
         AutoCompleteSupport support1 = AutoCompleteSupport.install(cboMiembro, GlazedLists.eventListOf(listMiembros.toArray()));
         support1.setFilterMode(TextMatcherEditor.CONTAINS);
@@ -109,6 +115,8 @@ public class FrameTransferencias extends JInternalFrame {
 
         addInternalFrameListener(formListener);
 
+        masterTable.setAutoCreateRowSorter(true);
+
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${id}"));
         columnBinding.setColumnName("Nro");
@@ -144,6 +152,8 @@ public class FrameTransferencias extends JInternalFrame {
 
         montoLabel.setText("Monto:");
 
+        idLabel.setDisplayedMnemonic('N');
+        idLabel.setLabelFor(idField);
         idLabel.setText("Nro:");
 
         idMiembroLabel.setText("Cliente:");
@@ -179,6 +189,7 @@ public class FrameTransferencias extends JInternalFrame {
         refreshButton.setText("Cancelar");
         refreshButton.addActionListener(formListener);
 
+        newButton.setMnemonic('u');
         newButton.setText("Nuevo");
         newButton.addActionListener(formListener);
 

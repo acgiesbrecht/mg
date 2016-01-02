@@ -6,6 +6,7 @@
 package com.lacreacion.mg.domain;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -206,7 +207,8 @@ public class TblEventos implements Serializable {
 
     @Override
     public String toString() {
-        return descripcion;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(fecha) + " - " + descripcion;
     }
 
 }

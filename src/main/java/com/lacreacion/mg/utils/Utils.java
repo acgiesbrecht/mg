@@ -7,6 +7,7 @@ package com.lacreacion.mg.utils;
 
 import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblEventoCuotas;
+import com.lacreacion.mg.domain.TblFacturas;
 import com.lacreacion.mg.domain.models.CuotaModel;
 import java.awt.Component;
 import java.util.ArrayList;
@@ -17,7 +18,14 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.prefs.Preferences;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.JasperReport;
 
 /**
  *
@@ -93,6 +101,38 @@ public class Utils extends Component {
         persistenceMap.put("javax.persistence.jdbc.password", "123456");
         persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
         return persistenceMap;
+    }
+
+    public void printFactura(TblFacturas factura) {
+        try {
+
+            Map parameters = new HashMap();
+            parameters.put("factura_id", factura.getNro());
+            parameters.put("fechahora", factura.getFechahora());
+            parameters.put("razon_social", factura.getRazonSocial());
+            parameters.put("ruc", factura.getRuc());
+            parameters.put("importe_aporte", factura.getImporteAporte());
+            parameters.put("importe_donacion", factura.getImporteDonacion());
+
+            parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
+            parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
+            parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
+            //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/factura.jrxml"));
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
+            jasperPrint.setLeftMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0")));
+            jasperPrint.setTopMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaTopMargin", "0")));
+
+            //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
+            //jReportsViewer.setVisible(true);
+            jasperPrint.setLeftMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0")));
+            jasperPrint.setTopMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaTopMargin", "0")));
+            JasperPrintManager.printReport(jasperPrint, false);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 
     public int getIndexOfModel(ListModel model, Object value) {

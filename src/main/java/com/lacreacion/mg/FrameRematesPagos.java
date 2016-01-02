@@ -264,6 +264,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
 
         idMiembroLabel4.setText("Realizar Pago:");
 
+        masterTable.setAutoCreateRowSorter(true);
         masterTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

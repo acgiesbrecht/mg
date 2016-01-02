@@ -8,9 +8,9 @@
               pageWidth="595"
               pageHeight="842"
               columnWidth="555"
-              leftMargin="[CDATA[$P{marginLeft}]"
+              leftMargin="20"
               rightMargin="20"
-              topMargin="[CDATA[$P{marginLeft}]"
+              topMargin="20"
               bottomMargin="20"
               uuid="78c20e98-1bd9-416f-bdbe-337f3341ab83">
 

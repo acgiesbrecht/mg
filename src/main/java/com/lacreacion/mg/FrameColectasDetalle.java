@@ -216,6 +216,7 @@ public class FrameColectasDetalle extends JInternalFrame {
 
         addInternalFrameListener(formListener);
 
+        masterTable.setAutoCreateRowSorter(true);
         masterTable.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         masterTable.setRowHeight(20);
 
@@ -539,14 +540,14 @@ public class FrameColectasDetalle extends JInternalFrame {
             if (evt.getSource() == txtCtaCte) {
                 FrameColectasDetalle.this.txtCtaCteKeyReleased(evt);
             }
+            else if (evt.getSource() == cboMiembro) {
+                FrameColectasDetalle.this.cboMiembroKeyReleased(evt);
+            }
             else if (evt.getSource() == montoField) {
                 FrameColectasDetalle.this.montoFieldKeyReleased(evt);
             }
             else if (evt.getSource() == cboForma) {
                 FrameColectasDetalle.this.cboFormaKeyReleased(evt);
-            }
-            else if (evt.getSource() == cboMiembro) {
-                FrameColectasDetalle.this.cboMiembroKeyReleased(evt);
             }
         }
 

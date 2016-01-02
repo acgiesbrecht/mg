@@ -190,6 +190,7 @@ public class FrameAportesDetalle extends JInternalFrame {
 
         addInternalFrameListener(formListener);
 
+        masterTable.setAutoCreateRowSorter(true);
         masterTable.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         masterTable.setRowHeight(20);
 

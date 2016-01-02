@@ -105,6 +105,8 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         imprimirButton.setText("Guardar & Imprimir");
         imprimirButton.addActionListener(formListener);
 
+        masterTable.setAutoCreateRowSorter(true);
+
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nro}"));
         columnBinding.setColumnName("Nro");
@@ -200,7 +202,8 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
             list.stream().forEach((factura) -> {
-                print((int) factura.getNro());
+                //print((int) factura.getNro());
+                Utils.getInstance().printFactura(factura);
             });
             java.util.Collection data = query.getResultList();
             data.stream().forEach((entity) -> {

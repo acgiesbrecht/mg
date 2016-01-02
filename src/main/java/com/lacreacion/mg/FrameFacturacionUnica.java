@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.prefs.Preferences;
 import javax.persistence.Persistence;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -34,8 +35,8 @@ import javax.swing.SwingUtilities;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -488,7 +489,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
 
-            print(factura);
+            Utils.getInstance().printFactura(factura);
 
             refresh();
 
@@ -501,25 +502,26 @@ public class FrameFacturacionUnica extends JInternalFrame {
     void print(TblFacturas factura) {
         try {
 
-            Map parameters = new HashMap();
-            parameters.put("factura_id", factura.getNro());
-            parameters.put("fechahora", factura.getFechahora());
-            parameters.put("razon_social", factura.getRazonSocial());
-            parameters.put("ruc", factura.getRuc());
-            parameters.put("importe_aporte", factura.getImporteAporte());
-            parameters.put("importe_donacion", factura.getImporteDonacion());
+            /*Map parameters = new HashMap();
+             parameters.put("factura_id", factura.getNro());
+             parameters.put("fechahora", factura.getFechahora());
+             parameters.put("razon_social", factura.getRazonSocial());
+             parameters.put("ruc", factura.getRuc());
+             parameters.put("importe_aporte", factura.getImporteAporte());
+             parameters.put("importe_donacion", factura.getImporteDonacion());
 
-            parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
-            parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
-            parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
-            //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
-            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/factura.jrxml"));
+             parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
+             parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
+             parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
+             //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
+             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/factura.jrxml"));
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters);
-            JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-            jReportsViewer.setVisible(true);
-            //JasperPrintManager.printReport(jasperPrint, false);
-
+             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters);
+             //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
+             //jReportsViewer.setVisible(true);
+             jasperPrint.setLeftMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0")));
+             jasperPrint.setTopMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaTopMargin", "0")));
+             JasperPrintManager.printReport(jasperPrint, false);*/
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             ex.printStackTrace();
