@@ -186,7 +186,7 @@
                           <Component id="masterScrollPane" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="398" max="32767" attributes="0"/>
                               <Component id="newButton" min="-2" pref="105" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="saveButton" min="-2" pref="99" max="-2" attributes="0"/>
@@ -225,7 +225,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="montoField" min="-2" pref="124" max="-2" attributes="0"/>
                           <Component id="cboForma" min="-2" pref="324" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <Component id="idMiembroLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="txtCtaCte" min="-2" pref="61" max="-2" attributes="0"/>
@@ -233,10 +233,11 @@
                               <Component id="idMiembroLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="cboEntidad" min="-2" pref="324" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="427" max="-2" attributes="0"/>
-                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -255,17 +256,15 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="masterScrollPane" min="-2" pref="371" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="montoLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cboForma" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -292,7 +291,7 @@
               </Group>
               <EmptySpace min="-2" pref="97" max="-2" attributes="0"/>
               <Component id="dateTableCellRenderer1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -354,8 +353,12 @@
     </Container>
     <Component class="javax.swing.JLabel" name="montoLabel">
       <Properties>
+        <Property name="displayedMnemonic" type="int" value="77"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
+        </Property>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="montoField"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Monto:"/>
       </Properties>
@@ -373,6 +376,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
+        <Property name="mnemonic" type="int" value="71"/>
         <Property name="text" type="java.lang.String" value="Guardar"/>
       </Properties>
       <Events>
@@ -388,6 +392,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
+        <Property name="mnemonic" type="int" value="67"/>
         <Property name="text" type="java.lang.String" value="Cancelar"/>
       </Properties>
       <Events>
@@ -403,6 +408,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
+        <Property name="mnemonic" type="int" value="78"/>
         <Property name="text" type="java.lang.String" value="Nuevo"/>
       </Properties>
       <Events>
@@ -419,6 +425,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
+        <Property name="mnemonic" type="int" value="69"/>
         <Property name="text" type="java.lang.String" value="Eliminar"/>
       </Properties>
       <BindingProperties>
@@ -457,8 +464,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="idMiembroLabel2">
       <Properties>
+        <Property name="displayedMnemonic" type="int" value="79"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
+        </Property>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="cboEntidad"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Nombre:"/>
       </Properties>
@@ -493,15 +504,14 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                           <Component id="jLabel1" min="-2" pref="157" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Component id="lblTotalOperaciones" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel3" min="-2" pref="142" max="-2" attributes="0"/>
                           <EmptySpace pref="47" max="32767" attributes="0"/>
                           <Component id="lblTotal" min="-2" pref="219" max="-2" attributes="0"/>
@@ -610,6 +620,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
+        <Property name="mnemonic" type="int" value="65"/>
         <Property name="text" type="java.lang.String" value="Actualizar"/>
       </Properties>
       <Events>

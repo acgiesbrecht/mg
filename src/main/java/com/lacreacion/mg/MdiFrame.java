@@ -9,13 +9,19 @@ import com.lacreacion.mg.domain.TblUsers;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Utils;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.io.IOException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +29,8 @@ import java.util.prefs.Preferences;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.swing.DesktopManager;
-import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -44,6 +50,7 @@ public class MdiFrame extends javax.swing.JFrame {
     DesktopManager manager;
 
     Map<String, String> persistenceMap = new HashMap<>();
+    private BufferedImage img;
 
     /**
      * Creates new form MDIFrame
@@ -56,49 +63,69 @@ public class MdiFrame extends javax.swing.JFrame {
                 NetworkServerControl server = new NetworkServerControl();
                 server.start(null);
             }
+
+            img = ImageIO.read(getClass().getResourceAsStream("/images/g4204.png"));
+
             initComponents();
-            lblBG.setIcon(new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/g4204.png"))));
-            desktop = new JDesktopPane();
-            desktop.setBackground(Color.white);
-            setContentPane(desktop);
-            this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
-            currentUser.addPropertyChangeListener((PropertyChangeEvent event) -> {
-                if ("user".equals(event.getPropertyName())) {
-                    mnuOpRemates.setEnabled(currentUser.hasRole(1));
-                    mnuOpPagos.setEnabled(currentUser.hasRole(1));
-                    mnuOpColectas.setEnabled(currentUser.hasRole(1));
-                    mnuOpAportes.setEnabled(currentUser.hasRole(1));
-
-                    mnuOpFacturaUnica.setEnabled(currentUser.hasRole(2));
-                    mnuOpFacturaPendientes.setEnabled(currentUser.hasRole(2));
-
-                    mnuAdMiembros.setEnabled(currentUser.hasRole(2));
-
-                    mnuAdEventos.setEnabled(currentUser.hasRole(3));
-                    mnuAdCuotas.setEnabled(currentUser.hasRole(3));
-                    mnuAdCat.setEnabled(currentUser.hasRole(2));
-
-                    mnuAdTransf.setEnabled(currentUser.hasRole(2));
-                    mnuAdRecibos.setEnabled(currentUser.hasRole(2));
-
-                    mnuAdTimbrados.setEnabled(currentUser.hasRole(2));
-                    mnuAdFacturas.setEnabled(currentUser.hasRole(2));
-
-                    mnuAdIglesia.setEnabled(currentUser.hasRole(3));
-                    mnuAdConfig.setEnabled(currentUser.hasRole(3));
-                    mnuAdUsuarios.setEnabled(currentUser.hasRole(3));
-                    mnuAdGrupos.setEnabled(currentUser.hasRole(3));
-                    mnuAdRoles.setEnabled(currentUser.hasRole(3));
-
-                    mnuAdInformes.setEnabled(currentUser.hasRole(1));
+            desktop = new JDesktopPane() {
+                @Override
+                protected void paintComponent(Graphics grphcs) {
+                    super.paintComponent(grphcs);
+                    grphcs.drawImage(img, (this.getWidth() - img.getWidth()) / 2, (this.getHeight() - img.getHeight()) / 2, null);
                 }
-            });
+
+                @Override
+                public Dimension getPreferredSize() {
+                    return new Dimension(img.getWidth(), img.getHeight());
+                }
+            };
+            desktop.setBackground(Color.LIGHT_GRAY);
+            setContentPane(desktop);
+
+            this.setExtendedState(
+                    this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+
+            currentUser.addPropertyChangeListener(
+                    (PropertyChangeEvent event) -> {
+                        if ("user".equals(event.getPropertyName())) {
+                            mnuOpRemates.setEnabled(currentUser.hasRole(1));
+                            mnuOpPagos.setEnabled(currentUser.hasRole(1));
+                            mnuOpColectas.setEnabled(currentUser.hasRole(1));
+                            mnuOpAportes.setEnabled(currentUser.hasRole(1));
+
+                            mnuOpFacturaUnica.setEnabled(currentUser.hasRole(2));
+                            mnuOpFacturaPendientes.setEnabled(currentUser.hasRole(2));
+
+                            mnuAdMiembros.setEnabled(currentUser.hasRole(2));
+
+                            mnuAdEventos.setEnabled(currentUser.hasRole(3));
+                            mnuAdCuotas.setEnabled(currentUser.hasRole(3));
+                            mnuAdCat.setEnabled(currentUser.hasRole(2));
+
+                            mnuAdTransf.setEnabled(currentUser.hasRole(2));
+                            mnuAdRecibos.setEnabled(currentUser.hasRole(2));
+
+                            mnuAdTimbrados.setEnabled(currentUser.hasRole(2));
+                            mnuAdFacturas.setEnabled(currentUser.hasRole(2));
+
+                            mnuAdIglesia.setEnabled(currentUser.hasRole(3));
+                            mnuAdConfig.setEnabled(currentUser.hasRole(3));
+                            mnuAdUsuarios.setEnabled(currentUser.hasRole(3));
+                            mnuAdGrupos.setEnabled(currentUser.hasRole(3));
+                            mnuAdRoles.setEnabled(currentUser.hasRole(3));
+
+                            mnuAdInformes.setEnabled(currentUser.hasRole(1));
+                        }
+                    }
+            );
 
             //AUTO LOGIN-------------------------------
-            currentUser.setUser(null);
+            currentUser.setUser(
+                    null);
 
             EntityManager entityManager = javax.persistence.Persistence.createEntityManagerFactory("mg_PU").createEntityManager();
+
             try {
                 Object o = entityManager.createNativeQuery("select count(*) from tbl_users where 1=2").getSingleResult();
             } catch (Exception e) {
@@ -178,8 +205,11 @@ public class MdiFrame extends javax.swing.JFrame {
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
         mnuOpAportes = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
-        mnuOpFacturaUnica = new javax.swing.JMenuItem();
         mnuOpFacturaPendientes = new javax.swing.JMenuItem();
+        mnuOpFacturaUnica = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        mnuAdInformes = new javax.swing.JMenuItem();
+        mnuAdInformes1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mnuAdMiembros = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -200,8 +230,7 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuAdRoles = new javax.swing.JMenuItem();
         mnuAdConfig = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
-        mnuAdInformes = new javax.swing.JMenuItem();
-        mnuAdInformes1 = new javax.swing.JMenuItem();
+        mnuAdConfig1 = new javax.swing.JMenuItem();
 
         jMenu3.setText("jMenu3");
 
@@ -225,6 +254,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
         mnuOpFacturacion.setText("Operaciones");
 
+        mnuOpRemates.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         mnuOpRemates.setText("Remates");
         mnuOpRemates.setEnabled(false);
         mnuOpRemates.addActionListener(new java.awt.event.ActionListener() {
@@ -234,6 +264,7 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         mnuOpFacturacion.add(mnuOpRemates);
 
+        mnuOpPagos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
         mnuOpPagos.setText("Pagos de Remates");
         mnuOpPagos.setEnabled(false);
         mnuOpPagos.addActionListener(new java.awt.event.ActionListener() {
@@ -244,6 +275,7 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOpFacturacion.add(mnuOpPagos);
         mnuOpFacturacion.add(jSeparator8);
 
+        mnuOpColectas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         mnuOpColectas.setText("Colectas");
         mnuOpColectas.setEnabled(false);
         mnuOpColectas.addActionListener(new java.awt.event.ActionListener() {
@@ -254,6 +286,7 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOpFacturacion.add(mnuOpColectas);
         mnuOpFacturacion.add(jSeparator7);
 
+        mnuOpAportes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         mnuOpAportes.setText("Aportes");
         mnuOpAportes.setEnabled(false);
         mnuOpAportes.addActionListener(new java.awt.event.ActionListener() {
@@ -264,15 +297,7 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOpFacturacion.add(mnuOpAportes);
         mnuOpFacturacion.add(jSeparator9);
 
-        mnuOpFacturaUnica.setText("Facturacion Unica");
-        mnuOpFacturaUnica.setEnabled(false);
-        mnuOpFacturaUnica.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuOpFacturaUnicaActionPerformed(evt);
-            }
-        });
-        mnuOpFacturacion.add(mnuOpFacturaUnica);
-
+        mnuOpFacturaPendientes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         mnuOpFacturaPendientes.setText("Facturacion Colectiva");
         mnuOpFacturaPendientes.setEnabled(false);
         mnuOpFacturaPendientes.addActionListener(new java.awt.event.ActionListener() {
@@ -282,10 +307,45 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         mnuOpFacturacion.add(mnuOpFacturaPendientes);
 
+        mnuOpFacturaUnica.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.SHIFT_MASK));
+        mnuOpFacturaUnica.setText("Facturacion Unica");
+        mnuOpFacturaUnica.setEnabled(false);
+        mnuOpFacturaUnica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuOpFacturaUnicaActionPerformed(evt);
+            }
+        });
+        mnuOpFacturacion.add(mnuOpFacturaUnica);
+
         jMenuBar1.add(mnuOpFacturacion);
+
+        jMenu4.setText("Informes");
+
+        mnuAdInformes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
+        mnuAdInformes.setText("Informes Remates");
+        mnuAdInformes.setEnabled(false);
+        mnuAdInformes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdInformesActionPerformed(evt);
+            }
+        });
+        jMenu4.add(mnuAdInformes);
+
+        mnuAdInformes1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
+        mnuAdInformes1.setText("Informes Colectas y Aportes");
+        mnuAdInformes1.setEnabled(false);
+        mnuAdInformes1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdInformes1ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(mnuAdInformes1);
+
+        jMenuBar1.add(jMenu4);
 
         jMenu2.setText("Administracion");
 
+        mnuAdMiembros.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         mnuAdMiembros.setText("Administrar Miembros");
         mnuAdMiembros.setEnabled(false);
         mnuAdMiembros.addActionListener(new java.awt.event.ActionListener() {
@@ -296,6 +356,7 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenu2.add(mnuAdMiembros);
         jMenu2.add(jSeparator2);
 
+        mnuAdEventos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         mnuAdEventos.setText("Administrar Eventos");
         mnuAdEventos.setEnabled(false);
         mnuAdEventos.addActionListener(new java.awt.event.ActionListener() {
@@ -315,6 +376,7 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         jMenu2.add(mnuAdCuotas);
 
+        mnuAdCat.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
         mnuAdCat.setText("Administrar Categorias de Articulos");
         mnuAdCat.setEnabled(false);
         mnuAdCat.addActionListener(new java.awt.event.ActionListener() {
@@ -325,6 +387,7 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenu2.add(mnuAdCat);
         jMenu2.add(jSeparator4);
 
+        mnuAdTransf.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
         mnuAdTransf.setText("Administrar Transferencias");
         mnuAdTransf.setEnabled(false);
         mnuAdTransf.addActionListener(new java.awt.event.ActionListener() {
@@ -334,6 +397,7 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         jMenu2.add(mnuAdTransf);
 
+        mnuAdRecibos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         mnuAdRecibos.setText("Administrar Recibos");
         mnuAdRecibos.setEnabled(false);
         mnuAdRecibos.addActionListener(new java.awt.event.ActionListener() {
@@ -344,6 +408,7 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenu2.add(mnuAdRecibos);
         jMenu2.add(jSeparator6);
 
+        mnuAdTimbrados.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
         mnuAdTimbrados.setText("Administrar Timbrados");
         mnuAdTimbrados.setEnabled(false);
         mnuAdTimbrados.addActionListener(new java.awt.event.ActionListener() {
@@ -353,6 +418,7 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         jMenu2.add(mnuAdTimbrados);
 
+        mnuAdFacturas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
         mnuAdFacturas.setText("Administrar Facturas");
         mnuAdFacturas.setEnabled(false);
         mnuAdFacturas.addActionListener(new java.awt.event.ActionListener() {
@@ -412,23 +478,13 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenu2.add(mnuAdConfig);
         jMenu2.add(jSeparator5);
 
-        mnuAdInformes.setText("Informes Remates");
-        mnuAdInformes.setEnabled(false);
-        mnuAdInformes.addActionListener(new java.awt.event.ActionListener() {
+        mnuAdConfig1.setText("Realizar BackUp");
+        mnuAdConfig1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuAdInformesActionPerformed(evt);
+                mnuAdConfig1ActionPerformed(evt);
             }
         });
-        jMenu2.add(mnuAdInformes);
-
-        mnuAdInformes1.setText("Informes Colectas y Aportes");
-        mnuAdInformes1.setEnabled(false);
-        mnuAdInformes1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuAdInformes1ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(mnuAdInformes1);
+        jMenu2.add(mnuAdConfig1);
 
         jMenuBar1.add(jMenu2);
 
@@ -776,6 +832,36 @@ public class MdiFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_mnuAdInformes1ActionPerformed
 
+    private void mnuAdConfig1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdConfig1ActionPerformed
+        try {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setCurrentDirectory(new java.io.File("."));
+            chooser.setDialogTitle("Eligir ubicación de la base de datos.");
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setAcceptAllFileFilterUsed(false);
+
+            if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+                String backupdirectory = chooser.getSelectedFile().getPath() + "\\BackUp_" + sdf.format(new Date());
+
+                Map<String, String> persistenceMap = Utils.getInstance().getDatabaseIP();
+
+                Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
+
+                try (CallableStatement cs = conn.prepareCall("CALL SYSCS_UTIL.SYSCS_BACKUP_DATABASE(?)")) {
+                    cs.setString(1, backupdirectory);
+                    cs.execute();
+                    cs.close();
+                }
+                JOptionPane.showMessageDialog(null, "BackUp guardado con exito en: " + backupdirectory);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_mnuAdConfig1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -796,13 +882,17 @@ public class MdiFrame extends javax.swing.JFrame {
             UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MdiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MdiFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MdiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MdiFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MdiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MdiFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MdiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MdiFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -819,6 +909,7 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem4;
@@ -834,6 +925,7 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblBG;
     private javax.swing.JMenuItem mnuAdCat;
     private javax.swing.JMenuItem mnuAdConfig;
+    private javax.swing.JMenuItem mnuAdConfig1;
     private javax.swing.JMenuItem mnuAdCuotas;
     private javax.swing.JMenuItem mnuAdEventos;
     private javax.swing.JMenuItem mnuAdFacturas;

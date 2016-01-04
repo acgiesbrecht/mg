@@ -211,26 +211,32 @@ public class FrameAportesDetalle extends JInternalFrame {
             masterTable.getColumnModel().getColumn(1).setCellRenderer(numberCellRenderer1);
         }
 
+        montoLabel.setDisplayedMnemonic('M');
         montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        montoLabel.setLabelFor(montoField);
         montoLabel.setText("Monto:");
 
         idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel.setText("Miembro:");
 
         saveButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        saveButton.setMnemonic('G');
         saveButton.setText("Guardar");
         saveButton.addActionListener(formListener);
 
         refreshButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        refreshButton.setMnemonic('C');
         refreshButton.setText("Cancelar");
         refreshButton.addActionListener(formListener);
 
         newButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        newButton.setMnemonic('N');
         newButton.setText("Nuevo");
         newButton.addFocusListener(formListener);
         newButton.addActionListener(formListener);
 
         deleteButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        deleteButton.setMnemonic('E');
         deleteButton.setText("Eliminar");
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
@@ -250,7 +256,9 @@ public class FrameAportesDetalle extends JInternalFrame {
         txtCtaCte.addActionListener(formListener);
         txtCtaCte.addKeyListener(formListener);
 
+        idMiembroLabel2.setDisplayedMnemonic('O');
         idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        idMiembroLabel2.setLabelFor(cboEntidad);
         idMiembroLabel2.setText("Nombre:");
 
         cboEntidad.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -286,14 +294,13 @@ public class FrameAportesDetalle extends JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(12, 12, 12)
                         .addComponent(lblTotalOperaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                         .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -336,6 +343,7 @@ public class FrameAportesDetalle extends JInternalFrame {
         montoField.addActionListener(formListener);
         montoField.addKeyListener(formListener);
 
+        jButton2.setMnemonic('A');
         jButton2.setText("Actualizar");
         jButton2.addActionListener(formListener);
 
@@ -370,7 +378,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                             .addComponent(masterScrollPane)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 398, Short.MAX_VALUE)
                                 .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -407,9 +415,10 @@ public class FrameAportesDetalle extends JInternalFrame {
                                 .addGap(12, 12, 12)
                                 .addComponent(idMiembroLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(427, 427, 427)
-                        .addComponent(jButton2)))
+                                .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -426,15 +435,14 @@ public class FrameAportesDetalle extends JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(idMiembroLabel)
-                        .addComponent(idMiembroLabel1)
-                        .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(idMiembroLabel2)
-                        .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(idMiembroLabel)
+                    .addComponent(idMiembroLabel1)
+                    .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idMiembroLabel2)
+                    .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(montoLabel1)
                     .addComponent(cboForma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -455,7 +463,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                             .addComponent(refreshButton))))
                 .addGap(97, 97, 97)
                 .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -636,7 +644,10 @@ public class FrameAportesDetalle extends JInternalFrame {
         try {
             TblEventoDetalle t = new TblEventoDetalle();
             entityManager.persist(t);
-            t.setIdEvento((TblEventos) cboFechaAporte.getSelectedItem());
+            TblEventos currEvento = (TblEventos) cboFechaAporte.getSelectedItem();
+            t.setIdEvento(currEvento);
+            t.setFechahora(currEvento.getFecha());
+            t.setIdCategoriaArticulo(entityManager.find(TblCategoriasArticulos.class, 2));
             t.setIdUser(currentUser.getUser());
 
             listEventoDetalle.add(t);
