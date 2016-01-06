@@ -69,6 +69,11 @@
           <keypass>123456</keypass>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.bitbucket.joxley</groupId>
+        <artifactId>getdown-maven-plugin</artifactId>
+        <version>1.0.0</version>
+      </plugin>
     </plugins>
   </build>
   <dependencies>

@@ -11,6 +11,7 @@ import com.lacreacion.mg.utils.Utils;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.io.IOException;
@@ -68,6 +69,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
             initComponents();
 
+            this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/g4204.png")));
             desktop = new JDesktopPane() {
                 @Override
                 protected void paintComponent(Graphics grphcs) {

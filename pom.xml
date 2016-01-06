@@ -20,7 +20,7 @@
     </scm>
     <build>
         <plugins>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>2.3</version>
@@ -79,8 +79,37 @@
                     <storepass>123456</storepass>
                     <keypass>123456</keypass>
                 </configuration>
+            </plugin>-->
+            <plugin>
+                <groupId>org.icestuff</groupId>
+                <artifactId>getdown-maven-plugin</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>updates</goal>
+                            <goal>stub</goal>
+                            <goal>applet</goal>
+                        </goals>
+                        <configuration>
+                            <appbase>https://drive.google.com/drive/u/1/folders/0B1c-WEeX3Z7eVE1iZG5SR0FCaUE</appbase>
+                            <libPath>lib</libPath>
+                            <mainClass>com.lacreacion.mg.MdiFrame</mainClass>
+                            <outputJarVersions>true</outputJarVersions>
+                            <verbose>true</verbose>
+                            <ui>
+                                <name>MG 2.0 - Sistema Iglesia</name>
+                                <progress>80, 244, 196, 11</progress>
+                                <progressText>FFFFFF</progressText>
+                                <statusText>FFFFFF</statusText>
+                                <status>20, 170, 316, 64</status>
+                                <textShadow>111111</textShadow>
+                            </ui>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
-
         </plugins>
     </build>
     <dependencies>
@@ -97,12 +126,12 @@
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
-            <version>6.1.1</version>
+            <version>6.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
-            <version>2.6.1</version>
+            <version>2.6.2</version>
         </dependency>
         <dependency>
             <groupId>org.jdesktop</groupId>
@@ -146,4 +175,14 @@
             <version>5.2.1</version>
         </dependency>
     </dependencies>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>getdown-maven-plugin-mvn-repo</id>
+            <url>https://raw.github.com/rockfireredmoon/getdown-maven-plugin/mvn-repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
