@@ -9,30 +9,37 @@ import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.lacreacion.mg.domain.TblContribuyentes;
 import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.domain.TblFacturas;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Utils;
 import com.lacreacion.utils.CalcDV;
-import com.lacreacion.utils.GetRucDatabase;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Scanner;
+import java.util.zip.ZipInputStream;
 import javax.persistence.Persistence;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import org.apache.commons.lang.StringUtils;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  *
@@ -58,6 +65,36 @@ public class FrameFacturacionUnica extends JInternalFrame {
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
             }
+
+            rucField.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                public void process() {
+                    if (rucField.getText().length() > 6) {
+                        if (CalcDV.isValidRUC(rucField.getText())) {
+                            TblContribuyentes c = entityManager.find(TblContribuyentes.class, rucField.getText().substring(0, rucField.getText().length() - 2));
+                            txtRazonSocial.setText(c.getRazonSocial());
+
+                        } else {
+                            txtRazonSocial.setText("");
+                        }
+                    }
+                }
+            });
+
             eventListMiembros.clear();
             eventListMiembros.addAll(listEntidades);
             AutoCompleteSupport support1 = AutoCompleteSupport.install(cboEntidad, eventListMiembros);
@@ -72,6 +109,14 @@ public class FrameFacturacionUnica extends JInternalFrame {
                                 SwingUtilities.invokeLater(new Runnable() {
                                     public void run() {
                                         JFormattedTextField textField = (JFormattedTextField) e.getNewValue();
+                                        textField.selectAll();
+                                    }
+                                });
+                            }
+                            if (e.getNewValue() instanceof JTextField) {
+                                SwingUtilities.invokeLater(new Runnable() {
+                                    public void run() {
+                                        JTextField textField = (JTextField) e.getNewValue();
                                         textField.selectAll();
                                     }
                                 });
@@ -115,20 +160,20 @@ public class FrameFacturacionUnica extends JInternalFrame {
         fecha1Label = new javax.swing.JLabel();
         dtpFecha = new org.jdesktop.swingx.JXDatePicker();
         montoLabel2 = new javax.swing.JLabel();
-        txtRazonSocial = new javax.swing.JFormattedTextField();
         idMiembroLabel1 = new javax.swing.JLabel();
         txtCtaCte = new javax.swing.JTextField();
         idMiembroLabel2 = new javax.swing.JLabel();
         cboEntidad = new javax.swing.JComboBox();
         idMiembroLabel = new javax.swing.JLabel();
         rucField = new javax.swing.JTextField();
-        txtDV = new javax.swing.JTextField();
         ctacteLabel3 = new javax.swing.JLabel();
         montoLabel3 = new javax.swing.JLabel();
         txtDonacion = new javax.swing.JFormattedTextField();
         montoLabel4 = new javax.swing.JLabel();
         txtAporte = new javax.swing.JFormattedTextField();
         updateSETbutton = new javax.swing.JButton();
+        lblStatusSET = new javax.swing.JLabel();
+        txtRazonSocial = new javax.swing.JTextField();
 
         FormListener formListener = new FormListener();
 
@@ -162,12 +207,6 @@ public class FrameFacturacionUnica extends JInternalFrame {
         montoLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel2.setText("Razon Social:");
 
-        txtRazonSocial.setColumns(9);
-        txtRazonSocial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        txtRazonSocial.addFocusListener(formListener);
-        txtRazonSocial.addMouseListener(formListener);
-        txtRazonSocial.addActionListener(formListener);
-
         idMiembroLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel1.setText("Cta. Cte.:");
 
@@ -186,11 +225,6 @@ public class FrameFacturacionUnica extends JInternalFrame {
         idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel.setText("Miembro:");
 
-        rucField.addFocusListener(formListener);
-        rucField.addKeyListener(formListener);
-
-        txtDV.setEditable(false);
-
         ctacteLabel3.setText("RUC:");
 
         montoLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -208,6 +242,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
         updateSETbutton.setText("Actualizar Base de Datos SET");
         updateSETbutton.addActionListener(formListener);
 
+        lblStatusSET.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -217,12 +253,14 @@ public class FrameFacturacionUnica extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(updateSETbutton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblStatusSET, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(imprimirButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelarButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(montoLabel3)
@@ -231,14 +269,13 @@ public class FrameFacturacionUnica extends JInternalFrame {
                                     .addComponent(ctacteLabel3))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtAporte, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtDonacion, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtRazonSocial)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(rucField)
-                                            .addComponent(txtRazonSocial, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
-                                        .addGap(9, 9, 9)
-                                        .addComponent(txtDV, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtAporte, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtDonacion, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(montoLabel)
@@ -290,12 +327,11 @@ public class FrameFacturacionUnica extends JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ctacteLabel3)
-                    .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(montoLabel2))
+                    .addComponent(montoLabel2)
+                    .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDonacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -308,7 +344,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(imprimirButton)
-                    .addComponent(updateSETbutton))
+                    .addComponent(updateSETbutton)
+                    .addComponent(lblStatusSET))
                 .addContainerGap())
         );
     }
@@ -330,9 +367,6 @@ public class FrameFacturacionUnica extends JInternalFrame {
             else if (evt.getSource() == txtNro) {
                 FrameFacturacionUnica.this.txtNroActionPerformed(evt);
             }
-            else if (evt.getSource() == txtRazonSocial) {
-                FrameFacturacionUnica.this.txtRazonSocialActionPerformed(evt);
-            }
             else if (evt.getSource() == txtCtaCte) {
                 FrameFacturacionUnica.this.txtCtaCteActionPerformed(evt);
             }
@@ -351,18 +385,12 @@ public class FrameFacturacionUnica extends JInternalFrame {
             else if (evt.getSource() == txtNro) {
                 FrameFacturacionUnica.this.txtNroFocusGained(evt);
             }
-            else if (evt.getSource() == txtRazonSocial) {
-                FrameFacturacionUnica.this.txtRazonSocialFocusGained(evt);
-            }
             else if (evt.getSource() == txtCtaCte) {
                 FrameFacturacionUnica.this.txtCtaCteFocusGained(evt);
             }
         }
 
         public void focusLost(java.awt.event.FocusEvent evt) {
-            if (evt.getSource() == rucField) {
-                FrameFacturacionUnica.this.rucFieldFocusLost(evt);
-            }
         }
 
         public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
@@ -381,9 +409,6 @@ public class FrameFacturacionUnica extends JInternalFrame {
             if (evt.getSource() == txtCtaCte) {
                 FrameFacturacionUnica.this.txtCtaCteKeyReleased(evt);
             }
-            else if (evt.getSource() == rucField) {
-                FrameFacturacionUnica.this.rucFieldKeyReleased(evt);
-            }
         }
 
         public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -395,9 +420,6 @@ public class FrameFacturacionUnica extends JInternalFrame {
             }
             else if (evt.getSource() == txtNro) {
                 FrameFacturacionUnica.this.txtNroMouseClicked(evt);
-            }
-            else if (evt.getSource() == txtRazonSocial) {
-                FrameFacturacionUnica.this.txtRazonSocialMouseClicked(evt);
             }
         }
 
@@ -417,7 +439,11 @@ public class FrameFacturacionUnica extends JInternalFrame {
     void refresh() {
         listTimbrados.clear();
         listTimbrados.addAll(queryTimbrados.getResultList());
-        txtTimbrado.setText(listTimbrados.get(0).getNro().toString());
+        if (listTimbrados.size() > 0) {
+            txtTimbrado.setText(listTimbrados.get(0).getNro().toString());
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe tener un timbrado activo para poder facturar.");
+        }
 
         list.clear();
         list.addAll(query.getResultList());
@@ -431,7 +457,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
         cboEntidad.setSelectedItem(null);
         txtRazonSocial.setText("");
         rucField.setText("");
-        txtDV.setText("");
+
         txtDonacion.setValue(0);
         txtAporte.setValue(0);
         txtCtaCte.requestFocus();
@@ -478,7 +504,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
             factura.setIdTimbrado(listTimbrados.get(0));
             factura.setFechahora(dtpFecha.getDate());
             factura.setIdEntidad((TblEntidades) cboEntidad.getSelectedItem());
-            factura.setRazonSocial(txtRazonSocial.getText());
+            factura.setRazonSocial(txtRazonSocial.getText().toString());
             factura.setRuc(Integer.parseInt(rucField.getText()));
             factura.setImporteDonacion(((Number) txtDonacion.getValue()).intValue());
             factura.setImporteAporte(((Number) txtAporte.getValue()).intValue());
@@ -559,18 +585,6 @@ public class FrameFacturacionUnica extends JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNroActionPerformed
 
-    private void txtRazonSocialFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtRazonSocialFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtRazonSocialFocusGained
-
-    private void txtRazonSocialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtRazonSocialMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtRazonSocialMouseClicked
-
-    private void txtRazonSocialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRazonSocialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtRazonSocialActionPerformed
-
     private void txtCtaCteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCtaCteFocusGained
         try {
             txtCtaCte.selectAll();
@@ -610,35 +624,54 @@ public class FrameFacturacionUnica extends JInternalFrame {
     private void cboEntidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEntidadActionPerformed
         if (cboEntidad.getSelectedItem() != null) {
             txtCtaCte.setText(((TblEntidades) cboEntidad.getSelectedItem()).getCtacte().toString());
-            txtRazonSocial.setText(((TblEntidades) cboEntidad.getSelectedItem()).getNombres() + " " + ((TblEntidades) cboEntidad.getSelectedItem()).getApellidos());
-            rucField.setText(((TblEntidades) cboEntidad.getSelectedItem()).getRuc().toString());
+            rucField.setText(((TblEntidades) cboEntidad.getSelectedItem()).getRuc().toString() + "-" + CalcDV.Pa_Calcular_Dv_11_A(((TblEntidades) cboEntidad.getSelectedItem()).getRuc().toString(), 11)
+            );
         } else {
             txtCtaCte.setText("");
         }
     }//GEN-LAST:event_cboEntidadActionPerformed
 
-    private void rucFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rucFieldKeyReleased
-        if (rucField.getText().length() > 0) {
-            if (StringUtils.isNumeric(rucField.getText())) {
-                txtDV.setText(String.valueOf(CalcDV.Pa_Calcular_Dv_11_A(rucField.getText(), 9)));
-            }
-        }
-    }//GEN-LAST:event_rucFieldKeyReleased
-
     private void txtCtaCteInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtCtaCteInputMethodTextChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCtaCteInputMethodTextChanged
 
-    private void rucFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rucFieldFocusLost
-        if (rucField.getText().length() > 0) {
-            if (StringUtils.isNumeric(rucField.getText())) {
-                txtDV.setText(String.valueOf(CalcDV.Pa_Calcular_Dv_11_A(rucField.getText(), 9)));
-            }
-        }
-    }//GEN-LAST:event_rucFieldFocusLost
-
     private void updateSETbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSETbuttonActionPerformed
-        GetRucDatabase.updateRucDatabase(entityManager);
+        String temp = "";
+        try {
+            entityManager.createQuery("delete from TblContribuyentes t").executeUpdate();
+            for (int i = 0; i <= 9; i++) {
+                URL url = new URL("http://www.set.gov.py/rest/contents/download/collaboration/sites/PARAGUAY-SET/documents/informes-periodicos/ruc/ruc" + String.valueOf(i) + ".zip");
+                ZipInputStream zipStream = new ZipInputStream(url.openStream(), StandardCharsets.UTF_8);
+                zipStream.getNextEntry();
+                lblStatusSET.setText("Bajando listado de RUC con terminacion " + String.valueOf(i));
+                Scanner sc = new Scanner(zipStream, "UTF-8");
+                while (sc.hasNextLine()) {
+                    String[] ruc = sc.nextLine().split("\\|");
+                    temp = ruc[0] + " - " + ruc[1] + " - " + ruc[2];
+
+                    //System.out.println(ruc[1]);
+                    //System.out.println(StringEscapeUtils.escapeJava(ruc[1]));
+                    if (ruc[0].length() > 0 && ruc[1].length() > 0 && ruc[2].length() == 1) {
+                        TblContribuyentes c = new TblContribuyentes();
+                        entityManager.persist(c);
+                        c.setRuc(ruc[0]);
+                        c.setRazonSocial(StringEscapeUtils.escapeSql(ruc[1]));
+                        c.setDv(ruc[2]);
+                    } else {
+                        System.out.println(temp);
+                    }
+
+                }
+            }
+            lblStatusSET.setText("Procesando datos...");
+            entityManager.getTransaction().commit();
+            entityManager.getTransaction().begin();
+            lblStatusSET.setText("Lista de RUC actualizada...");
+        } catch (Exception ex) {
+            System.out.println(temp);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_updateSETbuttonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -653,6 +686,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
     private javax.swing.JLabel idMiembroLabel1;
     private javax.swing.JLabel idMiembroLabel2;
     private javax.swing.JButton imprimirButton;
+    private javax.swing.JLabel lblStatusSET;
     private java.util.List<com.lacreacion.mg.domain.TblFacturas> list;
     private java.util.List listEntidades;
     private java.util.List<com.lacreacion.mg.domain.TblEventoTipos> listEventoTipos;
@@ -671,10 +705,9 @@ public class FrameFacturacionUnica extends JInternalFrame {
     private javax.swing.JTextField rucField;
     private javax.swing.JFormattedTextField txtAporte;
     private javax.swing.JTextField txtCtaCte;
-    private javax.swing.JTextField txtDV;
     private javax.swing.JFormattedTextField txtDonacion;
     private javax.swing.JFormattedTextField txtNro;
-    private javax.swing.JFormattedTextField txtRazonSocial;
+    private javax.swing.JTextField txtRazonSocial;
     private javax.swing.JFormattedTextField txtTimbrado;
     private javax.swing.JButton updateSETbutton;
     // End of variables declaration//GEN-END:variables
@@ -696,12 +729,15 @@ public class FrameFacturacionUnica extends JInternalFrame {
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(FrameFacturacionUnica.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(FrameFacturacionUnica.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(FrameFacturacionUnica.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(FrameFacturacionUnica.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);

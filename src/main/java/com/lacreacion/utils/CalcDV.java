@@ -38,4 +38,10 @@ public class CalcDV {
 
         return v_digit;
     }
+
+    public static Boolean isValidRUC(String ruc) {
+        String base = ruc.substring(0, ruc.length() - 2);
+        String dv = ruc.substring(ruc.length() - 1, ruc.length());
+        return String.valueOf(Pa_Calcular_Dv_11_A(base, 11)).equals(dv);
+    }
 }
