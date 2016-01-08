@@ -679,33 +679,36 @@ public class FrameAportesDetalle extends JInternalFrame {
             TblEventos currentEvento = (TblEventos) cboFechaAporte.getSelectedItem();
 
             //actialuazr transferencias y recibos
-            int res = entityManager.createQuery("DELETE FROM TblTransferencias t WHERE t.idEvento.id = " + String.valueOf(currentEvento.getId())).executeUpdate();
-            res = entityManager.createQuery("DELETE FROM TblRecibos t WHERE t.idEvento.id = " + String.valueOf(currentEvento.getId())).executeUpdate();
+            if ((int) entityManager.createQuery("SELECT COUNT(t) FROM TblTransferencias t WHERE t.cobrado = true AND t.idEvento.id = " + String.valueOf(currentEvento.getId())).getSingleResult() > 0) {
+                JOptionPane.showMessageDialog(null, "Los cambios realizados a este evento no tendrán efecto sobre los pagos realizados porque ya hay transferencias cobradas para este evento. Deberá modificar las transferencias y los recibos manualmente.");
+            } else {
+                int res = entityManager.createQuery("DELETE FROM TblTransferencias t WHERE t.idEvento.id = " + String.valueOf(currentEvento.getId())).executeUpdate();
+                res = entityManager.createQuery("DELETE FROM TblRecibos t WHERE t.idEvento.id = " + String.valueOf(currentEvento.getId())).executeUpdate();
 
-            for (TblEventoDetalle t : listEventoDetalle) {
-                if (t.getIdFormaDePagoPreferida().getId().equals(1)) {
-                    TblTransferencias transf = new TblTransferencias();
-                    transf.setFechahora(t.getFechahora());
-                    transf.setConcepto(currentEvento.getDescripcion());
-                    transf.setIdEntidad(t.getIdEntidad());
-                    transf.setIdEvento(currentEvento);
-                    transf.setMonto(t.getMonto());
-                    transf.setPorcentajeAporte(currentEvento.getPorcentajeAporte());
-                    transf.setIdUser(t.getIdUser());
-                    entityManager.persist(transf);
-                } else {
-                    TblRecibos recibo = new TblRecibos();
-                    recibo.setFechahora(t.getFechahora());
-                    recibo.setConcepto(currentEvento.getDescripcion());
-                    recibo.setIdEntidad(t.getIdEntidad());
-                    recibo.setIdEvento(currentEvento);
-                    recibo.setMonto(t.getMonto());
-                    recibo.setPorcentajeAporte(currentEvento.getPorcentajeAporte());
-                    recibo.setIdUser(t.getIdUser());
-                    entityManager.persist(recibo);
+                for (TblEventoDetalle t : listEventoDetalle) {
+                    if (t.getIdFormaDePagoPreferida().getId().equals(1)) {
+                        TblTransferencias transf = new TblTransferencias();
+                        transf.setFechahora(t.getFechahora());
+                        transf.setConcepto(currentEvento.getDescripcion());
+                        transf.setIdEntidad(t.getIdEntidad());
+                        transf.setIdEvento(currentEvento);
+                        transf.setMonto(t.getMonto());
+                        transf.setPorcentajeAporte(currentEvento.getPorcentajeAporte());
+                        transf.setIdUser(t.getIdUser());
+                        entityManager.persist(transf);
+                    } else {
+                        TblRecibos recibo = new TblRecibos();
+                        recibo.setFechahora(t.getFechahora());
+                        recibo.setConcepto(currentEvento.getDescripcion());
+                        recibo.setIdEntidad(t.getIdEntidad());
+                        recibo.setIdEvento(currentEvento);
+                        recibo.setMonto(t.getMonto());
+                        recibo.setPorcentajeAporte(currentEvento.getPorcentajeAporte());
+                        recibo.setIdUser(t.getIdUser());
+                        entityManager.persist(recibo);
+                    }
                 }
             }
-
             //------------------------------------
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
