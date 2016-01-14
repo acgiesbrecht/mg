@@ -89,11 +89,9 @@
                         <phase>package</phase>
                         <goals>
                             <goal>updates</goal>
-                            <goal>stub</goal>
-                            <goal>applet</goal>
                         </goals>
                         <configuration>
-                            <appbase>https://drive.google.com/drive/u/1/folders/0B1c-WEeX3Z7eVE1iZG5SR0FCaUE</appbase>
+                            <appbase>http://parah.byethost3.com/mg</appbase>
                             <libPath>lib</libPath>
                             <mainClass>com.lacreacion.mg.MdiFrame</mainClass>
                             <outputJarVersions>true</outputJarVersions>
@@ -106,6 +104,7 @@
                                 <status>20, 170, 316, 64</status>
                                 <textShadow>111111</textShadow>
                             </ui>
+                            <allowOffline>true</allowOffline>
                         </configuration>
                     </execution>
                 </executions>
