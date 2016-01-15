@@ -91,13 +91,14 @@
                             <goal>updates</goal>
                         </goals>
                         <configuration>
-                            <appbase>http://parah.byethost3.com/mg</appbase>
+                            <appbase>https://sourceforge.net/projects/mgsys/files/mg</appbase>
                             <libPath>lib</libPath>
                             <mainClass>com.lacreacion.mg.MdiFrame</mainClass>
                             <outputJarVersions>true</outputJarVersions>
                             <verbose>true</verbose>
                             <ui>
                                 <name>MG 2.0 - Sistema Iglesia</name>
+                                <backgroundImage>src/main/resources/images/g4204.png</backgroundImage>
                                 <progress>80, 244, 196, 11</progress>
                                 <progressText>FFFFFF</progressText>
                                 <statusText>FFFFFF</statusText>

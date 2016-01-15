@@ -58,6 +58,7 @@ public class MdiFrame extends javax.swing.JFrame {
      */
     public MdiFrame() {
         try {
+
             persistenceMap = Utils.getInstance().getDatabaseIP();
 
             if (Boolean.parseBoolean(Preferences.userRoot().node("MG").get("isServer", "true"))) {
