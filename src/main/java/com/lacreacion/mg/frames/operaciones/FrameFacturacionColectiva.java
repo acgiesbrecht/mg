@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lacreacion.mg;
+package com.lacreacion.mg.frames.operaciones;
 
 import com.lacreacion.mg.domain.models.PagosRealizados;
 import com.lacreacion.mg.domain.TblEntidades;
