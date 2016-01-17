@@ -208,7 +208,6 @@
             <url>https://raw.github.com/rockfireredmoon/getdown-maven-plugin/mvn-repo/</url>
             <snapshots>
                 <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
             </snapshots>
         </pluginRepository>
     </pluginRepositories>

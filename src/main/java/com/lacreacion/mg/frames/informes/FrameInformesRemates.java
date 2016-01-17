@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lacreacion.mg;
+package com.lacreacion.mg.frames.informes;
 
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
@@ -32,7 +32,7 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  * @author user
  */
-public class FrameInformes extends javax.swing.JInternalFrame {
+public class FrameInformesRemates extends javax.swing.JInternalFrame {
 
     Map<String, String> persistenceMap = new HashMap<>();
     List<TblEntidades> listMiembrosFiltered;
@@ -42,7 +42,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
     /**
      * Creates new form FramePagos
      */
-    public FrameInformes() {
+    public FrameInformesRemates() {
 
         super("Informes Remates",
                 true, //resizable
@@ -139,7 +139,7 @@ public class FrameInformes extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setText("Detalle del Evento");
+        jButton2.setText("Detalle del Remate");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -471,25 +471,27 @@ public class FrameInformes extends javax.swing.JInternalFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameInformes.class
+            java.util.logging.Logger.getLogger(FrameInformesRemates.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameInformes.class
+            java.util.logging.Logger.getLogger(FrameInformesRemates.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameInformes.class
+            java.util.logging.Logger.getLogger(FrameInformesRemates.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameInformes.class
+            java.util.logging.Logger.getLogger(FrameInformesRemates.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrameInformes().setVisible(true);
+                new FrameInformesRemates().setVisible(true);
             }
         });
     }

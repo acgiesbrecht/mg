@@ -167,7 +167,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="129" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" pref="133" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="idField" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -282,6 +282,7 @@
               <Subbinding sourcePath="${fechahora}">
                 <BindingParameter name="NAME" value="Fecha/Hora"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${idEntidad}">
                 <BindingParameter name="NAME" value="Razon Social"/>
@@ -291,14 +292,17 @@
               <Subbinding sourcePath="${concepto}">
                 <BindingParameter name="NAME" value="Concepto"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${monto}">
                 <BindingParameter name="NAME" value="Monto"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${cobrado}">
                 <BindingParameter name="NAME" value="Cobrado"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Boolean.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
             </BindingProperty>
           </BindingProperties>

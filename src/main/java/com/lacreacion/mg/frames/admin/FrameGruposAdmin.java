@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lacreacion.mg;
+package com.lacreacion.mg.frames.admin;
 
 import com.lacreacion.mg.utils.Utils;
 import java.awt.EventQueue;
@@ -22,12 +22,12 @@ import javax.swing.JOptionPane;
  *
  * @author Industria
  */
-public class FrameRolesAdmin extends JInternalFrame {
+public class FrameGruposAdmin extends JInternalFrame {
 
     Map<String, String> persistenceMap = new HashMap<>();
 
-    public FrameRolesAdmin() {
-        super("Administrar Roles",
+    public FrameGruposAdmin() {
+        super("Administrar Grupos",
                 true, //resizable
                 true, //closable
                 true, //maximizable
@@ -54,7 +54,7 @@ public class FrameRolesAdmin extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblRoles t");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblGrupos t");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
@@ -180,16 +180,16 @@ public class FrameRolesAdmin extends JInternalFrame {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                FrameRolesAdmin.this.saveButtonActionPerformed(evt);
+                FrameGruposAdmin.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                FrameRolesAdmin.this.refreshButtonActionPerformed(evt);
+                FrameGruposAdmin.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                FrameRolesAdmin.this.newButtonActionPerformed(evt);
+                FrameGruposAdmin.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                FrameRolesAdmin.this.deleteButtonActionPerformed(evt);
+                FrameGruposAdmin.this.deleteButtonActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -208,9 +208,9 @@ public class FrameRolesAdmin extends JInternalFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int[] selected = masterTable.getSelectedRows();
-        List<com.lacreacion.mg.domain.TblRoles> toRemove = new ArrayList<com.lacreacion.mg.domain.TblRoles>(selected.length);
+        List<com.lacreacion.mg.domain.TblGrupos> toRemove = new ArrayList<>(selected.length);
         for (int idx = 0; idx < selected.length; idx++) {
-            com.lacreacion.mg.domain.TblRoles t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+            com.lacreacion.mg.domain.TblGrupos t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
             toRemove.add(t);
             entityManager.remove(t);
         }
@@ -218,7 +218,7 @@ public class FrameRolesAdmin extends JInternalFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        com.lacreacion.mg.domain.TblRoles t = new com.lacreacion.mg.domain.TblRoles();
+        com.lacreacion.mg.domain.TblGrupos t = new com.lacreacion.mg.domain.TblGrupos();
         entityManager.persist(t);
         list.add(t);
         int row = list.size() - 1;
@@ -240,8 +240,8 @@ public class FrameRolesAdmin extends JInternalFrame {
         } catch (RollbackException rex) {
             rex.printStackTrace();
             entityManager.getTransaction().begin();
-            List<com.lacreacion.mg.domain.TblRoles> merged = new ArrayList<com.lacreacion.mg.domain.TblRoles>(list.size());
-            for (com.lacreacion.mg.domain.TblRoles t : list) {
+            List<com.lacreacion.mg.domain.TblGrupos> merged = new ArrayList<>(list.size());
+            for (com.lacreacion.mg.domain.TblGrupos t : list) {
                 merged.add(entityManager.merge(t));
             }
             list.clear();
@@ -256,7 +256,7 @@ public class FrameRolesAdmin extends JInternalFrame {
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JTextField idField;
     private javax.swing.JLabel idLabel;
-    private java.util.List<com.lacreacion.mg.domain.TblRoles> list;
+    private java.util.List<com.lacreacion.mg.domain.TblGrupos> list;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
@@ -280,14 +280,16 @@ public class FrameRolesAdmin extends JInternalFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameRolesAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameGruposAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameRolesAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameGruposAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameRolesAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameGruposAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameRolesAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameGruposAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -295,7 +297,7 @@ public class FrameRolesAdmin extends JInternalFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new FrameRolesAdmin());
+                frame.setContentPane(new FrameGruposAdmin());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

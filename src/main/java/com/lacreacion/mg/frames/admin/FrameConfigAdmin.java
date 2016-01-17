@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lacreacion.mg;
+package com.lacreacion.mg.frames.admin;
 
 import com.lacreacion.mg.domain.TblFacturas;
 import com.lacreacion.mg.utils.Utils;
@@ -27,9 +27,9 @@ import org.apache.commons.io.IOUtils;
  *
  * @author Industria
  */
-public class FrameConfig extends javax.swing.JInternalFrame {
+public class FrameConfigAdmin extends javax.swing.JInternalFrame {
 
-    public FrameConfig() {
+    public FrameConfigAdmin() {
         super("Configuracion",
                 true, //resizable
                 true, //closable
@@ -341,7 +341,7 @@ public class FrameConfig extends javax.swing.JInternalFrame {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            Logger.getLogger(FrameConfig.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FrameConfigAdmin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_cmdResetActionPerformed
 
@@ -460,24 +460,25 @@ public class FrameConfig extends javax.swing.JInternalFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameConfig.class
+            java.util.logging.Logger.getLogger(FrameConfigAdmin.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameConfig.class
+            java.util.logging.Logger.getLogger(FrameConfigAdmin.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameConfig.class
+            java.util.logging.Logger.getLogger(FrameConfigAdmin.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameConfig.class
+            java.util.logging.Logger.getLogger(FrameConfigAdmin.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrameConfig().setVisible(true);
+                new FrameConfigAdmin().setVisible(true);
             }
         });
     }

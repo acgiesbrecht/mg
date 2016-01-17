@@ -3,8 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lacreacion.mg;
+package com.lacreacion.mg.frames;
 
+import com.lacreacion.mg.frames.informes.FrameInformesRemates;
+import com.lacreacion.mg.frames.operaciones.FrameFacturacionColectiva;
+import com.lacreacion.mg.frames.operaciones.FrameColectasDetalle;
+import com.lacreacion.mg.frames.operaciones.FrameAportesDetalle;
+import com.lacreacion.mg.frames.operaciones.FrameRematesDetalle;
+import com.lacreacion.mg.frames.operaciones.FrameRematesPagos;
+import com.lacreacion.mg.frames.operaciones.FrameFacturacionUnica;
+import com.lacreacion.mg.frames.admin.FrameConfigAdmin;
+import com.lacreacion.mg.frames.admin.FrameEventoCuotasAdmin;
+import com.lacreacion.mg.frames.admin.FrameCategoriasArticulosAdmin;
+import com.lacreacion.mg.frames.admin.FrameRecibosAdmin;
+import com.lacreacion.mg.frames.admin.FrameIglesiaAdmin;
+import com.lacreacion.mg.frames.admin.FrameEventosAdmin;
+import com.lacreacion.mg.frames.admin.FrameRolesAdmin;
+import com.lacreacion.mg.frames.admin.FrameEntidadesAdmin;
+import com.lacreacion.mg.frames.admin.FrameTimbradosAdmin;
+import com.lacreacion.mg.frames.admin.FrameUsuariosAdmin;
+import com.lacreacion.mg.frames.admin.FrameFacturasAdmin;
+import com.lacreacion.mg.frames.admin.FrameGruposAdmin;
+import com.lacreacion.mg.frames.admin.FrameTransferenciasAdmin;
 import com.lacreacion.mg.domain.TblUsers;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Utils;
@@ -533,7 +553,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuAdCatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdCatActionPerformed
         try {
-            FrameCategoriasArticulos frame = new FrameCategoriasArticulos();
+            FrameCategoriasArticulosAdmin frame = new FrameCategoriasArticulosAdmin();
             frame.setVisible(true);
 
             desktop.add(frame);
@@ -577,7 +597,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuAdConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdConfigActionPerformed
         try {
-            FrameConfig frame = new FrameConfig();
+            FrameConfigAdmin frame = new FrameConfigAdmin();
             frame.setVisible(true);
 
             desktop.add(frame);
@@ -591,7 +611,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuAdTransfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdTransfActionPerformed
         try {
-            FrameTransferencias frame = new FrameTransferencias();
+            FrameTransferenciasAdmin frame = new FrameTransferenciasAdmin();
             frame.setVisible(true);
 
             desktop.add(frame);
@@ -606,7 +626,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuAdRecibosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdRecibosActionPerformed
         try {
-            FrameRecibos frame = new FrameRecibos();
+            FrameRecibosAdmin frame = new FrameRecibosAdmin();
             frame.setVisible(true);
 
             desktop.add(frame);
@@ -648,7 +668,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuAdInformesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdInformesActionPerformed
         try {
-            FrameInformes frame = new FrameInformes();
+            FrameInformesRemates frame = new FrameInformesRemates();
             frame.setVisible(true);
 
             desktop.add(frame);

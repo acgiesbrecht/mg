@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lacreacion.mg;
+package com.lacreacion.mg.frames.admin;
 
 import com.lacreacion.mg.utils.Utils;
 import java.awt.EventQueue;
@@ -22,12 +22,12 @@ import javax.swing.JOptionPane;
  *
  * @author user
  */
-public class FrameCategoriasArticulos extends JInternalFrame {
+public class FrameCategoriasArticulosAdmin extends JInternalFrame {
 
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
-    public FrameCategoriasArticulos() {
+    public FrameCategoriasArticulosAdmin() {
         super("Administrar Categorias",
                 true, //resizable
                 true, //closable
@@ -187,16 +187,16 @@ public class FrameCategoriasArticulos extends JInternalFrame {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                FrameCategoriasArticulos.this.saveButtonActionPerformed(evt);
+                FrameCategoriasArticulosAdmin.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                FrameCategoriasArticulos.this.refreshButtonActionPerformed(evt);
+                FrameCategoriasArticulosAdmin.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                FrameCategoriasArticulos.this.newButtonActionPerformed(evt);
+                FrameCategoriasArticulosAdmin.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                FrameCategoriasArticulos.this.deleteButtonActionPerformed(evt);
+                FrameCategoriasArticulosAdmin.this.deleteButtonActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -290,14 +290,16 @@ public class FrameCategoriasArticulos extends JInternalFrame {
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameCategoriasArticulos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCategoriasArticulosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameCategoriasArticulos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCategoriasArticulosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameCategoriasArticulos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCategoriasArticulosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameCategoriasArticulos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCategoriasArticulosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -305,7 +307,7 @@ public class FrameCategoriasArticulos extends JInternalFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new FrameCategoriasArticulos());
+                frame.setContentPane(new FrameCategoriasArticulosAdmin());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);
