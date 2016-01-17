@@ -5,31 +5,30 @@
  */
 package com.lacreacion.mg.frames.admin;
 
-import com.lacreacion.mg.frames.admin.FrameTransferencias;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.lacreacion.mg.domain.TblEntidades;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Utils;
+import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.KeyboardFocusManager;
 import java.beans.Beans;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.prefs.Preferences;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import net.coderazzi.filters.gui.AutoChoices;
+import net.coderazzi.filters.gui.TableFilterHeader;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -40,44 +39,43 @@ import net.sf.jasperreports.engine.JasperReport;
  *
  * @author Industria
  */
-public class FrameRecibos extends JInternalFrame {
+public class FrameTransferenciasAdmin extends JInternalFrame {
 
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
-    public FrameRecibos() {
-        super("Recibos",
+    public FrameTransferenciasAdmin() {
+        super("Transferencias",
                 true, //resizable
                 true, //closable
                 true, //maximizable
                 true);//iconifiable
-        try {
-            persistenceMap = Utils.getInstance().getDatabaseIP();
-            initComponents();
-            if (!Beans.isDesignTime()) {
-                entityManager.getTransaction().begin();
-            }
-            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboMiembro, GlazedLists.eventListOf(listMiembros.toArray()));
-            support1.setFilterMode(TextMatcherEditor.CONTAINS);
-
-            KeyboardFocusManager.getCurrentKeyboardFocusManager()
-                    .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
-                        @Override
-                        public void propertyChange(final PropertyChangeEvent e) {
-                            if (e.getNewValue() instanceof JFormattedTextField) {
-                                SwingUtilities.invokeLater(new Runnable() {
-                                    public void run() {
-                                        JFormattedTextField textField = (JFormattedTextField) e.getNewValue();
-                                        textField.selectAll();
-                                    }
-                                });
-                            }
-                        }
-                    });
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        persistenceMap = Utils.getInstance().getDatabaseIP();
+        initComponents();
+        if (!Beans.isDesignTime()) {
+            entityManager.getTransaction().begin();
         }
+
+        TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
+        filterHeader.setInstantFiltering(true);
+
+        //AutoCompleteDecorator.decorate(cboMiembro);
+        AutoCompleteSupport support1 = AutoCompleteSupport.install(cboMiembro, GlazedLists.eventListOf(listMiembros.toArray()));
+        support1.setFilterMode(TextMatcherEditor.CONTAINS);
+
+        /*Action marcarCobrado = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (masterTable.getSelectedRowCount() > 0) {
+                    chkCobrado.setSelected(!chkCobrado.isSelected());
+                }
+            }
+        };
+        masterTable.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, InputEvent.CTRL_MASK),
+                "marcarCobrado");
+        masterTable.getActionMap().put("marcarCobrado",
+                marcarCobrado);*/
     }
 
     /**
@@ -91,7 +89,7 @@ public class FrameRecibos extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblRecibos t");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
@@ -113,8 +111,13 @@ public class FrameRecibos extends JInternalFrame {
         refreshButton = new javax.swing.JButton();
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
+        newButton1 = new javax.swing.JButton();
+        idMiembroLabel1 = new javax.swing.JLabel();
+        txtCtaCte = new javax.swing.JTextField();
+        idMiembroLabel2 = new javax.swing.JLabel();
         cboMiembro = new javax.swing.JComboBox();
-        printButton = new javax.swing.JButton();
+        montoLabel1 = new javax.swing.JLabel();
+        chkCobrado = new javax.swing.JCheckBox();
 
         FormListener formListener = new FormListener();
 
@@ -129,12 +132,13 @@ public class FrameRecibos extends JInternalFrame {
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${id}"));
-        columnBinding.setColumnName("Id");
+        columnBinding.setColumnName("Nro");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha/Hora");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
         columnBinding.setColumnName("Razon Social");
         columnBinding.setColumnClass(com.lacreacion.mg.domain.TblEntidades.class);
@@ -142,9 +146,15 @@ public class FrameRecibos extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${concepto}"));
         columnBinding.setColumnName("Concepto");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
         columnBinding.setColumnName("Monto");
         columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cobrado}"));
+        columnBinding.setColumnName("Cobrado");
+        columnBinding.setColumnClass(Boolean.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
@@ -159,15 +169,17 @@ public class FrameRecibos extends JInternalFrame {
 
         montoLabel.setText("Monto:");
 
-        idLabel.setText("Id:");
+        idLabel.setDisplayedMnemonic('N');
+        idLabel.setLabelFor(idField);
+        idLabel.setText("Nro:");
 
-        idMiembroLabel.setText("Miembro:");
+        idMiembroLabel.setText("Cliente:");
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), fechahoraField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
         binding.setConverter(dateToStringConverter1);
         bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechahoraField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechahoraField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.concepto}"), conceptoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
@@ -194,6 +206,7 @@ public class FrameRecibos extends JInternalFrame {
         refreshButton.setText("Cancelar");
         refreshButton.addActionListener(formListener);
 
+        newButton.setMnemonic('u');
         newButton.setText("Nuevo");
         newButton.addActionListener(formListener);
 
@@ -204,16 +217,39 @@ public class FrameRecibos extends JInternalFrame {
 
         deleteButton.addActionListener(formListener);
 
-        cboMiembro.setEditable(true);
+        newButton1.setText("Imprimir");
+        newButton1.addActionListener(formListener);
+
+        idMiembroLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        idMiembroLabel1.setText("Cta. Cte.:");
+
+        txtCtaCte.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtCtaCte, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        txtCtaCte.addFocusListener(formListener);
+        txtCtaCte.addActionListener(formListener);
+        txtCtaCte.addKeyListener(formListener);
+
+        idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        idMiembroLabel2.setText("Nombre:");
+
         cboMiembro.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listMiembros, cboMiembro);
         bindingGroup.addBinding(jComboBoxBinding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idMiembro}"), cboMiembro, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboMiembro, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
 
-        printButton.setText("Imprimir");
-        printButton.addActionListener(formListener);
+        cboMiembro.addActionListener(formListener);
+
+        montoLabel1.setText("Cobrado:");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.cobrado}"), chkCobrado, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -222,44 +258,59 @@ public class FrameRecibos extends JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(printButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(newButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(refreshButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveButton))
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(masterScrollPane)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(conceptoLabel)
-                                    .addComponent(montoLabel))
-                                .addGap(14, 14, 14)
+                                    .addComponent(montoLabel)
+                                    .addComponent(montoLabel1))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(conceptoField)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(14, 14, 14)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(conceptoField)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, Short.MAX_VALUE))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(chkCobrado)
                                         .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(fechahoraLabel)
-                                    .addComponent(idLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(fechahoraField, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(idMiembroLabel)
-                                .addGap(18, 18, 18)
-                                .addComponent(cboMiembro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(fechahoraLabel)
+                                            .addComponent(idLabel))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(fechahoraField, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(idMiembroLabel)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(idMiembroLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(12, 12, 12)
+                                        .addComponent(idMiembroLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(newButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(newButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveButton)))
                 .addContainerGap())
         );
 
@@ -269,7 +320,7 @@ public class FrameRecibos extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -281,6 +332,9 @@ public class FrameRecibos extends JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idMiembroLabel)
+                    .addComponent(idMiembroLabel1)
+                    .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idMiembroLabel2)
                     .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -291,12 +345,19 @@ public class FrameRecibos extends JInternalFrame {
                     .addComponent(montoLabel)
                     .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(montoLabel1)
+                        .addGap(23, 23, 23))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(chkCobrado)
+                        .addGap(18, 18, 18)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
                     .addComponent(deleteButton)
                     .addComponent(newButton)
-                    .addComponent(printButton))
+                    .addComponent(newButton1))
                 .addGap(22, 22, 22))
         );
 
@@ -305,29 +366,62 @@ public class FrameRecibos extends JInternalFrame {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, javax.swing.event.InternalFrameListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener, javax.swing.event.InternalFrameListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                FrameRecibos.this.saveButtonActionPerformed(evt);
+                FrameTransferenciasAdmin.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                FrameRecibos.this.refreshButtonActionPerformed(evt);
+                FrameTransferenciasAdmin.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                FrameRecibos.this.newButtonActionPerformed(evt);
+                FrameTransferenciasAdmin.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                FrameRecibos.this.deleteButtonActionPerformed(evt);
+                FrameTransferenciasAdmin.this.deleteButtonActionPerformed(evt);
             }
-            else if (evt.getSource() == printButton) {
-                FrameRecibos.this.printButtonActionPerformed(evt);
+            else if (evt.getSource() == newButton1) {
+                FrameTransferenciasAdmin.this.newButton1ActionPerformed(evt);
+            }
+            else if (evt.getSource() == txtCtaCte) {
+                FrameTransferenciasAdmin.this.txtCtaCteActionPerformed(evt);
+            }
+            else if (evt.getSource() == cboMiembro) {
+                FrameTransferenciasAdmin.this.cboMiembroActionPerformed(evt);
+            }
+        }
+
+        public void focusGained(java.awt.event.FocusEvent evt) {
+            if (evt.getSource() == txtCtaCte) {
+                FrameTransferenciasAdmin.this.txtCtaCteFocusGained(evt);
+            }
+        }
+
+        public void focusLost(java.awt.event.FocusEvent evt) {
+        }
+
+        public void keyPressed(java.awt.event.KeyEvent evt) {
+            if (evt.getSource() == txtCtaCte) {
+                FrameTransferenciasAdmin.this.txtCtaCteKeyPressed(evt);
+            }
+        }
+
+        public void keyReleased(java.awt.event.KeyEvent evt) {
+            if (evt.getSource() == txtCtaCte) {
+                FrameTransferenciasAdmin.this.txtCtaCteKeyReleased(evt);
+            }
+        }
+
+        public void keyTyped(java.awt.event.KeyEvent evt) {
+            if (evt.getSource() == txtCtaCte) {
+                FrameTransferenciasAdmin.this.txtCtaCteKeyTyped(evt);
             }
         }
 
         public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            if (evt.getSource() == FrameRecibos.this) {
-                FrameRecibos.this.formInternalFrameActivated(evt);
+            if (evt.getSource() == FrameTransferenciasAdmin.this) {
+                FrameTransferenciasAdmin.this.formInternalFrameActivated(evt);
             }
         }
 
@@ -350,28 +444,40 @@ public class FrameRecibos extends JInternalFrame {
         }
     }// </editor-fold>//GEN-END:initComponents
 
-    @SuppressWarnings("unchecked")
-    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+    void refresh() {
         try {
             entityManager.getTransaction().rollback();
             entityManager.getTransaction().begin();
             java.util.Collection data = query.getResultList();
-            for (Object entity : data) {
+            data.stream().forEach((entity) -> {
                 entityManager.refresh(entity);
-            }
+            });
             list.clear();
             list.addAll(data);
+
+            data = queryMiembros.getResultList();
+            data.stream().forEach((entity) -> {
+                entityManager.refresh(entity);
+            });
+            listMiembros.clear();
+            listMiembros.addAll(data);
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        refresh();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             int[] selected = masterTable.getSelectedRows();
-            List<com.lacreacion.mg.domain.TblRecibos> toRemove = new ArrayList<>(selected.length);
+            List<com.lacreacion.mg.domain.TblTransferencias> toRemove = new ArrayList<>(selected.length);
             for (int idx = 0; idx < selected.length; idx++) {
-                com.lacreacion.mg.domain.TblRecibos t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                com.lacreacion.mg.domain.TblTransferencias t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
                 entityManager.remove(t);
             }
@@ -383,7 +489,7 @@ public class FrameRecibos extends JInternalFrame {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         try {
-            com.lacreacion.mg.domain.TblRecibos t = new com.lacreacion.mg.domain.TblRecibos();
+            com.lacreacion.mg.domain.TblTransferencias t = new com.lacreacion.mg.domain.TblTransferencias();
             entityManager.persist(t);
             list.add(t);
             int row = list.size() - 1;
@@ -405,12 +511,10 @@ public class FrameRecibos extends JInternalFrame {
             list.clear();
             list.addAll(data);
         } catch (RollbackException rex) {
-
             JOptionPane.showMessageDialog(null, rex.getMessage());
-
             entityManager.getTransaction().begin();
-            List<com.lacreacion.mg.domain.TblRecibos> merged = new ArrayList<>(list.size());
-            for (com.lacreacion.mg.domain.TblRecibos t : list) {
+            List<com.lacreacion.mg.domain.TblTransferencias> merged = new ArrayList<>(list.size());
+            for (com.lacreacion.mg.domain.TblTransferencias t : list) {
                 merged.add(entityManager.merge(t));
             }
             list.clear();
@@ -418,31 +522,101 @@ public class FrameRecibos extends JInternalFrame {
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
-
-    }//GEN-LAST:event_formInternalFrameActivated
-
-    private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
-        if (masterTable.getSelectedRow() > 0) {
+    private void newButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButton1ActionPerformed
+        if (masterTable.getSelectedRow() > -1) {
             try {
                 //Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
                 Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
                 Map parameters = new HashMap();
-                parameters.put("recibo_id", Integer.valueOf(idField.getText()));
+                parameters.put("transferencia_id", Integer.valueOf(idField.getText()));
+                //parameters.put("logo", getClass().getResource("/reports/cclogo200.png").getPath());
+                parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
+                parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
+                parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
+                //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
 
-                JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/recibo.jrxml"));
-
-                JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
-                //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-                //jReportsViewer.setVisible(true);
-                JasperPrintManager.printReport(jasperPrint, false);
+                if (Preferences.userRoot().node("MG").get("modoImpresion", "Normal").equals("Normal")) {
+                    JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia.jrxml"));
+                    JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
+                    JasperPrintManager.printReport(jasperPrint, false);
+                } else {
+                    parameters.put("copia", "ORIGINAL");
+                    JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia_simple.jrxml"));
+                    JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
+                    JasperPrintManager.printReport(jasperPrint, false);
+                    parameters.put("copia", "DUPLICADO");
+                    report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia_simple.jrxml"));
+                    jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
+                    JasperPrintManager.printReport(jasperPrint, false);
+                    parameters.put("copia", "TRIPLICADO");
+                    report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia_simple.jrxml"));
+                    jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
+                    JasperPrintManager.printReport(jasperPrint, false);
+                }
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
                 ex.printStackTrace();
             }
         }
-    }//GEN-LAST:event_printButtonActionPerformed
+    }//GEN-LAST:event_newButton1ActionPerformed
+
+    private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
+
+    }//GEN-LAST:event_formInternalFrameActivated
+
+    private void txtCtaCteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCtaCteFocusGained
+        try {
+            txtCtaCte.selectAll();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCtaCteFocusGained
+
+    private void txtCtaCteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCtaCteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCtaCteActionPerformed
+
+    private void txtCtaCteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCtaCteKeyPressed
+
+    private void txtCtaCteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyReleased
+        try {
+            txtCtaCte.setBackground(Color.white);
+            if (txtCtaCte.getText().length() > 4) {
+                List<TblEntidades> list = listMiembros;
+                Optional<TblEntidades> value = list.stream().filter(a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
+                        .findFirst();
+                System.out.println(Integer.valueOf(txtCtaCte.getText()));
+                System.out.println(value.isPresent());
+                if (value.isPresent()) {
+                    cboMiembro.setSelectedItem(value.get());
+                    txtCtaCte.setBackground(Color.green);
+                    saveButton.requestFocus();
+                }
+
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCtaCteKeyReleased
+
+    private void txtCtaCteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyTyped
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCtaCteKeyTyped
+
+    private void cboMiembroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMiembroActionPerformed
+        if (cboMiembro.getSelectedItem() != null) {
+            txtCtaCte.setText(((TblEntidades) cboMiembro.getSelectedItem()).getCtacte().toString());
+        } else {
+            txtCtaCte.setText("");
+        }
+    }//GEN-LAST:event_cboMiembroActionPerformed
 
     private void getDatabaseIP() {
         try {
@@ -459,6 +633,7 @@ public class FrameRecibos extends JInternalFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboMiembro;
+    private javax.swing.JCheckBox chkCobrado;
     private javax.swing.JTextField conceptoField;
     private javax.swing.JLabel conceptoLabel;
     private com.lacreacion.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
@@ -470,19 +645,23 @@ public class FrameRecibos extends JInternalFrame {
     private javax.swing.JTextField idField;
     private javax.swing.JLabel idLabel;
     private javax.swing.JLabel idMiembroLabel;
-    private java.util.List<com.lacreacion.mg.domain.TblRecibos> list;
+    private javax.swing.JLabel idMiembroLabel1;
+    private javax.swing.JLabel idMiembroLabel2;
+    private java.util.List<com.lacreacion.mg.domain.TblTransferencias> list;
     private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JTextField montoField;
     private javax.swing.JLabel montoLabel;
+    private javax.swing.JLabel montoLabel1;
     private javax.swing.JButton newButton;
+    private javax.swing.JButton newButton1;
     private com.lacreacion.mg.utils.NumberCellRenderer numberCellRenderer1;
-    private javax.swing.JButton printButton;
     private javax.persistence.Query query;
     private javax.persistence.Query queryMiembros;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;
+    private javax.swing.JTextField txtCtaCte;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
@@ -500,21 +679,22 @@ public class FrameRecibos extends JInternalFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameTransferencias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameTransferenciasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameTransferencias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameTransferenciasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameTransferencias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameTransferenciasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameTransferencias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameTransferenciasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new FrameTransferencias());
+                frame.setContentPane(new FrameTransferenciasAdmin());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

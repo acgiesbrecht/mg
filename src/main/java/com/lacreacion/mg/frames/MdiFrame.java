@@ -15,7 +15,7 @@ import com.lacreacion.mg.frames.operaciones.FrameFacturacionUnica;
 import com.lacreacion.mg.frames.admin.FrameConfigAdmin;
 import com.lacreacion.mg.frames.admin.FrameEventoCuotasAdmin;
 import com.lacreacion.mg.frames.admin.FrameCategoriasArticulosAdmin;
-import com.lacreacion.mg.frames.admin.FrameRecibos;
+import com.lacreacion.mg.frames.admin.FrameRecibosAdmin;
 import com.lacreacion.mg.frames.admin.FrameIglesiaAdmin;
 import com.lacreacion.mg.frames.admin.FrameEventosAdmin;
 import com.lacreacion.mg.frames.admin.FrameRolesAdmin;
@@ -24,7 +24,7 @@ import com.lacreacion.mg.frames.admin.FrameTimbradosAdmin;
 import com.lacreacion.mg.frames.admin.FrameUsuariosAdmin;
 import com.lacreacion.mg.frames.admin.FrameFacturasAdmin;
 import com.lacreacion.mg.frames.admin.FrameGruposAdmin;
-import com.lacreacion.mg.frames.admin.FrameTransferencias;
+import com.lacreacion.mg.frames.admin.FrameTransferenciasAdmin;
 import com.lacreacion.mg.domain.TblUsers;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Utils;
@@ -611,7 +611,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuAdTransfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdTransfActionPerformed
         try {
-            FrameTransferencias frame = new FrameTransferencias();
+            FrameTransferenciasAdmin frame = new FrameTransferenciasAdmin();
             frame.setVisible(true);
 
             desktop.add(frame);
@@ -626,7 +626,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuAdRecibosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdRecibosActionPerformed
         try {
-            FrameRecibos frame = new FrameRecibos();
+            FrameRecibosAdmin frame = new FrameRecibosAdmin();
             frame.setVisible(true);
 
             desktop.add(frame);
