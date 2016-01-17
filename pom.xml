@@ -91,7 +91,7 @@
                             <goal>updates</goal>
                         </goals>
                         <configuration>
-                            <appbase>https://sourceforge.net/projects/mgsys/files/mg</appbase>
+                            <appbase>http://190.52.180.233/mg</appbase>
                             <libPath>lib</libPath>
                             <mainClass>com.lacreacion.mg.MdiFrame</mainClass>
                             <outputJarVersions>true</outputJarVersions>
