@@ -49,12 +49,18 @@ import java.util.Map;
 import java.util.prefs.Preferences;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.swing.DesktopManager;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 import org.apache.commons.io.IOUtils;
 import org.apache.derby.drda.NetworkServerControl;
 import org.mindrot.jbcrypt.BCrypt;
@@ -139,6 +145,8 @@ public class MdiFrame extends javax.swing.JFrame {
                             mnuAdRoles.setEnabled(currentUser.hasRole(3));
 
                             mnuAdInformes.setEnabled(currentUser.hasRole(1));
+                            mnuAdInformesTransferencias.setEnabled(currentUser.hasRole(1));
+
                         }
                     }
             );
@@ -234,6 +242,7 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         mnuAdInformes = new javax.swing.JMenuItem();
         mnuAdInformes1 = new javax.swing.JMenuItem();
+        mnuAdInformesTransferencias = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mnuAdMiembros = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -364,6 +373,15 @@ public class MdiFrame extends javax.swing.JFrame {
             }
         });
         jMenu4.add(mnuAdInformes1);
+
+        mnuAdInformesTransferencias.setText("Informe Transferencias Pendientes");
+        mnuAdInformesTransferencias.setEnabled(false);
+        mnuAdInformesTransferencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdInformesTransferenciasActionPerformed(evt);
+            }
+        });
+        jMenu4.add(mnuAdInformesTransferencias);
 
         jMenuBar1.add(jMenu4);
 
@@ -886,6 +904,23 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuAdConfig1ActionPerformed
 
+    private void mnuAdInformesTransferenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdInformesTransferenciasActionPerformed
+        try {
+            String url = persistenceMap.get("javax.persistence.jdbc.url");
+            String user = persistenceMap.get("javax.persistence.jdbc.user");
+            String pass = persistenceMap.get("javax.persistence.jdbc.password");
+
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/detalle_transferencias_sin_cobrar.jrxml"));
+            Map parameters = new HashMap();
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, DriverManager.getConnection(url, user, pass));
+            JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
+            jReportsViewer.setVisible(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_mnuAdInformesTransferenciasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -957,6 +992,7 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAdIglesia;
     private javax.swing.JMenuItem mnuAdInformes;
     private javax.swing.JMenuItem mnuAdInformes1;
+    private javax.swing.JMenuItem mnuAdInformesTransferencias;
     private javax.swing.JMenuItem mnuAdMiembros;
     private javax.swing.JMenuItem mnuAdRecibos;
     private javax.swing.JMenuItem mnuAdRoles;
