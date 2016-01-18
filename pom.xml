@@ -93,7 +93,7 @@
                         <configuration>
                             <appbase>http://190.52.180.233/mg</appbase>
                             <libPath>lib</libPath>
-                            <mainClass>com.lacreacion.mg.MdiFrame</mainClass>
+                            <mainClass>com.lacreacion.mg.frames.MdiFrame</mainClass>
                             <outputJarVersions>true</outputJarVersions>
                             <verbose>true</verbose>
                             <ui>

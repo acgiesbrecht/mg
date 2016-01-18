@@ -13,6 +13,9 @@ import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Utils;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.beans.Beans;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,9 +27,12 @@ import java.util.Optional;
 import java.util.prefs.Preferences;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -58,24 +64,29 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         }
 
         TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
-        filterHeader.setInstantFiltering(true);
+        filterHeader.setAdaptiveChoices(false);
+        filterHeader.setPosition(TableFilterHeader.Position.TOP);
+
+        AutoCompleteSupport support2 = AutoCompleteSupport.install(cboEvento, GlazedLists.eventListOf(listEventos.toArray()));
+        support2.setFilterMode(TextMatcherEditor.CONTAINS);
 
         //AutoCompleteDecorator.decorate(cboMiembro);
         AutoCompleteSupport support1 = AutoCompleteSupport.install(cboMiembro, GlazedLists.eventListOf(listMiembros.toArray()));
         support1.setFilterMode(TextMatcherEditor.CONTAINS);
 
-        /*Action marcarCobrado = new AbstractAction() {
+        Action marcarCobrado = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (masterTable.getSelectedRowCount() > 0) {
                     chkCobrado.setSelected(!chkCobrado.isSelected());
+
                 }
             }
         };
         masterTable.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, InputEvent.CTRL_MASK),
                 "marcarCobrado");
         masterTable.getActionMap().put("marcarCobrado",
-                marcarCobrado);*/
+                marcarCobrado);
     }
 
     /**
@@ -96,6 +107,10 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         dateToStringConverter1 = new com.lacreacion.mg.utils.DateToStringConverter();
         dateTableCellRenderer1 = new com.lacreacion.mg.utils.DateTimeTableCellRenderer();
         numberCellRenderer1 = new com.lacreacion.mg.utils.NumberCellRenderer();
+        integerLongConverter1 = new com.lacreacion.mg.utils.IntegerLongConverter();
+        queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idGrupo IN :grupos ORDER BY t.fecha");
+        queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
+        listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         fechahoraLabel = new javax.swing.JLabel();
@@ -103,9 +118,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         montoLabel = new javax.swing.JLabel();
         idLabel = new javax.swing.JLabel();
         idMiembroLabel = new javax.swing.JLabel();
-        fechahoraField = new javax.swing.JTextField();
         conceptoField = new javax.swing.JTextField();
-        montoField = new javax.swing.JTextField();
         idField = new javax.swing.JTextField();
         saveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
@@ -116,8 +129,11 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         txtCtaCte = new javax.swing.JTextField();
         idMiembroLabel2 = new javax.swing.JLabel();
         cboMiembro = new javax.swing.JComboBox();
-        montoLabel1 = new javax.swing.JLabel();
         chkCobrado = new javax.swing.JCheckBox();
+        dtpFecha = new org.jdesktop.swingx.JXDatePicker();
+        cboEvento = new javax.swing.JComboBox();
+        conceptoLabel1 = new javax.swing.JLabel();
+        montoField = new javax.swing.JFormattedTextField();
 
         FormListener formListener = new FormListener();
 
@@ -129,6 +145,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         addInternalFrameListener(formListener);
 
         masterTable.setAutoCreateRowSorter(true);
+        masterTable.setColumnSelectionAllowed(true);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${id}"));
@@ -142,22 +159,19 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
         columnBinding.setColumnName("Razon Social");
         columnBinding.setColumnClass(com.lacreacion.mg.domain.TblEntidades.class);
-        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${concepto}"));
         columnBinding.setColumnName("Concepto");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
         columnBinding.setColumnName("Monto");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cobrado}"));
         columnBinding.setColumnName("Cobrado");
         columnBinding.setColumnClass(Boolean.class);
-        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
+        masterTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(1).setCellRenderer(dateTableCellRenderer1);
             masterTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
@@ -175,29 +189,16 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
 
         idMiembroLabel.setText("Cliente:");
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), fechahoraField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.concepto}"), conceptoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
-        binding.setConverter(dateToStringConverter1);
         bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechahoraField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), conceptoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.concepto}"), conceptoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue("null");
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), conceptoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.monto}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue("null");
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
+        idField.setEditable(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.id}"), idField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), idField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         saveButton.setText("Guardar");
@@ -239,17 +240,53 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
 
         org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listMiembros, cboMiembro);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idMiembro}"), cboMiembro, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idEntidad}"), cboMiembro, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboMiembro, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         cboMiembro.addActionListener(formListener);
 
-        montoLabel1.setText("Cobrado:");
+        chkCobrado.setLabel("Cobrado");
+        chkCobrado.setName(""); // NOI18N
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.cobrado}"), chkCobrado, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        binding.setSourceNullValue(false);
+        binding.setSourceUnreadableValue(false);
         bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), chkCobrado, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("date"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventos, cboEvento);
+        bindingGroup.addBinding(jComboBoxBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idEvento}"), cboEvento, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboEvento, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        cboEvento.addActionListener(formListener);
+
+        conceptoLabel1.setText("Evento:");
+
+        montoField.setColumns(9);
+        montoField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        montoField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        montoField.setText("0");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.monto}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding.setConverter(integerLongConverter1);
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        montoField.addFocusListener(formListener);
+        montoField.addMouseListener(formListener);
+        montoField.addActionListener(formListener);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -258,48 +295,6 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(masterScrollPane)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(conceptoLabel)
-                                    .addComponent(montoLabel)
-                                    .addComponent(montoLabel1))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(14, 14, 14)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(conceptoField)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(0, 0, Short.MAX_VALUE))))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(chkCobrado)
-                                        .addGap(0, 0, Short.MAX_VALUE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(fechahoraLabel)
-                                            .addComponent(idLabel))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(fechahoraField, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(idMiembroLabel)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(idMiembroLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(12, 12, 12)
-                                        .addComponent(idMiembroLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(newButton1)
@@ -310,7 +305,44 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(refreshButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveButton)))
+                        .addComponent(saveButton))
+                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(montoLabel)
+                                .addGap(16, 16, 16))
+                            .addComponent(conceptoLabel, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(14, 14, 14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cboEvento, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(conceptoField)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(chkCobrado, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(conceptoLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(fechahoraLabel)
+                                    .addComponent(idLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(idMiembroLabel)
+                                .addGap(24, 24, 24)
+                                .addComponent(idMiembroLabel1)
+                                .addGap(12, 12, 12)
+                                .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(idMiembroLabel2)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -320,7 +352,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -328,7 +360,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fechahoraLabel)
-                    .addComponent(fechahoraField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idMiembroLabel)
@@ -338,27 +370,26 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
                     .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(conceptoLabel1)
+                    .addComponent(cboEvento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(conceptoLabel)
                     .addComponent(conceptoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(montoLabel)
                     .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(montoLabel1)
-                        .addGap(23, 23, 23))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(chkCobrado)
-                        .addGap(18, 18, 18)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chkCobrado)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
                     .addComponent(deleteButton)
                     .addComponent(newButton)
                     .addComponent(newButton1))
-                .addGap(22, 22, 22))
+                .addContainerGap())
         );
 
         bindingGroup.bind();
@@ -366,7 +397,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener, javax.swing.event.InternalFrameListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener, java.awt.event.MouseListener, javax.swing.event.InternalFrameListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -390,11 +421,20 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             else if (evt.getSource() == cboMiembro) {
                 FrameTransferenciasAdmin.this.cboMiembroActionPerformed(evt);
             }
+            else if (evt.getSource() == cboEvento) {
+                FrameTransferenciasAdmin.this.cboEventoActionPerformed(evt);
+            }
+            else if (evt.getSource() == montoField) {
+                FrameTransferenciasAdmin.this.montoFieldActionPerformed(evt);
+            }
         }
 
         public void focusGained(java.awt.event.FocusEvent evt) {
             if (evt.getSource() == txtCtaCte) {
                 FrameTransferenciasAdmin.this.txtCtaCteFocusGained(evt);
+            }
+            else if (evt.getSource() == montoField) {
+                FrameTransferenciasAdmin.this.montoFieldFocusGained(evt);
             }
         }
 
@@ -417,6 +457,24 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             if (evt.getSource() == txtCtaCte) {
                 FrameTransferenciasAdmin.this.txtCtaCteKeyTyped(evt);
             }
+        }
+
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            if (evt.getSource() == montoField) {
+                FrameTransferenciasAdmin.this.montoFieldMouseClicked(evt);
+            }
+        }
+
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mousePressed(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseReleased(java.awt.event.MouseEvent evt) {
         }
 
         public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -491,12 +549,14 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         try {
             com.lacreacion.mg.domain.TblTransferencias t = new com.lacreacion.mg.domain.TblTransferencias();
             entityManager.persist(t);
+            t.setIdUser(currentUser.getUser());
             list.add(t);
             int row = list.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_newButtonActionPerformed
 
@@ -505,9 +565,9 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
             java.util.Collection data = query.getResultList();
-            for (Object entity : data) {
+            data.stream().forEach((entity) -> {
                 entityManager.refresh(entity);
-            }
+            });
             list.clear();
             list.addAll(data);
         } catch (RollbackException rex) {
@@ -589,12 +649,10 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
                 List<TblEntidades> list = listMiembros;
                 Optional<TblEntidades> value = list.stream().filter(a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
                         .findFirst();
-                System.out.println(Integer.valueOf(txtCtaCte.getText()));
-                System.out.println(value.isPresent());
                 if (value.isPresent()) {
                     cboMiembro.setSelectedItem(value.get());
                     txtCtaCte.setBackground(Color.green);
-                    saveButton.requestFocus();
+                    cboMiembro.requestFocusInWindow();
                 }
 
             }
@@ -618,46 +676,53 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         }
     }//GEN-LAST:event_cboMiembroActionPerformed
 
-    private void getDatabaseIP() {
-        try {
-            databaseIP = Preferences.userRoot().node("Remates").get("DatabaseIP", "127.0.0.1");
+    private void cboEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEventoActionPerformed
 
-            persistenceMap.put("javax.persistence.jdbc.url", "jdbc:derby://" + databaseIP + ":5432/mgdb");
-            persistenceMap.put("javax.persistence.jdbc.user", "mg");
-            persistenceMap.put("javax.persistence.jdbc.password", "123456");
-            persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
+    }//GEN-LAST:event_cboEventoActionPerformed
 
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-        }
-    }
+    private void montoFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_montoFieldFocusGained
+        montoField.selectAll();
+    }//GEN-LAST:event_montoFieldFocusGained
+
+    private void montoFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_montoFieldMouseClicked
+
+    }//GEN-LAST:event_montoFieldMouseClicked
+
+    private void montoFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_montoFieldActionPerformed
+
+    }//GEN-LAST:event_montoFieldActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox cboEvento;
     private javax.swing.JComboBox cboMiembro;
     private javax.swing.JCheckBox chkCobrado;
     private javax.swing.JTextField conceptoField;
     private javax.swing.JLabel conceptoLabel;
+    private javax.swing.JLabel conceptoLabel1;
     private com.lacreacion.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.lacreacion.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.swing.JButton deleteButton;
+    private org.jdesktop.swingx.JXDatePicker dtpFecha;
     private javax.persistence.EntityManager entityManager;
-    private javax.swing.JTextField fechahoraField;
     private javax.swing.JLabel fechahoraLabel;
     private javax.swing.JTextField idField;
     private javax.swing.JLabel idLabel;
     private javax.swing.JLabel idMiembroLabel;
     private javax.swing.JLabel idMiembroLabel1;
     private javax.swing.JLabel idMiembroLabel2;
+    private com.lacreacion.mg.utils.IntegerLongConverter integerLongConverter1;
     private java.util.List<com.lacreacion.mg.domain.TblTransferencias> list;
+    private java.util.List<com.lacreacion.mg.domain.TblEventos> listEventos;
     private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
-    private javax.swing.JTextField montoField;
+    private javax.swing.JFormattedTextField montoField;
     private javax.swing.JLabel montoLabel;
-    private javax.swing.JLabel montoLabel1;
     private javax.swing.JButton newButton;
     private javax.swing.JButton newButton1;
     private com.lacreacion.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query query;
+    private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryMiembros;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;
