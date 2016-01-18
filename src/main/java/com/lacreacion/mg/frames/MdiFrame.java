@@ -5,27 +5,28 @@
  */
 package com.lacreacion.mg.frames;
 
-import com.lacreacion.mg.frames.informes.FrameInformesRemates;
-import com.lacreacion.mg.frames.operaciones.FrameFacturacionColectiva;
-import com.lacreacion.mg.frames.operaciones.FrameColectasDetalle;
-import com.lacreacion.mg.frames.operaciones.FrameAportesDetalle;
-import com.lacreacion.mg.frames.operaciones.FrameRematesDetalle;
-import com.lacreacion.mg.frames.operaciones.FrameRematesPagos;
-import com.lacreacion.mg.frames.operaciones.FrameFacturacionUnica;
-import com.lacreacion.mg.frames.admin.FrameConfigAdmin;
-import com.lacreacion.mg.frames.admin.FrameEventoCuotasAdmin;
+import com.lacreacion.mg.domain.TblUsers;
 import com.lacreacion.mg.frames.admin.FrameCategoriasArticulosAdmin;
-import com.lacreacion.mg.frames.admin.FrameRecibosAdmin;
-import com.lacreacion.mg.frames.admin.FrameIglesiaAdmin;
-import com.lacreacion.mg.frames.admin.FrameEventosAdmin;
-import com.lacreacion.mg.frames.admin.FrameRolesAdmin;
+import com.lacreacion.mg.frames.admin.FrameConfigAdmin;
 import com.lacreacion.mg.frames.admin.FrameEntidadesAdmin;
-import com.lacreacion.mg.frames.admin.FrameTimbradosAdmin;
-import com.lacreacion.mg.frames.admin.FrameUsuariosAdmin;
+import com.lacreacion.mg.frames.admin.FrameEventoCuotasAdmin;
+import com.lacreacion.mg.frames.admin.FrameEventosAdmin;
 import com.lacreacion.mg.frames.admin.FrameFacturasAdmin;
 import com.lacreacion.mg.frames.admin.FrameGruposAdmin;
+import com.lacreacion.mg.frames.admin.FrameIglesiaAdmin;
+import com.lacreacion.mg.frames.admin.FrameRecibosAdmin;
+import com.lacreacion.mg.frames.admin.FrameRolesAdmin;
+import com.lacreacion.mg.frames.admin.FrameTimbradosAdmin;
 import com.lacreacion.mg.frames.admin.FrameTransferenciasAdmin;
-import com.lacreacion.mg.domain.TblUsers;
+import com.lacreacion.mg.frames.admin.FrameUsuariosAdmin;
+import com.lacreacion.mg.frames.informes.FrameInformesRemates;
+import com.lacreacion.mg.frames.operaciones.FrameAportesDetalle;
+import com.lacreacion.mg.frames.operaciones.FrameCobrarTransferencias;
+import com.lacreacion.mg.frames.operaciones.FrameColectasDetalle;
+import com.lacreacion.mg.frames.operaciones.FrameFacturacionColectiva;
+import com.lacreacion.mg.frames.operaciones.FrameFacturacionUnica;
+import com.lacreacion.mg.frames.operaciones.FrameRematesDetalle;
+import com.lacreacion.mg.frames.operaciones.FrameRematesPagos;
 import com.lacreacion.mg.utils.CurrentUser;
 import com.lacreacion.mg.utils.Utils;
 import java.awt.Color;
@@ -49,7 +50,6 @@ import java.util.Map;
 import java.util.prefs.Preferences;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.swing.DesktopManager;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
@@ -125,6 +125,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
                             mnuOpFacturaUnica.setEnabled(currentUser.hasRole(2));
                             mnuOpFacturaPendientes.setEnabled(currentUser.hasRole(2));
+                            mnuOpCobrarTransferencias.setEnabled(currentUser.hasRole(2));
 
                             mnuAdMiembros.setEnabled(currentUser.hasRole(2));
 
@@ -145,7 +146,7 @@ public class MdiFrame extends javax.swing.JFrame {
                             mnuAdRoles.setEnabled(currentUser.hasRole(3));
 
                             mnuAdInformes.setEnabled(currentUser.hasRole(1));
-                            mnuAdInformesTransferencias.setEnabled(currentUser.hasRole(1));
+                            mnuAdInformesTransferencias.setEnabled(currentUser.hasRole(2));
 
                         }
                     }
@@ -239,6 +240,8 @@ public class MdiFrame extends javax.swing.JFrame {
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
         mnuOpFacturaPendientes = new javax.swing.JMenuItem();
         mnuOpFacturaUnica = new javax.swing.JMenuItem();
+        jSeparator10 = new javax.swing.JPopupMenu.Separator();
+        mnuOpCobrarTransferencias = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         mnuAdInformes = new javax.swing.JMenuItem();
         mnuAdInformes1 = new javax.swing.JMenuItem();
@@ -340,7 +343,7 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         mnuOpFacturacion.add(mnuOpFacturaPendientes);
 
-        mnuOpFacturaUnica.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.SHIFT_MASK));
+        mnuOpFacturaUnica.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
         mnuOpFacturaUnica.setText("Facturacion Unica");
         mnuOpFacturaUnica.setEnabled(false);
         mnuOpFacturaUnica.addActionListener(new java.awt.event.ActionListener() {
@@ -349,6 +352,17 @@ public class MdiFrame extends javax.swing.JFrame {
             }
         });
         mnuOpFacturacion.add(mnuOpFacturaUnica);
+        mnuOpFacturacion.add(jSeparator10);
+
+        mnuOpCobrarTransferencias.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
+        mnuOpCobrarTransferencias.setText("Cobrar Transferencias");
+        mnuOpCobrarTransferencias.setEnabled(false);
+        mnuOpCobrarTransferencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuOpCobrarTransferenciasActionPerformed(evt);
+            }
+        });
+        mnuOpFacturacion.add(mnuOpCobrarTransferencias);
 
         jMenuBar1.add(mnuOpFacturacion);
 
@@ -921,6 +935,21 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuAdInformesTransferenciasActionPerformed
 
+    private void mnuOpCobrarTransferenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpCobrarTransferenciasActionPerformed
+        try {
+            FrameCobrarTransferencias frame = new FrameCobrarTransferencias();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_mnuOpCobrarTransferenciasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -973,6 +1002,7 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
@@ -1001,6 +1031,7 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAdUsuarios;
     private javax.swing.JMenuItem mnuLogin;
     private javax.swing.JMenuItem mnuOpAportes;
+    private javax.swing.JMenuItem mnuOpCobrarTransferencias;
     private javax.swing.JMenuItem mnuOpColectas;
     private javax.swing.JMenuItem mnuOpFacturaPendientes;
     private javax.swing.JMenuItem mnuOpFacturaUnica;
