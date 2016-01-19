@@ -94,8 +94,8 @@ CREATE TABLE MG.TBL_GRUPOS (
 
 CREATE TABLE MG.TBL_IGLESIA (
 	ID INTEGER NOT NULL,
-	NOMBRE VARCHAR(50) NOT NULL,
-	RUC INTEGER,
+	NOMBRE VARCHAR(256) NOT NULL,
+	RUC_SIN_DV VARCHAR(20),
 	CTACTE INTEGER,
 	DOMICILIO VARCHAR(50),
 	BOX INTEGER,
@@ -137,15 +137,17 @@ CREATE TABLE MG.TBL_MIEMBROS_FAMILIAS (
 
 CREATE TABLE MG.TBL_ENTIDADES (
 	ID INTEGER GENERATED ALWAYS AS IDENTITY NOT NULL,
-	NOMBRES VARCHAR(50) NOT NULL,
-        APELLIDOS VARCHAR(50) NOT NULL DEFAULT '',
-        RUC INTEGER,
+	NOMBRES VARCHAR(128) NOT NULL,
+        APELLIDOS VARCHAR(128) NOT NULL DEFAULT '',
+        RAZON_SOCIAL VARCHAR(256) NOT NULL DEFAULT '',
+        RUC_SIN_DV VARCHAR(20),
 	CTACTE INTEGER,
 	DOMICILIO VARCHAR(50),
 	BOX INTEGER,
         IS_MIEMBRO_ACTIVO BOOLEAN NOT NULL DEFAULT FALSE,
         ID_FORMA_DE_PAGO_PREFERIDA INTEGER,
         APORTE_MENSUAL INTEGER NOT NULL DEFAULT 0,
+        ID_ENTIDAD_PAGANTE_APORTES INTEGER,
         FECHA_NACIMIENTO TIMESTAMP,
         FECHA_BAUTISMO TIMESTAMP,
         FECHA_ENTRADA_CONGREGACION TIMESTAMP,
@@ -239,7 +241,7 @@ CREATE TABLE MG.TBL_FACTURAS (
         FECHAHORA TIMESTAMP NOT NULL,
         ID_ENTIDAD INTEGER NOT NULL,
         RAZON_SOCIAL VARCHAR(50) NOT NULL,
-        RUC INTEGER NOT NULL,
+        RUC VARCHAR(20) NOT NULL,
         IMPORTE_DONACION INTEGER NOT NULL,
         IMPORTE_APORTE INTEGER NOT NULL,
         ANULADO BOOLEAN DEFAULT FALSE NOT NULL,
@@ -259,10 +261,10 @@ CREATE TABLE MG.TBL_TIMBRADOS (
 );
 
 CREATE TABLE MG.TBL_CONTRIBUYENTES (
-    RUC VARCHAR(20) NOT NULL,
+    RUC_SIN_DV VARCHAR(20) NOT NULL,
     DV VARCHAR(1) NOT NULL,
-    RAZON_SOCIAL VARCHAR(100) NOT NULL,
-    PRIMARY KEY (RUC)
+    RAZON_SOCIAL VARCHAR(256) NOT NULL,
+    PRIMARY KEY (RUC_SIN_DV)
 );
 
 ALTER TABLE MG.TBL_EVENTOS
@@ -334,6 +336,10 @@ ALTER TABLE MG.TBL_MIEMBROS_RELACIONES
 ALTER TABLE MG.TBL_ENTIDADES
 	ADD FOREIGN KEY (ID_FORMA_DE_PAGO_PREFERIDA)
         REFERENCES MG.TBL_FORMAS_DE_PAGO (ID);
+
+ALTER TABLE MG.TBL_ENTIDADES
+	ADD FOREIGN KEY (ID_ENTIDAD_PAGANTE_APORTES)
+        REFERENCES MG.TBL_ENTIDADES (ID);
 
 ALTER TABLE MG.TBL_ENTIDADES
 	ADD FOREIGN KEY (ID_AREA_SERVICIO_EN_IGLESIA)
@@ -429,7 +435,8 @@ CREATE VIEW MG.ENTIDADES_CON_PAGOS_PENDIENTES AS
 SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.box FROM
         (SELECT m.id, m.nombres || ' ' || m.apellidos AS nombre, m.ctacte, m.domicilio, m.box, SUM(rd.monto) AS monto FROM TBL_ENTIDADES m
             LEFT JOIN TBL_EVENTO_DETALLE rd ON m.id = rd.ID_ENTIDAD
-            group by m.id, m.nombres, m.apellidos, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida,
+            group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida,
+                    m.ID_ENTIDAD_PAGANTE_APORTES,
                     m.IS_MIEMBRO_ACTIVO,
                     m.ID_FORMA_DE_PAGO_PREFERIDA,
                     m.APORTE_MENSUAL,
@@ -443,8 +450,9 @@ SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.bo
                     m.ID_MIEMBROS_ALERGIA) remates,
         (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_ENTIDADES m
             LEFT JOIN TBL_TRANSFERENCIAS p ON m.id = p.ID_ENTIDAD
-            group by m.id, m.nombres, m.apellidos, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida,
+            group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida,
                     m.IS_MIEMBRO_ACTIVO,
+                    m.ID_ENTIDAD_PAGANTE_APORTES,
                     m.ID_FORMA_DE_PAGO_PREFERIDA,
                     m.APORTE_MENSUAL,
                     m.FECHA_NACIMIENTO,
@@ -457,10 +465,11 @@ SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.bo
                     m.ID_MIEMBROS_ALERGIA) transferencias,
         (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_ENTIDADES m
             LEFT JOIN TBL_RECIBOS p ON m.id = p.ID_ENTIDAD
-            group by m.id, m.nombres, m.apellidos, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida,
+            group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida,
                     m.IS_MIEMBRO_ACTIVO,
                     m.ID_FORMA_DE_PAGO_PREFERIDA,
                     m.APORTE_MENSUAL,
+                    m.ID_ENTIDAD_PAGANTE_APORTES,
                     m.FECHA_NACIMIENTO,
                     m.FECHA_BAUTISMO,
                     m.FECHA_ENTRADA_CONGREGACION,
