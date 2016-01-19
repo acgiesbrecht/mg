@@ -21,6 +21,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -814,7 +815,8 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                         }
 
                         if (row.getCell(3) != null) {
-                            miembro.setRucSinDv((String) row.getCell(3).getStringCellValue());
+                            DecimalFormat df = new DecimalFormat("#0");
+                            miembro.setRucSinDv(df.format(row.getCell(3).getNumericCellValue()));
                         }
                         if (row.getCell(4) != null) {
                             miembro.setDomicilio(row.getCell(4).getStringCellValue());

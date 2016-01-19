@@ -63,6 +63,8 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 import org.apache.commons.io.IOUtils;
 import org.apache.derby.drda.NetworkServerControl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
@@ -72,6 +74,8 @@ import org.mindrot.jbcrypt.BCrypt;
 public class MdiFrame extends javax.swing.JFrame {
 
     CurrentUser currentUser = CurrentUser.getInstance();
+
+    private static final Logger logger = LogManager.getLogger(MdiFrame.class);
 
     JDesktopPane desktop;
     DesktopManager manager;
@@ -112,8 +116,7 @@ public class MdiFrame extends javax.swing.JFrame {
             desktop.setBackground(Color.LIGHT_GRAY);
             setContentPane(desktop);
 
-            this.setExtendedState(
-                    this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+            this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
             currentUser.addPropertyChangeListener(
                     (PropertyChangeEvent event) -> {
@@ -176,7 +179,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 

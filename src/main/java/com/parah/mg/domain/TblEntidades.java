@@ -74,7 +74,7 @@ public class TblEntidades implements Serializable {
     @NotNull
     @Size(min = 1, max = 256)
     @Column(name = "RAZON_SOCIAL")
-    private String razonSocial;
+    private String razonSocial = "";
     @Size(max = 20)
     @Column(name = "RUC_SIN_DV")
     private String rucSinDv;
