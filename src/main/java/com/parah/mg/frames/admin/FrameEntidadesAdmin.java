@@ -81,6 +81,9 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             AutoCompleteSupport support = AutoCompleteSupport.install(cboFormaDePago, GlazedLists.eventListOf(listFormasDePago.toArray()));
             support.setFilterMode(TextMatcherEditor.CONTAINS);
 
+            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboEntidad, GlazedLists.eventListOf(list.toArray()));
+            support1.setFilterMode(TextMatcherEditor.CONTAINS);
+
             rucField.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
                 public void changedUpdate(DocumentEvent e) {

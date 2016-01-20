@@ -63,6 +63,7 @@ public class TblTransferencias implements Serializable {
     @NotNull
     @Column(name = "PORCENTAJE_APORTE")
     private int porcentajeAporte;
+    @NotNull
     @Column(name = "COBRADO")
     private Boolean cobrado;
     @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")

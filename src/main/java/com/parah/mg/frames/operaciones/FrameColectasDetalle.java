@@ -718,6 +718,7 @@ public class FrameColectasDetalle extends JInternalFrame {
                         transf.setIdEvento(currentEvento);
                         transf.setMonto(t.getMonto());
                         transf.setPorcentajeAporte(currentEvento.getPorcentajeAporte());
+                        transf.setCobrado(false);
                         transf.setIdUser(t.getIdUser());
                         entityManager.persist(transf);
                     } else {
