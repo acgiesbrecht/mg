@@ -9,6 +9,8 @@ import com.parah.mg.domain.TblCategoriasArticulos;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.swing.JOptionPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdesktop.beansbinding.Converter;
 
 /**
@@ -17,6 +19,7 @@ import org.jdesktop.beansbinding.Converter;
  */
 public class CategoriasConverter extends Converter {
 
+    private static final Logger logger = LogManager.getLogger(CategoriasConverter.class);
     private EntityManager entityManager;
 
     @Override
@@ -37,6 +40,7 @@ public class CategoriasConverter extends Converter {
             res = null;
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
         return res;
     }

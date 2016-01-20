@@ -17,6 +17,8 @@ import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -24,6 +26,7 @@ import javax.swing.JOptionPane;
  */
 public class FrameGruposAdmin extends JInternalFrame {
 
+    private static final Logger logger = LogManager.getLogger(FrameGruposAdmin.class);
     Map<String, String> persistenceMap = new HashMap<>();
 
     public FrameGruposAdmin() {
@@ -33,13 +36,14 @@ public class FrameGruposAdmin extends JInternalFrame {
                 true, //maximizable
                 true);//iconifiable
         try {
-            persistenceMap = Utils.getInstance().getDatabaseIP();
+            persistenceMap = Utils.getInstance().getPersistenceMap();
             initComponents();
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -237,8 +241,8 @@ public class FrameGruposAdmin extends JInternalFrame {
             list.clear();
             list.addAll(data);
 
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
+        } catch (RollbackException ex) {
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
             List<com.parah.mg.domain.TblGrupos> merged = new ArrayList<>(list.size());
             for (com.parah.mg.domain.TblGrupos t : list) {

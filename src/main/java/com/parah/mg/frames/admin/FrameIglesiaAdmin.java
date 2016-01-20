@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.prefs.Preferences;
 import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -19,10 +21,11 @@ import javax.swing.JOptionPane;
  */
 public class FrameIglesiaAdmin extends javax.swing.JInternalFrame {
 
+    private static final Logger logger = LogManager.getLogger(FrameIglesiaAdmin.class);
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
-    private void getDatabaseIP() {
+    private void getPersistenceMap() {
         try {
             databaseIP = Preferences.userRoot().node("Remates").get("DatabaseIP", "127.0.0.1");
 
@@ -33,7 +36,7 @@ public class FrameIglesiaAdmin extends javax.swing.JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -44,7 +47,7 @@ public class FrameIglesiaAdmin extends javax.swing.JInternalFrame {
                 true, //maximizable
                 true);//iconifiable
 
-        persistenceMap = Utils.getInstance().getDatabaseIP();
+        persistenceMap = Utils.getInstance().getPersistenceMap();
         initComponents();
         TblIglesia iglesia = entityManager.find(TblIglesia.class, 1);
         if (iglesia != null) {
@@ -238,6 +241,7 @@ public class FrameIglesiaAdmin extends javax.swing.JInternalFrame {
             this.setVisible(false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed

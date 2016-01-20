@@ -5,6 +5,7 @@
  */
 package com.parah.mg.frames.admin;
 
+import com.parah.mg.utils.CategoriasConverter;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
 import java.beans.Beans;
@@ -17,6 +18,8 @@ import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -24,7 +27,7 @@ import javax.swing.JOptionPane;
  */
 public class FrameCategoriasArticulosAdmin extends JInternalFrame {
 
-    String databaseIP;
+    private static final Logger logger = LogManager.getLogger(FrameCategoriasArticulosAdmin.class);
     Map<String, String> persistenceMap = new HashMap<>();
 
     public FrameCategoriasArticulosAdmin() {
@@ -33,7 +36,7 @@ public class FrameCategoriasArticulosAdmin extends JInternalFrame {
                 true, //closable
                 true, //maximizable
                 true);//iconifiable
-        persistenceMap = Utils.getInstance().getDatabaseIP();
+        persistenceMap = Utils.getInstance().getPersistenceMap();
         initComponents();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
@@ -226,6 +229,7 @@ public class FrameCategoriasArticulosAdmin extends JInternalFrame {
             list.removeAll(toRemove);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -239,6 +243,7 @@ public class FrameCategoriasArticulosAdmin extends JInternalFrame {
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_newButtonActionPerformed
 
@@ -252,8 +257,8 @@ public class FrameCategoriasArticulosAdmin extends JInternalFrame {
             }
             list.clear();
             list.addAll(data);
-        } catch (RollbackException rex) {
-            JOptionPane.showMessageDialog(null, rex.getMessage());
+        } catch (RollbackException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
             entityManager.getTransaction().begin();
             List<com.parah.mg.domain.TblCategoriasArticulos> merged = new ArrayList<>(list.size());
             for (com.parah.mg.domain.TblCategoriasArticulos t : list) {

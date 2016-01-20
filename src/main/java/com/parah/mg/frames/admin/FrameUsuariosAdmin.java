@@ -25,6 +25,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
@@ -33,6 +35,7 @@ import org.mindrot.jbcrypt.BCrypt;
  */
 public class FrameUsuariosAdmin extends JInternalFrame {
 
+    private static final Logger logger = LogManager.getLogger(FrameUsuariosAdmin.class);
     Map<String, String> persistenceMap = new HashMap<>();
 
     public FrameUsuariosAdmin() {
@@ -43,7 +46,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
                 true);//iconifiable
 
         try {
-            persistenceMap = Utils.getInstance().getDatabaseIP();
+            persistenceMap = Utils.getInstance().getPersistenceMap();
             initComponents();
             passwordField.setVisible(false);
             if (!Beans.isDesignTime()) {
@@ -96,6 +99,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
                     });
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -427,8 +431,8 @@ public class FrameUsuariosAdmin extends JInternalFrame {
 
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
+        } catch (RollbackException ex) {
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
             List<TblUsers> merged = new ArrayList<>(list.size());
             for (TblUsers t : list) {

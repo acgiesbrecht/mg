@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.prefs.Preferences;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
 import javax.swing.JFormattedTextField;
@@ -48,6 +47,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -55,8 +56,8 @@ import net.sf.jasperreports.engine.JasperReport;
  */
 public class FrameRematesDetalle extends JInternalFrame {
 
+    private static final Logger logger = LogManager.getLogger(FrameRematesDetalle.class);
     CurrentUser currentUser = CurrentUser.getInstance();
-    String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
     EventList<TblEntidades> eventListEntidades = new BasicEventList<>();
     EventList<TblCategoriasArticulos> eventListTblCategoriasArticulos = new BasicEventList<>();
@@ -68,7 +69,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                 true, //maximizable
                 true);//iconifiable
         try {
-            persistenceMap = Utils.getInstance().getDatabaseIP();
+            persistenceMap = Utils.getInstance().getPersistenceMap();
             initComponents();
             this.dateTimeTableCellRenderer1.setEnProceso(true);
             this.numberCellRenderer1.setEnProceso(true);
@@ -121,7 +122,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                     });
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -673,6 +674,7 @@ public class FrameRematesDetalle extends JInternalFrame {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -688,6 +690,7 @@ public class FrameRematesDetalle extends JInternalFrame {
             listEventosDetalle.removeAll(toRemove);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -706,6 +709,7 @@ public class FrameRematesDetalle extends JInternalFrame {
             cboCategoria.requestFocusInWindow();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_newButtonActionPerformed
 
@@ -724,8 +728,9 @@ public class FrameRematesDetalle extends JInternalFrame {
             entityManager.getTransaction().begin();
             refresh();
             newButton.requestFocus();
-        } catch (RollbackException rex) {
-            JOptionPane.showMessageDialog(null, rex.getMessage());
+        } catch (RollbackException ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
 
             entityManager.getTransaction().begin();
             List<TblEventoDetalle> merged = new ArrayList<>(listEventosDetalle.size());
@@ -755,6 +760,7 @@ public class FrameRematesDetalle extends JInternalFrame {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
 
 // TODO add your handling code here:
@@ -765,6 +771,7 @@ public class FrameRematesDetalle extends JInternalFrame {
             txtCtaCte.selectAll();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCtaCteFocusGained
@@ -795,7 +802,7 @@ public class FrameRematesDetalle extends JInternalFrame {
              }*/
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cboFechaRemateActionPerformed
 
@@ -850,7 +857,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                 return;
             }
             entityManager.getTransaction().commit();
-            Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
+//            Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
             Integer remateId = ((TblEventos) cboFechaRemate.getSelectedItem()).getId();
             TblEventoCuotas remateCuotas = entityManager.find(TblEventoCuotas.class, remateId);
             //if (Integer.valueOf(txtTransferencia.getValue()) > 0) {
@@ -878,7 +885,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                         parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
 
                         JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia.jrxml"));
-
+                        Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
                         JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
                         //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
                         //jReportsViewer.setVisible(true);
@@ -890,8 +897,8 @@ public class FrameRematesDetalle extends JInternalFrame {
             entityManager.getTransaction().begin();
             refresh();
             newButton.requestFocusInWindow();
-        } catch (RollbackException rex) {
-            JOptionPane.showMessageDialog(null, rex.getMessage());
+        } catch (RollbackException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
 
             entityManager.getTransaction().begin();
             List<TblEventoDetalle> merged = new ArrayList<>(listEventosDetalle.size());
@@ -902,7 +909,7 @@ public class FrameRematesDetalle extends JInternalFrame {
             listEventosDetalle.addAll(merged);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_saveButton1ActionPerformed
 
@@ -910,19 +917,6 @@ public class FrameRematesDetalle extends JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCtaCteActionPerformed
 
-    private void getDatabaseIP() {
-        try {
-            databaseIP = Preferences.userRoot().node("Remates").get("DatabaseIP", "127.0.0.1");
-
-            persistenceMap.put("javax.persistence.jdbc.url", "jdbc:derby://" + databaseIP + ":5432/mgdb");
-            persistenceMap.put("javax.persistence.jdbc.user", "mg");
-            persistenceMap.put("javax.persistence.jdbc.password", "123456");
-            persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-        }
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.parah.mg.utils.CategoriasConverter categoriasConverter1;
     private javax.swing.JComboBox cboCategoria;

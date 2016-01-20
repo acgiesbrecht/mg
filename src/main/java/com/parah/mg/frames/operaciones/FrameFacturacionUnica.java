@@ -40,6 +40,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -47,8 +49,8 @@ import org.apache.commons.lang.StringEscapeUtils;
  */
 public class FrameFacturacionUnica extends JInternalFrame {
 
+    private static final Logger logger = LogManager.getLogger(FrameFacturacionUnica.class);
     CurrentUser currentUser = CurrentUser.getInstance();
-    String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
     EventList<TblEntidades> eventListMiembros = new BasicEventList<>();
 
@@ -60,7 +62,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                 true);//iconifiable
         try {
 
-            persistenceMap = Utils.getInstance().getDatabaseIP();
+            persistenceMap = Utils.getInstance().getPersistenceMap();
             initComponents();
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
@@ -126,7 +128,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     });
             refresh();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
@@ -521,7 +523,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_imprimirButtonActionPerformed
 
@@ -550,7 +552,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
              JasperPrintManager.printReport(jasperPrint, false);*/
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -559,6 +561,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
             refresh();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cancelarButtonActionPerformed
 
@@ -617,6 +620,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
 
         // TODO add your handling code here:
@@ -671,7 +675,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
         } catch (Exception ex) {
             System.out.println(temp);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_updateSETbuttonActionPerformed
 

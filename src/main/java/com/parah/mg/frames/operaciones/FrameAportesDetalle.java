@@ -16,6 +16,7 @@ import com.parah.mg.domain.TblEventoDetalle;
 import com.parah.mg.domain.TblEventos;
 import com.parah.mg.domain.TblRecibos;
 import com.parah.mg.domain.TblTransferencias;
+import com.parah.mg.frames.informes.FrameInformesRemates;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.Color;
@@ -41,6 +42,8 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -48,7 +51,7 @@ import javax.swing.SwingUtilities;
  */
 public class FrameAportesDetalle extends JInternalFrame {
 
-    String databaseIP;
+    private static final Logger logger = LogManager.getLogger(FrameAportesDetalle.class);
     Map<String, String> persistenceMap = new HashMap<>();
     EventList<TblEntidades> eventListEntidades = new BasicEventList<>();
     CurrentUser currentUser = CurrentUser.getInstance();
@@ -60,7 +63,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                 true, //maximizable
                 true);//iconifiable
         try {
-            persistenceMap = Utils.getInstance().getDatabaseIP();
+            persistenceMap = Utils.getInstance().getPersistenceMap();
 
             initComponents();
 
@@ -118,7 +121,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                     });
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -622,6 +625,7 @@ public class FrameAportesDetalle extends JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -637,6 +641,7 @@ public class FrameAportesDetalle extends JInternalFrame {
             listEventoDetalle.removeAll(toRemove);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -658,6 +663,7 @@ public class FrameAportesDetalle extends JInternalFrame {
             cboEntidad.requestFocusInWindow();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -714,8 +720,8 @@ public class FrameAportesDetalle extends JInternalFrame {
             entityManager.getTransaction().begin();
             refresh();
             newButton.requestFocus();
-        } catch (RollbackException rex) {
-            JOptionPane.showMessageDialog(null, rex.getMessage());
+        } catch (RollbackException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
 
             entityManager.getTransaction().begin();
             List<com.parah.mg.domain.TblEventoDetalle> merged = new ArrayList<>(listEventoDetalle.size());
@@ -756,6 +762,7 @@ public class FrameAportesDetalle extends JInternalFrame {
             txtCtaCte.selectAll();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCtaCteFocusGained
@@ -776,7 +783,7 @@ public class FrameAportesDetalle extends JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cboFechaAporteActionPerformed
 
@@ -850,7 +857,7 @@ public class FrameAportesDetalle extends JInternalFrame {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
 
     }//GEN-LAST:event_cmdGenerarActionPerformed

@@ -18,6 +18,8 @@ import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -25,6 +27,7 @@ import javax.swing.JOptionPane;
  */
 public class FrameEventoCuotasAdmin extends JInternalFrame {
 
+    private static final Logger logger = LogManager.getLogger(FrameEventoCuotasAdmin.class);
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
@@ -34,7 +37,7 @@ public class FrameEventoCuotasAdmin extends JInternalFrame {
                 true, //closable
                 true, //maximizable
                 true);//iconifiable
-        persistenceMap = Utils.getInstance().getDatabaseIP();
+        persistenceMap = Utils.getInstance().getPersistenceMap();
         initComponents();
 
         if (!Beans.isDesignTime()) {
@@ -42,7 +45,7 @@ public class FrameEventoCuotasAdmin extends JInternalFrame {
         }
     }
 
-    private void getDatabaseIP() {
+    private void getPersistenceMap() {
         try {
             databaseIP = Preferences.userRoot().node("Remates").get("DatabaseIP", "127.0.0.1");
 
@@ -53,6 +56,7 @@ public class FrameEventoCuotasAdmin extends JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -255,8 +259,8 @@ public class FrameEventoCuotasAdmin extends JInternalFrame {
             }
             list.clear();
             list.addAll(data);
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
+        } catch (RollbackException ex) {
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
             List<com.parah.mg.domain.TblEventoCuotas> merged = new ArrayList<>(list.size());
             for (com.parah.mg.domain.TblEventoCuotas t : list) {

@@ -10,6 +10,7 @@ import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblEntidades;
 import com.parah.mg.domain.TblEventos;
+import com.parah.mg.frames.admin.FrameUsuariosAdmin;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.Color;
@@ -27,6 +28,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -34,6 +37,7 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class FrameInformesRemates extends javax.swing.JInternalFrame {
 
+    private static final Logger logger = LogManager.getLogger(FrameInformesRemates.class);
     Map<String, String> persistenceMap = new HashMap<>();
     List<TblEntidades> listMiembrosFiltered;
     TblEntidades selectedMiembro;
@@ -51,7 +55,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
                 true);//iconifiable
         try {
 
-            persistenceMap = Utils.getInstance().getDatabaseIP();
+            persistenceMap = Utils.getInstance().getPersistenceMap();
             initComponents();
 
             AutoCompleteSupport support = AutoCompleteSupport.install(cboFechaRemate, GlazedLists.eventListOf(listEventos.toArray()));
@@ -60,7 +64,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
@@ -283,7 +287,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
 
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }//GEN-LAST:event_cboFechaRemateActionPerformed
@@ -300,7 +304,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
             return DriverManager.getConnection(url, user, pass);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             return null;
         }
     }
@@ -317,7 +321,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
             //JasperPrintManager.printReport(jasperPrint, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -333,7 +337,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
             //JasperPrintManager.printReport(jasperPrint, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -349,7 +353,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
             //JasperPrintManager.printReport(jasperPrint, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -365,7 +369,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
             //JasperPrintManager.printReport(jasperPrint, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -382,7 +386,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
             //JasperPrintManager.printReport(jasperPrint, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -399,7 +403,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
             //JasperPrintManager.printReport(jasperPrint, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
@@ -437,7 +441,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
                  }*/
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }        // TODO add your handling code here:
     }//GEN-LAST:event_txtCtaCteKeyReleased

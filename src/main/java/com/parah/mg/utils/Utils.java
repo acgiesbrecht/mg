@@ -9,6 +9,7 @@ import com.parah.mg.domain.TblEntidades;
 import com.parah.mg.domain.TblEventoCuotas;
 import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.domain.models.CuotaModel;
+import com.parah.mg.frames.MdiFrame;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +27,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -33,11 +36,12 @@ import net.sf.jasperreports.engine.JasperReport;
  */
 public class Utils extends Component {
 
-    private static Utils utils = new Utils();
-
+    private static final Utils utils = new Utils();
+    private static final Logger logger = LogManager.getLogger(Utils.class);
     /* A private Constructor prevents any other
      * class from instantiating.
      */
+
     private Utils() {
     }
 
@@ -89,7 +93,7 @@ public class Utils extends Component {
         return cuotasList;
     }
 
-    public Map<String, String> getDatabaseIP() {
+    public Map<String, String> getPersistenceMap() {
         Properties p = System.getProperties();
         p.setProperty("derby.system.home", Preferences.userRoot().node("MG").get("Datadir", "C:\\javadb"));
         p.setProperty("derby.drda.host", "0.0.0.0");
@@ -131,7 +135,7 @@ public class Utils extends Component {
             JasperPrintManager.printReport(jasperPrint, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 

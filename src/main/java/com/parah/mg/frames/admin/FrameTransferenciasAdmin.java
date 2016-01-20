@@ -40,6 +40,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -47,6 +49,7 @@ import net.sf.jasperreports.engine.JasperReport;
  */
 public class FrameTransferenciasAdmin extends JInternalFrame {
 
+    private static final Logger logger = LogManager.getLogger(FrameTransferenciasAdmin.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
@@ -57,7 +60,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
                 true, //closable
                 true, //maximizable
                 true);//iconifiable
-        persistenceMap = Utils.getInstance().getDatabaseIP();
+        persistenceMap = Utils.getInstance().getPersistenceMap();
         initComponents();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
@@ -522,6 +525,8 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+
         }
     }
 
@@ -542,6 +547,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             list.removeAll(toRemove);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -556,7 +562,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_newButtonActionPerformed
 
@@ -570,8 +576,9 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             });
             list.clear();
             list.addAll(data);
-        } catch (RollbackException rex) {
-            JOptionPane.showMessageDialog(null, rex.getMessage());
+        } catch (RollbackException ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
             List<com.parah.mg.domain.TblTransferencias> merged = new ArrayList<>(list.size());
             for (com.parah.mg.domain.TblTransferencias t : list) {
@@ -616,7 +623,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-                ex.printStackTrace();
+                logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             }
         }
     }//GEN-LAST:event_newButton1ActionPerformed
@@ -630,6 +637,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             txtCtaCte.selectAll();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCtaCteFocusGained
@@ -658,6 +666,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
 
         // TODO add your handling code here:

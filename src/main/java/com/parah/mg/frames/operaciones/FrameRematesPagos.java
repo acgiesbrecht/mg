@@ -41,6 +41,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -48,10 +50,10 @@ import net.sf.jasperreports.engine.JasperReport;
  */
 public class FrameRematesPagos extends javax.swing.JInternalFrame {
 
+    private static final Logger logger = LogManager.getLogger(FrameRematesPagos.class);
     Map<String, String> persistenceMap = new HashMap<>();
     List<TblEntidades> listEntidadesFiltered;
     TblEntidades selectedEntidad;
-    String databaseIP;
     List<Date> listFechasCuotas;
     TblEventoCuotas remateCuotas;
     Integer saldoActual;
@@ -68,7 +70,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 true);//iconifiable
         try {
 
-            persistenceMap = Utils.getInstance().getDatabaseIP();
+            persistenceMap = Utils.getInstance().getPersistenceMap();
             initComponents();
             txtCtaCte.setEnabled(false);
             cboEntidad.setEnabled(false);
@@ -126,7 +128,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                         }
                     });
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
@@ -504,7 +506,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                  }*/
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }        // TODO add your handling code here:
     }//GEN-LAST:event_txtCtaCteKeyReleased
@@ -571,7 +573,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
 
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
@@ -673,7 +675,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             txtCtaCte.setText(((TblEntidades) cboEntidad.getSelectedItem()).getCtacte().toString());
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
@@ -790,14 +792,14 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         } finally {
             cmdProcesar.setEnabled(true);
         }
     }//GEN-LAST:event_cmdProcesarActionPerformed
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
-        databaseIP = Preferences.userRoot().node("Remates").get("DatabaseIP", "127.0.0.1");
+//
     }//GEN-LAST:event_formInternalFrameActivated
 
     private void txtTransferenciaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTransferenciaMouseClicked

@@ -32,6 +32,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -39,6 +41,7 @@ import net.sf.jasperreports.engine.JasperReport;
  */
 public class FrameFacturacionColectiva extends JInternalFrame {
 
+    private static final Logger logger = LogManager.getLogger(FrameFacturacionColectiva.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
@@ -51,7 +54,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 true);//iconifiable
         try {
 
-            persistenceMap = Utils.getInstance().getDatabaseIP();
+            persistenceMap = Utils.getInstance().getPersistenceMap();
             initComponents();
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
@@ -66,7 +69,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             filterHeader.setPosition(TableFilterHeader.Position.TOP);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
@@ -219,7 +222,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_imprimirButtonActionPerformed
 
@@ -243,7 +246,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
         } catch (SQLException | JRException ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -252,6 +255,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             this.setVisible(false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cancelarButtonActionPerformed
 
@@ -327,7 +331,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }

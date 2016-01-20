@@ -19,6 +19,8 @@ import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -26,6 +28,7 @@ import javax.swing.JInternalFrame;
  */
 public class FrameTimbradosAdmin extends JInternalFrame {
 
+    private static final Logger logger = LogManager.getLogger(FrameTimbradosAdmin.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
@@ -36,7 +39,7 @@ public class FrameTimbradosAdmin extends JInternalFrame {
                 true, //closable
                 true, //maximizable
                 true);//iconifiable
-        persistenceMap = Utils.getInstance().getDatabaseIP();
+        persistenceMap = Utils.getInstance().getPersistenceMap();
 
         //System.out.print(currentUser.getUser().getTblGruposList().size());
         initComponents();
@@ -304,8 +307,8 @@ public class FrameTimbradosAdmin extends JInternalFrame {
             }
             list.clear();
             list.addAll(data);
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
+        } catch (RollbackException ex) {
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
             List<com.parah.mg.domain.TblTimbrados> merged = new ArrayList<>(list.size());
             for (com.parah.mg.domain.TblTimbrados t : list) {

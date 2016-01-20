@@ -6,6 +6,7 @@
 package com.parah.mg.frames.admin;
 
 import com.parah.mg.domain.TblFacturas;
+import com.parah.mg.frames.MdiFrame;
 import com.parah.mg.utils.Utils;
 import java.io.IOException;
 import java.sql.Connection;
@@ -22,12 +23,15 @@ import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
  * @author Industria
  */
 public class FrameConfigAdmin extends javax.swing.JInternalFrame {
+
+    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(FrameConfigAdmin.class);
 
     public FrameConfigAdmin() {
         super("Configuracion",
@@ -289,6 +293,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -321,6 +326,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cmdDatadirActionPerformed
 
@@ -341,7 +347,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            Logger.getLogger(FrameConfigAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cmdResetActionPerformed
 
@@ -381,7 +387,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
              */
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cmdFacturaPrintTestActionPerformed
 
@@ -390,7 +396,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
             Preferences.userRoot().node("MG").put("facturaLeftMargin", txtFacturaX.getText());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_txtFacturaXKeyReleased
 
@@ -399,13 +405,13 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
             Preferences.userRoot().node("MG").put("facturaTopMargin", txtFacturaY.getText());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            ex.printStackTrace();
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_txtFacturaYKeyReleased
 
     void resetDB() {
         try {
-            Map<String, String> persistenceMap = Utils.getInstance().getDatabaseIP();
+            Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
             Boolean error = false;
             Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
             List<String> sql = Arrays.asList(IOUtils.toString(getClass().getResourceAsStream("/sql/javadb.sql")).split(";"));
@@ -416,6 +422,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                 } catch (SQLException exx) {
                     error = true;
                     JOptionPane.showMessageDialog(null, exx.getMessage() + String.valueOf(exx.getErrorCode()));
+                    logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), exx);
                 }
             }
             /*sql.stream().forEach(s -> {
@@ -438,6 +445,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
             conn.close();
         } catch (SQLException | IOException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
 
     }

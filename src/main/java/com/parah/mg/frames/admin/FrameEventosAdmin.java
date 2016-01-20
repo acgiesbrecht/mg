@@ -23,6 +23,8 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -30,6 +32,7 @@ import net.coderazzi.filters.gui.TableFilterHeader;
  */
 public class FrameEventosAdmin extends JInternalFrame {
 
+    private static final Logger logger = LogManager.getLogger(FrameEventosAdmin.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
@@ -40,7 +43,7 @@ public class FrameEventosAdmin extends JInternalFrame {
                 true, //closable
                 true, //maximizable
                 true);//iconifiable
-        persistenceMap = Utils.getInstance().getDatabaseIP();
+        persistenceMap = Utils.getInstance().getPersistenceMap();
 
         //System.out.print(currentUser.getUser().getTblGruposList().size());
         initComponents();
@@ -384,8 +387,8 @@ public class FrameEventosAdmin extends JInternalFrame {
             }
             list.clear();
             list.addAll(data);
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
+        } catch (RollbackException ex) {
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
             List<com.parah.mg.domain.TblEventos> merged = new ArrayList<>(list.size());
             for (com.parah.mg.domain.TblEventos t : list) {

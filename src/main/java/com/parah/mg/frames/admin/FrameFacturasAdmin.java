@@ -27,6 +27,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -34,6 +36,7 @@ import net.sf.jasperreports.engine.JasperReport;
  */
 public class FrameFacturasAdmin extends JInternalFrame {
 
+    private static final Logger logger = LogManager.getLogger(FrameFacturasAdmin.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
@@ -44,7 +47,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
                 true, //closable
                 true, //maximizable
                 true);//iconifiable
-        persistenceMap = Utils.getInstance().getDatabaseIP();
+        persistenceMap = Utils.getInstance().getPersistenceMap();
         initComponents();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
@@ -251,7 +254,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-                ex.printStackTrace();
+                logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             }
         }
     }//GEN-LAST:event_imprimirButtonActionPerformed
@@ -267,8 +270,8 @@ public class FrameFacturasAdmin extends JInternalFrame {
             }
             list.clear();
             list.addAll(data);
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
+        } catch (RollbackException ex) {
+            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
             List<com.parah.mg.domain.TblFacturas> merged = new ArrayList<>(list.size());
             for (com.parah.mg.domain.TblFacturas t : list) {
