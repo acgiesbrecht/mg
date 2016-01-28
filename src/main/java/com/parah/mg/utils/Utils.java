@@ -37,7 +37,7 @@ import org.apache.logging.log4j.Logger;
 public class Utils extends Component {
 
     private static final Utils utils = new Utils();
-    private static final Logger logger = LogManager.getLogger(Utils.class);
+    private static final Logger LOGGER = LogManager.getLogger(Utils.class);
     /* A private Constructor prevents any other
      * class from instantiating.
      */
@@ -135,7 +135,7 @@ public class Utils extends Component {
             JasperPrintManager.printReport(jasperPrint, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 

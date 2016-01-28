@@ -28,7 +28,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class FrameTimbradosAdmin extends JInternalFrame {
 
-    private static final Logger logger = LogManager.getLogger(FrameTimbradosAdmin.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameTimbradosAdmin.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
@@ -308,7 +308,7 @@ public class FrameTimbradosAdmin extends JInternalFrame {
             list.clear();
             list.addAll(data);
         } catch (RollbackException ex) {
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
             List<com.parah.mg.domain.TblTimbrados> merged = new ArrayList<>(list.size());
             for (com.parah.mg.domain.TblTimbrados t : list) {

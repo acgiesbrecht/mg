@@ -114,17 +114,11 @@
       </Events>
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtPass">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="adrian"/>
-      </Properties>
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtPassFocusGained"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtUser">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="adrian"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>

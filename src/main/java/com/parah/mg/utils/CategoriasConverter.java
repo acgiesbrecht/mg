@@ -19,7 +19,7 @@ import org.jdesktop.beansbinding.Converter;
  */
 public class CategoriasConverter extends Converter {
 
-    private static final Logger logger = LogManager.getLogger(CategoriasConverter.class);
+    private static final Logger LOGGER = LogManager.getLogger(CategoriasConverter.class);
     private EntityManager entityManager;
 
     @Override
@@ -40,7 +40,7 @@ public class CategoriasConverter extends Converter {
             res = null;
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
         return res;
     }

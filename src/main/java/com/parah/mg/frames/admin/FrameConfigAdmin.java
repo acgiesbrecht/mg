@@ -31,7 +31,7 @@ import org.apache.logging.log4j.LogManager;
  */
 public class FrameConfigAdmin extends javax.swing.JInternalFrame {
 
-    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(FrameConfigAdmin.class);
+    private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(FrameConfigAdmin.class);
 
     public FrameConfigAdmin() {
         super("Configuracion",
@@ -293,7 +293,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -326,7 +326,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cmdDatadirActionPerformed
 
@@ -347,7 +347,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cmdResetActionPerformed
 
@@ -387,7 +387,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
              */
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cmdFacturaPrintTestActionPerformed
 
@@ -396,7 +396,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
             Preferences.userRoot().node("MG").put("facturaLeftMargin", txtFacturaX.getText());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_txtFacturaXKeyReleased
 
@@ -405,7 +405,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
             Preferences.userRoot().node("MG").put("facturaTopMargin", txtFacturaY.getText());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_txtFacturaYKeyReleased
 
@@ -422,7 +422,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                 } catch (SQLException exx) {
                     error = true;
                     JOptionPane.showMessageDialog(null, exx.getMessage() + String.valueOf(exx.getErrorCode()));
-                    logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), exx);
+                    LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), exx);
                 }
             }
             /*sql.stream().forEach(s -> {
@@ -445,7 +445,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
             conn.close();
         } catch (SQLException | IOException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
 
     }

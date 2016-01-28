@@ -50,7 +50,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class FrameRematesPagos extends javax.swing.JInternalFrame {
 
-    private static final Logger logger = LogManager.getLogger(FrameRematesPagos.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameRematesPagos.class);
     Map<String, String> persistenceMap = new HashMap<>();
     List<TblEntidades> listEntidadesFiltered;
     TblEntidades selectedEntidad;
@@ -128,7 +128,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                         }
                     });
         } catch (Exception ex) {
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
@@ -506,7 +506,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                  }*/
             }
         } catch (Exception ex) {
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }        // TODO add your handling code here:
     }//GEN-LAST:event_txtCtaCteKeyReleased
@@ -573,7 +573,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
 
             }
         } catch (Exception ex) {
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
@@ -675,7 +675,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             txtCtaCte.setText(((TblEntidades) cboEntidad.getSelectedItem()).getCtacte().toString());
 
         } catch (Exception ex) {
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
@@ -792,7 +792,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         } finally {
             cmdProcesar.setEnabled(true);
         }

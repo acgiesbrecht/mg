@@ -49,7 +49,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class FrameFacturacionUnica extends JInternalFrame {
 
-    private static final Logger logger = LogManager.getLogger(FrameFacturacionUnica.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameFacturacionUnica.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     Map<String, String> persistenceMap = new HashMap<>();
     EventList<TblEntidades> eventListMiembros = new BasicEventList<>();
@@ -128,7 +128,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     });
             refresh();
         } catch (Exception ex) {
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
@@ -523,7 +523,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_imprimirButtonActionPerformed
 
@@ -552,7 +552,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
              JasperPrintManager.printReport(jasperPrint, false);*/
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -561,7 +561,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
             refresh();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cancelarButtonActionPerformed
 
@@ -620,7 +620,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
 
         // TODO add your handling code here:
@@ -675,7 +675,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
         } catch (Exception ex) {
             System.out.println(temp);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_updateSETbuttonActionPerformed
 

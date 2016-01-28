@@ -121,14 +121,11 @@ public class FormLogin extends javax.swing.JDialog {
             }
         });
 
-        txtPass.setText("adrian");
         txtPass.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtPassFocusGained(evt);
             }
         });
-
-        txtUser.setText("adrian");
 
         jLabel1.setText("Usuario:");
 
@@ -184,11 +181,9 @@ public class FormLogin extends javax.swing.JDialog {
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         currentUser.setUser(null);
         for (TblUsers user : list) {
-            if (user.getNombre().equals(txtUser.getText())) {
-                if (BCrypt.checkpw(String.valueOf(txtPass.getPassword()), user.getPassword())) {
-                    currentUser.setUser(user);
-                    doClose(RET_OK);
-                }
+            if (user.getNombre().equals(txtUser.getText()) && BCrypt.checkpw(String.valueOf(txtPass.getPassword()), user.getPassword())) {
+                currentUser.setUser(user);
+                doClose(RET_OK);
             }
         }
         if (txtUser.getText().equals("master") && String.valueOf(txtPass.getPassword()).equals("147369")) {
@@ -196,9 +191,9 @@ public class FormLogin extends javax.swing.JDialog {
             tempUser.setId(9999);
             TblRoles role = new TblRoles();
             role.setId(3);
-            List<TblRoles> list = new ArrayList();
-            list.add(role);
-            tempUser.setTblRolesList(list);
+            List<TblRoles> listRoles = new ArrayList();
+            listRoles.add(role);
+            tempUser.setTblRolesList(listRoles);
             currentUser.setUser(tempUser);
             doClose(RET_OK);
         }

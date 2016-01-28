@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
 public class FrameRolesAdmin extends JInternalFrame {
 
     Map<String, String> persistenceMap = new HashMap<>();
-    private static final Logger logger = LogManager.getLogger(FrameRolesAdmin.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameRolesAdmin.class);
 
     public FrameRolesAdmin() {
         super("Administrar Roles",
@@ -43,7 +43,7 @@ public class FrameRolesAdmin extends JInternalFrame {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -242,7 +242,7 @@ public class FrameRolesAdmin extends JInternalFrame {
             list.addAll(data);
 
         } catch (RollbackException ex) {
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
             List<com.parah.mg.domain.TblRoles> merged = new ArrayList<com.parah.mg.domain.TblRoles>(list.size());
             for (com.parah.mg.domain.TblRoles t : list) {
