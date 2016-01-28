@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.prefs.Preferences;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.swing.DesktopManager;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
@@ -155,10 +156,9 @@ public class MdiFrame extends javax.swing.JFrame {
             );
 
             //AUTO LOGIN-------------------------------
-            currentUser.setUser(
-                    null);
+            currentUser.setUser(null);
 
-            EntityManager entityManager = javax.persistence.Persistence.createEntityManagerFactory("mg_PU").createEntityManager();
+            EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
 
             try {
                 Object o = entityManager.createNativeQuery("select count(*) from tbl_users where 1=2").getSingleResult();
@@ -184,6 +184,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     void resetDB() {
         try {
+
             Boolean error = false;
             Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
             List<String> sql = Arrays.asList(IOUtils.toString(getClass().getResourceAsStream("/sql/javadb.sql")).split(";"));
@@ -194,22 +195,23 @@ public class MdiFrame extends javax.swing.JFrame {
                 } catch (SQLException exx) {
                     error = true;
                     if (exx.getErrorCode() != 30000) {
-                        JOptionPane.showMessageDialog(null, exx.getMessage() + String.valueOf(exx.getErrorCode()));
+                        JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + exx.getMessage());
+                        LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), exx);
                     }
                 }
             }
 
-            if (error) {
+            /*if (error) {
                 JOptionPane.showMessageDialog(null, "Error. Por favor pruebe otra vez.");
             } else {
                 JOptionPane.showMessageDialog(null, "Base de Datos restablecida!");
 
-            }
-
+            }*/
             stmt.close();
             conn.close();
         } catch (SQLException | IOException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
 
     }

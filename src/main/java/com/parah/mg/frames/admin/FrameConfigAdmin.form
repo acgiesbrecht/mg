@@ -227,7 +227,7 @@
     </Container>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Direccion IP de Base de datos:"/>
+        <Property name="text" type="java.lang.String" value="Impresion de Transferencias"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cboModoImpresion">

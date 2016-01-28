@@ -6,7 +6,6 @@
 package com.parah.mg.frames.admin;
 
 import com.parah.mg.domain.TblFacturas;
-import com.parah.mg.frames.MdiFrame;
 import com.parah.mg.utils.Utils;
 import java.io.IOException;
 import java.sql.Connection;
@@ -17,8 +16,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -160,7 +157,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jLabel4.setText("Direccion IP de Base de datos:");
+        jLabel4.setText("Impresion de Transferencias");
 
         cboModoImpresion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Normal", "Triplicado" }));
 

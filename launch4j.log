@@ -1,0 +1,31 @@
+
+
+Version:	3.8
+CmdLine:	C:\Users\adriang\Documents\NetBeansProjects\MG\mg2.exe --l4j-debug
+WOW64:		yes
+Working dir:	C:\Users\adriang\Documents\NetBeansProjects\MG\.
+64-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.6
+Ignore:		1.6
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.6.0_20
+Ignore:		1.6.0_20
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8
+Ignore:		1.8
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8.0_25
+Check launcher:	C:\Program Files\Java\jre1.8.0_25\bin\javaw.exe (OK)
+Match:		1.8.0_25
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8.0_72
+Check launcher:	C:\Program Files\Java\jre1.8.0_72\bin\javaw.exe (OK)
+Match:		1.8.0_72
+64-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8
+Ignore:		1.8
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8.0_25
+Ignore:		1.8.0_25
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8.0_72
+Ignore:		1.8.0_72
+Runtime used:	1.8.0_72 (64-bit)
+Launcher:	C:\Program Files\Java\jre1.8.0_72\bin\javaw.exe
+Launcher args:	-jar "C:\Users\adriang\Documents\NetBeansProjects\MG\mg2.exe" app
+Args length:	65/32768 chars
+Exit code:	0
