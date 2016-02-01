@@ -184,7 +184,7 @@ public class TblTransferencias implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblTransferencias[ id=" + id + " ]";
+        return "com.parah.mg.domain.TblTransferencias[ id=" + id + " ]";
     }
 
 }

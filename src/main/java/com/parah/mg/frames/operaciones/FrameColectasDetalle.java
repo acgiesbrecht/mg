@@ -17,7 +17,6 @@ import com.parah.mg.domain.TblEventoTipos;
 import com.parah.mg.domain.TblEventos;
 import com.parah.mg.domain.TblRecibos;
 import com.parah.mg.domain.TblTransferencias;
-import com.parah.mg.frames.admin.FrameUsuariosAdmin;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.Color;
@@ -703,7 +702,7 @@ public class FrameColectasDetalle extends JInternalFrame {
             TblEventos currentEvento = (TblEventos) cboFechaColecta.getSelectedItem();
 
             //actialuazr transferencias y recibos
-            if ((int) entityManager.createQuery("SELECT COUNT(t) FROM TblTransferencias t WHERE t.cobrado = true AND t.idEvento.id = " + String.valueOf(currentEvento.getId())).getSingleResult() > 0) {
+            if ((int) (long) entityManager.createQuery("SELECT COUNT(t) FROM TblTransferencias t WHERE t.cobrado = true AND t.idEvento.id = " + String.valueOf(currentEvento.getId())).getSingleResult() > 0) {
                 JOptionPane.showMessageDialog(null, "Los cambios realizados a este evento no tendrán efecto sobre los pagos realizados porque ya hay transferencias cobradas para este evento. Deberá modificar las transferencias y los recibos manualmente.");
             } else {
                 int executeUpdate = entityManager.createQuery("DELETE FROM TblTransferencias t WHERE t.idEvento.id = " + String.valueOf(currentEvento.getId())).executeUpdate();
@@ -740,7 +739,7 @@ public class FrameColectasDetalle extends JInternalFrame {
             refresh();
             newButton.requestFocus();
         } catch (RollbackException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
 
             entityManager.getTransaction().begin();
             List<com.parah.mg.domain.TblEventoDetalle> merged = new ArrayList<>(listEventoDetalle.size());
@@ -749,6 +748,9 @@ public class FrameColectasDetalle extends JInternalFrame {
             });
             listEventoDetalle.clear();
             listEventoDetalle.addAll(merged);
+        } catch (Exception exx) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + exx.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), exx);
         }
 
     }
@@ -820,25 +822,33 @@ public class FrameColectasDetalle extends JInternalFrame {
     }//GEN-LAST:event_montoFieldActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-        Collection data = queryMiembros.getResultList();
-        data.stream().forEach((entity) -> {
-            entityManager1.refresh(entity);
-        });
-        listMiembros.clear();
-        listMiembros.addAll(data);
-        eventListMiembros.clear();
-        eventListMiembros.addAll(data);
+        try {
+            Collection data = queryMiembros.getResultList();
+            data.stream().forEach((entity) -> {
+                entityManager1.refresh(entity);
+            });
+            listMiembros.clear();
+            listMiembros.addAll(data);
+            eventListMiembros.clear();
+            eventListMiembros.addAll(data);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void cboMiembroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMiembroActionPerformed
-        if (cboMiembro.getSelectedItem() != null) {
-            txtCtaCte.setText(((TblEntidades) cboMiembro.getSelectedItem()).getCtacte().toString());
+        try {
+            if (cboMiembro.getSelectedItem() != null) {
+                txtCtaCte.setText(((TblEntidades) cboMiembro.getSelectedItem()).getCtacte().toString());
 
-        } else {
-            txtCtaCte.setText("");
+            } else {
+                txtCtaCte.setText("");
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
-
     }//GEN-LAST:event_cboMiembroActionPerformed
 
     private void cboFormaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFormaActionPerformed
@@ -846,20 +856,38 @@ public class FrameColectasDetalle extends JInternalFrame {
     }//GEN-LAST:event_cboFormaActionPerformed
 
     private void montoFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoFieldKeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (((Number) montoField.getValue()).intValue() == 0) {
-                JOptionPane.showMessageDialog(null, "El monto no puede ser 0.");
-                montoField.requestFocusInWindow();
-                return;
+        try {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (((Number) montoField.getValue()).intValue() == 0) {
+                    JOptionPane.showMessageDialog(null, "El monto no puede ser 0.");
+                    montoField.requestFocusInWindow();
+                    return;
+                }
+                if (cboMiembro.getSelectedItem() == null) {
+                    JOptionPane.showMessageDialog(null, "No ha eligido un donador.");
+                    cboMiembro.requestFocusInWindow();
+                    return;
+                }
+                save();
+                int reply = JOptionPane.showConfirmDialog(null, "Desea crear un nuevo registro?", title, JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                    newDetalle();
+                }
             }
-            save();
-            newDetalle();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_montoFieldKeyReleased
 
     private void cboFormaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cboFormaKeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            montoField.requestFocusInWindow();
+        try {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                montoField.requestFocusInWindow();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cboFormaKeyReleased
 

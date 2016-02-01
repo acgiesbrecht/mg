@@ -94,17 +94,23 @@ public class Utils extends Component {
     }
 
     public Map<String, String> getPersistenceMap() {
-        Properties p = System.getProperties();
-        p.setProperty("derby.system.home", Preferences.userRoot().node("MG").get("Datadir", (new JFileChooser()).getFileSystemView().getDefaultDirectory().toString() + "\\javadb"));
-        p.setProperty("derby.drda.host", "0.0.0.0");
-        String databaseIP;
-        databaseIP = Preferences.userRoot().node("MG").get("DatabaseIP", "127.0.0.1");
-        Map<String, String> persistenceMap = new HashMap<>();
-        persistenceMap.put("javax.persistence.jdbc.url", "jdbc:derby://" + databaseIP + ":1527/mgdb;create=true");
-        persistenceMap.put("javax.persistence.jdbc.user", "mg");
-        persistenceMap.put("javax.persistence.jdbc.password", "123456");
-        persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
-        return persistenceMap;
+        try {
+            Properties p = System.getProperties();
+            p.setProperty("derby.system.home", Preferences.userRoot().node("MG").get("Datadir", (new JFileChooser()).getFileSystemView().getDefaultDirectory().toString() + "\\javadb"));
+            p.setProperty("derby.drda.host", "0.0.0.0");
+            String databaseIP;
+            databaseIP = Preferences.userRoot().node("MG").get("DatabaseIP", "127.0.0.1");
+            Map<String, String> persistenceMap = new HashMap<>();
+            persistenceMap.put("javax.persistence.jdbc.url", "jdbc:derby://" + databaseIP + ":1527/mgdb;create=true");
+            persistenceMap.put("javax.persistence.jdbc.user", "mg");
+            persistenceMap.put("javax.persistence.jdbc.password", "123456");
+            persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
+            return persistenceMap;
+        } catch (Exception exx) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + exx.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), exx);
+            return null;
+        }
     }
 
     public void printFactura(TblFacturas factura) {

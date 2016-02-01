@@ -147,7 +147,7 @@ public class TblEventoCuotas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblEventoCuotas[ idEvento=" + idEvento + " ]";
+        return "com.parah.mg.domain.TblEventoCuotas[ idEvento=" + idEvento + " ]";
     }
 
 }
