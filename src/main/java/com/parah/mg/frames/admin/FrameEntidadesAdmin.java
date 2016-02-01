@@ -743,6 +743,8 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             });
             list.clear();
             list.addAll(merged);
+        } catch () {
+
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
