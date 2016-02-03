@@ -19,6 +19,7 @@ import com.parah.mg.frames.admin.FrameRolesAdmin;
 import com.parah.mg.frames.admin.FrameTimbradosAdmin;
 import com.parah.mg.frames.admin.FrameTransferenciasAdmin;
 import com.parah.mg.frames.admin.FrameUsuariosAdmin;
+import com.parah.mg.frames.informes.FrameInformesCyA;
 import com.parah.mg.frames.informes.FrameInformesRemates;
 import com.parah.mg.frames.operaciones.FrameAportesDetalle;
 import com.parah.mg.frames.operaciones.FrameCobrarTransferencias;
@@ -150,6 +151,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
                             mnuAdInformes.setEnabled(currentUser.hasRole(1));
                             mnuAdInformesTransferencias.setEnabled(currentUser.hasRole(2));
+                            mnuInformesCyA.setEnabled(currentUser.hasRole(2));
 
                         }
                     }
@@ -247,7 +249,7 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOpCobrarTransferencias = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         mnuAdInformes = new javax.swing.JMenuItem();
-        mnuAdInformes1 = new javax.swing.JMenuItem();
+        mnuInformesCyA = new javax.swing.JMenuItem();
         mnuAdInformesTransferencias = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mnuAdMiembros = new javax.swing.JMenuItem();
@@ -381,15 +383,15 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         jMenu4.add(mnuAdInformes);
 
-        mnuAdInformes1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
-        mnuAdInformes1.setText("Informes Colectas y Aportes");
-        mnuAdInformes1.setEnabled(false);
-        mnuAdInformes1.addActionListener(new java.awt.event.ActionListener() {
+        mnuInformesCyA.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
+        mnuInformesCyA.setText("Informes Colectas y Aportes");
+        mnuInformesCyA.setEnabled(false);
+        mnuInformesCyA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuAdInformes1ActionPerformed(evt);
+                mnuInformesCyAActionPerformed(evt);
             }
         });
-        jMenu4.add(mnuAdInformes1);
+        jMenu4.add(mnuInformesCyA);
 
         mnuAdInformesTransferencias.setText("Informe Transferencias Pendientes");
         mnuAdInformesTransferencias.setEnabled(false);
@@ -895,9 +897,20 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuOpFacturaPendientesActionPerformed
 
-    private void mnuAdInformes1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdInformes1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_mnuAdInformes1ActionPerformed
+    private void mnuInformesCyAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuInformesCyAActionPerformed
+        try {
+            FrameInformesCyA frame = new FrameInformesCyA();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_mnuInformesCyAActionPerformed
 
     private void mnuAdConfig1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdConfig1ActionPerformed
         try {
@@ -1030,7 +1043,6 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAdGrupos;
     private javax.swing.JMenuItem mnuAdIglesia;
     private javax.swing.JMenuItem mnuAdInformes;
-    private javax.swing.JMenuItem mnuAdInformes1;
     private javax.swing.JMenuItem mnuAdInformesTransferencias;
     private javax.swing.JMenuItem mnuAdMiembros;
     private javax.swing.JMenuItem mnuAdRecibos;
@@ -1038,6 +1050,7 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAdTimbrados;
     private javax.swing.JMenuItem mnuAdTransf;
     private javax.swing.JMenuItem mnuAdUsuarios;
+    private javax.swing.JMenuItem mnuInformesCyA;
     private javax.swing.JMenuItem mnuLogin;
     private javax.swing.JMenuItem mnuOpAportes;
     private javax.swing.JMenuItem mnuOpCobrarTransferencias;
