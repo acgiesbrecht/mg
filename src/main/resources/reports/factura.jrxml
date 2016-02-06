@@ -83,7 +83,7 @@
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font fontName="Times New Roman" size="10" isBold="false"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$P{ruc}+"-"+com.lacreacion.utils.CalcDV.Pa_Calcular_Dv_11_A($P{ruc}.toString(), 11)]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$P{ruc}+"-"+com.parah.utils.CalcDV.Pa_Calcular_Dv_11_A($P{ruc}.toString(), 11)]]></textFieldExpression>
             </textField>
             <textField pattern="#000000" isBlankWhenNull="false">
                 <reportElement x="340" y="83" width="186" height="24" uuid="8e001246-49f6-4bc3-b931-bbd496e29651"/>
@@ -132,7 +132,7 @@
                 <textElement verticalAlignment="Middle">
                     <font fontName="Times New Roman" size="10" isBold="false"/>
                 </textElement>
-                <textFieldExpression><![CDATA[com.lacreacion.utils.NumeroALetras.convertNumberToLetter($P{importe_aporte}+$P{importe_donacion})]]></textFieldExpression>
+                <textFieldExpression><![CDATA[com.parah.utils.NumeroALetras.convertNumberToLetter($P{importe_aporte}+$P{importe_donacion})]]></textFieldExpression>
             </textField>
 
             <textField pattern="dd/MM/yyyy">
@@ -193,7 +193,7 @@
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font fontName="Times New Roman" size="10" isBold="false"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$P{ruc}+"-"+com.lacreacion.utils.CalcDV.Pa_Calcular_Dv_11_A($P{ruc}.toString(), 11)]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$P{ruc}+"-"+com.parah.utils.CalcDV.Pa_Calcular_Dv_11_A($P{ruc}.toString(), 11)]]></textFieldExpression>
             </textField>
             <textField pattern="#000000" isBlankWhenNull="false">
                 <reportElement x="340" y="498" width="186" height="24" uuid="8e001246-49f6-4bc3-b931-bbd496e29651"/>
@@ -242,7 +242,7 @@
                 <textElement verticalAlignment="Middle">
                     <font fontName="Times New Roman" size="10" isBold="false"/>
                 </textElement>
-                <textFieldExpression><![CDATA[com.lacreacion.utils.NumeroALetras.convertNumberToLetter($P{importe_aporte}+$P{importe_donacion})]]></textFieldExpression>
+                <textFieldExpression><![CDATA[com.parah.utils.NumeroALetras.convertNumberToLetter($P{importe_aporte}+$P{importe_donacion})]]></textFieldExpression>
             </textField>
         </band>
     </detail>

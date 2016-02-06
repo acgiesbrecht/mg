@@ -5,7 +5,6 @@
  */
 package com.parah.mg.frames.admin;
 
-import com.parah.mg.utils.CategoriasConverter;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
 import java.beans.Beans;
@@ -27,7 +26,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class FrameCategoriasArticulosAdmin extends JInternalFrame {
 
-    private static final Logger logger = LogManager.getLogger(FrameCategoriasArticulosAdmin.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameCategoriasArticulosAdmin.class);
     Map<String, String> persistenceMap = new HashMap<>();
 
     public FrameCategoriasArticulosAdmin() {
@@ -36,12 +35,16 @@ public class FrameCategoriasArticulosAdmin extends JInternalFrame {
                 true, //closable
                 true, //maximizable
                 true);//iconifiable
-        persistenceMap = Utils.getInstance().getPersistenceMap();
-        initComponents();
-        if (!Beans.isDesignTime()) {
-            entityManager.getTransaction().begin();
+        try {
+            persistenceMap = Utils.getInstance().getPersistenceMap();
+            initComponents();
+            if (!Beans.isDesignTime()) {
+                entityManager.getTransaction().begin();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
-
     }
 
     /**
@@ -229,7 +232,7 @@ public class FrameCategoriasArticulosAdmin extends JInternalFrame {
             list.removeAll(toRemove);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -243,7 +246,7 @@ public class FrameCategoriasArticulosAdmin extends JInternalFrame {
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_newButtonActionPerformed
 

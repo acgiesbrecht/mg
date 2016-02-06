@@ -36,7 +36,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class FrameFacturasAdmin extends JInternalFrame {
 
-    private static final Logger logger = LogManager.getLogger(FrameFacturasAdmin.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameFacturasAdmin.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
@@ -254,7 +254,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-                logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+                LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             }
         }
     }//GEN-LAST:event_imprimirButtonActionPerformed
@@ -271,7 +271,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
             list.clear();
             list.addAll(data);
         } catch (RollbackException ex) {
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
             List<com.parah.mg.domain.TblFacturas> merged = new ArrayList<>(list.size());
             for (com.parah.mg.domain.TblFacturas t : list) {

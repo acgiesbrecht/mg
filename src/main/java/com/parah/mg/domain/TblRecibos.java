@@ -172,7 +172,7 @@ public class TblRecibos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblRecibos[ id=" + id + " ]";
+        return "com.parah.mg.domain.TblRecibos[ id=" + id + " ]";
     }
 
 }

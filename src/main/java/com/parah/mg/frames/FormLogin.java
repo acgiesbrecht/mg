@@ -8,6 +8,7 @@ package com.parah.mg.frames;
 import com.parah.mg.domain.TblRoles;
 import com.parah.mg.domain.TblUsers;
 import com.parah.mg.utils.CurrentUser;
+import com.parah.mg.utils.Utils;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -15,6 +16,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -91,9 +95,6 @@ public class FormLogin extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("mg_PU").createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblUsers t");
-        list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : query.getResultList();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         txtPass = new javax.swing.JPasswordField();
@@ -121,14 +122,11 @@ public class FormLogin extends javax.swing.JDialog {
             }
         });
 
-        txtPass.setText("adrian");
         txtPass.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtPassFocusGained(evt);
             }
         });
-
-        txtUser.setText("adrian");
 
         jLabel1.setText("Usuario:");
 
@@ -182,25 +180,28 @@ public class FormLogin extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+
         currentUser.setUser(null);
-        for (TblUsers user : list) {
-            if (user.getNombre().equals(txtUser.getText())) {
-                if (BCrypt.checkpw(String.valueOf(txtPass.getPassword()), user.getPassword())) {
-                    currentUser.setUser(user);
-                    doClose(RET_OK);
-                }
-            }
-        }
         if (txtUser.getText().equals("master") && String.valueOf(txtPass.getPassword()).equals("147369")) {
             TblUsers tempUser = new TblUsers();
             tempUser.setId(9999);
             TblRoles role = new TblRoles();
             role.setId(3);
-            List<TblRoles> list = new ArrayList();
-            list.add(role);
-            tempUser.setTblRolesList(list);
+            List<TblRoles> listRoles = new ArrayList();
+            listRoles.add(role);
+            tempUser.setTblRolesList(listRoles);
             currentUser.setUser(tempUser);
             doClose(RET_OK);
+        } else {
+            Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
+            EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
+            List<TblUsers> list = (List<TblUsers>) entityManager.createQuery("SELECT t FROM TblUsers t").getResultList();
+            for (TblUsers user : list) {
+                if (user.getNombre().equals(txtUser.getText()) && BCrypt.checkpw(String.valueOf(txtPass.getPassword()), user.getPassword())) {
+                    currentUser.setUser(user);
+                    doClose(RET_OK);
+                }
+            }
         }
         if (currentUser.getUser() == null) {
             JOptionPane.showMessageDialog(null, "Usuario o contraseña invalidos");
@@ -245,16 +246,24 @@ public class FormLogin extends javax.swing.JDialog {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FormLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormLogin.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FormLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormLogin.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FormLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormLogin.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FormLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormLogin.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -275,12 +284,9 @@ public class FormLogin extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
-    private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private java.util.List<TblUsers> list;
     private javax.swing.JButton okButton;
-    private javax.persistence.Query query;
     private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables

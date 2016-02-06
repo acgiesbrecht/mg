@@ -9,7 +9,6 @@ import com.parah.mg.domain.TblEntidades;
 import com.parah.mg.domain.TblEventoCuotas;
 import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.domain.models.CuotaModel;
-import com.parah.mg.frames.MdiFrame;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +18,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.prefs.Preferences;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -37,11 +37,11 @@ import org.apache.logging.log4j.Logger;
 public class Utils extends Component {
 
     private static final Utils utils = new Utils();
-    private static final Logger logger = LogManager.getLogger(Utils.class);
+    private static final Logger LOGGER = LogManager.getLogger(Utils.class);
+
     /* A private Constructor prevents any other
      * class from instantiating.
      */
-
     private Utils() {
     }
 
@@ -94,17 +94,23 @@ public class Utils extends Component {
     }
 
     public Map<String, String> getPersistenceMap() {
-        Properties p = System.getProperties();
-        p.setProperty("derby.system.home", Preferences.userRoot().node("MG").get("Datadir", "C:\\javadb"));
-        p.setProperty("derby.drda.host", "0.0.0.0");
-        String databaseIP;
-        databaseIP = Preferences.userRoot().node("MG").get("DatabaseIP", "127.0.0.1");
-        Map<String, String> persistenceMap = new HashMap<>();
-        persistenceMap.put("javax.persistence.jdbc.url", "jdbc:derby://" + databaseIP + ":1527/mgdb");
-        persistenceMap.put("javax.persistence.jdbc.user", "mg");
-        persistenceMap.put("javax.persistence.jdbc.password", "123456");
-        persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
-        return persistenceMap;
+        try {
+            Properties p = System.getProperties();
+            p.setProperty("derby.system.home", Preferences.userRoot().node("MG").get("Datadir", (new JFileChooser()).getFileSystemView().getDefaultDirectory().toString() + "\\javadb"));
+            p.setProperty("derby.drda.host", "0.0.0.0");
+            String databaseIP;
+            databaseIP = Preferences.userRoot().node("MG").get("DatabaseIP", "127.0.0.1");
+            Map<String, String> persistenceMap = new HashMap<>();
+            persistenceMap.put("javax.persistence.jdbc.url", "jdbc:derby://" + databaseIP + ":1527/mgdb;create=true");
+            persistenceMap.put("javax.persistence.jdbc.user", "mg");
+            persistenceMap.put("javax.persistence.jdbc.password", "123456");
+            persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
+            return persistenceMap;
+        } catch (Exception exx) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + exx.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), exx);
+            return null;
+        }
     }
 
     public void printFactura(TblFacturas factura) {
@@ -135,7 +141,7 @@ public class Utils extends Component {
             JasperPrintManager.printReport(jasperPrint, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 

@@ -49,7 +49,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class FrameRecibosAdmin extends JInternalFrame {
 
-    private static final Logger logger = LogManager.getLogger(FrameRecibosAdmin.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameRecibosAdmin.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
@@ -92,7 +92,7 @@ public class FrameRecibosAdmin extends JInternalFrame {
                     });
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -505,7 +505,7 @@ public class FrameRecibosAdmin extends JInternalFrame {
             list.addAll(data);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_refreshButtonActionPerformed
 
@@ -521,7 +521,7 @@ public class FrameRecibosAdmin extends JInternalFrame {
             list.removeAll(toRemove);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -535,9 +535,9 @@ public class FrameRecibosAdmin extends JInternalFrame {
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
         } catch (Exception ex) {
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_newButtonActionPerformed
 
@@ -586,7 +586,7 @@ public class FrameRecibosAdmin extends JInternalFrame {
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-                logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+                LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             }
         }
     }//GEN-LAST:event_printButtonActionPerformed
@@ -604,7 +604,7 @@ public class FrameRecibosAdmin extends JInternalFrame {
             txtCtaCte.selectAll();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCtaCteFocusGained
@@ -633,7 +633,7 @@ public class FrameRecibosAdmin extends JInternalFrame {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
 
         // TODO add your handling code here:

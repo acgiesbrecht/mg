@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class FrameEventoCuotasAdmin extends JInternalFrame {
 
-    private static final Logger logger = LogManager.getLogger(FrameEventoCuotasAdmin.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameEventoCuotasAdmin.class);
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
@@ -56,7 +56,7 @@ public class FrameEventoCuotasAdmin extends JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -260,7 +260,7 @@ public class FrameEventoCuotasAdmin extends JInternalFrame {
             list.clear();
             list.addAll(data);
         } catch (RollbackException ex) {
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
             List<com.parah.mg.domain.TblEventoCuotas> merged = new ArrayList<>(list.size());
             for (com.parah.mg.domain.TblEventoCuotas t : list) {

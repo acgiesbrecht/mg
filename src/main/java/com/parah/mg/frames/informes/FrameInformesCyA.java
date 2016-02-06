@@ -10,12 +10,12 @@ import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblEntidades;
 import com.parah.mg.domain.TblEventos;
-import com.parah.mg.frames.admin.FrameUsuariosAdmin;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,9 +35,9 @@ import org.apache.logging.log4j.Logger;
  *
  * @author user
  */
-public class FrameInformesRemates extends javax.swing.JInternalFrame {
+public class FrameInformesCyA extends javax.swing.JInternalFrame {
 
-    private static final Logger LOGGER = LogManager.getLogger(FrameInformesRemates.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameInformesCyA.class);
     Map<String, String> persistenceMap = new HashMap<>();
     List<TblEntidades> listMiembrosFiltered;
     TblEntidades selectedMiembro;
@@ -46,7 +46,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
     /**
      * Creates new form FramePagos
      */
-    public FrameInformesRemates() {
+    public FrameInformesCyA() {
 
         super("Informes Remates",
                 true, //resizable
@@ -62,6 +62,9 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
             support.setFilterMode(TextMatcherEditor.CONTAINS);
             AutoCompleteSupport support1 = AutoCompleteSupport.install(cboMiembro, GlazedLists.eventListOf(listMiembros.toArray()));
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            jspAno.setValue(Calendar.getInstance().get(Calendar.YEAR));
+            cboMes.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH));
 
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -101,6 +104,12 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         txtCtaCte = new javax.swing.JTextField();
         idMiembroLabel2 = new javax.swing.JLabel();
         cboMiembro = new javax.swing.JComboBox();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        cboMes = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jspAno = new javax.swing.JSpinner();
+        cmdResumenPorMes = new javax.swing.JButton();
 
         dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
 
@@ -125,6 +134,8 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
             }
         });
 
+        cboFechaRemate.setEnabled(false);
+
         org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventos, cboFechaRemate);
         bindingGroup.addBinding(jComboBoxBinding);
 
@@ -134,16 +145,19 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel1.setText("Remate");
+        jLabel1.setText("Evento");
+        jLabel1.setEnabled(false);
 
         jButton1.setText("Listado de Deudas pendientes");
+        jButton1.setEnabled(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Detalle del Remate");
+        jButton2.setText("Detalle del Evento");
+        jButton2.setEnabled(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -151,6 +165,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         });
 
         jButton3.setText("Detalle de Transferencias");
+        jButton3.setEnabled(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -158,13 +173,15 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         });
 
         jButton4.setText("Detalle de Recibos");
+        jButton4.setEnabled(false);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Detalle de Compras");
+        jButton5.setText("Detalle de Donaciones/Aportes");
+        jButton5.setEnabled(false);
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
@@ -172,6 +189,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         });
 
         jButton6.setText("Detalle de Pagos");
+        jButton6.setEnabled(false);
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -179,9 +197,12 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         });
 
         idMiembroLabel.setText("Miembro:");
+        idMiembroLabel.setEnabled(false);
 
         idMiembroLabel1.setText("Cta. Cte.:");
+        idMiembroLabel1.setEnabled(false);
 
+        txtCtaCte.setEnabled(false);
         txtCtaCte.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtCtaCteFocusGained(evt);
@@ -205,6 +226,9 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         });
 
         idMiembroLabel2.setText("Nombre:");
+        idMiembroLabel2.setEnabled(false);
+
+        cboMiembro.setEnabled(false);
 
         jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listMiembros, cboMiembro);
         bindingGroup.addBinding(jComboBoxBinding);
@@ -212,6 +236,22 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         cboMiembro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboMiembroActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Resumen por Mes:");
+
+        jLabel3.setText("Mes:");
+
+        cboMes.setEditable(true);
+        cboMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+
+        jLabel4.setText("Año:");
+
+        cmdResumenPorMes.setText("Generar");
+        cmdResumenPorMes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdResumenPorMesActionPerformed(evt);
             }
         });
 
@@ -243,7 +283,19 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(idMiembroLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cboMes, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jspAno, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmdResumenPorMes)))
                         .addGap(0, 130, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -252,9 +304,17 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(cboMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jspAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdResumenPorMes))
+                .addGap(82, 82, 82)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cboFechaRemate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addGap(29, 29, 29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -273,7 +333,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(198, Short.MAX_VALUE))
+                .addContainerGap(117, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -457,6 +517,28 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_cboMiembroActionPerformed
 
+    private void cmdResumenPorMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdResumenPorMesActionPerformed
+        try {
+            if (Integer.parseInt(cboMes.getSelectedItem().toString()) > 0 && Integer.parseInt(jspAno.getValue().toString()) > 0) {
+                String url = persistenceMap.get("javax.persistence.jdbc.url");
+                String user = persistenceMap.get("javax.persistence.jdbc.user");
+                String pass = persistenceMap.get("javax.persistence.jdbc.password");
+
+                JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/colectas_por_mes.jrxml"));
+                Map parameters = new HashMap();
+                parameters.put("mes", Integer.parseInt(cboMes.getSelectedItem().toString()));
+                parameters.put("ano", Integer.parseInt(jspAno.getValue().toString()));
+                parameters.put("user", currentUser.getUser().getNombrecompleto());
+                JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, DriverManager.getConnection(url, user, pass));
+                JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
+                jReportsViewer.setVisible(true);
+            }
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdResumenPorMesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -475,18 +557,22 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameInformesRemates.class
+            java.util.logging.Logger.getLogger(FrameInformesCyA.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameInformesRemates.class
+            java.util.logging.Logger.getLogger(FrameInformesCyA.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameInformesRemates.class
+            java.util.logging.Logger.getLogger(FrameInformesCyA.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameInformesRemates.class
+            java.util.logging.Logger.getLogger(FrameInformesCyA.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -495,14 +581,16 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrameInformesRemates().setVisible(true);
+                new FrameInformesCyA().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboFechaRemate;
+    private javax.swing.JComboBox<String> cboMes;
     private javax.swing.JComboBox cboMiembro;
+    private javax.swing.JButton cmdResumenPorMes;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.persistence.EntityManager entityManager;
@@ -516,6 +604,10 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JSpinner jspAno;
     private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
     private java.util.List<com.parah.mg.domain.TblEntidades> listMiembros;
     private com.parah.mg.utils.NumberCellRenderer numberCellRenderer1;

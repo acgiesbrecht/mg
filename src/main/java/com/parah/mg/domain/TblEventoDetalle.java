@@ -179,7 +179,7 @@ public class TblEventoDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lacreacion.mg.domain.TblEventoDetalle[ id=" + id + " ]";
+        return "com.parah.mg.domain.TblEventoDetalle[ id=" + id + " ]";
     }
 
 }

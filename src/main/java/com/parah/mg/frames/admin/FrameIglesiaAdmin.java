@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class FrameIglesiaAdmin extends javax.swing.JInternalFrame {
 
-    private static final Logger logger = LogManager.getLogger(FrameIglesiaAdmin.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameIglesiaAdmin.class);
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
@@ -36,7 +36,7 @@ public class FrameIglesiaAdmin extends javax.swing.JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
 
@@ -241,7 +241,7 @@ public class FrameIglesiaAdmin extends javax.swing.JInternalFrame {
             this.setVisible(false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed

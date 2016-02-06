@@ -32,7 +32,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class FrameEventosAdmin extends JInternalFrame {
 
-    private static final Logger logger = LogManager.getLogger(FrameEventosAdmin.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameEventosAdmin.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
@@ -388,7 +388,7 @@ public class FrameEventosAdmin extends JInternalFrame {
             list.clear();
             list.addAll(data);
         } catch (RollbackException ex) {
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
             List<com.parah.mg.domain.TblEventos> merged = new ArrayList<>(list.size());
             for (com.parah.mg.domain.TblEventos t : list) {
