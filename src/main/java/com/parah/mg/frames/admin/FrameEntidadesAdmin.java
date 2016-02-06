@@ -750,7 +750,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             list.addAll(merged);
         } catch (Exception exx) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + exx.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), exx);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), exx);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
@@ -899,7 +899,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             list.addAll(merged);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            logger.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
