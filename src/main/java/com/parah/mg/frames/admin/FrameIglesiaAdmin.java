@@ -22,23 +22,7 @@ import org.apache.logging.log4j.Logger;
 public class FrameIglesiaAdmin extends javax.swing.JInternalFrame {
 
     private static final Logger LOGGER = LogManager.getLogger(FrameIglesiaAdmin.class);
-    String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
-
-    private void getPersistenceMap() {
-        try {
-            databaseIP = Preferences.userRoot().node("Remates").get("DatabaseIP", "127.0.0.1");
-
-            persistenceMap.put("javax.persistence.jdbc.url", "jdbc:derby://" + databaseIP + ":5432/mgdb");
-            persistenceMap.put("javax.persistence.jdbc.user", "mg");
-            persistenceMap.put("javax.persistence.jdbc.password", "123456");
-            persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }
 
     public FrameIglesiaAdmin() {
         super("Configuracion Iglesia",
