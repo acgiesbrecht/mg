@@ -5,7 +5,6 @@
  */
 package com.parah.mg.frames;
 
-import com.parah.mg.domain.TblUsers;
 import com.parah.mg.frames.admin.FrameCategoriasArticulosAdmin;
 import com.parah.mg.frames.admin.FrameConfigAdmin;
 import com.parah.mg.frames.admin.FrameEntidadesAdmin;
@@ -67,7 +66,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.derby.drda.NetworkServerControl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -168,15 +166,23 @@ public class MdiFrame extends javax.swing.JFrame {
                 resetDB();
             }
 
-            List<TblUsers> list = entityManager.createQuery("SELECT t FROM TblUsers t").getResultList();
+            /* List<TblUsers> list = entityManager.createQuery("SELECT t FROM TblUsers t").getResultList();
             for (TblUsers user : list) {
                 if (user.getNombre().equals("adrian")) {
                     if (BCrypt.checkpw(String.valueOf("adrian"), user.getPassword())) {
                         currentUser.setUser(user);
                     }
                 }
-            }
+            }*/
             //-------------------------------------
+            if (currentUser.getUser() == null) {
+                FormLogin frame = new FormLogin(this, true);
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
+                if (currentUser.getUser() != null) {
+                    mnuLogin.setText("Cerrar Sesion: " + currentUser.getUser().getNombre());
+                }
+            }
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
