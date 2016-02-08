@@ -683,49 +683,49 @@ public class FrameAportesDetalle extends JInternalFrame {
             }
             TblEventos currentEvento = (TblEventos) cboFechaAporte.getSelectedItem();
 
-            //actialuazr transferencias y recibos
-            if ((Long) entityManager.createQuery("SELECT COUNT(t) FROM TblTransferencias t WHERE t.cobrado = true AND t.idEvento.id = " + String.valueOf(currentEvento.getId())).getSingleResult() > 0L) {
-                JOptionPane.showMessageDialog(null, "Los cambios realizados a este evento no tendrán efecto sobre los pagos realizados porque ya hay transferencias cobradas para este evento. Deberá modificar las transferencias y los recibos manualmente.");
-            } else {
-                int res = entityManager.createQuery("DELETE FROM TblTransferencias t WHERE t.idEvento.id = " + String.valueOf(currentEvento.getId())).executeUpdate();
-                res = entityManager.createQuery("DELETE FROM TblRecibos t WHERE t.idEvento.id = " + String.valueOf(currentEvento.getId())).executeUpdate();
+            /*actialuazr transferencias y recibos
+             if ((Long) entityManager.createQuery("SELECT COUNT(t) FROM TblTransferencias t WHERE t.cobrado = true AND t.idEvento.id = " + String.valueOf(currentEvento.getId())).getSingleResult() > 0L) {
+             JOptionPane.showMessageDialog(null, "Los cambios realizados a este evento no tendrán efecto sobre los pagos realizados porque ya hay transferencias cobradas para este evento. Deberá modificar las transferencias y los recibos manualmente.");
+             } else {
+             int res = entityManager.createQuery("DELETE FROM TblTransferencias t WHERE t.idEvento.id = " + String.valueOf(currentEvento.getId())).executeUpdate();
+             res = entityManager.createQuery("DELETE FROM TblRecibos t WHERE t.idEvento.id = " + String.valueOf(currentEvento.getId())).executeUpdate();
 
-                listEventoDetalle.stream().forEach((t) -> {
-                    if (t.getIdFormaDePagoPreferida().getId().equals(1)) {
-                        TblTransferencias transf = new TblTransferencias();
-                        entityManager.persist(transf);
-                        transf.setFechahora(t.getFechahora());
-                        transf.setIdEvento(currentEvento);
-                        transf.setConcepto(currentEvento.getDescripcion());
-                        transf.setIdEntidad(t.getIdEntidad());
-                        if (t.getIdEntidad().getIdEntidadPaganteAportes() != null) {
-                            transf.setConcepto(currentEvento.getDescripcion() + " / " + t.getIdEntidad().getNombreCompleto());
-                            transf.setIdEntidad(t.getIdEntidad().getIdEntidadPaganteAportes());
-                        }
-                        transf.setMonto(t.getMonto());
-                        transf.setPorcentajeAporte(currentEvento.getPorcentajeAporte());
-                        transf.setCobrado(false);
-                        transf.setIdUser(t.getIdUser());
+             listEventoDetalle.stream().forEach((t) -> {
+             if (t.getIdFormaDePagoPreferida().getId().equals(1)) {
+             TblTransferencias transf = new TblTransferencias();
+             entityManager.persist(transf);
+             transf.setFechahora(t.getFechahora());
+             transf.setIdEvento(currentEvento);
+             transf.setConcepto(currentEvento.getDescripcion());
+             transf.setIdEntidad(t.getIdEntidad());
+             if (t.getIdEntidad().getIdEntidadPaganteAportes() != null) {
+             transf.setConcepto(currentEvento.getDescripcion() + " / " + t.getIdEntidad().getNombreCompleto());
+             transf.setIdEntidad(t.getIdEntidad().getIdEntidadPaganteAportes());
+             }
+             transf.setMonto(t.getMonto());
+             transf.setPorcentajeAporte(currentEvento.getPorcentajeAporte());
+             transf.setCobrado(false);
+             transf.setIdUser(t.getIdUser());
 
-                    } else {
-                        TblRecibos recibo = new TblRecibos();
-                        entityManager.persist(recibo);
-                        recibo.setFechahora(t.getFechahora());
-                        recibo.setConcepto(currentEvento.getDescripcion());
-                        recibo.setIdEntidad(t.getIdEntidad());
-                        if (t.getIdEntidad().getIdEntidadPaganteAportes() != null) {
-                            recibo.setConcepto(currentEvento.getDescripcion() + " / " + t.getIdEntidad().getNombreCompleto());
-                            recibo.setIdEntidad(t.getIdEntidad().getIdEntidadPaganteAportes());
-                        }
-                        recibo.setIdEvento(currentEvento);
-                        recibo.setMonto(t.getMonto());
-                        recibo.setPorcentajeAporte(currentEvento.getPorcentajeAporte());
-                        recibo.setIdUser(t.getIdUser());
+             } else {
+             TblRecibos recibo = new TblRecibos();
+             entityManager.persist(recibo);
+             recibo.setFechahora(t.getFechahora());
+             recibo.setConcepto(currentEvento.getDescripcion());
+             recibo.setIdEntidad(t.getIdEntidad());
+             if (t.getIdEntidad().getIdEntidadPaganteAportes() != null) {
+             recibo.setConcepto(currentEvento.getDescripcion() + " / " + t.getIdEntidad().getNombreCompleto());
+             recibo.setIdEntidad(t.getIdEntidad().getIdEntidadPaganteAportes());
+             }
+             recibo.setIdEvento(currentEvento);
+             recibo.setMonto(t.getMonto());
+             recibo.setPorcentajeAporte(currentEvento.getPorcentajeAporte());
+             recibo.setIdUser(t.getIdUser());
 
-                    }
-                });
-            }
-            //------------------------------------
+             }
+             });
+             }
+             //------------------------------------*/
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
             refresh();
