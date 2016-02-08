@@ -69,7 +69,7 @@ public class TblEntidades implements Serializable {
     @NotNull
     @Size(min = 1, max = 128)
     @Column(name = "APELLIDOS")
-    private String apellidos;
+    private String apellidos = "";
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 256)
@@ -77,9 +77,9 @@ public class TblEntidades implements Serializable {
     private String razonSocial = "";
     @Size(max = 20)
     @Column(name = "RUC_SIN_DV")
-    private String rucSinDv;
+    private String rucSinDv = "44444401";
     @Column(name = "CTACTE")
-    private Integer ctacte;
+    private Integer ctacte = 99999;
     @Size(max = 50)
     @Column(name = "DOMICILIO")
     private String domicilio;

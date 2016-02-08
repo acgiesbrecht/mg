@@ -14,7 +14,6 @@ import com.parah.mg.frames.admin.FrameFacturasAdmin;
 import com.parah.mg.frames.admin.FrameGruposAdmin;
 import com.parah.mg.frames.admin.FrameIglesiaAdmin;
 import com.parah.mg.frames.admin.FrameRecibosAdmin;
-import com.parah.mg.frames.admin.FrameRolesAdmin;
 import com.parah.mg.frames.admin.FrameTimbradosAdmin;
 import com.parah.mg.frames.admin.FrameTransferenciasAdmin;
 import com.parah.mg.frames.admin.FrameUsuariosAdmin;
@@ -36,6 +35,7 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -47,6 +47,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.prefs.Preferences;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
@@ -95,11 +96,15 @@ public class MdiFrame extends javax.swing.JFrame {
                 server.start(null);
             }
 
-            img = ImageIO.read(getClass().getResourceAsStream("/images/g4204.png"));
+            img = ImageIO.read(getClass().getResourceAsStream("/g4204.png"));
 
             initComponents();
 
-            this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/g4204.png")));
+            InputStream resourceAsStream = this.getClass().getResourceAsStream("/version.properties");
+            Properties prop = new Properties();
+            prop.load(resourceAsStream);
+            setTitle("MG " + prop.getProperty("project.version") + "." + prop.getProperty("project.build"));
+            this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/g4204.png")));
             desktop = new JDesktopPane() {
                 @Override
                 protected void paintComponent(Graphics grphcs) {
@@ -112,6 +117,7 @@ public class MdiFrame extends javax.swing.JFrame {
                     return new Dimension(img.getWidth(), img.getHeight());
                 }
             };
+
             desktop.setBackground(Color.LIGHT_GRAY);
             setContentPane(desktop);
 
@@ -236,7 +242,6 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
-        lblBG = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnuLogin = new javax.swing.JMenuItem();
@@ -557,17 +562,11 @@ public class MdiFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblBG, javax.swing.GroupLayout.DEFAULT_SIZE, 1067, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 1091, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblBG, javax.swing.GroupLayout.DEFAULT_SIZE, 728, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 754, Short.MAX_VALUE)
         );
 
         bindingGroup.bind();
@@ -1022,7 +1021,6 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
-    private javax.swing.JLabel lblBG;
     private javax.swing.JMenuItem mnuAdCat;
     private javax.swing.JMenuItem mnuAdConfig;
     private javax.swing.JMenuItem mnuAdConfig1;

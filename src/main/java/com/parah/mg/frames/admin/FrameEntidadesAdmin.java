@@ -813,43 +813,52 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                 for (int r = 1; r < rows; r++) {
                     row = sheet.getRow(r);
                     if (row != null) {
-                        TblEntidades miembro = new TblEntidades();
 
-                        miembro.setNombres(row.getCell(0).getStringCellValue());
+                        if (!row.getCell(0).getStringCellValue().equals("")) {
+                            TblEntidades miembro = new TblEntidades();
+                            miembro.setNombres(row.getCell(0).getStringCellValue());
 
-                        if (row.getCell(1) != null) {
-                            miembro.setApellidos(row.getCell(1).getStringCellValue());
-                        } else {
-                            miembro.setApellidos("");
-                        }
-                        if (row.getCell(2).getCellType() == Cell.CELL_TYPE_STRING) {
-                            miembro.setCtacte(Integer.valueOf(row.getCell(2).getStringCellValue().replaceAll("[^\\d.]", "")));
-                        } else if (row.getCell(2).getCellType() == Cell.CELL_TYPE_NUMERIC) {
-                            miembro.setCtacte((int) (row.getCell(2).getNumericCellValue()));
-                        }
-                        List<TblEntidades> duplicadoList = entityManager.createQuery("SELECT t FROM TblEntidades t where t.nombres = '" + miembro.getNombres() + "' and t.ctacte = " + miembro.getCtacte().toString(), TblEntidades.class).getResultList();
-                        if (duplicadoList.size() > 0) {
-                            miembro = null;
-                            miembro = duplicadoList.get(0);
-                        }
+                            if (row.getCell(1) != null) {
+                                miembro.setApellidos(row.getCell(1).getStringCellValue());
+                            } else {
+                                miembro.setApellidos("");
+                            }
+                            if (row.getCell(2).getCellType() == Cell.CELL_TYPE_STRING) {
+                                if (row.getCell(2).getStringCellValue().replaceAll("[^\\d.]", "").equals("")) {
+                                    miembro.setCtacte(99999);
+                                } else {
+                                    miembro.setCtacte(Integer.valueOf(row.getCell(2).getStringCellValue().replaceAll("[^\\d.]", "")));
+                                }
 
-                        if (row.getCell(3) != null) {
-                            DecimalFormat df = new DecimalFormat("#0");
-                            miembro.setRucSinDv(df.format(row.getCell(3).getNumericCellValue()));
-                        }
-                        if (row.getCell(4) != null) {
-                            miembro.setDomicilio(row.getCell(4).getStringCellValue());
-                        }
-                        if (row.getCell(5) != null) {
-                            miembro.setBox((int) row.getCell(5).getNumericCellValue());
-                        }
-                        miembro.setAporteMensual(0);
-                        miembro.setIdFormaDePagoPreferida(listFormasDePago.get(0));
-                        miembro.setIdUser(currentUser.getUser());
-                        miembro.setIsMiembroActivo(false);
-                        entityManager.persist(miembro);
-                        list.add(miembro);
+                            } else if (row.getCell(2).getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                                miembro.setCtacte((int) (row.getCell(2).getNumericCellValue()));
+                            }
+                            List<TblEntidades> duplicadoList = entityManager.createQuery("SELECT t FROM TblEntidades t where t.nombres = '" + miembro.getNombres() + "' and t.ctacte = " + miembro.getCtacte().toString(), TblEntidades.class).getResultList();
+                            if (duplicadoList.size() > 0) {
+                                miembro = null;
+                                miembro = duplicadoList.get(0);
+                            }
 
+                            if (row.getCell(3) != null) {
+                                DecimalFormat df = new DecimalFormat("#0");
+                                miembro.setRucSinDv(df.format(row.getCell(3).getNumericCellValue()));
+                                if (miembro.getRucSinDv().equals("0")) {
+                                    miembro.setRucSinDv("44444401");
+                                }
+                            }
+                            if (row.getCell(4) != null) {
+                                miembro.setDomicilio(row.getCell(4).getStringCellValue());
+                            }
+                            if (row.getCell(5) != null) {
+                                miembro.setBox((int) row.getCell(5).getNumericCellValue());
+                            }
+                            miembro.setAporteMensual(0);
+                            miembro.setIdFormaDePagoPreferida(listFormasDePago.get(0));
+                            miembro.setIdUser(currentUser.getUser());
+                            miembro.setIsMiembroActivo(false);
+                            entityManager.persist(miembro);
+                            list.add(miembro);
+                        }
                     }
                 }
 
