@@ -24,12 +24,14 @@ public class NormalTableCellRenderer extends DefaultTableCellRenderer {
         if (this.isEnProceso()) {
             if (table.getColumnCount() > 2) {
                 if (table.getValueAt(row, 2) != null) {
-                    if (table.getValueAt(row, 1).toString().equals("En Proceso...")) {
-                        setBackground(Color.pink);
-                        setForeground(Color.black);
-                    } else {
-                        setBackground(table.getBackground());
-                        setForeground(table.getForeground());
+                    if (table.getValueAt(row, 1) != null) {
+                        if (table.getValueAt(row, 1).toString().equals("En Proceso...")) {
+                            setBackground(Color.pink);
+                            setForeground(Color.black);
+                        } else {
+                            setBackground(table.getBackground());
+                            setForeground(table.getForeground());
+                        }
                     }
                 }
             }

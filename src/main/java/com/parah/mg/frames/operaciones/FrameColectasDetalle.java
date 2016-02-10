@@ -15,8 +15,6 @@ import com.parah.mg.domain.TblEntidades;
 import com.parah.mg.domain.TblEventoDetalle;
 import com.parah.mg.domain.TblEventoTipos;
 import com.parah.mg.domain.TblEventos;
-import com.parah.mg.domain.TblRecibos;
-import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.Color;
@@ -170,7 +168,7 @@ public class FrameColectasDetalle extends JInternalFrame {
         queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 2 AND t.idGrupo IN :grupos ORDER BY t.fecha");
         queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
-        queryEventoDetalle = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId ORDER BY t.id");
+        queryEventoDetalle = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId ORDER BY t.idEntidad.ctacte, t.id");
         queryEventoDetalle.setParameter("eventoId", null) ;
         listEventoDetalle = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoDetalle.getResultList());
         jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
@@ -182,6 +180,7 @@ public class FrameColectasDetalle extends JInternalFrame {
         tblCategoriasArticulosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(tblCategoriasArticulosQuery.getResultList());
         tblFormasDePagoQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblFormasDePago t ORDER BY t.id");
         tblFormasDePagoList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(tblFormasDePagoQuery.getResultList());
+        ctaCteTableCellRenderer1 = new com.parah.mg.utils.CtaCteTableCellRenderer();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         montoLabel = new javax.swing.JLabel();
@@ -216,6 +215,8 @@ public class FrameColectasDetalle extends JInternalFrame {
         numberCellRenderer1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         numberCellRenderer1.setText("numberCellRenderer1");
 
+        ctaCteTableCellRenderer1.setText("ctaCteTableCellRenderer1");
+
         addInternalFrameListener(formListener);
 
         masterTable.setAutoCreateRowSorter(true);
@@ -223,23 +224,26 @@ public class FrameColectasDetalle extends JInternalFrame {
         masterTable.setRowHeight(20);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventoDetalle, masterTable);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad.ctacte}"));
+        columnBinding.setColumnName("Cta. Cte.");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
         columnBinding.setColumnName("Donador");
         columnBinding.setColumnClass(com.parah.mg.domain.TblEntidades.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
         columnBinding.setColumnName("Monto");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idFormaDePagoPreferida}"));
-        columnBinding.setColumnName("Forma de Pago preferida");
-        columnBinding.setColumnClass(com.parah.mg.domain.TblFormasDePago.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
-            masterTable.getColumnModel().getColumn(0).setPreferredWidth(80);
-            masterTable.getColumnModel().getColumn(1).setPreferredWidth(20);
-            masterTable.getColumnModel().getColumn(1).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(0).setCellRenderer(ctaCteTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(1).setPreferredWidth(80);
+            masterTable.getColumnModel().getColumn(2).setPreferredWidth(20);
+            masterTable.getColumnModel().getColumn(2).setCellRenderer(numberCellRenderer1);
         }
 
         montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -756,9 +760,9 @@ public class FrameColectasDetalle extends JInternalFrame {
     }
     private void txtCtaCteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyReleased
         try {
-            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            /*if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 cboMiembro.requestFocusInWindow();
-            }
+            }*/
             txtCtaCte.setBackground(Color.white);
             if (txtCtaCte.getText().length() > 4) {
                 List<TblEntidades> list = listMiembros;
@@ -865,7 +869,7 @@ public class FrameColectasDetalle extends JInternalFrame {
                 }
                 if (cboMiembro.getSelectedItem() == null) {
                     JOptionPane.showMessageDialog(null, "No ha eligido un donador.");
-                    cboMiembro.requestFocusInWindow();
+                    txtCtaCte.requestFocusInWindow();
                     return;
                 }
                 save();
@@ -904,6 +908,7 @@ public class FrameColectasDetalle extends JInternalFrame {
     private javax.swing.JComboBox cboFechaColecta;
     private javax.swing.JComboBox cboForma;
     private javax.swing.JComboBox cboMiembro;
+    private com.parah.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
     private com.parah.mg.utils.DateTimeToStringConverter dateTimeToStringConverter1;
