@@ -12,7 +12,7 @@
     </Component>
     <Component class="javax.persistence.Query" name="query">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT e.ctacte, e.apellidos, e.nombres, SUM(ed.monto) FROM TblEntidades e, TblEventoDetalle ed WHERE e.id = ed.idEntidad.id AND ed.idEvento.idEventoTipo = :tipoEventoId &#xa;GROUP BY e.ctacte, e.apellidos, e.nombres&#xa;ORDER BY e.ctacte"/>
+        <Property name="query" type="java.lang.String" value="SELECT e, MONTH(ed.fechahora), YEAR(ed.fechahora), SUM(ed.monto) FROM TblEntidades e, TblEventoDetalle ed WHERE e.id = ed.idEntidad.id AND ed.idEvento.idEventoTipo = :tipoEventoId  GROUP BY e ORDER BY e.ctacte"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="entityManager"/>
         </Property>

@@ -163,8 +163,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="updateSETbutton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblStatusSET" min="-2" pref="246" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="lblStatusSET" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="imprimirButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cancelarButton" linkSize="1" min="-2" max="-2" attributes="0"/>
@@ -269,12 +269,14 @@
                   <Component id="txtAporte" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="montoLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="76" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="cancelarButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="imprimirButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="updateSETbutton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblStatusSET" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="80" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="cancelarButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="imprimirButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="updateSETbutton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="lblStatusSET" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>

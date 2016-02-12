@@ -675,9 +675,9 @@ public class FrameColectasDetalle extends JInternalFrame {
             int row = listEventoDetalle.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
-
-            txtCtaCte.requestFocusInWindow();
             cboForma.setSelectedIndex(0);
+            txtCtaCte.requestFocusInWindow();
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -737,7 +737,7 @@ public class FrameColectasDetalle extends JInternalFrame {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
             refresh();
-            newButton.requestFocus();
+            //newButton.requestFocus();
         } catch (RollbackException ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
 
@@ -757,7 +757,7 @@ public class FrameColectasDetalle extends JInternalFrame {
     private void txtCtaCteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyReleased
         try {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                cboMiembro.requestFocusInWindow();
+                //cboMiembro.requestFocusInWindow();
             }
             txtCtaCte.setBackground(Color.white);
             if (txtCtaCte.getText().length() > 4) {

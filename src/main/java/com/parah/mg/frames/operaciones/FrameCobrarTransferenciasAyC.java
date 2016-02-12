@@ -5,30 +5,17 @@
  */
 package com.parah.mg.frames.operaciones;
 
-import ca.odell.glazedlists.GlazedLists;
-import ca.odell.glazedlists.matchers.TextMatcherEditor;
-import ca.odell.glazedlists.swing.AutoCompleteSupport;
-import com.parah.mg.domain.TblEntidades;
 import com.parah.mg.domain.TblEventoTipos;
-import com.parah.mg.frames.admin.FrameUsuariosAdmin;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.Beans;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.prefs.Preferences;
 import javax.persistence.Persistence;
-import javax.persistence.RollbackException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFrame;
@@ -37,11 +24,6 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperPrintManager;
-import net.sf.jasperreports.engine.JasperReport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -53,7 +35,6 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
 
     private static final Logger LOGGER = LogManager.getLogger(FrameCobrarTransferenciasAyC.class);
     CurrentUser currentUser = CurrentUser.getInstance();
-    String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
     public FrameCobrarTransferenciasAyC() {
@@ -97,7 +78,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT e.ctacte, e.apellidos, e.nombres, SUM(ed.monto) FROM TblEntidades e, TblEventoDetalle ed WHERE e.id = ed.idEntidad.id AND ed.idEvento.idEventoTipo = :tipoEventoId \nGROUP BY e.ctacte, e.apellidos, e.nombres\nORDER BY e.ctacte");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT e, MONTH(ed.fechahora), YEAR(ed.fechahora), SUM(ed.monto) FROM TblEntidades e, TblEventoDetalle ed WHERE e.id = ed.idEntidad.id AND ed.idEvento.idEventoTipo = :tipoEventoId  GROUP BY e ORDER BY e.ctacte");
         query.setParameter("tipoEventoId", null);
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
@@ -281,7 +262,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                 entityManager.getTransaction().rollback();
                 entityManager.getTransaction().begin();
                 query.setParameter("tipoEventoId", ((TblEventoTipos) cboEventoTipo.getSelectedItem()));
-                java.util.Collection data = query.getResultList();
+                java.util.List data = query.getResultList();
                 data.stream().forEach((entity) -> {
                     entityManager.refresh(entity);
                 });

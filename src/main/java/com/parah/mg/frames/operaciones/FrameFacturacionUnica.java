@@ -21,6 +21,8 @@ import java.awt.KeyboardFocusManager;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -37,6 +39,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -47,12 +50,13 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Industria
  */
-public class FrameFacturacionUnica extends JInternalFrame {
+public class FrameFacturacionUnica extends JInternalFrame implements PropertyChangeListener {
 
     private static final Logger LOGGER = LogManager.getLogger(FrameFacturacionUnica.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     Map<String, String> persistenceMap = new HashMap<>();
     EventList<TblEntidades> eventListMiembros = new BasicEventList<>();
+    TaskUpdate taskUpdate;
 
     public FrameFacturacionUnica() {
         super("Facturacion Unica",
@@ -257,8 +261,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(updateSETbutton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblStatusSET, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblStatusSET, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(imprimirButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelarButton))
@@ -343,12 +347,13 @@ public class FrameFacturacionUnica extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtAporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(montoLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelarButton)
-                    .addComponent(imprimirButton)
-                    .addComponent(updateSETbutton)
-                    .addComponent(lblStatusSET))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cancelarButton)
+                        .addComponent(imprimirButton)
+                        .addComponent(updateSETbutton))
+                    .addComponent(lblStatusSET, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
     }
@@ -444,8 +449,10 @@ public class FrameFacturacionUnica extends JInternalFrame {
         listTimbrados.addAll(queryTimbrados.getResultList());
         if (listTimbrados.size() > 0) {
             txtTimbrado.setText(listTimbrados.get(0).getNro().toString());
+            imprimirButton.setEnabled(true);
         } else {
             JOptionPane.showMessageDialog(null, "Debe tener un timbrado activo para poder facturar.");
+            imprimirButton.setEnabled(false);
         }
 
         list.clear();
@@ -640,40 +647,80 @@ public class FrameFacturacionUnica extends JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCtaCteInputMethodTextChanged
 
-    private void updateSETbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSETbuttonActionPerformed
-        String temp = "";
-        try {
-            entityManager.createQuery("delete from TblContribuyentes t").executeUpdate();
-            for (int i = 0; i <= 9; i++) {
-                URL url = new URL("http://www.set.gov.py/rest/contents/download/collaboration/sites/PARAGUAY-SET/documents/informes-periodicos/ruc/ruc" + String.valueOf(i) + ".zip");
-                ZipInputStream zipStream = new ZipInputStream(url.openStream(), StandardCharsets.UTF_8);
-                zipStream.getNextEntry();
-                lblStatusSET.setText("Bajando listado de RUC con terminacion " + String.valueOf(i));
-                Scanner sc = new Scanner(zipStream, "UTF-8");
-                while (sc.hasNextLine()) {
-                    String[] ruc = sc.nextLine().split("\\|");
-                    temp = ruc[0] + " - " + ruc[1] + " - " + ruc[2];
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("statusUpdate".equals(evt.getPropertyName())) {
+            lblStatusSET.setText(taskUpdate.getStatus());
+        }
+    }
 
-                    //System.out.println(ruc[1]);
-                    //System.out.println(StringEscapeUtils.escapeJava(ruc[1]));
-                    if (ruc[0].length() > 0 && ruc[1].length() > 0 && ruc[2].length() == 1) {
-                        TblContribuyentes c = new TblContribuyentes();
-                        entityManager.persist(c);
-                        c.setRucSinDv(ruc[0]);
-                        c.setRazonSocial(StringEscapeUtils.escapeSql(ruc[1]));
-                        c.setDv(ruc[2]);
-                    } else {
-                        System.out.println(temp);
+    class TaskUpdate extends SwingWorker<Void, Void> {
+
+        @Override
+        public Void doInBackground() {
+            try {
+                String temp = "";
+                Integer count = 0;
+                entityManager.createQuery("delete from TblContribuyentes t").executeUpdate();
+                for (int i = 0; i <= 9; i++) {
+                    URL url = new URL("http://www.set.gov.py/rest/contents/download/collaboration/sites/PARAGUAY-SET/documents/informes-periodicos/ruc/ruc" + String.valueOf(i) + ".zip");
+                    ZipInputStream zipStream = new ZipInputStream(url.openStream(), StandardCharsets.UTF_8);
+                    zipStream.getNextEntry();
+
+                    Scanner sc = new Scanner(zipStream, "UTF-8");
+
+                    while (sc.hasNextLine()) {
+                        String[] ruc = sc.nextLine().split("\\|");
+                        temp = ruc[0] + " - " + ruc[1] + " - " + ruc[2];
+
+                        //System.out.println(ruc[1]);
+                        //System.out.println(StringEscapeUtils.escapeJava(ruc[1]));
+                        if (ruc[0].length() > 0 && ruc[1].length() > 0 && ruc[2].length() == 1) {
+                            TblContribuyentes c = new TblContribuyentes();
+                            c.setRucSinDv(ruc[0]);
+                            c.setRazonSocial(StringEscapeUtils.escapeSql(ruc[1]));
+                            c.setDv(ruc[2]);
+                            entityManager.persist(c);
+                            setStatus("Bajando listado de RUC con terminacion " + String.valueOf(i) + " - Cantidad de contribuyentes procesada: " + String.format("%,d", count) + " de aprox. 850.000.");
+                            count++;
+                        } else {
+                            System.out.println(temp);
+                        }
+
                     }
-
+                    setStatus("Procesando datos...");
+                    entityManager.getTransaction().commit();
+                    entityManager.getTransaction().begin();
                 }
+
+                setStatus("Lista de RUC actualizada...");
+                return null;
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+                LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+                return null;
             }
-            lblStatusSET.setText("Procesando datos...");
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            lblStatusSET.setText("Lista de RUC actualizada...");
+        }
+
+        private String status;
+
+        public final void setStatus(String set) {
+            String oldStatus = status;
+            status = set;
+            firePropertyChange("statusUpdate", oldStatus, status);
+        }
+
+        public final String getStatus() {
+            return status;
+        }
+
+    }
+
+    private void updateSETbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSETbuttonActionPerformed
+        try {
+            taskUpdate = new TaskUpdate();
+            taskUpdate.addPropertyChangeListener(this);
+            taskUpdate.execute();
         } catch (Exception ex) {
-            System.out.println(temp);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
