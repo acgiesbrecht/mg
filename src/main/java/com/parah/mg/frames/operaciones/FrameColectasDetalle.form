@@ -73,7 +73,7 @@
     </Component>
     <Component class="javax.persistence.Query" name="queryEventoDetalle">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId ORDER BY t.id"/>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId ORDER BY t.idEntidad.ctacte, t.id"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="entityManager"/>
         </Property>
@@ -152,6 +152,11 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblCategoriasArticulos&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="com.parah.mg.utils.CtaCteTableCellRenderer" name="ctaCteTableCellRenderer1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="ctaCteTableCellRenderer1"/>
+      </Properties>
     </Component>
   </NonVisualComponents>
   <SyntheticProperties>
@@ -305,6 +310,13 @@
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
+                    <ComponentRef name="ctaCteTableCellRenderer1"/>
+                  </Renderer>
+                </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="80" resizable="true">
                   <Title/>
                   <Editor/>
@@ -317,11 +329,6 @@
                     <ComponentRef name="numberCellRenderer1"/>
                   </Renderer>
                 </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
               </TableColumnModel>
             </Property>
             <Property name="rowHeight" type="int" value="20"/>
@@ -331,6 +338,11 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="elements" source="listEventoDetalle" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
+              <Subbinding sourcePath="${idEntidad.ctacte}">
+                <BindingParameter name="NAME" value="Cta. Cte."/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+              </Subbinding>
               <Subbinding sourcePath="${idEntidad}">
                 <BindingParameter name="NAME" value="Donador"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblEntidades.class"/>
@@ -339,10 +351,7 @@
               <Subbinding sourcePath="${monto}">
                 <BindingParameter name="NAME" value="Monto"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
-              </Subbinding>
-              <Subbinding sourcePath="${idFormaDePagoPreferida}">
-                <BindingParameter name="NAME" value="Forma de Pago preferida"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblFormasDePago.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
             </BindingProperty>
           </BindingProperties>
