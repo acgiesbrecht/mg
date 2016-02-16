@@ -6,6 +6,8 @@
 package com.parah.mg.frames.operaciones;
 
 import com.parah.mg.domain.TblEventoTipos;
+import com.parah.mg.domain.TblTransferencias;
+import com.parah.mg.domain.models.PagosMensualesPendientes;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
@@ -13,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.Beans;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.Persistence;
@@ -78,7 +81,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT e, MONTH(ed.fechahora), YEAR(ed.fechahora), SUM(ed.monto) FROM TblEntidades e, TblEventoDetalle ed WHERE e.id = ed.idEntidad.id AND ed.idEvento.idEventoTipo = :tipoEventoId  GROUP BY e ORDER BY e.ctacte");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT new com.parah.mg.domain.models.PagosMensualesPendientes(e, EXTRACT(MONTH FROM ed.fechahora), EXTRACT(YEAR FROM ed.fechahora), SUM(ed.monto*ed.idEvento.porcentajeAporte/100), SUM(ed.monto*(100-ed.idEvento.porcentajeAporte)/100)) FROM TblEntidades e, TblEventoDetalle ed WHERE e.id = ed.idEntidad.id AND ed.idEvento.idEventoTipo = :tipoEventoId  GROUP BY e, EXTRACT(MONTH FROM ed.fechahora), EXTRACT(YEAR FROM ed.fechahora) ORDER BY e.ctacte");
         query.setParameter("tipoEventoId", null);
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
@@ -92,6 +95,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
         queryEventoTipos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoTipos t where t.id != 1");
         listEventoTipos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoTipos.getResultList());
+        ctaCteTableCellRenderer1 = new com.parah.mg.utils.CtaCteTableCellRenderer();
+        mesTableCellRenderer1 = new com.parah.mg.utils.MesTableCellRenderer();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         saveButton = new javax.swing.JButton();
@@ -106,9 +111,14 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         numberCellRenderer1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         numberCellRenderer1.setText("numberCellRenderer1");
 
+        ctaCteTableCellRenderer1.setText("ctaCteTableCellRenderer1");
+
+        mesTableCellRenderer1.setText("mesTableCellRenderer1");
+
         addInternalFrameListener(formListener);
 
         masterTable.setAutoCreateRowSorter(true);
+        masterTable.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${entidad.ctacte}"));
@@ -119,21 +129,31 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         columnBinding.setColumnName("Nombre");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoAporte}+${montoDonacion}"));
+        columnBinding.setColumnName("Monto");
+        columnBinding.setColumnClass(Long.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${mes}"));
         columnBinding.setColumnName("Mes");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${eno}"));
-        columnBinding.setColumnName("Año");
-        columnBinding.setColumnClass(Integer.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
-        columnBinding.setColumnName("Monto");
-        columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${ano}"));
+        columnBinding.setColumnName("Año");
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cobrado}"));
+        columnBinding.setColumnName("Cobrado");
+        columnBinding.setColumnClass(Boolean.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
-            masterTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+            masterTable.getColumnModel().getColumn(0).setCellRenderer(ctaCteTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(1).setPreferredWidth(200);
+            masterTable.getColumnModel().getColumn(2).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(3).setPreferredWidth(20);
+            masterTable.getColumnModel().getColumn(3).setCellRenderer(mesTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(4).setPreferredWidth(20);
         }
 
         saveButton.setText("Guardar");
@@ -182,7 +202,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                     .addComponent(descripcionLabel3)
                     .addComponent(cboEventoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
@@ -240,7 +260,25 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-
+        try {
+            for (PagosMensualesPendientes pago : list) {
+                if (pago.getCobrado()) {
+                    TblTransferencias t = new TblTransferencias();
+                    entityManager.persist(t);
+                    t.setIdEntidad(pago.getEntidad());
+                    t.setConcepto(((TblEventoTipos) cboEventoTipo.getSelectedItem()).getDescripcion() + " " + ((Integer) pago.getMes()).toString() + "/" + ((Integer) pago.getAno()).toString());
+                    t.setMonto(pago.getMontoAporte().intValue() + pago.getMontoDonacion().intValue());
+                    t.setPorcentajeAporte(pago.getMontoAporte().intValue() / (pago.getMontoAporte().intValue() + pago.getMontoDonacion().intValue()) * 100);
+                    t.setCobrado(true);
+                    t.setFechahora(new Date());
+                    t.setIdEvento(null);
+                    t.setIdUser(currentUser.getUser());
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
@@ -263,17 +301,10 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                 entityManager.getTransaction().begin();
                 query.setParameter("tipoEventoId", ((TblEventoTipos) cboEventoTipo.getSelectedItem()));
                 java.util.List data = query.getResultList();
-                data.stream().forEach((entity) -> {
-                    entityManager.refresh(entity);
-                });
                 list.clear();
                 list.addAll(data);
 
                 data = queryMiembros.getResultList();
-                data.stream().forEach((entity) -> {
-                    entityManager.refresh(entity);
-                });
-
                 listMiembros.clear();
                 listMiembros.addAll(data);
             }
@@ -284,6 +315,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboEventoTipo;
+    private com.parah.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.swing.JLabel descripcionLabel3;
@@ -295,6 +327,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
     private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
+    private com.parah.mg.utils.MesTableCellRenderer mesTableCellRenderer1;
     private com.parah.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query query;
     private javax.persistence.Query queryEventoTipos;

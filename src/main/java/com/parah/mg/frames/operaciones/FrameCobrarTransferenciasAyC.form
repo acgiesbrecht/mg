@@ -12,7 +12,7 @@
     </Component>
     <Component class="javax.persistence.Query" name="query">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT e, MONTH(ed.fechahora), YEAR(ed.fechahora), SUM(ed.monto) FROM TblEntidades e, TblEventoDetalle ed WHERE e.id = ed.idEntidad.id AND ed.idEvento.idEventoTipo = :tipoEventoId  GROUP BY e ORDER BY e.ctacte"/>
+        <Property name="query" type="java.lang.String" value="SELECT new com.parah.mg.domain.models.PagosMensualesPendientes(e, EXTRACT(MONTH FROM ed.fechahora), EXTRACT(YEAR FROM ed.fechahora), SUM(ed.monto*ed.idEvento.porcentajeAporte/100), SUM(ed.monto*(100-ed.idEvento.porcentajeAporte)/100)) FROM TblEntidades e, TblEventoDetalle ed WHERE e.id = ed.idEntidad.id AND ed.idEvento.idEventoTipo = :tipoEventoId  GROUP BY e, EXTRACT(MONTH FROM ed.fechahora), EXTRACT(YEAR FROM ed.fechahora) ORDER BY e.ctacte"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="entityManager"/>
         </Property>
@@ -118,6 +118,16 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
+    <Component class="com.parah.mg.utils.CtaCteTableCellRenderer" name="ctaCteTableCellRenderer1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="ctaCteTableCellRenderer1"/>
+      </Properties>
+    </Component>
+    <Component class="com.parah.mg.utils.MesTableCellRenderer" name="mesTableCellRenderer1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="mesTableCellRenderer1"/>
+      </Properties>
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -169,7 +179,7 @@
                   <Component id="cboEventoTipo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="569" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" pref="573" max="32767" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -191,24 +201,19 @@
         <Component class="javax.swing.JTable" name="masterTable">
           <Properties>
             <Property name="autoCreateRowSorter" type="boolean" value="true"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="15" style="0"/>
+            </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
                   <Title/>
                   <Editor/>
-                  <Renderer/>
+                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
+                    <ComponentRef name="ctaCteTableCellRenderer1"/>
+                  </Renderer>
                 </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -219,6 +224,23 @@
                   <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
                     <ComponentRef name="numberCellRenderer1"/>
                   </Renderer>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
+                    <ComponentRef name="mesTableCellRenderer1"/>
+                  </Renderer>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
                 </Column>
               </TableColumnModel>
             </Property>
@@ -238,18 +260,23 @@
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
+              <Subbinding sourcePath="${montoAporte}+${montoDonacion}">
+                <BindingParameter name="NAME" value="Monto"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Long.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+              </Subbinding>
               <Subbinding sourcePath="${mes}">
                 <BindingParameter name="NAME" value="Mes"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
-              </Subbinding>
-              <Subbinding sourcePath="${eno}">
-                <BindingParameter name="NAME" value="A&#xf1;o"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
-              </Subbinding>
-              <Subbinding sourcePath="${monto}">
-                <BindingParameter name="NAME" value="Monto"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+              </Subbinding>
+              <Subbinding sourcePath="${ano}">
+                <BindingParameter name="NAME" value="A&#xf1;o"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+              </Subbinding>
+              <Subbinding sourcePath="${cobrado}">
+                <BindingParameter name="NAME" value="Cobrado"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Boolean.class"/>
               </Subbinding>
             </BindingProperty>
           </BindingProperties>

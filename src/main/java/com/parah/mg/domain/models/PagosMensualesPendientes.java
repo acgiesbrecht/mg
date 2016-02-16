@@ -22,55 +22,25 @@ public class PagosMensualesPendientes implements Serializable {
     @Id
     private TblEntidades entidad;
 
-    private Integer mes;
+    private Object mes;
 
-    private Integer ano;
+    private Object ano;
 
-    private Integer monto;
+    private Long montoAporte;
+
+    private Long montoDonacion;
+
+    private Boolean cobrado;
 
     public PagosMensualesPendientes() {
     }
 
-    /**
-     * @return the mes
-     */
-    public Integer getMes() {
-        return mes;
-    }
-
-    /**
-     * @param mes the mes to set
-     */
-    public void setMes(Integer mes) {
+    public PagosMensualesPendientes(TblEntidades entidad, Object mes, Object ano, Long montoAporte, Long montoDonacion) {
+        this.entidad = entidad;
         this.mes = mes;
-    }
-
-    /**
-     * @return the eno
-     */
-    public Integer getAno() {
-        return ano;
-    }
-
-    /**
-     * @param eno the eno to set
-     */
-    public void setAno(Integer ano) {
         this.ano = ano;
-    }
-
-    /**
-     * @return the monto
-     */
-    public Integer getMonto() {
-        return monto;
-    }
-
-    /**
-     * @param monto the monto to set
-     */
-    public void setMonto(Integer monto) {
-        this.monto = monto;
+        this.montoAporte = montoAporte;
+        this.montoDonacion = montoDonacion;
     }
 
     /**
@@ -85,6 +55,76 @@ public class PagosMensualesPendientes implements Serializable {
      */
     public void setEntidad(TblEntidades entidad) {
         this.entidad = entidad;
+    }
+
+    /**
+     * @return the mes
+     */
+    public Object getMes() {
+        return mes;
+    }
+
+    /**
+     * @param mes the mes to set
+     */
+    public void setMes(Object mes) {
+        this.mes = mes;
+    }
+
+    /**
+     * @return the ano
+     */
+    public Object getAno() {
+        return ano;
+    }
+
+    /**
+     * @param ano the ano to set
+     */
+    public void setAno(Object ano) {
+        this.ano = ano;
+    }
+
+    /**
+     * @return the cobrado
+     */
+    public Boolean getCobrado() {
+        return cobrado;
+    }
+
+    /**
+     * @param cobrado the cobrado to set
+     */
+    public void setCobrado(Boolean cobrado) {
+        this.cobrado = cobrado;
+    }
+
+    /**
+     * @return the montoAporte
+     */
+    public Long getMontoAporte() {
+        return montoAporte;
+    }
+
+    /**
+     * @param montoAporte the montoAporte to set
+     */
+    public void setMontoAporte(Long montoAporte) {
+        this.montoAporte = montoAporte;
+    }
+
+    /**
+     * @return the montoDonacion
+     */
+    public Long getMontoDonacion() {
+        return montoDonacion;
+    }
+
+    /**
+     * @param montoDonacion the montoDonacion to set
+     */
+    public void setMontoDonacion(Long montoDonacion) {
+        this.montoDonacion = montoDonacion;
     }
 
 }
