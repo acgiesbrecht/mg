@@ -7,15 +7,14 @@ package com.parah.mg.frames.operaciones;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
-import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
-import com.parah.mg.domain.models.CuotaModel;
 import com.parah.mg.domain.TblEntidades;
 import com.parah.mg.domain.TblEventoCuotas;
 import com.parah.mg.domain.TblEventos;
 import com.parah.mg.domain.TblRecibos;
 import com.parah.mg.domain.TblTransferencias;
+import com.parah.mg.domain.models.CuotaModel;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.Color;
@@ -59,6 +58,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
     Integer saldoActual;
     Timer timer;
     EventList<TblEntidades> eventListEntidades = new BasicEventList<>();
+    EventList<TblEventos> eventListEventos = new BasicEventList<>();
     CurrentUser currentUser = CurrentUser.getInstance();
 
     public FrameRematesPagos() {
@@ -72,6 +72,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
 
             persistenceMap = Utils.getInstance().getPersistenceMap();
             initComponents();
+
             txtCtaCte.setEnabled(false);
             cboEntidad.setEnabled(false);
             masterTable.setVisible(false);
@@ -82,26 +83,16 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             txtRecibo.setVisible(false);
             cmdProcesar.setVisible(false);
 
-            /*timer = new Timer();
-             timer.schedule(new TimerTask() {
-             @Override
-             public void run() {
-             if (cboFechaRemate.getSelectedIndex() > -1) {
-             loadPendientes();
-             }
-             }
-             }, 0, 5000);*/
-            //AutoCompleteDecorator.decorate(cboFechaRemate);
-            //AutoCompleteDecorator.decorate(cboEntidad);
-            // AutoCompleteSupport.install(cboEntidad, GlazedLists.eventListOf(listEntidades));
-            //final EventList<TblEntidades> urls = GlazedLists.eventList(Arrays.asList(URLS));
-            AutoCompleteSupport support = AutoCompleteSupport.install(cboFechaRemate, GlazedLists.eventListOf(listEventos.toArray()));
-            support.setFilterMode(TextMatcherEditor.CONTAINS);
-
             eventListEntidades.clear();
             eventListEntidades.addAll(listEntidades);
             AutoCompleteSupport support1 = AutoCompleteSupport.install(cboEntidad, eventListEntidades);
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            eventListEventos.clear();
+            eventListEventos.addAll(listEventos);
+            AutoCompleteSupport support2 = AutoCompleteSupport.install(cboFechaRemate, eventListEventos);
+            support2.setFilterMode(TextMatcherEditor.CONTAINS);
+
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String s = sdf.format(new Date());
             Date today = sdf.parse(s);
@@ -110,8 +101,11 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             if (value.isPresent()) {
                 cboFechaRemate.setSelectedItem(value.get());
             } else {
-                cboFechaRemate.setSelectedIndex(-1);
+                cboFechaRemate.setSelectedIndex(cboFechaRemate.getItemCount() - 1);
             }
+
+            loadPendientes();
+
             cboEntidad.setSelectedIndex(-1);
             KeyboardFocusManager.getCurrentKeyboardFocusManager()
                     .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
@@ -152,11 +146,9 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
         queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 1 AND t.idGrupo IN :grupos ORDER BY t.fecha");
         queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
-        queryEventoDetalle = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId AND t.idMiembro = :miembroId ORDER BY t.fechahora");
-        queryEventoDetalle.setParameter("eventoId", null) ;queryEventoDetalle.setParameter("miembroId", null) ;
+        queryEventoDetalle = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoDetalle t WHERE t.idEvento.idEventoTipo.id = 1 AND t.idEntidad = :miembroId ORDER BY t.fechahora");
+        queryEventoDetalle.setParameter("miembroId", null) ;
         listEventoDetalle = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoDetalle.getResultList());
-        cboFechaRemate = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
         idMiembroLabel = new javax.swing.JLabel();
         idMiembroLabel1 = new javax.swing.JLabel();
         txtCtaCte = new javax.swing.JTextField();
@@ -179,6 +171,8 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
         lblCuotasFechas = new javax.swing.JLabel();
         txtTransferencia = new javax.swing.JFormattedTextField();
         txtRecibo = new javax.swing.JFormattedTextField();
+        jLabel2 = new javax.swing.JLabel();
+        cboFechaRemate = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
 
         dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
@@ -204,14 +198,6 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
         });
-
-        cboFechaRemate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboFechaRemateActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Fecha de Remate");
 
         idMiembroLabel.setText("Miembro:");
 
@@ -267,19 +253,37 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
         idMiembroLabel4.setText("Realizar Pago:");
 
         masterTable.setAutoCreateRowSorter(true);
-        masterTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
 
-            },
-            new String [] {
-
-            }
-        ));
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, cboEntidad, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), masterTable, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventoDetalle, masterTable);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
+        columnBinding.setColumnName("Fecha/Hora");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCategoriaArticulo}"));
+        columnBinding.setColumnName("Categoria Articulo");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCategoriasArticulos.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEvento}"));
+        columnBinding.setColumnName("Evento");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblEventos.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${observacion}"));
+        columnBinding.setColumnName("Observacion");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
+        columnBinding.setColumnName("Monto");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, cboEntidad, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), masterTable, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         masterScrollPane.setViewportView(masterTable);
+        if (masterTable.getColumnModel().getColumnCount() > 0) {
+            masterTable.getColumnModel().getColumn(0).setCellRenderer(dateTimeTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
+        }
 
         lblDeuda.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblDeuda.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -338,6 +342,17 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel2.setText("Fecha de Remate:");
+
+        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventos, cboFechaRemate);
+        bindingGroup.addBinding(jComboBoxBinding);
+
+        cboFechaRemate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboFechaRemateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -347,40 +362,50 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(cmdProcesar, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdProcesar, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cmdCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(idMiembroLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtTransferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(134, 134, 134)
-                        .addComponent(lblCuotasFechas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(idMiembroLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(idMiembroLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtTransferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(idMiembroLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblCuotasFechas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cboFechaRemate, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(cboFechaRemate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(idMiembroLabel5)
-                        .addComponent(txtTransferencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtTransferencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(idMiembroLabel6)
+                        .addComponent(txtRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblCuotasFechas, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idMiembroLabel6)
-                    .addComponent(txtRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmdProcesar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGap(17, 17, 17))
         );
 
         jButton1.setText("Actualizar");
@@ -396,78 +421,92 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(idMiembroLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(idMiembroLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(idMiembroLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(42, 42, 42)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblSaldo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPagos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblDeuda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(idMiembroLabel))
-                                .addGap(37, 37, 37)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cboFechaRemate, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(idMiembroLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(idMiembroLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButton1))))
-                            .addComponent(idMiembroLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 12, Short.MAX_VALUE)))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(masterScrollPane)
+                        .addGap(21, 21, 21))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(idMiembroLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(lblDeuda, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(idMiembroLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(lblPagos, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(idMiembroLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(lblSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(idMiembroLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(idMiembroLabel1)
+                        .addGap(12, 12, 12)
+                        .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)
+                        .addComponent(idMiembroLabel2)
+                        .addGap(12, 12, 12)
+                        .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(jButton1))
+                    .addComponent(idMiembroLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cboFechaRemate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idMiembroLabel)
-                    .addComponent(idMiembroLabel1)
-                    .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idMiembroLabel2)
-                    .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addGap(12, 12, 12)
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblDeuda)
-                        .addGap(10, 10, 10)
-                        .addComponent(lblPagos)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblSaldo))
+                        .addGap(4, 4, 4)
+                        .addComponent(idMiembroLabel))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(idMiembroLabel3)
-                        .addGap(10, 10, 10)
-                        .addComponent(idMiembroLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(idMiembroLabel8)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(4, 4, 4)
+                        .addComponent(idMiembroLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(idMiembroLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1))
+                .addGap(16, 16, 16)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(idMiembroLabel3)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(lblDeuda)))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(idMiembroLabel7)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(lblPagos)))
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(idMiembroLabel8)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(lblSaldo)))
+                .addGap(7, 7, 7)
                 .addComponent(idMiembroLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -518,10 +557,10 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
 
     void loadPendientes() {
         try {
-            if (cboFechaRemate.getSelectedIndex() > -1) {
-                Integer remateId = ((TblEventos) cboFechaRemate.getSelectedItem()).getId();
-                //queryEntidades = entityManager.createNativeQuery("SELECT m.* FROM tbl_miembros m, tbl_remates_detalle r WHERE r.id_remate = " + remateId.toString() + " AND r.id_miembro = m.id AND m.ctacte <> 11111 GROUP BY m.id ORDER BY m.nombre", TblEntidades.class);
-                /*queryEntidades = entityManager.createNativeQuery("WITH remates AS "
+//            if (cboFechaRemate.getSelectedIndex() > -1) {
+            //              Integer remateId = ((TblEventos) cboFechaRemate.getSelectedItem()).getId();
+            //queryEntidades = entityManager.createNativeQuery("SELECT m.* FROM tbl_miembros m, tbl_remates_detalle r WHERE r.id_remate = " + remateId.toString() + " AND r.id_miembro = m.id AND m.ctacte <> 11111 GROUP BY m.id ORDER BY m.nombre", TblEntidades.class);
+            /*queryEntidades = entityManager.createNativeQuery("WITH remates AS "
                  + "	(SELECT m.*, SUM(rd.monto) AS monto FROM tbl_miembros m "
                  + "	LEFT JOIN tbl_remates_detalle rd ON m.id = rd.id_miembro "
                  + "	group by m.id, m.nombre, m.ctacte, m.domicilio, m.box),"
@@ -532,54 +571,122 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                  + "SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.box FROM remates, pagos "
                  + "where remates.id = pagos.id AND (remates.monto - pagos.monto) > 0 "
                  + "order by remates.nombre", TblEntidades.class);
-                 */
+
                 queryEntidades = entityManager.createNativeQuery("SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.box FROM "
-                        + "	(SELECT m.*, SUM(rd.monto) AS monto FROM TBL_MIEMBROS m "
+                        + "	(SELECT m.*, SUM(rd.monto) AS monto FROM TBL_ENTIDADES m "
                         + "	LEFT JOIN TBL_EVENTO_DETALLE rd ON m.id = rd.id_miembro "
                         + "	group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) remates, "
-                        + "     (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_MIEMBROS m "
+                        + "     (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_ENTIDADES m "
                         + "	LEFT JOIN TBL_TRANSFERENCIAS p ON m.id = p.id_miembro "
                         + "	group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) transferencias, "
-                        + "     (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_MIEMBROS m "
+                        + "     (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_ENTIDADES m "
                         + "	LEFT JOIN TBL_RECIBOS p ON m.id = p.id_miembro "
                         + "	group by m.id, m.nombre, m.ruc, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida) recibos "
                         + "WHERE remates.id = transferencias.id AND remates.id = recibos.id AND (remates.monto - transferencias.monto - recibos.monto) > 0 "
                         + "ORDER BY remates.nombre", TblEntidades.class);
+             */
+            queryEntidades = entityManager.createNativeQuery("SELECT eventodetalle.id, "
+                    + "                     eventodetalle.nombres, "
+                    + "                     eventodetalle.apellidos, "
+                    + "                     eventodetalle.RAZON_SOCIAL, "
+                    + "                     eventodetalle.RUC_SIN_DV, "
+                    + "                     eventodetalle.ctacte, "
+                    + "                     eventodetalle.domicilio, "
+                    + "                     eventodetalle.box, "
+                    + "                     eventodetalle.id_forma_de_pago_preferida, "
+                    + "                    eventodetalle.IS_MIEMBRO_ACTIVO, "
+                    + "                    eventodetalle.ID_FORMA_DE_PAGO_PREFERIDA, "
+                    + "                    eventodetalle.APORTE_MENSUAL, "
+                    + "                    eventodetalle.ID_ENTIDAD_PAGANTE_APORTES, "
+                    + "                    eventodetalle.FECHA_NACIMIENTO, "
+                    + "                    eventodetalle.FECHA_BAUTISMO, "
+                    + "                    eventodetalle.FECHA_ENTRADA_CONGREGACION, "
+                    + "                    eventodetalle.FECHA_SALIDA_CONGREGACION, "
+                    + "                    eventodetalle.FECHA_DEFUNCION, "
+                    + "                    eventodetalle.ID_AREA_SERVICIO_EN_IGLESIA, "
+                    + "                    eventodetalle.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
+                    + "                    eventodetalle.ID_MIEMBROS_ALERGIA, "
+                    + "                     eventodetalle.id_user"
+                    + " FROM "
+                    + "        (SELECT m.*, SUM(rd.monto) AS monto FROM TBL_ENTIDADES m "
+                    + "            LEFT JOIN (SELECT ed.* FROM MG.TBL_EVENTO_DETALLE ed, MG.TBL_EVENTOS ev WHERE ed.ID_EVENTO = ev.ID AND ev.ID_EVENTO_TIPO = 1) rd"
+                    + "            ON m.id = rd.ID_ENTIDAD "
+                    + "            group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida, "
+                    + "                    m.ID_ENTIDAD_PAGANTE_APORTES, "
+                    + "                    m.IS_MIEMBRO_ACTIVO, "
+                    + "                    m.ID_FORMA_DE_PAGO_PREFERIDA, "
+                    + "                    m.APORTE_MENSUAL, "
+                    + "                    m.FECHA_NACIMIENTO, "
+                    + "                    m.FECHA_BAUTISMO, "
+                    + "                    m.FECHA_ENTRADA_CONGREGACION, "
+                    + "                    m.FECHA_SALIDA_CONGREGACION, "
+                    + "                    m.FECHA_DEFUNCION, "
+                    + "                    m.ID_AREA_SERVICIO_EN_IGLESIA, "
+                    + "                    m.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
+                    + "                    m.ID_MIEMBROS_ALERGIA) eventodetalle, "
+                    + "        (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_ENTIDADES m "
+                    + "            LEFT JOIN (SELECT * FROM MG.TBL_TRANSFERENCIAS WHERE ID_EVENTO_TIPO = 1) p ON m.id = p.ID_ENTIDAD "
+                    + "            group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida, "
+                    + "                    m.IS_MIEMBRO_ACTIVO, "
+                    + "                    m.ID_ENTIDAD_PAGANTE_APORTES, "
+                    + "                    m.ID_FORMA_DE_PAGO_PREFERIDA, "
+                    + "                    m.APORTE_MENSUAL, "
+                    + "                    m.FECHA_NACIMIENTO, "
+                    + "                    m.FECHA_BAUTISMO, "
+                    + "                    m.FECHA_ENTRADA_CONGREGACION, "
+                    + "                    m.FECHA_SALIDA_CONGREGACION, "
+                    + "                    m.FECHA_DEFUNCION, "
+                    + "                    m.ID_AREA_SERVICIO_EN_IGLESIA, "
+                    + "                    m.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
+                    + "                    m.ID_MIEMBROS_ALERGIA) transferencias, "
+                    + "        (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_ENTIDADES m "
+                    + "            LEFT JOIN (SELECT * FROM MG.TBL_RECIBOS WHERE ID_EVENTO_TIPO = 1) p ON m.id = p.ID_ENTIDAD "
+                    + "            group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida, "
+                    + "                    m.IS_MIEMBRO_ACTIVO, "
+                    + "                    m.ID_FORMA_DE_PAGO_PREFERIDA, "
+                    + "                    m.APORTE_MENSUAL, "
+                    + "                    m.ID_ENTIDAD_PAGANTE_APORTES, "
+                    + "                    m.FECHA_NACIMIENTO, "
+                    + "                    m.FECHA_BAUTISMO, "
+                    + "                    m.FECHA_ENTRADA_CONGREGACION, "
+                    + "                    m.FECHA_SALIDA_CONGREGACION, "
+                    + "                    m.FECHA_DEFUNCION, "
+                    + "                    m.ID_AREA_SERVICIO_EN_IGLESIA, "
+                    + "                    m.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
+                    + "                    m.ID_MIEMBROS_ALERGIA) recibos "
+                    + "    WHERE eventodetalle.id = transferencias.id AND eventodetalle.id = recibos.id AND (eventodetalle.monto - transferencias.monto - recibos.monto) > 0 "
+                    + "    ORDER BY eventodetalle.ctacte", TblEntidades.class);
 
-                listEntidades.clear();
-                listEntidades.addAll(queryEntidades.getResultList());
-                eventListEntidades.clear();
-                eventListEntidades.addAll(listEntidades);
+            listEntidades.clear();
+            listEntidades.addAll(queryEntidades.getResultList());
+            eventListEntidades.clear();
+            eventListEntidades.addAll(listEntidades);
 
-                if (listEntidades.size() > 0) {
-                    txtCtaCte.setEnabled(true);
-                    txtCtaCte.requestFocus();
-                    cboEntidad.setEnabled(true);
-                } else {
-                    txtCtaCte.setEnabled(false);
-                    cboEntidad.setEnabled(false);
-                }
-
-                remateCuotas = entityManager.find(TblEventoCuotas.class, remateId);
-                String fechas = "Las transferencias seran imprimidas con fechas de";
-                listFechasCuotas = Utils.getInstance().getCuotasFechas(remateCuotas);
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                for (Date fecha : listFechasCuotas) {
-                    fechas += ", " + sdf.format(fecha);
-                }
-                fechas = fechas + ".";
-                fechas = fechas.replaceFirst(",", " ");
-                lblCuotasFechas.setText(fechas);
-
+            if (listEntidades.size() > 0) {
+                txtCtaCte.setEnabled(true);
+                txtCtaCte.requestFocus();
+                cboEntidad.setEnabled(true);
+            } else {
+                txtCtaCte.setEnabled(false);
+                cboEntidad.setEnabled(false);
             }
+
+            remateCuotas = entityManager.find(TblEventoCuotas.class, ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
+            String fechas = "Las transferencias seran imprimidas con fechas de";
+            listFechasCuotas = Utils.getInstance().getCuotasFechas(remateCuotas);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            for (Date fecha : listFechasCuotas) {
+                fechas += ", " + sdf.format(fecha);
+            }
+            fechas = fechas + ".";
+            fechas = fechas.replaceFirst(",", " ");
+            lblCuotasFechas.setText(fechas);
+
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
-    private void cboFechaRemateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFechaRemateActionPerformed
-        loadPendientes();
-    }//GEN-LAST:event_cboFechaRemateActionPerformed
 
     void loadEntidad() {
         try {
@@ -589,7 +696,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
              + selectedEntidad.getId().toString() + " ORDER BY fechahora", TblRematesDetalle.class
              );*/
 
-            queryEventoDetalle.setParameter("eventoId", (TblEventos) cboFechaRemate.getSelectedItem());
+            //queryEventoDetalle.setParameter("eventoId", (TblEventos) cboFechaRemate.getSelectedItem());
             queryEventoDetalle.setParameter("miembroId", selectedEntidad);
             listEventoDetalle.clear();
 
@@ -647,7 +754,8 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 transferencias = Integer.parseInt(entityManager.createNativeQuery("SELECT sum(monto) AS total"
                         + " FROM tbl_transferencias"
                         + " WHERE id_miembro = " + selectedEntidad.getId().toString()
-                        + " AND id_evento = " + ((TblEventos) cboFechaRemate.getSelectedItem()).getId().toString()).getSingleResult().toString());
+                        + " AND id_evento_tipo = 1").getSingleResult().toString());
+//  + ((TblEventos) cboFechaRemate.getSelectedItem()).getId().toString()).getSingleResult().toString());
             } catch (Exception ex) {
                 transferencias = 0;
             }
@@ -656,7 +764,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 recibos = Integer.parseInt(entityManager.createNativeQuery("SELECT sum(monto) AS total"
                         + " FROM tbl_recibos"
                         + " WHERE id_miembro = " + selectedEntidad.getId().toString()
-                        + " AND id_evento = " + ((TblEventos) cboFechaRemate.getSelectedItem()).getId().toString()).getSingleResult().toString());
+                        + " AND id_evento_tipo = 1").getSingleResult().toString()); //+ ((TblEventos) cboFechaRemate.getSelectedItem()).getId().toString()).getSingleResult().toString());
             } catch (Exception ex) {
                 recibos = 0;
             }
@@ -722,7 +830,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                     transferencia.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
                     transferencia.setMonto(cuota.getMonto());
                     transferencia.setPorcentajeAporte(((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte());
-                    transferencia.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
+                    transferencia.setIdEventoTipo(((TblEventos) cboFechaRemate.getSelectedItem()).getIdEventoTipo());
                     transferencia.setCobrado(false);
                     transferencia.setIdUser(currentUser.getUser());
                     entityManager.getTransaction().begin();
@@ -761,7 +869,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 recibo.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
                 recibo.setMonto(reciboMonto);
                 recibo.setPorcentajeAporte(((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte());
-                recibo.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
+                recibo.setIdEventoTipo(((TblEventos) cboFechaRemate.getSelectedItem()).getIdEventoTipo());
                 recibo.setIdUser(currentUser.getUser());
                 entityManager.getTransaction().begin();
                 entityManager.persist(recibo);
@@ -825,6 +933,10 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTransferenciaActionPerformed
 
+    private void cboFechaRemateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFechaRemateActionPerformed
+
+    }//GEN-LAST:event_cboFechaRemateActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -884,7 +996,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel idMiembroLabel7;
     private javax.swing.JLabel idMiembroLabel8;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCuotasFechas;
     private javax.swing.JLabel lblDeuda;

@@ -108,7 +108,7 @@ public class TblMiembrosRelacionesTipos implements Serializable {
 
     @Override
     public String toString() {
-        return descripcion;
+        return "com.parah.mg.domain.TblMiembrosRelacionesTipos[ id=" + id + " ]";
     }
 
 }

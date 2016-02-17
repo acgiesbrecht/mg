@@ -63,15 +63,16 @@ public class TblTransferencias implements Serializable {
     @NotNull
     @Column(name = "PORCENTAJE_APORTE")
     private int porcentajeAporte;
+    @Basic(optional = false)
     @NotNull
     @Column(name = "COBRADO")
     private Boolean cobrado;
     @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEntidades idEntidad;
-    @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID")
+    @JoinColumn(name = "ID_EVENTO_TIPO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private TblEventos idEvento;
+    private TblEventoTipos idEventoTipo;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
@@ -83,11 +84,12 @@ public class TblTransferencias implements Serializable {
         this.id = id;
     }
 
-    public TblTransferencias(Integer id, Date fechahora, int monto, int porcentajeAporte) {
+    public TblTransferencias(Integer id, Date fechahora, int monto, int porcentajeAporte, Boolean cobrado) {
         this.id = id;
         this.fechahora = fechahora;
         this.monto = monto;
         this.porcentajeAporte = porcentajeAporte;
+        this.cobrado = cobrado;
     }
 
     public Integer getId() {
@@ -146,12 +148,12 @@ public class TblTransferencias implements Serializable {
         this.idEntidad = idEntidad;
     }
 
-    public TblEventos getIdEvento() {
-        return idEvento;
+    public TblEventoTipos getIdEventoTipo() {
+        return idEventoTipo;
     }
 
-    public void setIdEvento(TblEventos idEvento) {
-        this.idEvento = idEvento;
+    public void setIdEventoTipo(TblEventoTipos idEventoTipo) {
+        this.idEventoTipo = idEventoTipo;
     }
 
     public TblUsers getIdUser() {

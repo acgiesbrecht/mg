@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_USERS")
@@ -40,13 +40,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblUsers.findByPassword", query = "SELECT t FROM TblUsers t WHERE t.password = :password"),
     @NamedQuery(name = "TblUsers.findByNombrecompleto", query = "SELECT t FROM TblUsers t WHERE t.nombrecompleto = :nombrecompleto")})
 public class TblUsers implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private List<TblTimbrados> tblTimbradosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private List<TblFacturas> tblFacturasList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private List<TblEntidades> tblEntidadesList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -79,6 +72,22 @@ public class TblUsers implements Serializable {
         @JoinColumn(name = "ID_ROLE", referencedColumnName = "ID")})
     @ManyToMany
     private List<TblRoles> tblRolesList;
+    @OneToMany(mappedBy = "idUser")
+    private List<TblMiembrosRelaciones> tblMiembrosRelacionesList;
+    @OneToMany(mappedBy = "idUser")
+    private List<TblEventoDetalle> tblEventoDetalleList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblRecibos> tblRecibosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblEventos> tblEventosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblTransferencias> tblTransferenciasList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblFacturas> tblFacturasList;
+    @OneToMany(mappedBy = "idUser")
+    private List<TblEntidades> tblEntidadesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblTimbrados> tblTimbradosList;
 
     public TblUsers() {
     }
@@ -144,6 +153,78 @@ public class TblUsers implements Serializable {
         this.tblRolesList = tblRolesList;
     }
 
+    @XmlTransient
+    public List<TblMiembrosRelaciones> getTblMiembrosRelacionesList() {
+        return tblMiembrosRelacionesList;
+    }
+
+    public void setTblMiembrosRelacionesList(List<TblMiembrosRelaciones> tblMiembrosRelacionesList) {
+        this.tblMiembrosRelacionesList = tblMiembrosRelacionesList;
+    }
+
+    @XmlTransient
+    public List<TblEventoDetalle> getTblEventoDetalleList() {
+        return tblEventoDetalleList;
+    }
+
+    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
+        this.tblEventoDetalleList = tblEventoDetalleList;
+    }
+
+    @XmlTransient
+    public List<TblRecibos> getTblRecibosList() {
+        return tblRecibosList;
+    }
+
+    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
+        this.tblRecibosList = tblRecibosList;
+    }
+
+    @XmlTransient
+    public List<TblEventos> getTblEventosList() {
+        return tblEventosList;
+    }
+
+    public void setTblEventosList(List<TblEventos> tblEventosList) {
+        this.tblEventosList = tblEventosList;
+    }
+
+    @XmlTransient
+    public List<TblTransferencias> getTblTransferenciasList() {
+        return tblTransferenciasList;
+    }
+
+    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
+        this.tblTransferenciasList = tblTransferenciasList;
+    }
+
+    @XmlTransient
+    public List<TblFacturas> getTblFacturasList() {
+        return tblFacturasList;
+    }
+
+    public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
+        this.tblFacturasList = tblFacturasList;
+    }
+
+    @XmlTransient
+    public List<TblEntidades> getTblEntidadesList() {
+        return tblEntidadesList;
+    }
+
+    public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
+        this.tblEntidadesList = tblEntidadesList;
+    }
+
+    @XmlTransient
+    public List<TblTimbrados> getTblTimbradosList() {
+        return tblTimbradosList;
+    }
+
+    public void setTblTimbradosList(List<TblTimbrados> tblTimbradosList) {
+        this.tblTimbradosList = tblTimbradosList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -166,34 +247,7 @@ public class TblUsers implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
-    }
-
-    @XmlTransient
-    public List<TblTimbrados> getTblTimbradosList() {
-        return tblTimbradosList;
-    }
-
-    public void setTblTimbradosList(List<TblTimbrados> tblTimbradosList) {
-        this.tblTimbradosList = tblTimbradosList;
-    }
-
-    @XmlTransient
-    public List<TblFacturas> getTblFacturasList() {
-        return tblFacturasList;
-    }
-
-    public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
-        this.tblFacturasList = tblFacturasList;
-    }
-
-    @XmlTransient
-    public List<TblEntidades> getTblEntidadesList() {
-        return tblEntidadesList;
-    }
-
-    public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
-        this.tblEntidadesList = tblEntidadesList;
+        return "com.parah.mg.domain.TblUsers[ id=" + id + " ]";
     }
 
 }

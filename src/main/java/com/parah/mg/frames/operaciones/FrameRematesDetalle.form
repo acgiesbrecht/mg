@@ -83,6 +83,9 @@
         </Property>
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblEntidades&gt;"/>
+      </AuxValues>
     </Component>
     <Component class="com.parah.mg.utils.NormalTableCellRenderer" name="normalTableCellRenderer1">
       <Properties>
@@ -134,6 +137,31 @@
     </Component>
     <Component class="com.parah.mg.utils.DateTimeToStringConverter" name="dateTimeToStringConverter1">
     </Component>
+    <Component class="javax.persistence.Query" name="queryFormasDePago">
+      <Properties>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblFormasDePago t"/>
+        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
+          <ComponentRef name="entityManager"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
+      </AuxValues>
+    </Component>
+    <Component class="java.util.List" name="listFormasDePago">
+      <Properties>
+        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
+          <ComponentRef name="queryFormasDePago"/>
+        </Property>
+        <Property name="observable" type="boolean" value="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblFormasDePago&gt;"/>
+        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
+      </AuxValues>
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -159,6 +187,11 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="cboFormaDePagoPreferida" min="-2" pref="324" max="-2" attributes="0"/>
+                  </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
@@ -203,7 +236,6 @@
                                   </Group>
                               </Group>
                           </Group>
-                          <Component id="jPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                               <Group type="103" alignment="0" groupAlignment="0" attributes="0">
@@ -272,35 +304,40 @@
                   <Component id="montoField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="cboFormaDePagoPreferida" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="deleteButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="refreshButton" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                              <Component id="newButton" alignment="3" min="-2" pref="52" max="-2" attributes="0"/>
+                              <Component id="saveButton" alignment="3" min="-2" pref="52" max="-2" attributes="0"/>
+                              <Component id="saveButton1" alignment="3" min="-2" pref="52" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                  </Group>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="newButton" alignment="3" min="-2" pref="52" max="-2" attributes="0"/>
-                      <Component id="saveButton" alignment="3" min="-2" pref="52" max="-2" attributes="0"/>
-                      <Component id="saveButton1" alignment="3" min="-2" pref="52" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
               <Component id="dateTableCellRenderer1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="470" max="32767" attributes="0"/>
+              <EmptySpace pref="467" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -369,7 +406,7 @@
                 <BindingParameter name="NAME" value="Fecha/Hora"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
               </Subbinding>
-              <Subbinding sourcePath="${idMiembro}">
+              <Subbinding sourcePath="${idEntidad}">
                 <BindingParameter name="NAME" value="Miembro"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblEntidades.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
@@ -585,12 +622,15 @@
       </Properties>
       <BindingProperties>
         <BindingProperty name="elements" source="listEntidades" target="cboEntidad" targetPath="elements" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idMiembro}" target="cboEntidad" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idEntidad}" target="cboEntidad" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="cboEntidad" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboEntidadActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblEntidades&gt;"/>
+      </AuxValues>
     </Component>
     <Container class="javax.swing.JPanel" name="jPanel1">
       <Properties>
@@ -746,6 +786,23 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cboFormaDePagoPreferida">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="12" style="0"/>
+        </Property>
+      </Properties>
+      <BindingProperties>
+        <BindingProperty name="elements" source="listFormasDePago" target="cboFormaDePagoPreferida" targetPath="elements" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idFormaDePagoPreferida}" target="cboFormaDePagoPreferida" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboFormaDePagoPreferidaActionPerformed"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblFormasDePago&gt;"/>
       </AuxValues>
     </Component>
   </SubComponents>

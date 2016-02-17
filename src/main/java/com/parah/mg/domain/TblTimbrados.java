@@ -7,7 +7,9 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,15 +17,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_TIMBRADOS")
@@ -37,6 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblTimbrados.findByNroFacturaFin", query = "SELECT t FROM TblTimbrados t WHERE t.nroFacturaFin = :nroFacturaFin"),
     @NamedQuery(name = "TblTimbrados.findByActivo", query = "SELECT t FROM TblTimbrados t WHERE t.activo = :activo")})
 public class TblTimbrados implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -65,6 +70,8 @@ public class TblTimbrados implements Serializable {
     @NotNull
     @Column(name = "ACTIVO")
     private Boolean activo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTimbrado")
+    private List<TblFacturas> tblFacturasList;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
@@ -131,6 +138,15 @@ public class TblTimbrados implements Serializable {
 
     public void setActivo(Boolean activo) {
         this.activo = activo;
+    }
+
+    @XmlTransient
+    public List<TblFacturas> getTblFacturasList() {
+        return tblFacturasList;
+    }
+
+    public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
+        this.tblFacturasList = tblFacturasList;
     }
 
     public TblUsers getIdUser() {

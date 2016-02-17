@@ -71,6 +71,7 @@ public class FrameRematesDetalle extends JInternalFrame {
         try {
             persistenceMap = Utils.getInstance().getPersistenceMap();
             initComponents();
+            cboFormaDePagoPreferida.setVisible(false);
             this.dateTimeTableCellRenderer1.setEnProceso(true);
             this.numberCellRenderer1.setEnProceso(true);
             this.normalTableCellRenderer1.setEnProceso(true);
@@ -155,6 +156,8 @@ public class FrameRematesDetalle extends JInternalFrame {
         integerLongConverter1 = new com.parah.mg.utils.IntegerLongConverter();
         numberCellRenderer1 = new com.parah.mg.utils.NumberCellRenderer();
         dateTimeToStringConverter1 = new com.parah.mg.utils.DateTimeToStringConverter();
+        queryFormasDePago = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblFormasDePago t");
+        listFormasDePago = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryFormasDePago.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         fechahoraLabel = new javax.swing.JLabel();
@@ -173,7 +176,7 @@ public class FrameRematesDetalle extends JInternalFrame {
         idMiembroLabel2 = new javax.swing.JLabel();
         dateTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
         cboCategoria = new javax.swing.JComboBox();
-        cboEntidad = new javax.swing.JComboBox();
+        cboEntidad = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
@@ -185,6 +188,7 @@ public class FrameRematesDetalle extends JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         saveButton1 = new javax.swing.JButton();
+        cboFormaDePagoPreferida = new javax.swing.JComboBox<>();
 
         FormListener formListener = new FormListener();
 
@@ -205,7 +209,7 @@ public class FrameRematesDetalle extends JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha/Hora");
         columnBinding.setColumnClass(java.util.Date.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idMiembro}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
         columnBinding.setColumnName("Miembro");
         columnBinding.setColumnClass(com.parah.mg.domain.TblEntidades.class);
         columnBinding.setEditable(false);
@@ -312,7 +316,7 @@ public class FrameRematesDetalle extends JInternalFrame {
 
         jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEntidades, cboEntidad);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idMiembro}"), cboEntidad, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idEntidad}"), cboEntidad, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboEntidad, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -399,6 +403,15 @@ public class FrameRematesDetalle extends JInternalFrame {
         saveButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         saveButton1.addActionListener(formListener);
 
+        cboFormaDePagoPreferida.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listFormasDePago, cboFormaDePagoPreferida);
+        bindingGroup.addBinding(jComboBoxBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idFormaDePagoPreferida}"), cboFormaDePagoPreferida, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        cboFormaDePagoPreferida.addActionListener(formListener);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -406,6 +419,10 @@ public class FrameRematesDetalle extends JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cboFormaDePagoPreferida, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -441,7 +458,6 @@ public class FrameRematesDetalle extends JInternalFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(refreshButton, javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(deleteButton, javax.swing.GroupLayout.Alignment.TRAILING)))))
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -496,29 +512,33 @@ public class FrameRematesDetalle extends JInternalFrame {
                     .addComponent(montoLabel)
                     .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(idMiembroLabel)
+                    .addComponent(idMiembroLabel1)
+                    .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idMiembroLabel2)
+                    .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(idMiembroLabel)
-                            .addComponent(idMiembroLabel1)
-                            .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(idMiembroLabel2)
-                            .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2))
+                        .addGap(20, 20, 20)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
+                        .addComponent(cboFormaDePagoPreferida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(deleteButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(refreshButton))
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(saveButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(saveButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(30, 30, 30)
                 .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(470, Short.MAX_VALUE))
+                .addContainerGap(467, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -564,6 +584,9 @@ public class FrameRematesDetalle extends JInternalFrame {
             }
             else if (evt.getSource() == saveButton1) {
                 FrameRematesDetalle.this.saveButton1ActionPerformed(evt);
+            }
+            else if (evt.getSource() == cboFormaDePagoPreferida) {
+                FrameRematesDetalle.this.cboFormaDePagoPreferidaActionPerformed(evt);
             }
         }
 
@@ -724,6 +747,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                 montoField.requestFocusInWindow();
                 return;
             }
+
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
             refresh();
@@ -844,6 +868,7 @@ public class FrameRematesDetalle extends JInternalFrame {
     private void cboEntidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEntidadActionPerformed
         if (cboEntidad.getSelectedItem() != null) {
             txtCtaCte.setText(((TblEntidades) cboEntidad.getSelectedItem()).getCtacte().toString());
+            cboFormaDePagoPreferida.setSelectedItem(((TblEntidades) cboEntidad.getSelectedItem()).getIdFormaDePagoPreferida());
         } else {
             txtCtaCte.setText("");
         }
@@ -871,7 +896,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                     transferencia.setIdEntidad((TblEntidades) cboEntidad.getSelectedItem());
                     transferencia.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
                     transferencia.setMonto(cuota.getMonto());
-                    transferencia.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
+                    transferencia.setIdEventoTipo(((TblEventos) cboFechaRemate.getSelectedItem()).getIdEventoTipo());
                     entityManager.getTransaction().begin();
                     entityManager.persist(transferencia);
                     entityManager.flush();
@@ -917,11 +942,16 @@ public class FrameRematesDetalle extends JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCtaCteActionPerformed
 
+    private void cboFormaDePagoPreferidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFormaDePagoPreferidaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboFormaDePagoPreferidaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.parah.mg.utils.CategoriasConverter categoriasConverter1;
     private javax.swing.JComboBox cboCategoria;
-    private javax.swing.JComboBox cboEntidad;
+    private javax.swing.JComboBox<com.parah.mg.domain.TblEntidades> cboEntidad;
     private javax.swing.JComboBox cboFechaRemate;
+    private javax.swing.JComboBox<com.parah.mg.domain.TblFormasDePago> cboFormaDePagoPreferida;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
     private com.parah.mg.utils.DateTimeToStringConverter dateTimeToStringConverter1;
@@ -944,9 +974,10 @@ public class FrameRematesDetalle extends JInternalFrame {
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalOperaciones;
-    private java.util.List listEntidades;
+    private java.util.List<com.parah.mg.domain.TblEntidades> listEntidades;
     private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
     private java.util.List<com.parah.mg.domain.TblEventoDetalle> listEventosDetalle;
+    private java.util.List<com.parah.mg.domain.TblFormasDePago> listFormasDePago;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JFormattedTextField montoField;
@@ -959,6 +990,7 @@ public class FrameRematesDetalle extends JInternalFrame {
     private javax.persistence.Query queryEntidades;
     private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryEventosDetalle;
+    private javax.persistence.Query queryFormasDePago;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;
     private javax.swing.JButton saveButton1;

@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_EVENTO_DETALLE")
@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblEventoDetalle.findByObservacion", query = "SELECT t FROM TblEventoDetalle t WHERE t.observacion = :observacion"),
     @NamedQuery(name = "TblEventoDetalle.findByMonto", query = "SELECT t FROM TblEventoDetalle t WHERE t.monto = :monto")})
 public class TblEventoDetalle implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

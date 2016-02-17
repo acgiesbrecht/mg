@@ -65,8 +65,6 @@ public class TblEventos implements Serializable {
     private int porcentajeAporte;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
     private List<TblEventoDetalle> tblEventoDetalleList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
-    private List<TblRecibos> tblRecibosList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblEventos")
     private TblEventoCuotas tblEventoCuotas;
     @JoinColumn(name = "ID_EVENTO_TIPO", referencedColumnName = "ID")
@@ -78,8 +76,6 @@ public class TblEventos implements Serializable {
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
-    private List<TblTransferencias> tblTransferenciasList;
 
     public TblEventos() {
     }
@@ -135,15 +131,6 @@ public class TblEventos implements Serializable {
         this.tblEventoDetalleList = tblEventoDetalleList;
     }
 
-    @XmlTransient
-    public List<TblRecibos> getTblRecibosList() {
-        return tblRecibosList;
-    }
-
-    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
-        this.tblRecibosList = tblRecibosList;
-    }
-
     public TblEventoCuotas getTblEventoCuotas() {
         return tblEventoCuotas;
     }
@@ -174,15 +161,6 @@ public class TblEventos implements Serializable {
 
     public void setIdUser(TblUsers idUser) {
         this.idUser = idUser;
-    }
-
-    @XmlTransient
-    public List<TblTransferencias> getTblTransferenciasList() {
-        return tblTransferenciasList;
-    }
-
-    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
-        this.tblTransferenciasList = tblTransferenciasList;
     }
 
     @Override

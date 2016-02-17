@@ -19,10 +19,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
-@Table(name = "TBL_CONTRIBUYENTES", catalog = "", schema = "MG")
+@Table(name = "TBL_CONTRIBUYENTES")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblContribuyentes.findAll", query = "SELECT t FROM TblContribuyentes t"),
@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblContribuyentes.findByDv", query = "SELECT t FROM TblContribuyentes t WHERE t.dv = :dv"),
     @NamedQuery(name = "TblContribuyentes.findByRazonSocial", query = "SELECT t FROM TblContribuyentes t WHERE t.razonSocial = :razonSocial")})
 public class TblContribuyentes implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -107,7 +108,7 @@ public class TblContribuyentes implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.models.TblContribuyentes[ rucSinDv=" + rucSinDv + " ]";
+        return "com.parah.mg.domain.TblContribuyentes[ rucSinDv=" + rucSinDv + " ]";
     }
 
 }

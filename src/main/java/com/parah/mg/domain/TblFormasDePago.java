@@ -6,20 +6,24 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_FORMAS_DE_PAGO")
@@ -41,6 +45,10 @@ public class TblFormasDePago implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFormaDePagoPreferida")
+    private List<TblEventoDetalle> tblEventoDetalleList;
+    @OneToMany(mappedBy = "idFormaDePagoPreferida")
+    private List<TblEntidades> tblEntidadesList;
 
     public TblFormasDePago() {
     }
@@ -68,6 +76,24 @@ public class TblFormasDePago implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @XmlTransient
+    public List<TblEventoDetalle> getTblEventoDetalleList() {
+        return tblEventoDetalleList;
+    }
+
+    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
+        this.tblEventoDetalleList = tblEventoDetalleList;
+    }
+
+    @XmlTransient
+    public List<TblEntidades> getTblEntidadesList() {
+        return tblEntidadesList;
+    }
+
+    public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
+        this.tblEntidadesList = tblEntidadesList;
     }
 
     @Override

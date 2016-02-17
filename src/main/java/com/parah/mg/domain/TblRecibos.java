@@ -65,9 +65,9 @@ public class TblRecibos implements Serializable {
     @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEntidades idEntidad;
-    @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID")
+    @JoinColumn(name = "ID_EVENTO_TIPO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private TblEventos idEvento;
+    private TblEventoTipos idEventoTipo;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
@@ -134,12 +134,12 @@ public class TblRecibos implements Serializable {
         this.idEntidad = idEntidad;
     }
 
-    public TblEventos getIdEvento() {
-        return idEvento;
+    public TblEventoTipos getIdEventoTipo() {
+        return idEventoTipo;
     }
 
-    public void setIdEvento(TblEventos idEvento) {
-        this.idEvento = idEvento;
+    public void setIdEventoTipo(TblEventoTipos idEventoTipo) {
+        this.idEventoTipo = idEventoTipo;
     }
 
     public TblUsers getIdUser() {

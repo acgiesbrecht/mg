@@ -5,8 +5,6 @@
  */
 package com.parah.mg.domain;
 
-import com.parah.mg.domain.TblTimbrados;
-import com.parah.mg.domain.TblUsers;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -26,10 +24,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
-@Table(name = "TBL_FACTURAS", catalog = "", schema = "MG")
+@Table(name = "TBL_FACTURAS")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblFacturas.findAll", query = "SELECT t FROM TblFacturas t"),
@@ -41,6 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblFacturas.findByImporteAporte", query = "SELECT t FROM TblFacturas t WHERE t.importeAporte = :importeAporte"),
     @NamedQuery(name = "TblFacturas.findByAnulado", query = "SELECT t FROM TblFacturas t WHERE t.anulado = :anulado")})
 public class TblFacturas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -203,7 +202,7 @@ public class TblFacturas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.models.TblFacturas[ nro=" + nro + " ]";
+        return "com.parah.mg.domain.TblFacturas[ nro=" + nro + " ]";
     }
 
 }

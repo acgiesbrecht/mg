@@ -179,7 +179,7 @@ public class TblMiembrosRelaciones implements Serializable {
 
     @Override
     public String toString() {
-        return "";
+        return "com.parah.mg.domain.TblMiembrosRelaciones[ id=" + id + " ]";
     }
 
 }

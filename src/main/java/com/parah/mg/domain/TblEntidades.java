@@ -30,10 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
-@Table(name = "TBL_ENTIDADES", catalog = "", schema = "MG")
+@Table(name = "TBL_ENTIDADES")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblEntidades.findAll", query = "SELECT t FROM TblEntidades t"),
@@ -108,6 +108,16 @@ public class TblEntidades implements Serializable {
     @Column(name = "FECHA_DEFUNCION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDefuncion;
+    @OneToMany(mappedBy = "idEntidad2")
+    private List<TblMiembrosRelaciones> tblMiembrosRelacionesList;
+    @OneToMany(mappedBy = "idEntidad1")
+    private List<TblMiembrosRelaciones> tblMiembrosRelacionesList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
+    private List<TblEventoDetalle> tblEventoDetalleList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
+    private List<TblRecibos> tblRecibosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
+    private List<TblTransferencias> tblTransferenciasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
     private List<TblFacturas> tblFacturasList;
     @JoinColumn(name = "ID_AREA_SERVICIO_EN_IGLESIA", referencedColumnName = "ID")
@@ -138,11 +148,13 @@ public class TblEntidades implements Serializable {
         this.id = id;
     }
 
-    public TblEntidades(Integer id, String nombres, String apellidos, String razonSocial, Boolean isMiembroActivo, int aporteMensual) {
+    public TblEntidades(Integer id, String nombres, String apellidos, String razonSocial, String rucSinDv, int ctacte, Boolean isMiembroActivo, int aporteMensual) {
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.razonSocial = razonSocial;
+        this.rucSinDv = rucSinDv;
+        this.ctacte = ctacte;
         this.isMiembroActivo = isMiembroActivo;
         this.aporteMensual = aporteMensual;
     }
@@ -265,6 +277,51 @@ public class TblEntidades implements Serializable {
 
     public void setFechaDefuncion(Date fechaDefuncion) {
         this.fechaDefuncion = fechaDefuncion;
+    }
+
+    @XmlTransient
+    public List<TblMiembrosRelaciones> getTblMiembrosRelacionesList() {
+        return tblMiembrosRelacionesList;
+    }
+
+    public void setTblMiembrosRelacionesList(List<TblMiembrosRelaciones> tblMiembrosRelacionesList) {
+        this.tblMiembrosRelacionesList = tblMiembrosRelacionesList;
+    }
+
+    @XmlTransient
+    public List<TblMiembrosRelaciones> getTblMiembrosRelacionesList1() {
+        return tblMiembrosRelacionesList1;
+    }
+
+    public void setTblMiembrosRelacionesList1(List<TblMiembrosRelaciones> tblMiembrosRelacionesList1) {
+        this.tblMiembrosRelacionesList1 = tblMiembrosRelacionesList1;
+    }
+
+    @XmlTransient
+    public List<TblEventoDetalle> getTblEventoDetalleList() {
+        return tblEventoDetalleList;
+    }
+
+    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
+        this.tblEventoDetalleList = tblEventoDetalleList;
+    }
+
+    @XmlTransient
+    public List<TblRecibos> getTblRecibosList() {
+        return tblRecibosList;
+    }
+
+    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
+        this.tblRecibosList = tblRecibosList;
+    }
+
+    @XmlTransient
+    public List<TblTransferencias> getTblTransferenciasList() {
+        return tblTransferenciasList;
+    }
+
+    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
+        this.tblTransferenciasList = tblTransferenciasList;
     }
 
     @XmlTransient
