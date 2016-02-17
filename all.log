@@ -1,0 +1,71 @@
+2016-02-16 19:04:15.431 [AWT-EventQueue-0] ERROR 976OGGER - mnuOpCobrarTransferenciasAyCActionPerformed
+java.lang.IllegalArgumentException: An exception occurred while creating a query in EntityManager: 
+Exception Description: Syntax error parsing [SELECT new com.parah.mg.domain.models.PagosMensualesPendientes(e, EXTRACT(MONTH FROM ed.fechahora), EXTRACT(YEAR FROM ed.fechahora), SUM(ed.monto*ed.idEvento.porcentajeAporte/100), SUM(ed.monto*(100-ed.idEvento.porcentajeAporte)/100)) 
+FROM TblEntidades e, TblEventoDetalle ed, TblTransferencias t
+WHERE e.id = ed.idEntidad.id AND e.id = t.idEntidad.id AND ed.idEvento.idEventoTipo = :tipoEventoId AND t.idEvento.idEventoTipo = :tipoEventoId AND SUM(t.monto) <> SUM(ed.monto)   
+GROUP BY e, EXTRACT(MONTH FROM ed.fechahora), EXTRACT(YEAR FROM ed.fechahora), EXTRACT(MONTH FROM t.fechahora), EXTRACT(YEAR FROM t.fechahora)
+ORDER BY e.ctacte]. 
+[455, 467] The SUM function is only allowed in the SELECT, GROUP BY, ORDER BY and HAVING clauses.
+[471, 484] The SUM function is only allowed in the SELECT, GROUP BY, ORDER BY and HAVING clauses.
+	at org.eclipse.persistence.internal.jpa.EntityManagerImpl.createQuery(EntityManagerImpl.java:1616) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at com.parah.mg.frames.operaciones.FrameCobrarTransferenciasAyC.initComponents(FrameCobrarTransferenciasAyC.java:84) ~[classes/:?]
+	at com.parah.mg.frames.operaciones.FrameCobrarTransferenciasAyC.<init>(FrameCobrarTransferenciasAyC.java:50) ~[classes/:?]
+	at com.parah.mg.frames.MdiFrame.mnuOpCobrarTransferenciasAyCActionPerformed(MdiFrame.java:967) [classes/:?]
+	at com.parah.mg.frames.MdiFrame.access$700(MdiFrame.java:78) [classes/:?]
+	at com.parah.mg.frames.MdiFrame$8.actionPerformed(MdiFrame.java:366) [classes/:?]
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2022) [?:1.8.0_31]
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2346) [?:1.8.0_31]
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402) [?:1.8.0_31]
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259) [?:1.8.0_31]
+	at javax.swing.AbstractButton.doClick(AbstractButton.java:376) [?:1.8.0_31]
+	at javax.swing.plaf.basic.BasicMenuItemUI.doClick(BasicMenuItemUI.java:833) [?:1.8.0_31]
+	at javax.swing.plaf.basic.BasicMenuItemUI$Handler.mouseReleased(BasicMenuItemUI.java:877) [?:1.8.0_31]
+	at java.awt.Component.processMouseEvent(Component.java:6525) [?:1.8.0_31]
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3322) [?:1.8.0_31]
+	at java.awt.Component.processEvent(Component.java:6290) [?:1.8.0_31]
+	at java.awt.Container.processEvent(Container.java:2234) [?:1.8.0_31]
+	at java.awt.Component.dispatchEventImpl(Component.java:4881) [?:1.8.0_31]
+	at java.awt.Container.dispatchEventImpl(Container.java:2292) [?:1.8.0_31]
+	at java.awt.Component.dispatchEvent(Component.java:4703) [?:1.8.0_31]
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4898) [?:1.8.0_31]
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4533) [?:1.8.0_31]
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4462) [?:1.8.0_31]
+	at java.awt.Container.dispatchEventImpl(Container.java:2278) [?:1.8.0_31]
+	at java.awt.Window.dispatchEventImpl(Window.java:2739) [?:1.8.0_31]
+	at java.awt.Component.dispatchEvent(Component.java:4703) [?:1.8.0_31]
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:751) [?:1.8.0_31]
+	at java.awt.EventQueue.access$500(EventQueue.java:97) [?:1.8.0_31]
+	at java.awt.EventQueue$3.run(EventQueue.java:702) [?:1.8.0_31]
+	at java.awt.EventQueue$3.run(EventQueue.java:696) [?:1.8.0_31]
+	at java.security.AccessController.doPrivileged(Native Method) ~[?:1.8.0_31]
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75) [?:1.8.0_31]
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:86) [?:1.8.0_31]
+	at java.awt.EventQueue$4.run(EventQueue.java:724) [?:1.8.0_31]
+	at java.awt.EventQueue$4.run(EventQueue.java:722) [?:1.8.0_31]
+	at java.security.AccessController.doPrivileged(Native Method) ~[?:1.8.0_31]
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75) [?:1.8.0_31]
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:721) [?:1.8.0_31]
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201) [?:1.8.0_31]
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116) [?:1.8.0_31]
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105) [?:1.8.0_31]
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101) [?:1.8.0_31]
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93) [?:1.8.0_31]
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82) [?:1.8.0_31]
+Caused by: org.eclipse.persistence.exceptions.JPQLException: 
+Exception Description: Syntax error parsing [SELECT new com.parah.mg.domain.models.PagosMensualesPendientes(e, EXTRACT(MONTH FROM ed.fechahora), EXTRACT(YEAR FROM ed.fechahora), SUM(ed.monto*ed.idEvento.porcentajeAporte/100), SUM(ed.monto*(100-ed.idEvento.porcentajeAporte)/100)) 
+FROM TblEntidades e, TblEventoDetalle ed, TblTransferencias t
+WHERE e.id = ed.idEntidad.id AND e.id = t.idEntidad.id AND ed.idEvento.idEventoTipo = :tipoEventoId AND t.idEvento.idEventoTipo = :tipoEventoId AND SUM(t.monto) <> SUM(ed.monto)   
+GROUP BY e, EXTRACT(MONTH FROM ed.fechahora), EXTRACT(YEAR FROM ed.fechahora), EXTRACT(MONTH FROM t.fechahora), EXTRACT(YEAR FROM t.fechahora)
+ORDER BY e.ctacte]. 
+[455, 467] The SUM function is only allowed in the SELECT, GROUP BY, ORDER BY and HAVING clauses.
+[471, 484] The SUM function is only allowed in the SELECT, GROUP BY, ORDER BY and HAVING clauses.
+	at org.eclipse.persistence.internal.jpa.jpql.HermesParser.buildException(HermesParser.java:155) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.jpql.HermesParser.validate(HermesParser.java:334) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.jpql.HermesParser.populateQueryImp(HermesParser.java:278) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.jpql.HermesParser.buildQuery(HermesParser.java:163) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.EJBQueryImpl.buildEJBQLDatabaseQuery(EJBQueryImpl.java:142) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.EJBQueryImpl.buildEJBQLDatabaseQuery(EJBQueryImpl.java:116) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.EJBQueryImpl.<init>(EJBQueryImpl.java:102) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.EJBQueryImpl.<init>(EJBQueryImpl.java:86) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.EntityManagerImpl.createQuery(EntityManagerImpl.java:1614) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	... 43 more
