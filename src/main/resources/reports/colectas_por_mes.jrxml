@@ -49,7 +49,7 @@ where ed.id_evento = e.id AND ed.id_entidad = m.id
 AND MONTH(e.fecha) = $P{mes} AND YEAR(e.fecha) = $P{ano}
 AND e.ID_EVENTO_TIPO = 2
 GROUP BY e.FECHA, m.CTACTE, m.APELLIDOS, m.NOMBRES
-ORDER BY m.APELLIDOS, m.NOMBRES, e.FECHA]]>
+ORDER BY m.CTACTE, e.FECHA]]>
         </queryString>
         <field name="FECHA" class="java.sql.Timestamp"/>
         <field name="SUMA" class="java.lang.Integer"/>
@@ -71,7 +71,7 @@ ORDER BY m.APELLIDOS, m.NOMBRES, e.FECHA]]>
         <band splitType="Stretch"/>
     </background>
     <title>
-        <band height="93" splitType="Stretch">
+        <band height="120" splitType="Stretch">
             <staticText>
                 <reportElement x="0" y="30" width="554" height="30" uuid="a63323e5-1d25-45b0-bc23-c36c39a4393e"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
@@ -95,13 +95,7 @@ ORDER BY m.APELLIDOS, m.NOMBRES, e.FECHA]]>
         </band>
     </title>
     <pageHeader>
-        <band height="8" splitType="Stretch"/>
-    </pageHeader>
-    <columnHeader>
-        <band height="11" splitType="Stretch"/>
-    </columnHeader>
-    <detail>
-        <band height="100" splitType="Stretch">
+            <band height="100" splitType="Stretch">
             <crosstab>
                 <reportElement x="0" y="0" width="554" height="72" uuid="9992c8e8-d4b2-4424-a6dd-f8dcce08d1df"/>
                 <crosstabDataset isDataPreSorted="true">
@@ -233,12 +227,20 @@ ORDER BY m.APELLIDOS, m.NOMBRES, e.FECHA]]>
                 </crosstabCell>
             </crosstab>
         </band>
+    </pageHeader>
+    <!--<columnHeader>
+        <band height="11" splitType="Stretch"/>
+    </columnHeader>
+    <detail>
+        <band height="100" splitType="Stretch">
+
+        </band>
     </detail>
     <columnFooter>
-        <band height="28" splitType="Stretch"/>
-    </columnFooter>
+
+    </columnFooter>-->
     <pageFooter>
-        <band height="39" splitType="Stretch">
+        <band height="100" splitType="Stretch">
             <textField>
                 <reportElement x="309" y="0" width="245" height="13" uuid="e6915b5d-ce5f-4459-8cb8-759d13001e66"/>
                 <textElement textAlignment="Right" verticalAlignment="Middle"/>
@@ -249,10 +251,15 @@ ORDER BY m.APELLIDOS, m.NOMBRES, e.FECHA]]>
                 <textElement textAlignment="Right" verticalAlignment="Middle"/>
                 <textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
             </textField>
-            <textField>
+            <textField evaluationTime="Now">
                 <reportElement x="0" y="0" width="245" height="13" uuid="e6794147-4c15-43f5-b8dd-76762cf2e6b1"/>
                 <textElement textAlignment="Left" verticalAlignment="Middle"/>
-                <textFieldExpression><![CDATA["Pág. " + $V{PAGE_NUMBER} + " de " + $V{PAGE_COUNT}]]></textFieldExpression>
+                <textFieldExpression ><![CDATA["Pág. " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report">
+                <reportElement x="15" y="0" width="245" height="13" uuid="e6794147-4c15-43f5-b8dd-76762cf2e6b1"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+                <textFieldExpression ><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
             </textField>
         </band>
     </pageFooter>

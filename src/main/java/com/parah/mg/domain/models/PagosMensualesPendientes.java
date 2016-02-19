@@ -22,20 +22,20 @@ public class PagosMensualesPendientes implements Serializable {
     @Id
     private TblEntidades entidad;
 
-    private Object mes;
+    private Integer mes;
 
-    private Object ano;
+    private Integer ano;
 
-    private Long montoAporte;
+    private Integer montoAporte;
 
-    private Long montoDonacion;
+    private Integer montoDonacion;
 
     private Boolean cobrado;
 
     public PagosMensualesPendientes() {
     }
 
-    public PagosMensualesPendientes(TblEntidades entidad, Object mes, Object ano, Long montoAporte, Long montoDonacion) {
+    public PagosMensualesPendientes(TblEntidades entidad, Integer mes, Integer ano, Integer montoAporte, Integer montoDonacion) {
         this.entidad = entidad;
         this.mes = mes;
         this.ano = ano;
@@ -60,29 +60,57 @@ public class PagosMensualesPendientes implements Serializable {
     /**
      * @return the mes
      */
-    public Object getMes() {
+    public Integer getMes() {
         return mes;
     }
 
     /**
      * @param mes the mes to set
      */
-    public void setMes(Object mes) {
+    public void setMes(Integer mes) {
         this.mes = mes;
     }
 
     /**
      * @return the ano
      */
-    public Object getAno() {
+    public Integer getAno() {
         return ano;
     }
 
     /**
      * @param ano the ano to set
      */
-    public void setAno(Object ano) {
+    public void setAno(Integer ano) {
         this.ano = ano;
+    }
+
+    /**
+     * @return the montoAporte
+     */
+    public Integer getMontoAporte() {
+        return montoAporte;
+    }
+
+    /**
+     * @param montoAporte the montoAporte to set
+     */
+    public void setMontoAporte(Integer montoAporte) {
+        this.montoAporte = montoAporte;
+    }
+
+    /**
+     * @return the montoDonacion
+     */
+    public Integer getMontoDonacion() {
+        return montoDonacion;
+    }
+
+    /**
+     * @param montoDonacion the montoDonacion to set
+     */
+    public void setMontoDonacion(Integer montoDonacion) {
+        this.montoDonacion = montoDonacion;
     }
 
     /**
@@ -92,39 +120,15 @@ public class PagosMensualesPendientes implements Serializable {
         return cobrado;
     }
 
+    public Integer getMontoTotal() {
+        return montoAporte + montoDonacion;
+    }
+
     /**
      * @param cobrado the cobrado to set
      */
     public void setCobrado(Boolean cobrado) {
         this.cobrado = cobrado;
-    }
-
-    /**
-     * @return the montoAporte
-     */
-    public Long getMontoAporte() {
-        return montoAporte;
-    }
-
-    /**
-     * @param montoAporte the montoAporte to set
-     */
-    public void setMontoAporte(Long montoAporte) {
-        this.montoAporte = montoAporte;
-    }
-
-    /**
-     * @return the montoDonacion
-     */
-    public Long getMontoDonacion() {
-        return montoDonacion;
-    }
-
-    /**
-     * @param montoDonacion the montoDonacion to set
-     */
-    public void setMontoDonacion(Long montoDonacion) {
-        this.montoDonacion = montoDonacion;
     }
 
 }

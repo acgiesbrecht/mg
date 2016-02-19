@@ -85,7 +85,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoDetalle t WHERE t.id = null");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
@@ -132,9 +132,9 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         columnBinding.setColumnName("Nombre");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoAporte}+${montoDonacion}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoTotal}"));
         columnBinding.setColumnName("Monto");
-        columnBinding.setColumnClass(Long.class);
+        columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${mes}"));
         columnBinding.setColumnName("Mes");
@@ -184,9 +184,9 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(refreshButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveButton))
+                        .addComponent(saveButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(refreshButton))
                     .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(descripcionLabel3)
@@ -205,7 +205,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                     .addComponent(descripcionLabel3)
                     .addComponent(cboEventoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
@@ -269,15 +269,18 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                     TblTransferencias t = new TblTransferencias();
                     entityManager.persist(t);
                     t.setIdEntidad(pago.getEntidad());
-                    t.setConcepto(((TblEventoTipos) cboEventoTipo.getSelectedItem()).getDescripcion() + " " + ((Integer) pago.getMes()).toString() + "/" + ((Integer) pago.getAno()).toString());
-                    t.setMonto(pago.getMontoAporte().intValue() + pago.getMontoDonacion().intValue());
-                    t.setPorcentajeAporte(pago.getMontoAporte().intValue() / (pago.getMontoAporte().intValue() + pago.getMontoDonacion().intValue()) * 100);
+                    t.setConcepto(((TblEventoTipos) cboEventoTipo.getSelectedItem()).getDescripcion() + " " + pago.getMes().toString() + "/" + pago.getAno().toString());
+                    t.setMonto(pago.getMontoAporte() + pago.getMontoDonacion());
+                    t.setPorcentajeAporte(pago.getMontoAporte() / (pago.getMontoAporte() + pago.getMontoDonacion()) * 100);
                     t.setCobrado(true);
                     t.setFechahora(new Date());
                     t.setIdEventoTipo((TblEventoTipos) cboEventoTipo.getSelectedItem());
                     t.setIdUser(currentUser.getUser());
                 }
             }
+            entityManager.getTransaction().commit();
+            entityManager.getTransaction().begin();
+            refresh();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -409,57 +412,59 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                         + "             WHERE eventodetalle.id = transferencias.id AND eventodetalle.id = recibos.id AND (eventodetalle.monto - transferencias.monto - recibos.monto) > 0 "
                         + "   ORDER BY eventodetalle.ctacte");*/
 
-                query = entityManager.createNativeQuery("SELECT eventodetalle.id, "
-                        + "                             eventodetalle.ctacte, "
-                        + "                             eventodetalle.mes, "
-                        + "                             eventodetalle.ano, "
-                        + "                             eventodetalle.montoAporte - transferencias.montoAporte - recibos.montoAporte, "
-                        + "                             eventodetalle.montoDonacion - transferencias.montoDonacion - recibos.montoDonacion "
-                        + "                          FROM "
-                        + "                                 (SELECT m.id, m.ctacte, "
-                        + "                                     MONTH(rd.fechahora) AS MES, "
-                        + "                                     YEAR(rd.fechahora) AS ANO, "
-                        + "                                     SUM(rd.monto*rd.PORCENTAJE_APORTE/100) AS montoAporte, "
-                        + "                                     SUM(rd.monto*(100-rd.PORCENTAJE_APORTE)/100) AS montoDonacion "
-                        + "                                  FROM TBL_ENTIDADES m "
-                        + "                                     LEFT JOIN (SELECT ed.*, ev.* FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + ") rd "
-                        + "                                     ON m.id = rd.ID_ENTIDAD "
-                        + "                                     group by m.id, m.ctacte, MONTH(rd.FECHAHORA), YEAR(rd.FECHAHORA)) eventodetalle, "
-                        + "                                 (SELECT m.id, m.ctacte, "
-                        + "                                      MONTH(p.fechahora), "
-                        + "                                      YEAR(p.fechahora), "
-                        + "                                      COALESCE(SUM(p.monto*p.PORCENTAJE_APORTE/100),0) AS montoAporte, "
-                        + "                                      COALESCE(SUM(p.monto*(100-p.PORCENTAJE_APORTE)/100),0) AS montoDonacion "
-                        + "                                      FROM TBL_ENTIDADES m "
-                        + "                                      LEFT JOIN (SELECT * FROM MG.TBL_TRANSFERENCIAS WHERE ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + ") p ON m.id = p.ID_ENTIDAD "
-                        + "                                      group by m.id, m.ctacte, MONTH(p.FECHAHORA), YEAR(p.FECHAHORA)) transferencias, "
-                        + "                                 (SELECT m.id, m.ctacte, "
-                        + "                                      MONTH(p.fechahora), "
-                        + "                                      YEAR(p.fechahora), "
-                        + "                                      COALESCE(SUM(p.monto*p.PORCENTAJE_APORTE/100),0) AS montoAporte, "
-                        + "                                      COALESCE(SUM(p.monto*(100-p.PORCENTAJE_APORTE)/100),0) AS montoDonacion "
-                        + "                                      FROM TBL_ENTIDADES m "
-                        + "                                      LEFT JOIN (SELECT * FROM MG.TBL_RECIBOS WHERE ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + ") p ON m.id = p.ID_ENTIDAD "
-                        + "                                      group by m.id, m.ctacte, MONTH(p.FECHAHORA), YEAR(p.FECHAHORA)) recibos "
-                        + "                                      WHERE eventodetalle.id = transferencias.id AND eventodetalle.id = recibos.id AND (eventodetalle.montoAporte - transferencias.montoAporte - recibos.montoAporte + eventodetalle.montoDonacion - transferencias.montoDonacion - recibos.montoDonacion) > 0 "
+                query = entityManager.createNativeQuery("SELECT eventodetalle.id,"
+                        + "                             eventodetalle.ctacte,"
+                        + "                             eventodetalle.mes,"
+                        + "                             eventodetalle.ano,"
+                        + "                             eventodetalle.montoAporte - transferencias.montoAporte - recibos.montoAporte,"
+                        + "                             eventodetalle.montoDonacion - transferencias.montoDonacion - recibos.montoDonacion"
+                        + "                          FROM"
+                        + "                                 (SELECT m.id, m.ctacte,"
+                        + "                                     MONTH(rd.fechahora) AS MES,"
+                        + "                                     YEAR(rd.fechahora) AS ANO,"
+                        + "                                     SUM(rd.monto*rd.PORCENTAJE_APORTE/100) AS montoAporte,"
+                        + "                                     SUM(rd.monto*(100-rd.PORCENTAJE_APORTE)/100) AS montoDonacion"
+                        + "                                  FROM TBL_ENTIDADES m"
+                        + "                                     LEFT JOIN (SELECT ed.*, ev.* FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + ") rd"
+                        + "                                     ON m.id = rd.ID_ENTIDAD"
+                        + "                                     group by m.id, m.ctacte, MONTH(rd.FECHAHORA), YEAR(rd.FECHAHORA)) eventodetalle,"
+                        + "                                 (SELECT m.id, m.ctacte,"
+                        + "                                      MONTH(p.fechahora),"
+                        + "                                      YEAR(p.fechahora),"
+                        + "                                      COALESCE(SUM(p.monto*p.PORCENTAJE_APORTE/100),0) AS montoAporte,"
+                        + "                                      COALESCE(SUM(p.monto*(100-p.PORCENTAJE_APORTE)/100),0) AS montoDonacion"
+                        + "                                      FROM TBL_ENTIDADES m"
+                        + "                                      LEFT JOIN (SELECT * FROM MG.TBL_TRANSFERENCIAS WHERE ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + ") p ON m.id = p.ID_ENTIDAD"
+                        + "                                      group by m.id, m.ctacte, MONTH(p.FECHAHORA), YEAR(p.FECHAHORA)) transferencias,"
+                        + "                                 (SELECT m.id, m.ctacte,"
+                        + "                                      MONTH(p.fechahora),"
+                        + "                                      YEAR(p.fechahora),"
+                        + "                                      COALESCE(SUM(p.monto*p.PORCENTAJE_APORTE/100),0) AS montoAporte,"
+                        + "                                      COALESCE(SUM(p.monto*(100-p.PORCENTAJE_APORTE)/100),0) AS montoDonacion"
+                        + "                                      FROM TBL_ENTIDADES m"
+                        + "                                      LEFT JOIN (SELECT * FROM MG.TBL_RECIBOS WHERE ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + ") p ON m.id = p.ID_ENTIDAD"
+                        + "                                      group by m.id, m.ctacte, MONTH(p.FECHAHORA), YEAR(p.FECHAHORA)) recibos"
+                        + "                                      WHERE eventodetalle.id = transferencias.id AND eventodetalle.id = recibos.id AND (eventodetalle.montoAporte - transferencias.montoAporte - recibos.montoAporte + eventodetalle.montoDonacion - transferencias.montoDonacion - recibos.montoDonacion) > 0"
                         + "                            ORDER BY eventodetalle.ctacte");
+                //" + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + "
+                List<Object[]> data = queryMiembros.getResultList();
+                listMiembros.clear();
+                listMiembros.addAll(data);
 
-                List<Object[]> data = query.getResultList();
+                List<Object[]> dataO = query.getResultList();
                 list.clear();
-                PagosMensualesPendientes p = new PagosMensualesPendientes();
-                for (Object[] o : data) {
+
+                for (Object[] o : dataO) {
+                    PagosMensualesPendientes p = new PagosMensualesPendientes();
                     p.setEntidad(entityManager.find(TblEntidades.class, o[0]));
-                    p.setMes(o[2]);
-                    p.setAno(o[3]);
-                    p.setMontoAporte((Long) o[4]);
-                    p.setMontoDonacion((Long) o[5]);
+                    p.setMes((Integer) o[2]);
+                    p.setAno((Integer) o[3]);
+                    p.setMontoAporte((Integer) o[4]);
+                    p.setMontoDonacion((Integer) o[5]);
                     p.setCobrado(false);
                     list.add(p);
                 }
 
-                data = queryMiembros.getResultList();
-                listMiembros.clear();
-                listMiembros.addAll(data);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
