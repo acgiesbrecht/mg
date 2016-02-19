@@ -11,9 +11,9 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblCategoriasArticulos;
-import com.parah.mg.domain.TblEntidades;
-import com.parah.mg.domain.TblEventoDetalle;
-import com.parah.mg.domain.TblEventos;
+import com.parah.mg.domain.miembros.TblEntidades;
+import com.parah.mg.domain.eventos.TblEventoDetalle;
+import com.parah.mg.domain.eventos.TblEventos;
 import com.parah.mg.domain.TblRecibos;
 import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.utils.CurrentUser;
@@ -199,7 +199,7 @@ public class FrameAportesDetalle extends JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventoDetalle, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
         columnBinding.setColumnName("Miembro");
-        columnBinding.setColumnClass(com.parah.mg.domain.TblEntidades.class);
+        columnBinding.setColumnClass(com.parah.mg.domain.miembros.TblEntidades.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
         columnBinding.setColumnName("Monto");
@@ -734,7 +734,7 @@ public class FrameAportesDetalle extends JInternalFrame {
             JOptionPane.showMessageDialog(null, ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
-            List<com.parah.mg.domain.TblEventoDetalle> merged = new ArrayList<>(listEventoDetalle.size());
+            List<com.parah.mg.domain.eventos.TblEventoDetalle> merged = new ArrayList<>(listEventoDetalle.size());
             listEventoDetalle.stream().forEach((t) -> {
                 merged.add(entityManager.merge(t));
             });
@@ -944,9 +944,9 @@ public class FrameAportesDetalle extends JInternalFrame {
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalOperaciones;
-    private java.util.List<com.parah.mg.domain.TblEntidades> listEntidades;
-    private java.util.List<com.parah.mg.domain.TblEventoDetalle> listEventoDetalle;
-    private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
+    private java.util.List<com.parah.mg.domain.miembros.TblEntidades> listEntidades;
+    private java.util.List<com.parah.mg.domain.eventos.TblEventoDetalle> listEventoDetalle;
+    private java.util.List<com.parah.mg.domain.eventos.TblEventos> listEventos;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JFormattedTextField montoField;

@@ -5,6 +5,10 @@
  */
 package com.parah.mg.domain;
 
+import com.parah.mg.domain.eventos.TblEventos;
+import com.parah.mg.domain.eventos.TblEventoDetalle;
+import com.parah.mg.domain.miembros.TblMiembrosRelaciones;
+import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -40,6 +44,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblUsers.findByPassword", query = "SELECT t FROM TblUsers t WHERE t.password = :password"),
     @NamedQuery(name = "TblUsers.findByNombrecompleto", query = "SELECT t FROM TblUsers t WHERE t.nombrecompleto = :nombrecompleto")})
 public class TblUsers implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblTransacciones> tblTransaccionesList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -248,6 +254,15 @@ public class TblUsers implements Serializable {
     @Override
     public String toString() {
         return "com.parah.mg.domain.TblUsers[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public List<TblTransacciones> getTblTransaccionesList() {
+        return tblTransaccionesList;
+    }
+
+    public void setTblTransaccionesList(List<TblTransacciones> tblTransaccionesList) {
+        this.tblTransaccionesList = tblTransaccionesList;
     }
 
 }

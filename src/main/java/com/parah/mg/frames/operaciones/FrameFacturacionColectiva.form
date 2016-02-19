@@ -49,7 +49,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblEntidades&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.miembros.TblEntidades&gt;"/>
       </AuxValues>
     </Component>
     <Component class="javax.persistence.Query" name="queryTimbrados">
@@ -247,7 +247,7 @@
               </Subbinding>
               <Subbinding sourcePath="${idMiembro}">
                 <BindingParameter name="NAME" value="Miembro"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblEntidades.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.miembros.TblEntidades.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${razonSocial}">

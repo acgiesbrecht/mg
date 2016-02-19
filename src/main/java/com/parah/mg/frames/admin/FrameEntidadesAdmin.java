@@ -9,7 +9,7 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblContribuyentes;
-import com.parah.mg.domain.TblEntidades;
+import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import com.parah.utils.CalcDV;
@@ -1008,7 +1008,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private java.util.List<com.parah.mg.domain.TblEntidades> list;
+    private java.util.List<com.parah.mg.domain.miembros.TblEntidades> list;
     private java.util.List<com.parah.mg.domain.TblFormasDePago> listFormasDePago;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;

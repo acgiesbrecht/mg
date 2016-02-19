@@ -344,7 +344,7 @@ public class FrameTimbradosAdmin extends JInternalFrame {
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker2;
     private java.util.List<com.parah.mg.domain.TblTimbrados> list;
-    private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
+    private java.util.List<com.parah.mg.domain.eventos.TblEventoTipos> listEventoTipos;
     private java.util.List<com.parah.mg.domain.TblGrupos> listGrupos;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;

@@ -3,22 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.parah.mg.domain;
+package com.parah.mg.domain.miembros;
 
-import com.parah.mg.domain.eventos.TblEventoDetalle;
-import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -28,40 +27,34 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author adriang
  */
 @Entity
-@Table(name = "TBL_FORMAS_DE_PAGO")
+@Table(name = "TBL_MIEMBROS_FAMILIAS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblFormasDePago.findAll", query = "SELECT t FROM TblFormasDePago t"),
-    @NamedQuery(name = "TblFormasDePago.findById", query = "SELECT t FROM TblFormasDePago t WHERE t.id = :id"),
-    @NamedQuery(name = "TblFormasDePago.findByDescripcion", query = "SELECT t FROM TblFormasDePago t WHERE t.descripcion = :descripcion")})
-public class TblFormasDePago implements Serializable {
+    @NamedQuery(name = "TblMiembrosFamilias.findAll", query = "SELECT t FROM TblMiembrosFamilias t"),
+    @NamedQuery(name = "TblMiembrosFamilias.findById", query = "SELECT t FROM TblMiembrosFamilias t WHERE t.id = :id"),
+    @NamedQuery(name = "TblMiembrosFamilias.findByDescripcion", query = "SELECT t FROM TblMiembrosFamilias t WHERE t.descripcion = :descripcion")})
+public class TblMiembrosFamilias implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ID")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFormaDePagoPreferida")
-    private List<TblEventoDetalle> tblEventoDetalleList;
-    @OneToMany(mappedBy = "idFormaDePagoPreferida")
-    private List<TblEntidades> tblEntidadesList;
+    @Lob
+    @Column(name = "FOTO")
+    private Serializable foto;
+    @OneToMany(mappedBy = "idMiembrosFamilia")
+    private List<TblMiembrosRelaciones> tblMiembrosRelacionesList;
 
-    public TblFormasDePago() {
+    public TblMiembrosFamilias() {
     }
 
-    public TblFormasDePago(Integer id) {
+    public TblMiembrosFamilias(Integer id) {
         this.id = id;
-    }
-
-    public TblFormasDePago(Integer id, String descripcion) {
-        this.id = id;
-        this.descripcion = descripcion;
     }
 
     public Integer getId() {
@@ -80,22 +73,21 @@ public class TblFormasDePago implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public Serializable getFoto() {
+        return foto;
+    }
+
+    public void setFoto(Serializable foto) {
+        this.foto = foto;
+    }
+
     @XmlTransient
-    public List<TblEventoDetalle> getTblEventoDetalleList() {
-        return tblEventoDetalleList;
+    public List<TblMiembrosRelaciones> getTblMiembrosRelacionesList() {
+        return tblMiembrosRelacionesList;
     }
 
-    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
-        this.tblEventoDetalleList = tblEventoDetalleList;
-    }
-
-    @XmlTransient
-    public List<TblEntidades> getTblEntidadesList() {
-        return tblEntidadesList;
-    }
-
-    public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
-        this.tblEntidadesList = tblEntidadesList;
+    public void setTblMiembrosRelacionesList(List<TblMiembrosRelaciones> tblMiembrosRelacionesList) {
+        this.tblMiembrosRelacionesList = tblMiembrosRelacionesList;
     }
 
     @Override
@@ -108,10 +100,10 @@ public class TblFormasDePago implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblFormasDePago)) {
+        if (!(object instanceof TblMiembrosFamilias)) {
             return false;
         }
-        TblFormasDePago other = (TblFormasDePago) object;
+        TblMiembrosFamilias other = (TblMiembrosFamilias) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -120,7 +112,7 @@ public class TblFormasDePago implements Serializable {
 
     @Override
     public String toString() {
-        return descripcion;
+        return "com.parah.mg.domain.TblMiembrosFamilias[ id=" + id + " ]";
     }
 
 }

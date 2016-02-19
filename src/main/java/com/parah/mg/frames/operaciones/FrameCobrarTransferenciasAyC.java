@@ -5,8 +5,8 @@
  */
 package com.parah.mg.frames.operaciones;
 
-import com.parah.mg.domain.TblEntidades;
-import com.parah.mg.domain.TblEventoTipos;
+import com.parah.mg.domain.miembros.TblEntidades;
+import com.parah.mg.domain.eventos.TblEventoTipos;
 import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.models.PagosMensualesPendientes;
 import com.parah.mg.utils.CurrentUser;
@@ -306,111 +306,111 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                 entityManager.getTransaction().rollback();
                 entityManager.getTransaction().begin();
                 /*SELECT new com.parah.mg.domain.models.PagosMensualesPendientes(e,
-                EXTRACT(MONTH FROM ed.fechahora),
-                EXTRACT(YEAR FROM ed.fechahora),
-                SUM(ed.monto*ed.idEvento.porcentajeAporte/100),
-                SUM(ed.monto*(100-ed.idEvento.porcentajeAporte)/100))
-                FROM TblEntidades e,
-                (TblEventoDetalle ed), TblTransferencias t
-                WHERE e.id = ed.idEntidad.id AND e.id = t.idEntidad.id
-                AND ed.idEvento.idEventoTipo = :tipoEventoId
-                AND t.idEvento.idEventoTipo = :tipoEventoId
-                AND SUM(t.monto) <> SUM(ed.monto)
-                GROUP BY e, EXTRACT(MONTH FROM ed.fechahora),
-                EXTRACT(YEAR FROM ed.fechahora),
-                EXTRACT(MONTH FROM t.fechahora),
-                EXTRACT(YEAR FROM t.fechahora) ORDER BY e.ctacte
+                 EXTRACT(MONTH FROM ed.fechahora),
+                 EXTRACT(YEAR FROM ed.fechahora),
+                 SUM(ed.monto*ed.idEvento.porcentajeAporte/100),
+                 SUM(ed.monto*(100-ed.idEvento.porcentajeAporte)/100))
+                 FROM TblEntidades e,
+                 (TblEventoDetalle ed), TblTransferencias t
+                 WHERE e.id = ed.idEntidad.id AND e.id = t.idEntidad.id
+                 AND ed.idEvento.idEventoTipo = :tipoEventoId
+                 AND t.idEvento.idEventoTipo = :tipoEventoId
+                 AND SUM(t.monto) <> SUM(ed.monto)
+                 GROUP BY e, EXTRACT(MONTH FROM ed.fechahora),
+                 EXTRACT(YEAR FROM ed.fechahora),
+                 EXTRACT(MONTH FROM t.fechahora),
+                 EXTRACT(YEAR FROM t.fechahora) ORDER BY e.ctacte
 
-                query = entityManager.createNativeQuery("SELECT eventodetalle.id, "
-                        + " eventodetalle.nombres, "
-                        + "    eventodetalle.apellidos, "
-                        + "    eventodetalle.RAZON_SOCIAL, "
-                        + "    eventodetalle.RUC_SIN_DV, "
-                        + "    eventodetalle.ctacte, "
-                        + "    eventodetalle.domicilio, "
-                        + "    eventodetalle.box, "
-                        + "    eventodetalle.id_forma_de_pago_preferida, "
-                        + "   eventodetalle.IS_MIEMBRO_ACTIVO, "
-                        + "   eventodetalle.ID_FORMA_DE_PAGO_PREFERIDA, "
-                        + "   eventodetalle.APORTE_MENSUAL, "
-                        + "   eventodetalle.ID_ENTIDAD_PAGANTE_APORTES, "
-                        + "   eventodetalle.FECHA_NACIMIENTO, "
-                        + "   eventodetalle.FECHA_BAUTISMO, "
-                        + "   eventodetalle.FECHA_ENTRADA_CONGREGACION, "
-                        + "   eventodetalle.FECHA_SALIDA_CONGREGACION, "
-                        + "   eventodetalle.FECHA_DEFUNCION, "
-                        + "   eventodetalle.ID_AREA_SERVICIO_EN_IGLESIA, "
-                        + "   eventodetalle.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
-                        + "   eventodetalle.ID_MIEMBROS_ALERGIA, "
-                        + "    eventodetalle.id_user,"
-                        + "    eventodetalle.mes, "
-                        + "    eventodetalle.ano, "
-                        + "    eventodetalle.montoAporte, "
-                        + "    eventodetalle.montoDonacion "
-                        + " FROM "
-                        + "        (SELECT m.*, "
-                        + "            MONTH(rd.fechahora), "
-                        + "            YEAR(rd.fechahora), "
-                        + "            SUM(rd.monto*rd.porcentajeAporte/100) AS montoAporte,"
-                        + "            SUM(rd.monto*(100-rd.porcentajeAporte)/100) AS montoDonacion"
-                        + "         FROM TBL_ENTIDADES m "
-                        + "            LEFT JOIN (SELECT * FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = 1) rd"
-                        + "            ON m.id = rd.ID_ENTIDAD "
-                        + "            group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida, "
-                        + "             m.ID_ENTIDAD_PAGANTE_APORTES, "
-                        + "             m.IS_MIEMBRO_ACTIVO, "
-                        + "             m.ID_FORMA_DE_PAGO_PREFERIDA, "
-                        + "             m.APORTE_MENSUAL, "
-                        + "             m.FECHA_NACIMIENTO, "
-                        + "             m.FECHA_BAUTISMO, "
-                        + "             m.FECHA_ENTRADA_CONGREGACION, "
-                        + "             m.FECHA_SALIDA_CONGREGACION, "
-                        + "             m.FECHA_DEFUNCION, "
-                        + "             m.ID_AREA_SERVICIO_EN_IGLESIA, "
-                        + "             m.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
-                        + "             m.ID_MIEMBROS_ALERGIA) eventodetalle, "
-                        + "        (SELECT m.*, "
-                        + "             MONTH(p.fechahora), "
-                        + "             YEAR(p.fechahora), "
-                        + "             COALESCE(SUM(p.monto),0)*p.porcentajeAporte/100) AS montoAporte, "
-                        + "             COALESCE(SUM(p.monto),0)*(100-p.porcentajeAporte)/100) AS montoDonacion, "
-                        + "             FROM TBL_ENTIDADES m "
-                        + "             LEFT JOIN (SELECT * FROM MG.TBL_TRANSFERENCIAS WHERE ID_EVENTO_TIPO = 1) p ON m.id = p.ID_ENTIDAD "
-                        + "             group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida, "
-                        + "             m.IS_MIEMBRO_ACTIVO, "
-                        + "             m.ID_ENTIDAD_PAGANTE_APORTES, "
-                        + "             m.ID_FORMA_DE_PAGO_PREFERIDA, "
-                        + "             m.APORTE_MENSUAL, "
-                        + "             m.FECHA_NACIMIENTO, "
-                        + "             m.FECHA_BAUTISMO, "
-                        + "             m.FECHA_ENTRADA_CONGREGACION, "
-                        + "             m.FECHA_SALIDA_CONGREGACION, "
-                        + "             m.FECHA_DEFUNCION, "
-                        + "             m.ID_AREA_SERVICIO_EN_IGLESIA, "
-                        + "             m.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
-                        + "             m.ID_MIEMBROS_ALERGIA) transferencias, "
-                        + "        (SELECT m.*, "
-                        + "             MONTH(p.fechahora), "
-                        + "             YEAR(p.fechahora), "
-                        + "             COALESCE(SUM(p.monto),0)*p.porcentajeAporte/100) AS montoAporte, "
-                        + "             COALESCE(SUM(p.monto),0)*(100-p.porcentajeAporte)/100) AS montoDonacion, "
-                        + "             FROM TBL_ENTIDADES m "
-                        + "             LEFT JOIN (SELECT * FROM MG.TBL_RECIBOS WHERE ID_EVENTO_TIPO = 1) p ON m.id = p.ID_ENTIDAD "
-                        + "             group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida, "
-                        + "             m.IS_MIEMBRO_ACTIVO, "
-                        + "             m.ID_FORMA_DE_PAGO_PREFERIDA, "
-                        + "             m.APORTE_MENSUAL, "
-                        + "             m.ID_ENTIDAD_PAGANTE_APORTES, "
-                        + "             m.FECHA_NACIMIENTO, "
-                        + "             m.FECHA_BAUTISMO, "
-                        + "             m.FECHA_ENTRADA_CONGREGACION, "
-                        + "             m.FECHA_SALIDA_CONGREGACION, "
-                        + "             m.FECHA_DEFUNCION, "
-                        + "             m.ID_AREA_SERVICIO_EN_IGLESIA, "
-                        + "             m.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
-                        + "             m.ID_MIEMBROS_ALERGIA) recibos "
-                        + "             WHERE eventodetalle.id = transferencias.id AND eventodetalle.id = recibos.id AND (eventodetalle.monto - transferencias.monto - recibos.monto) > 0 "
-                        + "   ORDER BY eventodetalle.ctacte");*/
+                 query = entityManager.createNativeQuery("SELECT eventodetalle.id, "
+                 + " eventodetalle.nombres, "
+                 + "    eventodetalle.apellidos, "
+                 + "    eventodetalle.RAZON_SOCIAL, "
+                 + "    eventodetalle.RUC_SIN_DV, "
+                 + "    eventodetalle.ctacte, "
+                 + "    eventodetalle.domicilio, "
+                 + "    eventodetalle.box, "
+                 + "    eventodetalle.id_forma_de_pago_preferida, "
+                 + "   eventodetalle.IS_MIEMBRO_ACTIVO, "
+                 + "   eventodetalle.ID_FORMA_DE_PAGO_PREFERIDA, "
+                 + "   eventodetalle.APORTE_MENSUAL, "
+                 + "   eventodetalle.ID_ENTIDAD_PAGANTE_APORTES, "
+                 + "   eventodetalle.FECHA_NACIMIENTO, "
+                 + "   eventodetalle.FECHA_BAUTISMO, "
+                 + "   eventodetalle.FECHA_ENTRADA_CONGREGACION, "
+                 + "   eventodetalle.FECHA_SALIDA_CONGREGACION, "
+                 + "   eventodetalle.FECHA_DEFUNCION, "
+                 + "   eventodetalle.ID_AREA_SERVICIO_EN_IGLESIA, "
+                 + "   eventodetalle.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
+                 + "   eventodetalle.ID_MIEMBROS_ALERGIA, "
+                 + "    eventodetalle.id_user,"
+                 + "    eventodetalle.mes, "
+                 + "    eventodetalle.ano, "
+                 + "    eventodetalle.montoAporte, "
+                 + "    eventodetalle.montoDonacion "
+                 + " FROM "
+                 + "        (SELECT m.*, "
+                 + "            MONTH(rd.fechahora), "
+                 + "            YEAR(rd.fechahora), "
+                 + "            SUM(rd.monto*rd.porcentajeAporte/100) AS montoAporte,"
+                 + "            SUM(rd.monto*(100-rd.porcentajeAporte)/100) AS montoDonacion"
+                 + "         FROM TBL_ENTIDADES m "
+                 + "            LEFT JOIN (SELECT * FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = 1) rd"
+                 + "            ON m.id = rd.ID_ENTIDAD "
+                 + "            group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida, "
+                 + "             m.ID_ENTIDAD_PAGANTE_APORTES, "
+                 + "             m.IS_MIEMBRO_ACTIVO, "
+                 + "             m.ID_FORMA_DE_PAGO_PREFERIDA, "
+                 + "             m.APORTE_MENSUAL, "
+                 + "             m.FECHA_NACIMIENTO, "
+                 + "             m.FECHA_BAUTISMO, "
+                 + "             m.FECHA_ENTRADA_CONGREGACION, "
+                 + "             m.FECHA_SALIDA_CONGREGACION, "
+                 + "             m.FECHA_DEFUNCION, "
+                 + "             m.ID_AREA_SERVICIO_EN_IGLESIA, "
+                 + "             m.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
+                 + "             m.ID_MIEMBROS_ALERGIA) eventodetalle, "
+                 + "        (SELECT m.*, "
+                 + "             MONTH(p.fechahora), "
+                 + "             YEAR(p.fechahora), "
+                 + "             COALESCE(SUM(p.monto),0)*p.porcentajeAporte/100) AS montoAporte, "
+                 + "             COALESCE(SUM(p.monto),0)*(100-p.porcentajeAporte)/100) AS montoDonacion, "
+                 + "             FROM TBL_ENTIDADES m "
+                 + "             LEFT JOIN (SELECT * FROM MG.TBL_TRANSFERENCIAS WHERE ID_EVENTO_TIPO = 1) p ON m.id = p.ID_ENTIDAD "
+                 + "             group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida, "
+                 + "             m.IS_MIEMBRO_ACTIVO, "
+                 + "             m.ID_ENTIDAD_PAGANTE_APORTES, "
+                 + "             m.ID_FORMA_DE_PAGO_PREFERIDA, "
+                 + "             m.APORTE_MENSUAL, "
+                 + "             m.FECHA_NACIMIENTO, "
+                 + "             m.FECHA_BAUTISMO, "
+                 + "             m.FECHA_ENTRADA_CONGREGACION, "
+                 + "             m.FECHA_SALIDA_CONGREGACION, "
+                 + "             m.FECHA_DEFUNCION, "
+                 + "             m.ID_AREA_SERVICIO_EN_IGLESIA, "
+                 + "             m.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
+                 + "             m.ID_MIEMBROS_ALERGIA) transferencias, "
+                 + "        (SELECT m.*, "
+                 + "             MONTH(p.fechahora), "
+                 + "             YEAR(p.fechahora), "
+                 + "             COALESCE(SUM(p.monto),0)*p.porcentajeAporte/100) AS montoAporte, "
+                 + "             COALESCE(SUM(p.monto),0)*(100-p.porcentajeAporte)/100) AS montoDonacion, "
+                 + "             FROM TBL_ENTIDADES m "
+                 + "             LEFT JOIN (SELECT * FROM MG.TBL_RECIBOS WHERE ID_EVENTO_TIPO = 1) p ON m.id = p.ID_ENTIDAD "
+                 + "             group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida, "
+                 + "             m.IS_MIEMBRO_ACTIVO, "
+                 + "             m.ID_FORMA_DE_PAGO_PREFERIDA, "
+                 + "             m.APORTE_MENSUAL, "
+                 + "             m.ID_ENTIDAD_PAGANTE_APORTES, "
+                 + "             m.FECHA_NACIMIENTO, "
+                 + "             m.FECHA_BAUTISMO, "
+                 + "             m.FECHA_ENTRADA_CONGREGACION, "
+                 + "             m.FECHA_SALIDA_CONGREGACION, "
+                 + "             m.FECHA_DEFUNCION, "
+                 + "             m.ID_AREA_SERVICIO_EN_IGLESIA, "
+                 + "             m.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
+                 + "             m.ID_MIEMBROS_ALERGIA) recibos "
+                 + "             WHERE eventodetalle.id = transferencias.id AND eventodetalle.id = recibos.id AND (eventodetalle.monto - transferencias.monto - recibos.monto) > 0 "
+                 + "   ORDER BY eventodetalle.ctacte");*/
 
                 query = entityManager.createNativeQuery("SELECT eventodetalle.id,"
                         + "                             eventodetalle.ctacte,"
@@ -480,8 +480,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private java.util.List<com.parah.mg.domain.models.PagosMensualesPendientes> list;
-    private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
-    private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
+    private java.util.List<com.parah.mg.domain.eventos.TblEventoTipos> listEventoTipos;
+    private java.util.List<com.parah.mg.domain.eventos.TblEventos> listEventos;
     private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;

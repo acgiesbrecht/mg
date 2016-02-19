@@ -5,7 +5,7 @@
  */
 package com.parah.mg.domain.models;
 
-import com.parah.mg.domain.TblEntidades;
+import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;

@@ -6,7 +6,7 @@
 package com.parah.mg.frames.operaciones;
 
 import com.parah.mg.domain.models.PagosRealizados;
-import com.parah.mg.domain.TblEntidades;
+import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -127,7 +127,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idMiembro}"));
         columnBinding.setColumnName("Miembro");
-        columnBinding.setColumnClass(com.parah.mg.domain.TblEntidades.class);
+        columnBinding.setColumnClass(com.parah.mg.domain.miembros.TblEntidades.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${razonSocial}"));
         columnBinding.setColumnName("Razon Social");
@@ -342,7 +342,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
     private com.parah.mg.utils.FacturaNroTableCellRenderer facturaNroTableCellRenderer1;
     private javax.swing.JButton imprimirButton;
     private java.util.List<com.parah.mg.domain.TblFacturas> list;
-    private java.util.List<com.parah.mg.domain.TblEntidades> listEntidades;
+    private java.util.List<com.parah.mg.domain.miembros.TblEntidades> listEntidades;
     private java.util.List<com.parah.mg.domain.TblTimbrados> listTimbrados;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;

@@ -8,7 +8,7 @@ package com.parah.mg.frames.admin;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
-import com.parah.mg.domain.TblEntidades;
+import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.Color;
@@ -162,7 +162,7 @@ public class FrameRecibosAdmin extends JInternalFrame {
         columnBinding.setColumnClass(java.util.Date.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
         columnBinding.setColumnName("Razon Social");
-        columnBinding.setColumnClass(com.parah.mg.domain.TblEntidades.class);
+        columnBinding.setColumnClass(com.parah.mg.domain.miembros.TblEntidades.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${concepto}"));
         columnBinding.setColumnName("Concepto");
@@ -679,7 +679,7 @@ public class FrameRecibosAdmin extends JInternalFrame {
     private javax.swing.JLabel idMiembroLabel2;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private java.util.List<com.parah.mg.domain.TblRecibos> list;
-    private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
+    private java.util.List<com.parah.mg.domain.eventos.TblEventos> listEventos;
     private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;

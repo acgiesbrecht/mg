@@ -5,7 +5,7 @@
  */
 package com.parah.mg.utils;
 
-import com.parah.mg.domain.TblEntidades;
+import com.parah.mg.domain.miembros.TblEntidades;
 import javax.persistence.EntityManager;
 import org.jdesktop.beansbinding.Converter;
 

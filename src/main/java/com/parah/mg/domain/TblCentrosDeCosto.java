@@ -8,10 +8,9 @@ package com.parah.mg.domain;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -24,39 +23,38 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author adriang
+ * @author Adrian Giesbrecht
  */
 @Entity
-@Table(name = "TBL_AREAS_SERVICIO_EN_IGLESIA")
+@Table(name = "TBL_CENTROS_DE_COSTO")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblAreasServicioEnIglesia.findAll", query = "SELECT t FROM TblAreasServicioEnIglesia t"),
-    @NamedQuery(name = "TblAreasServicioEnIglesia.findById", query = "SELECT t FROM TblAreasServicioEnIglesia t WHERE t.id = :id"),
-    @NamedQuery(name = "TblAreasServicioEnIglesia.findByDescripcion", query = "SELECT t FROM TblAreasServicioEnIglesia t WHERE t.descripcion = :descripcion")})
-public class TblAreasServicioEnIglesia implements Serializable {
-
+    @NamedQuery(name = "TblCentrosDeCosto.findAll", query = "SELECT t FROM TblCentrosDeCosto t"),
+    @NamedQuery(name = "TblCentrosDeCosto.findById", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.id = :id"),
+    @NamedQuery(name = "TblCentrosDeCosto.findByDescripcion", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.descripcion = :descripcion")})
+public class TblCentrosDeCosto implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 255)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(mappedBy = "idAreaServicioEnIglesia")
-    private List<TblEntidades> tblEntidadesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCosto")
+    private List<TblTransacciones> tblTransaccionesList;
 
-    public TblAreasServicioEnIglesia() {
+    public TblCentrosDeCosto() {
     }
 
-    public TblAreasServicioEnIglesia(Integer id) {
+    public TblCentrosDeCosto(Integer id) {
         this.id = id;
     }
 
-    public TblAreasServicioEnIglesia(Integer id, String descripcion) {
+    public TblCentrosDeCosto(Integer id, String descripcion) {
         this.id = id;
         this.descripcion = descripcion;
     }
@@ -78,12 +76,12 @@ public class TblAreasServicioEnIglesia implements Serializable {
     }
 
     @XmlTransient
-    public List<TblEntidades> getTblEntidadesList() {
-        return tblEntidadesList;
+    public List<TblTransacciones> getTblTransaccionesList() {
+        return tblTransaccionesList;
     }
 
-    public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
-        this.tblEntidadesList = tblEntidadesList;
+    public void setTblTransaccionesList(List<TblTransacciones> tblTransaccionesList) {
+        this.tblTransaccionesList = tblTransaccionesList;
     }
 
     @Override
@@ -96,10 +94,10 @@ public class TblAreasServicioEnIglesia implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblAreasServicioEnIglesia)) {
+        if (!(object instanceof TblCentrosDeCosto)) {
             return false;
         }
-        TblAreasServicioEnIglesia other = (TblAreasServicioEnIglesia) object;
+        TblCentrosDeCosto other = (TblCentrosDeCosto) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -108,7 +106,7 @@ public class TblAreasServicioEnIglesia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.TblAreasServicioEnIglesia[ id=" + id + " ]";
+        return "com.parah.mg.domain.TblCentrosDeCosto[ id=" + id + " ]";
     }
 
 }

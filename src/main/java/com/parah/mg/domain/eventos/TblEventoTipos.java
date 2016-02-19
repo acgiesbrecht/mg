@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.parah.mg.domain;
+package com.parah.mg.domain.eventos;
 
+import com.parah.mg.domain.TblRecibos;
+import com.parah.mg.domain.TblTransferencias;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -27,18 +28,18 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author adriang
  */
 @Entity
-@Table(name = "TBL_MIEMBROS_RELACIONES_TIPOS")
+@Table(name = "TBL_EVENTO_TIPOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblMiembrosRelacionesTipos.findAll", query = "SELECT t FROM TblMiembrosRelacionesTipos t"),
-    @NamedQuery(name = "TblMiembrosRelacionesTipos.findById", query = "SELECT t FROM TblMiembrosRelacionesTipos t WHERE t.id = :id"),
-    @NamedQuery(name = "TblMiembrosRelacionesTipos.findByDescripcion", query = "SELECT t FROM TblMiembrosRelacionesTipos t WHERE t.descripcion = :descripcion")})
-public class TblMiembrosRelacionesTipos implements Serializable {
+    @NamedQuery(name = "TblEventoTipos.findAll", query = "SELECT t FROM TblEventoTipos t"),
+    @NamedQuery(name = "TblEventoTipos.findById", query = "SELECT t FROM TblEventoTipos t WHERE t.id = :id"),
+    @NamedQuery(name = "TblEventoTipos.findByDescripcion", query = "SELECT t FROM TblEventoTipos t WHERE t.descripcion = :descripcion")})
+public class TblEventoTipos implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
@@ -46,17 +47,21 @@ public class TblMiembrosRelacionesTipos implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(mappedBy = "idMiembrosRelacionesTipo")
-    private List<TblMiembrosRelaciones> tblMiembrosRelacionesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEventoTipo")
+    private List<TblRecibos> tblRecibosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEventoTipo")
+    private List<TblEventos> tblEventosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEventoTipo")
+    private List<TblTransferencias> tblTransferenciasList;
 
-    public TblMiembrosRelacionesTipos() {
+    public TblEventoTipos() {
     }
 
-    public TblMiembrosRelacionesTipos(Integer id) {
+    public TblEventoTipos(Integer id) {
         this.id = id;
     }
 
-    public TblMiembrosRelacionesTipos(Integer id, String descripcion) {
+    public TblEventoTipos(Integer id, String descripcion) {
         this.id = id;
         this.descripcion = descripcion;
     }
@@ -78,12 +83,30 @@ public class TblMiembrosRelacionesTipos implements Serializable {
     }
 
     @XmlTransient
-    public List<TblMiembrosRelaciones> getTblMiembrosRelacionesList() {
-        return tblMiembrosRelacionesList;
+    public List<TblRecibos> getTblRecibosList() {
+        return tblRecibosList;
     }
 
-    public void setTblMiembrosRelacionesList(List<TblMiembrosRelaciones> tblMiembrosRelacionesList) {
-        this.tblMiembrosRelacionesList = tblMiembrosRelacionesList;
+    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
+        this.tblRecibosList = tblRecibosList;
+    }
+
+    @XmlTransient
+    public List<TblEventos> getTblEventosList() {
+        return tblEventosList;
+    }
+
+    public void setTblEventosList(List<TblEventos> tblEventosList) {
+        this.tblEventosList = tblEventosList;
+    }
+
+    @XmlTransient
+    public List<TblTransferencias> getTblTransferenciasList() {
+        return tblTransferenciasList;
+    }
+
+    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
+        this.tblTransferenciasList = tblTransferenciasList;
     }
 
     @Override
@@ -96,10 +119,10 @@ public class TblMiembrosRelacionesTipos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblMiembrosRelacionesTipos)) {
+        if (!(object instanceof TblEventoTipos)) {
             return false;
         }
-        TblMiembrosRelacionesTipos other = (TblMiembrosRelacionesTipos) object;
+        TblEventoTipos other = (TblEventoTipos) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -108,7 +131,7 @@ public class TblMiembrosRelacionesTipos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.TblMiembrosRelacionesTipos[ id=" + id + " ]";
+        return descripcion;
     }
 
 }

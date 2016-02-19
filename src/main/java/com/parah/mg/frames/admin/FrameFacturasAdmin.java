@@ -138,7 +138,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idMiembro}"));
         columnBinding.setColumnName("Miembro");
-        columnBinding.setColumnClass(com.parah.mg.domain.TblEntidades.class);
+        columnBinding.setColumnClass(com.parah.mg.domain.miembros.TblEntidades.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${anulado}"));
         columnBinding.setColumnName("Anulado");
@@ -292,7 +292,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
     private com.parah.mg.utils.FacturaNroTableCellRenderer facturaNroTableCellRenderer1;
     private javax.swing.JButton imprimirButton;
     private java.util.List<com.parah.mg.domain.TblFacturas> list;
-    private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
+    private java.util.List<com.parah.mg.domain.eventos.TblEventoTipos> listEventoTipos;
     private java.util.List<com.parah.mg.domain.TblGrupos> listGrupos;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;

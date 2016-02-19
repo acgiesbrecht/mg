@@ -11,10 +11,10 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblCategoriasArticulos;
-import com.parah.mg.domain.TblEntidades;
-import com.parah.mg.domain.TblEventoCuotas;
-import com.parah.mg.domain.TblEventoDetalle;
-import com.parah.mg.domain.TblEventos;
+import com.parah.mg.domain.miembros.TblEntidades;
+import com.parah.mg.domain.eventos.TblEventoCuotas;
+import com.parah.mg.domain.eventos.TblEventoDetalle;
+import com.parah.mg.domain.eventos.TblEventos;
 import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.models.CuotaModel;
 import com.parah.mg.utils.CurrentUser;
@@ -211,7 +211,7 @@ public class FrameRematesDetalle extends JInternalFrame {
         columnBinding.setColumnClass(java.util.Date.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
         columnBinding.setColumnName("Miembro");
-        columnBinding.setColumnClass(com.parah.mg.domain.TblEntidades.class);
+        columnBinding.setColumnClass(com.parah.mg.domain.miembros.TblEntidades.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCategoriaArticulo}"));
         columnBinding.setColumnName("Categoria");
@@ -949,7 +949,7 @@ public class FrameRematesDetalle extends JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.parah.mg.utils.CategoriasConverter categoriasConverter1;
     private javax.swing.JComboBox cboCategoria;
-    private javax.swing.JComboBox<com.parah.mg.domain.TblEntidades> cboEntidad;
+    private javax.swing.JComboBox<com.parah.mg.domain.miembros.TblEntidades> cboEntidad;
     private javax.swing.JComboBox cboFechaRemate;
     private javax.swing.JComboBox<com.parah.mg.domain.TblFormasDePago> cboFormaDePagoPreferida;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
@@ -974,9 +974,9 @@ public class FrameRematesDetalle extends JInternalFrame {
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalOperaciones;
-    private java.util.List<com.parah.mg.domain.TblEntidades> listEntidades;
-    private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
-    private java.util.List<com.parah.mg.domain.TblEventoDetalle> listEventosDetalle;
+    private java.util.List<com.parah.mg.domain.miembros.TblEntidades> listEntidades;
+    private java.util.List<com.parah.mg.domain.eventos.TblEventos> listEventos;
+    private java.util.List<com.parah.mg.domain.eventos.TblEventoDetalle> listEventosDetalle;
     private java.util.List<com.parah.mg.domain.TblFormasDePago> listFormasDePago;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;

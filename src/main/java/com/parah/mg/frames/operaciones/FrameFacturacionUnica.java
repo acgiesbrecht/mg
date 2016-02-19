@@ -10,7 +10,7 @@ import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblContribuyentes;
-import com.parah.mg.domain.TblEntidades;
+import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -741,7 +741,7 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
     private javax.swing.JLabel lblStatusSET;
     private java.util.List<com.parah.mg.domain.TblFacturas> list;
     private java.util.List listEntidades;
-    private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
+    private java.util.List<com.parah.mg.domain.eventos.TblEventoTipos> listEventoTipos;
     private java.util.List<com.parah.mg.domain.TblGrupos> listGrupos;
     private java.util.List<com.parah.mg.domain.TblTimbrados> listTimbrados;
     private javax.swing.JLabel montoLabel;

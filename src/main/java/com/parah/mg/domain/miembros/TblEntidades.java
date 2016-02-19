@@ -3,8 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.parah.mg.domain;
+package com.parah.mg.domain.miembros;
 
+import com.parah.mg.domain.eventos.TblEventoDetalle;
+import com.parah.mg.domain.TblFacturas;
+import com.parah.mg.domain.TblFormasDePago;
+import com.parah.mg.domain.TblRecibos;
+import com.parah.mg.domain.TblTransferencias;
+import com.parah.mg.domain.TblUsers;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;

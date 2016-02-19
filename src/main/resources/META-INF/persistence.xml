@@ -3,44 +3,45 @@
     <persistence-unit name="mg_PU" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <class>com.parah.mg.domain.TblGrupos</class>
-        <class>com.parah.mg.domain.TblMiembrosFamilias</class>
-        <class>com.parah.mg.domain.TblEventoTipos</class>
         <class>com.parah.mg.domain.TblFacturas</class>
-        <class>com.parah.mg.domain.TblMiembrosRelacionesRoles</class>
         <class>com.parah.mg.domain.TblTransferencias</class>
         <class>com.parah.mg.domain.TblCategoriasTributarias</class>
-        <class>com.parah.mg.domain.TblAreasServicioEnIglesia</class>
-        <class>com.parah.mg.domain.TblEntidades</class>
-        <class>com.parah.mg.domain.TblMiembrosRelacionesTipos</class>
         <class>com.parah.mg.domain.models.PagosRealizados</class>
         <class>com.parah.mg.domain.models.PendientesTotal</class>
         <class>com.parah.mg.domain.models.MiembrosConPagosPendientes</class>
         <class>com.parah.mg.domain.models.Recibo</class>
         <class>com.parah.mg.domain.models.Transferencia</class>
         <class>com.parah.mg.domain.TblUsers</class>
-        <class>com.parah.mg.domain.TblEventos</class>
         <class>com.parah.mg.domain.TblRoles</class>
-        <class>com.parah.mg.domain.TblMiembrosRelaciones</class>
         <class>com.parah.mg.domain.TblIglesia</class>
         <class>com.parah.mg.domain.TblCategoriasArticulos</class>
         <class>com.parah.mg.domain.TblTimbrados</class>
-        <class>com.parah.mg.domain.TblEventoDetalle</class>
-        <class>com.parah.mg.domain.TblMiembrosCategoriasDePago</class>
         <class>com.parah.mg.domain.TblContribuyentes</class>
-        <class>com.parah.mg.domain.TblEventoCuotas</class>
         <class>com.parah.mg.domain.TblFormasDePago</class>
         <class>com.parah.mg.domain.TblRecibos</class>
-        <class>com.parah.mg.domain.TblMiembrosAlergias</class>
-        <class>com.parah.mg.domain.TblRecibos_1</class>
-        <class>com.parah.mg.domain.TblEventos_1</class>
+        <class>com.parah.mg.domain.miembros.TblMiembrosRelaciones</class>
+        <class>com.parah.mg.domain.miembros.TblMiembrosAlergias</class>
+        <class>com.parah.mg.domain.miembros.TblAreasServicioEnIglesia</class>
+        <class>com.parah.mg.domain.miembros.TblMiembrosRelacionesRoles</class>
+        <class>com.parah.mg.domain.miembros.TblMiembrosFamilias</class>
+        <class>com.parah.mg.domain.miembros.TblEntidades</class>
+        <class>com.parah.mg.domain.miembros.TblMiembrosRelacionesTipos</class>
+        <class>com.parah.mg.domain.miembros.TblMiembrosCategoriasDePago</class>
+        <class>com.parah.mg.domain.eventos.TblEventoTipos</class>
+        <class>com.parah.mg.domain.eventos.TblEventoCuotas</class>
+        <class>com.parah.mg.domain.eventos.TblEventos</class>
+        <class>com.parah.mg.domain.eventos.TblEventoDetalle</class>
+        <class>com.parah.mg.domain.TblCentrosDeCosto</class>
+        <class>com.parah.mg.domain.TblFacturasCompras</class>
+        <class>com.parah.mg.domain.TblCuentasContables</class>
+        <class>com.parah.mg.domain.TblRubrosDdjj</class>
+        <class>com.parah.mg.domain.TblTransacciones</class>
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/mgdb;create=true"/>
             <property name="javax.persistence.jdbc.user" value="mg"/>
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
             <property name="javax.persistence.jdbc.password" value="123456"/>
             <property name="eclipselink.jdbc.batch-writing" value="JDBC"/>
-            <property name="eclipselink.logging.level.sql" value="FINE"/>
-            <property name="eclipselink.logging.parameters" value="true"/>
         </properties>
     </persistence-unit>
 </persistence>

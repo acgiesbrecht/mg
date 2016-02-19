@@ -5,6 +5,7 @@
  */
 package com.parah.mg.domain;
 
+import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
