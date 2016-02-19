@@ -5,9 +5,9 @@
  */
 package com.parah.mg.frames.operaciones;
 
-import com.parah.mg.domain.models.PagosRealizados;
-import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.TblFacturas;
+import com.parah.mg.domain.miembros.TblEntidades;
+import com.parah.mg.domain.models.PagosRealizados;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
@@ -281,15 +281,15 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     + " COALESCE(facturas.f_aporte,0) AS F_APORTE,"
                     + " COALESCE(facturas.f_donacion,0) AS F_DONACION"
                     + " FROM TBL_ENTIDADES m"
-                    + "     LEFT JOIN (SELECT m.id, COALESCE(SUM(t.monto*t.porcentaje_aporte/100),0) AS t_aporte,"
-                    + "     COALESCE(SUM(t.monto*(100-t.porcentaje_aporte)/100),0) AS t_donacion"
+                    + "     LEFT JOIN (SELECT m.id, COALESCE(SUM(t.MONTO_APORTE),0) AS t_aporte,"
+                    + "     COALESCE(SUM(t.MONTO_DONACION),0) AS t_donacion"
                     + "     FROM TBL_ENTIDADES m"
                     + "     LEFT JOIN TBL_TRANSFERENCIAS t ON m.id = t.id_entidad "
                     + "     WHERE YEAR(t.fechahora) >= " + ano
                     + "     GROUP BY m.id"
                     + "	) transferencias ON m.id = transferencias.id"
-                    + "     LEFT JOIN (SELECT m.id, COALESCE(SUM(r.monto*r.porcentaje_aporte/100),0) AS r_aporte,"
-                    + "     COALESCE(SUM(r.monto*(100-r.porcentaje_aporte)/100),0) AS r_donacion "
+                    + "     LEFT JOIN (SELECT m.id, COALESCE(SUM(r.MONTO_APORTE),0) AS r_aporte,"
+                    + "     COALESCE(SUM(r.MONTO_DONACION),0) AS r_donacion "
                     + "     FROM TBL_ENTIDADES m"
                     + "     LEFT JOIN TBL_RECIBOS r ON m.id = r.id_entidad "
                     + "     WHERE YEAR(r.fechahora) >= " + ano
@@ -317,7 +317,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     if (m.getRucSinDv() != null) {
                         f.setRuc(m.getRucSinDv());
                     } else {
-                        f.setRuc("999999");
+                        f.setRuc("44444401");
                     }
                     f.setAnulado(false);
                     f.setImporteAporte(pr.getRAporte() + pr.getTAporte() - pr.getFAporte());

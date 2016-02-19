@@ -77,7 +77,7 @@ ORDER BY m.CTACTE, e.FECHA]]>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="22" isBold="true"/>
                 </textElement>
-                <text><![CDATA[Detalle de Colectas]]></text>
+                <text><![CDATA[Detalle de Colectas pendientes de cobro]]></text>
             </staticText>
             <textField pattern="#,##0">
                 <reportElement x="80" y="60" width="400" height="30" uuid="79fbe419-da3e-420c-b64a-a54a1d5d674c"/>

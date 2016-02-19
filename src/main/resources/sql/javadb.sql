@@ -1,6 +1,6 @@
 DROP VIEW MG.RECIBO;
 DROP VIEW MG.TRANSFERENCIA;
-DROP VIEW MG.ENTIDADES_CON_PAGOS_PENDIENTES;
+/*DROP VIEW MG.ENTIDADES_CON_PAGOS_PENDIENTES;*/
 DROP TRIGGER MG.EVENTO_CUOTA_TRIGGER;
 DROP TABLE MG.TBL_RECIBOS;
 DROP TABLE MG.TBL_TRANSFERENCIAS;
@@ -188,8 +188,8 @@ CREATE TABLE MG.TBL_RECIBOS (
     ID INTEGER GENERATED ALWAYS AS IDENTITY NOT NULL,
     FECHAHORA TIMESTAMP NOT NULL,
     CONCEPTO VARCHAR(50),
-    MONTO INTEGER NOT NULL,
-    PORCENTAJE_APORTE INTEGER NOT NULL,
+    MONTO_APORTE INTEGER NOT NULL,
+    MONTO_DONACION INTEGER NOT NULL,
     ID_ENTIDAD INTEGER NOT NULL,
     ID_EVENTO_TIPO INTEGER NOT NULL,
     ID_USER INTEGER NOT NULL,
@@ -218,8 +218,8 @@ CREATE TABLE MG.TBL_TRANSFERENCIAS (
 	ID INTEGER GENERATED ALWAYS AS IDENTITY NOT NULL,
 	FECHAHORA TIMESTAMP NOT NULL,
 	CONCEPTO VARCHAR(50),
-	MONTO INTEGER NOT NULL,
-	PORCENTAJE_APORTE INTEGER NOT NULL,
+	MONTO_APORTE INTEGER NOT NULL,
+        MONTO_DONACION INTEGER NOT NULL,
 	ID_ENTIDAD INTEGER NOT NULL,
         ID_EVENTO_TIPO INTEGER NOT NULL,
         COBRADO BOOLEAN NOT NULL DEFAULT FALSE,
@@ -413,7 +413,7 @@ ALTER TABLE MG.TBL_TRANSFERENCIAS
 	ADD FOREIGN KEY (ID_USER)
 	REFERENCES MG.TBL_USERS (ID);
 
-CREATE VIEW MG.RECIBO AS SELECT p.id, p.fechahora, d.nombres || d.apellidos AS nombre, p.concepto, p.monto FROM TBL_RECIBOS p, TBL_ENTIDADES d WHERE ((p.ID_ENTIDAD = d.id));
+CREATE VIEW MG.RECIBO AS SELECT p.id, p.fechahora, d.nombres || d.apellidos AS nombre, p.concepto, p.monto_aporte + p.monto_donacion AS monto FROM TBL_RECIBOS p, TBL_ENTIDADES d WHERE ((p.ID_ENTIDAD = d.id));
 
 CREATE VIEW MG.TRANSFERENCIA AS
     SELECT t.id,
@@ -426,11 +426,11 @@ CREATE VIEW MG.TRANSFERENCIA AS
         i.domicilio AS c_domicilio,
         d.box AS d_box,
         i.box AS c_box,
-        t.monto,
+        t.monto_aporte + t.monto_donacion AS monto,
         t.concepto
     FROM TBL_TRANSFERENCIAS t, TBL_ENTIDADES d, TBL_IGLESIA i
     WHERE t.ID_ENTIDAD = d.ID;
-
+/*
 CREATE VIEW MG.ENTIDADES_CON_PAGOS_PENDIENTES AS
 SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.box FROM
         (SELECT m.id, m.nombres || ' ' || m.apellidos AS nombre, m.ctacte, m.domicilio, m.box, SUM(rd.monto) AS monto FROM TBL_ENTIDADES m
@@ -480,7 +480,7 @@ SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.bo
                     m.ID_MIEMBROS_ALERGIA) recibos
     WHERE remates.id = transferencias.id AND remates.id = recibos.id AND (remates.monto - transferencias.monto - recibos.monto) > 0
     ORDER BY remates.nombre;
-
+*/
 
 INSERT INTO MG.TBL_FORMAS_DE_PAGO (ID, DESCRIPCION) VALUES (1, 'Transferencia');
 INSERT INTO MG.TBL_FORMAS_DE_PAGO (ID, DESCRIPCION) VALUES (2, 'Efectivo');

@@ -5,9 +5,9 @@
  */
 package com.parah.mg.utils;
 
-import com.parah.mg.domain.miembros.TblEntidades;
-import com.parah.mg.domain.eventos.TblEventoCuotas;
 import com.parah.mg.domain.TblFacturas;
+import com.parah.mg.domain.eventos.TblEventoCuotas;
+import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.models.CuotaModel;
 import java.awt.Component;
 import java.io.IOException;
@@ -33,6 +33,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,8 +44,9 @@ import org.apache.logging.log4j.Logger;
  */
 public class Utils extends Component {
 
-    private static final Utils utils = new Utils();
+    private static final Utils UTILS = new Utils();
     private static final Logger LOGGER = LogManager.getLogger(Utils.class);
+    CurrentUser currentUser = CurrentUser.getInstance();
 
     /* A private Constructor prevents any other
      * class from instantiating.
@@ -54,7 +56,7 @@ public class Utils extends Component {
 
     /* Static 'instance' method */
     public static Utils getInstance() {
-        return utils;
+        return UTILS;
     }
 
     public List<CuotaModel> getCuotas(TblEventoCuotas eventoCuotas, Integer monto) {
@@ -201,6 +203,22 @@ public class Utils extends Component {
         } catch (SQLException | IOException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }
+
+    public void showReport(String reportFile, Map parameters) {
+        try {
+            String url = getPersistenceMap().get("javax.persistence.jdbc.url");
+            String user = getPersistenceMap().get("javax.persistence.jdbc.user");
+            String pass = getPersistenceMap().get("javax.persistence.jdbc.password");
+            parameters.put("user", currentUser.getUser().getNombrecompleto());
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFile + ".jrxml"));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, DriverManager.getConnection(url, user, pass));
+            JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
+            jReportsViewer.setVisible(true);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
 

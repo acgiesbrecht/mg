@@ -38,8 +38,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblTransferencias.findById", query = "SELECT t FROM TblTransferencias t WHERE t.id = :id"),
     @NamedQuery(name = "TblTransferencias.findByFechahora", query = "SELECT t FROM TblTransferencias t WHERE t.fechahora = :fechahora"),
     @NamedQuery(name = "TblTransferencias.findByConcepto", query = "SELECT t FROM TblTransferencias t WHERE t.concepto = :concepto"),
-    @NamedQuery(name = "TblTransferencias.findByMonto", query = "SELECT t FROM TblTransferencias t WHERE t.monto = :monto"),
-    @NamedQuery(name = "TblTransferencias.findByPorcentajeAporte", query = "SELECT t FROM TblTransferencias t WHERE t.porcentajeAporte = :porcentajeAporte"),
     @NamedQuery(name = "TblTransferencias.findByCobrado", query = "SELECT t FROM TblTransferencias t WHERE t.cobrado = :cobrado")})
 public class TblTransferencias implements Serializable {
 
@@ -59,12 +57,12 @@ public class TblTransferencias implements Serializable {
     private String concepto;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "MONTO")
-    private int monto;
+    @Column(name = "MONTO_APORTE")
+    private int montoAporte;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "PORCENTAJE_APORTE")
-    private int porcentajeAporte;
+    @Column(name = "MONTO_DONACION")
+    private int montoDonacion;
     @Basic(optional = false)
     @NotNull
     @Column(name = "COBRADO")
@@ -86,11 +84,11 @@ public class TblTransferencias implements Serializable {
         this.id = id;
     }
 
-    public TblTransferencias(Integer id, Date fechahora, int monto, int porcentajeAporte, Boolean cobrado) {
+    public TblTransferencias(Integer id, Date fechahora, int montoAporte, int montoDonacion, Boolean cobrado) {
         this.id = id;
         this.fechahora = fechahora;
-        this.monto = monto;
-        this.porcentajeAporte = porcentajeAporte;
+        this.montoAporte = montoAporte;
+        this.montoDonacion = montoDonacion;
         this.cobrado = cobrado;
     }
 
@@ -118,20 +116,20 @@ public class TblTransferencias implements Serializable {
         this.concepto = concepto;
     }
 
-    public int getMonto() {
-        return monto;
+    public int getMontoAporte() {
+        return montoAporte;
     }
 
-    public void setMonto(int monto) {
-        this.monto = monto;
+    public void setMontoAporte(int montoAporte) {
+        this.montoAporte = montoAporte;
     }
 
-    public int getPorcentajeAporte() {
-        return porcentajeAporte;
+    public int getMontoDonacion() {
+        return montoDonacion;
     }
 
-    public void setPorcentajeAporte(int porcentajeAporte) {
-        this.porcentajeAporte = porcentajeAporte;
+    public void setMontoDonacion(int montoDonacion) {
+        this.montoDonacion = montoDonacion;
     }
 
     public Boolean getCobrado() {
@@ -189,6 +187,10 @@ public class TblTransferencias implements Serializable {
     @Override
     public String toString() {
         return "com.parah.mg.domain.TblTransferencias[ id=" + id + " ]";
+    }
+
+    public Integer getMontoTotal() {
+        return montoAporte + montoDonacion;
     }
 
 }

@@ -37,9 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblRecibos.findAll", query = "SELECT t FROM TblRecibos t"),
     @NamedQuery(name = "TblRecibos.findById", query = "SELECT t FROM TblRecibos t WHERE t.id = :id"),
     @NamedQuery(name = "TblRecibos.findByFechahora", query = "SELECT t FROM TblRecibos t WHERE t.fechahora = :fechahora"),
-    @NamedQuery(name = "TblRecibos.findByConcepto", query = "SELECT t FROM TblRecibos t WHERE t.concepto = :concepto"),
-    @NamedQuery(name = "TblRecibos.findByMonto", query = "SELECT t FROM TblRecibos t WHERE t.monto = :monto"),
-    @NamedQuery(name = "TblRecibos.findByPorcentajeAporte", query = "SELECT t FROM TblRecibos t WHERE t.porcentajeAporte = :porcentajeAporte")})
+    @NamedQuery(name = "TblRecibos.findByConcepto", query = "SELECT t FROM TblRecibos t WHERE t.concepto = :concepto")})
 public class TblRecibos implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -58,12 +56,12 @@ public class TblRecibos implements Serializable {
     private String concepto;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "MONTO")
-    private int monto;
+    @Column(name = "MONTO_APORTE")
+    private int montoAporte;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "PORCENTAJE_APORTE")
-    private int porcentajeAporte;
+    @Column(name = "MONTO_DONACION")
+    private int montoDonacion;
     @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEntidades idEntidad;
@@ -81,11 +79,11 @@ public class TblRecibos implements Serializable {
         this.id = id;
     }
 
-    public TblRecibos(Integer id, Date fechahora, int monto, int porcentajeAporte) {
+    public TblRecibos(Integer id, Date fechahora, int montoAporte, int montoDonacion) {
         this.id = id;
         this.fechahora = fechahora;
-        this.monto = monto;
-        this.porcentajeAporte = porcentajeAporte;
+        this.montoAporte = montoAporte;
+        this.montoDonacion = montoDonacion;
     }
 
     public Integer getId() {
@@ -112,20 +110,20 @@ public class TblRecibos implements Serializable {
         this.concepto = concepto;
     }
 
-    public int getMonto() {
-        return monto;
+    public int getMontoAporte() {
+        return montoAporte;
     }
 
-    public void setMonto(int monto) {
-        this.monto = monto;
+    public void setMontoAporte(int montoAporte) {
+        this.montoAporte = montoAporte;
     }
 
-    public int getPorcentajeAporte() {
-        return porcentajeAporte;
+    public int getMontoDonacion() {
+        return montoDonacion;
     }
 
-    public void setPorcentajeAporte(int porcentajeAporte) {
-        this.porcentajeAporte = porcentajeAporte;
+    public void setMontoDonacion(int montoDonacion) {
+        this.montoDonacion = montoDonacion;
     }
 
     public TblEntidades getIdEntidad() {
@@ -175,6 +173,10 @@ public class TblRecibos implements Serializable {
     @Override
     public String toString() {
         return "com.parah.mg.domain.TblRecibos[ id=" + id + " ]";
+    }
+
+    public Integer getMontoTotal() {
+        return montoAporte + montoDonacion;
     }
 
 }
