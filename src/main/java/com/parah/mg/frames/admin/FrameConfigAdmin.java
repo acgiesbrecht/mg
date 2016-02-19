@@ -7,19 +7,12 @@ package com.parah.mg.frames.admin;
 
 import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.utils.Utils;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Arrays;
+import java.io.File;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 
 /**
@@ -36,9 +29,17 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                 true, //closable
                 true, //maximizable
                 true);//iconifiable
+        try {
+            initComponents();
 
-        initComponents();
-
+            File[] files = (new File(getClass().getResource("/sql").toURI())).listFiles();
+            for (File f : files) {
+                cboSqlFiles.addItem(f.getName());
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }
 
     /**
@@ -69,6 +70,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
         txtFacturaY = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         cmdFacturaPrintTest = new javax.swing.JButton();
+        cboSqlFiles = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -162,7 +164,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
         cboModoImpresion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Normal", "Triplicado" }));
 
         cmdReset.setBackground(new java.awt.Color(255, 102, 102));
-        cmdReset.setText("Resetear toda la base de datos. OJO: Esto borrará todos los datos existentes!!!");
+        cmdReset.setText("Actualizar Base");
         cmdReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdResetActionPerformed(evt);
@@ -204,10 +206,25 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(txtIP)
+                        .addComponent(txtIP, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
                         .addGap(275, 275, 275))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(cmdFacturaPrintTest, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(txtFacturaY, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jButton2)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jButton1))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel5)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(txtFacturaX, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                             .addComponent(panelDatadir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(rbServidor)
@@ -216,26 +233,13 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(cboModoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(cmdReset, javax.swing.GroupLayout.PREFERRED_SIZE, 612, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 13, Short.MAX_VALUE))
+                                .addComponent(cboModoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(cmdFacturaPrintTest, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel6)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtFacturaY, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jButton2)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(jButton1))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel5)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(txtFacturaX, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmdReset, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,9 +258,11 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cboModoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(cmdReset, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmdReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFacturaX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
@@ -266,11 +272,11 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cmdFacturaPrintTest)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap())
+                .addGap(99, 99, 99))
         );
 
         pack();
@@ -340,7 +346,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
 
             int reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar todos los datos y limpiar la base de datos?", title, JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
-                resetDB();
+                Utils.getInstance().executeSQL(cboSqlFiles.getSelectedItem().toString());
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -406,47 +412,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtFacturaYKeyReleased
 
-    void resetDB() {
-        try {
-            Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
-            Boolean error = false;
-            Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
-            List<String> sql = Arrays.asList(IOUtils.toString(getClass().getResourceAsStream("/sql/javadb.sql")).split(";"));
-            Statement stmt = conn.createStatement();
-            for (String s : sql) {
-                try {
-                    stmt.executeUpdate(s);
-                } catch (SQLException exx) {
-                    error = true;
-                    JOptionPane.showMessageDialog(null, exx.getMessage() + String.valueOf(exx.getErrorCode()));
-                    LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), exx);
-                }
-            }
-            /*sql.stream().forEach(s -> {
-             try {
-             stmt.executeUpdate(s);
-             } catch (SQLException ex) {
-             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-             Logger.getLogger(FrameConfig.class.getName()).log(Level.SEVERE, null, ex);
-             error = true;
-             }
-             });*/
-            if (error) {
-                JOptionPane.showMessageDialog(null, "Error. Por favor pruebe otra vez.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Base de Datos restablecida!");
-
-            }
-
-            stmt.close();
-            conn.close();
-        } catch (SQLException | IOException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-
-    }
-
     /**
      * @param args the command line arguments
      */
@@ -491,6 +456,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox cboModoImpresion;
+    private javax.swing.JComboBox cboSqlFiles;
     private javax.swing.JButton cmdDatadir;
     private javax.swing.JButton cmdFacturaPrintTest;
     private javax.swing.JButton cmdReset;

@@ -10,7 +10,13 @@ import com.parah.mg.domain.TblEventoCuotas;
 import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.domain.models.CuotaModel;
 import java.awt.Component;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +33,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -162,6 +169,39 @@ public class Utils extends Component {
 
     public String getNombreCompleto(TblEntidades ent) {
         return ent.getNombres() + " " + ent.getApellidos();
+    }
+
+    public void executeSQL(String filename) {
+        try {
+            Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
+            Boolean error = false;
+            Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
+            String ss = IOUtils.toString(getClass().getResourceAsStream("/sql/" + filename));
+            List<String> sql = Arrays.asList(ss.split(";"));
+            Statement stmt = conn.createStatement();
+            for (String s : sql) {
+                try {
+                    stmt.executeUpdate(s);
+                } catch (SQLException exx) {
+                    error = true;
+                    JOptionPane.showMessageDialog(null, exx.getMessage() + String.valueOf(exx.getErrorCode()));
+                    LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), exx);
+                }
+            }
+
+            if (error) {
+                JOptionPane.showMessageDialog(null, "Error. Por favor pruebe otra vez.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Base de Datos restablecida!");
+
+            }
+
+            stmt.close();
+            conn.close();
+        } catch (SQLException | IOException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }
 
 }
