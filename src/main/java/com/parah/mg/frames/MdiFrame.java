@@ -5,6 +5,7 @@
  */
 package com.parah.mg.frames;
 
+import com.parah.mg.domain.TblDatabaseUpdates;
 import com.parah.mg.domain.TblUsers;
 import com.parah.mg.frames.admin.FrameCategoriasArticulosAdmin;
 import com.parah.mg.frames.admin.FrameConfigAdmin;
@@ -36,16 +37,10 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
-import java.io.IOException;
 import java.io.InputStream;
-import java.sql.CallableStatement;
-import java.sql.Connection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +60,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
-import org.apache.commons.io.IOUtils;
 import org.apache.derby.drda.NetworkServerControl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -98,6 +92,9 @@ public class MdiFrame extends javax.swing.JFrame {
                 NetworkServerControl server = new NetworkServerControl();
                 server.start(null);
             }
+
+            String dataDir = persistenceMap.get("backUpDir");
+            Files.createDirectories(Paths.get(dataDir));
 
             img = ImageIO.read(getClass().getResourceAsStream("/g4204.png"));
 
@@ -172,7 +169,40 @@ public class MdiFrame extends javax.swing.JFrame {
             try {
                 Object o = entityManager.createNativeQuery("select count(*) from tbl_users where 1=2").getSingleResult();
             } catch (Exception e) {
-                resetDB();
+                Utils.getInstance().executeSQL("/sql/javadb.sql");
+            }
+
+            Boolean hasBackedUp = false;
+
+            try {
+                Object o = entityManager.createNativeQuery("select count(*) from tbl_database_updates where 1=2").getSingleResult();
+            } catch (Exception e) {
+                if (!hasBackedUp) {
+                    int reply = JOptionPane.showConfirmDialog(null, "Se encuentró una actualización de la base de datos. Se procederá a hacer un BackUp de sus base de datos existente. Desea proceder?", "Seguridad", JOptionPane.YES_NO_OPTION);
+                    if (reply == JOptionPane.YES_OPTION) {
+                        Utils.getInstance().exectueBackUp(persistenceMap.get("backUpDir"));
+                        Utils.getInstance().executeSQL("/sql/javadb_20160224.sql");
+                    } else {
+                        this.clone();
+                    }
+                } else {
+                    Utils.getInstance().executeSQL("/sql/javadb_20160224.sql");
+                }
+            }
+
+            Object o = entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20160219.sql");
+            if (o == null) {
+                if (!hasBackedUp) {
+                    int reply = JOptionPane.showConfirmDialog(null, "Se encuentró una actualización de la base de datos. Se procederá a hacer un BackUp de sus base de datos existente. Desea proceder?", "Seguridad", JOptionPane.YES_NO_OPTION);
+                    if (reply == JOptionPane.YES_OPTION) {
+                        Utils.getInstance().exectueBackUp(persistenceMap.get("backUpDir"));
+                        Utils.getInstance().executeSQL("/sql/javadb_20160219.sql");
+                    } else {
+                        this.clone();
+                    }
+                } else {
+                    Utils.getInstance().executeSQL("/sql/javadb_20160219.sql");
+                }
             }
 
             List<TblUsers> list = entityManager.createQuery("SELECT t FROM TblUsers t").getResultList();
@@ -197,40 +227,6 @@ public class MdiFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
-    }
-
-    void resetDB() {
-        try {
-
-            Boolean error = false;
-            Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
-            List<String> sql = Arrays.asList(IOUtils.toString(getClass().getResourceAsStream("/sql/javadb.sql")).split(";"));
-            Statement stmt = conn.createStatement();
-            for (String s : sql) {
-                try {
-                    stmt.executeUpdate(s);
-                } catch (SQLException exx) {
-                    error = true;
-                    if (exx.getErrorCode() != 30000) {
-                        JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + exx.getMessage());
-                        LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), exx);
-                    }
-                }
-            }
-
-            /*if (error) {
-             JOptionPane.showMessageDialog(null, "Error. Por favor pruebe otra vez.");
-             } else {
-             JOptionPane.showMessageDialog(null, "Base de Datos restablecida!");
-
-             }*/
-            stmt.close();
-            conn.close();
-        } catch (SQLException | IOException ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-
     }
 
     /**
@@ -283,7 +279,7 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuAdGrupos = new javax.swing.JMenuItem();
         mnuAdConfig = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
-        mnuAdConfig1 = new javax.swing.JMenuItem();
+        mnuAdBackUp = new javax.swing.JMenuItem();
 
         jMenu3.setText("jMenu3");
 
@@ -550,13 +546,13 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenu2.add(mnuAdConfig);
         jMenu2.add(jSeparator5);
 
-        mnuAdConfig1.setText("Realizar BackUp");
-        mnuAdConfig1.addActionListener(new java.awt.event.ActionListener() {
+        mnuAdBackUp.setText("Realizar BackUp");
+        mnuAdBackUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuAdConfig1ActionPerformed(evt);
+                mnuAdBackUpActionPerformed(evt);
             }
         });
-        jMenu2.add(mnuAdConfig1);
+        jMenu2.add(mnuAdBackUp);
 
         jMenuBar1.add(jMenu2);
 
@@ -902,7 +898,7 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuInformesCyAActionPerformed
 
-    private void mnuAdConfig1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdConfig1ActionPerformed
+    private void mnuAdBackUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdBackUpActionPerformed
         try {
             JFileChooser chooser = new JFileChooser();
             chooser.setCurrentDirectory(new java.io.File("."));
@@ -911,24 +907,13 @@ public class MdiFrame extends javax.swing.JFrame {
             chooser.setAcceptAllFileFilterUsed(false);
 
             if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-                String backupdirectory = chooser.getSelectedFile().getPath() + "\\BackUp_" + sdf.format(new Date());
-
-                Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
-
-                try (CallableStatement cs = conn.prepareCall("CALL SYSCS_UTIL.SYSCS_BACKUP_DATABASE(?)")) {
-                    cs.setString(1, backupdirectory);
-                    cs.execute();
-                    cs.close();
-                }
-                JOptionPane.showMessageDialog(null, "BackUp guardado con exito en: " + backupdirectory);
+                Utils.getInstance().exectueBackUp(chooser.getSelectedFile().getAbsolutePath());
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
-    }//GEN-LAST:event_mnuAdConfig1ActionPerformed
+    }//GEN-LAST:event_mnuAdBackUpActionPerformed
 
     private void mnuAdInformesTransferenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdInformesTransferenciasActionPerformed
         try {
@@ -1036,9 +1021,9 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
+    private javax.swing.JMenuItem mnuAdBackUp;
     private javax.swing.JMenuItem mnuAdCat;
     private javax.swing.JMenuItem mnuAdConfig;
-    private javax.swing.JMenuItem mnuAdConfig1;
     private javax.swing.JMenuItem mnuAdCuotas;
     private javax.swing.JMenuItem mnuAdEventos;
     private javax.swing.JMenuItem mnuAdFacturas;

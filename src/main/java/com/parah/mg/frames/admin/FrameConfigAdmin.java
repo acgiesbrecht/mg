@@ -8,8 +8,12 @@ package com.parah.mg.frames.admin;
 import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.utils.Utils;
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Date;
-import java.util.List;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -32,10 +36,36 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
         try {
             initComponents();
 
+            final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+
+            if (jarFile.isFile()) {  // Run with JAR file
+                final JarFile jar = new JarFile(jarFile);
+                final Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
+                while (entries.hasMoreElements()) {
+                    final String name = entries.nextElement().getName();
+                    if (name.startsWith("sql/")) { //filter according to the path
+                        cboSqlFiles.addItem("/" + name);
+                    }
+                }
+                jar.close();
+            } else { // Run with IDE
+                final URL url = getClass().getResource("/sql");
+                if (url != null) {
+                    try {
+                        final File apps = new File(url.toURI());
+                        for (File app : apps.listFiles()) {
+                            cboSqlFiles.addItem("/sql/" + app.getName());
+                        }
+                    } catch (URISyntaxException ex) {
+                        // never happens
+                    }
+                }
+            }
+            /*
             File[] files = (new File(getClass().getResource("/sql").toURI())).listFiles();
             for (File f : files) {
                 cboSqlFiles.addItem(f.getName());
-            }
+            }*/
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
