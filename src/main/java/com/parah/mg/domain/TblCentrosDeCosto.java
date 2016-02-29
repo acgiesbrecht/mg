@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -33,9 +35,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblCentrosDeCosto.findById", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.id = :id"),
     @NamedQuery(name = "TblCentrosDeCosto.findByDescripcion", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.descripcion = :descripcion")})
 public class TblCentrosDeCosto implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     @Column(name = "ID")
     private Integer id;
@@ -106,7 +110,7 @@ public class TblCentrosDeCosto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.TblCentrosDeCosto[ id=" + id + " ]";
+        return descripcion;
     }
 
 }

@@ -6,35 +6,36 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Adrian Giesbrecht
  */
 @Entity
-@Table(name = "TBL_RUBROS_DDJJ")
+@Table(name = "TBL_RUBROS_DDJJ", catalog = "", schema = "MG")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblRubrosDdjj.findAll", query = "SELECT t FROM TblRubrosDdjj t"),
     @NamedQuery(name = "TblRubrosDdjj.findById", query = "SELECT t FROM TblRubrosDdjj t WHERE t.id = :id"),
     @NamedQuery(name = "TblRubrosDdjj.findByDescripcion", query = "SELECT t FROM TblRubrosDdjj t WHERE t.descripcion = :descripcion")})
 public class TblRubrosDdjj implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     @Column(name = "ID")
     private Integer id;
@@ -43,8 +44,6 @@ public class TblRubrosDdjj implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(mappedBy = "rubroDdjj")
-    private List<TblCuentasContables> tblCuentasContablesList;
 
     public TblRubrosDdjj() {
     }
@@ -72,15 +71,6 @@ public class TblRubrosDdjj implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    @XmlTransient
-    public List<TblCuentasContables> getTblCuentasContablesList() {
-        return tblCuentasContablesList;
-    }
-
-    public void setTblCuentasContablesList(List<TblCuentasContables> tblCuentasContablesList) {
-        this.tblCuentasContablesList = tblCuentasContablesList;
     }
 
     @Override

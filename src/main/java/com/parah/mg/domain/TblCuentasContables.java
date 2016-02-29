@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblCuentasContables.findById", query = "SELECT t FROM TblCuentasContables t WHERE t.id = :id"),
     @NamedQuery(name = "TblCuentasContables.findByDescripcion", query = "SELECT t FROM TblCuentasContables t WHERE t.descripcion = :descripcion")})
 public class TblCuentasContables implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -46,6 +47,10 @@ public class TblCuentasContables implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "DESCRIPCION")
     private String descripcion;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ES_CUENTA_MADRE")
+    private Boolean esCuentaMadre;
     @OneToMany(mappedBy = "idCuentaMadre")
     private List<TblCuentasContables> tblCuentasContablesList;
     @JoinColumn(name = "ID_CUENTA_MADRE", referencedColumnName = "ID")
@@ -141,7 +146,21 @@ public class TblCuentasContables implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.TblCuentasContables[ id=" + id + " ]";
+        return descripcion;
+    }
+
+    /**
+     * @return the esCuentaMadre
+     */
+    public Boolean getEsCuentaMadre() {
+        return esCuentaMadre;
+    }
+
+    /**
+     * @param esCuentaMadre the esCuentaMadre to set
+     */
+    public void setEsCuentaMadre(Boolean esCuentaMadre) {
+        this.esCuentaMadre = esCuentaMadre;
     }
 
 }

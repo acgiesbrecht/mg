@@ -7,7 +7,9 @@ package com.parah.mg.frames;
 
 import com.parah.mg.domain.TblUsers;
 import com.parah.mg.frames.admin.FrameCategoriasArticulosAdmin;
+import com.parah.mg.frames.admin.FrameCentrosDeCostoAdmin;
 import com.parah.mg.frames.admin.FrameConfigAdmin;
+import com.parah.mg.frames.admin.FrameCuentasContablesAdmin;
 import com.parah.mg.frames.admin.FrameEntidadesAdmin;
 import com.parah.mg.frames.admin.FrameEventoCuotasAdmin;
 import com.parah.mg.frames.admin.FrameEventosAdmin;
@@ -15,6 +17,7 @@ import com.parah.mg.frames.admin.FrameFacturasAdmin;
 import com.parah.mg.frames.admin.FrameGruposAdmin;
 import com.parah.mg.frames.admin.FrameIglesiaAdmin;
 import com.parah.mg.frames.admin.FrameRecibosAdmin;
+import com.parah.mg.frames.admin.FrameRubrosDdjjAdmin;
 import com.parah.mg.frames.admin.FrameTimbradosAdmin;
 import com.parah.mg.frames.admin.FrameTransferenciasAdmin;
 import com.parah.mg.frames.admin.FrameUsuariosAdmin;
@@ -151,6 +154,10 @@ public class MdiFrame extends javax.swing.JFrame {
                             mnuAdTimbrados.setEnabled(currentUser.hasRole(2));
                             mnuAdFacturas.setEnabled(currentUser.hasRole(2));
 
+                            mnuAdCentrosDeCosto.setEnabled(currentUser.hasRole(3));
+                            mnuAdRubrosDdjj.setEnabled(currentUser.hasRole(3));
+                            mnuAdCuentasContables.setEnabled(currentUser.hasRole(3));
+
                             mnuAdIglesia.setEnabled(currentUser.hasRole(3));
                             mnuAdConfig.setEnabled(currentUser.hasRole(3));
                             mnuAdUsuarios.setEnabled(currentUser.hasRole(3));
@@ -278,6 +285,10 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuAdTimbrados = new javax.swing.JMenuItem();
         mnuAdFacturas = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        mnuAdCentrosDeCosto = new javax.swing.JMenuItem();
+        mnuAdRubrosDdjj = new javax.swing.JMenuItem();
+        mnuAdCuentasContables = new javax.swing.JMenuItem();
+        jSeparator7 = new javax.swing.JPopupMenu.Separator();
         mnuAdIglesia = new javax.swing.JMenuItem();
         mnuAdUsuarios = new javax.swing.JMenuItem();
         mnuAdGrupos = new javax.swing.JMenuItem();
@@ -509,6 +520,37 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         jMenu2.add(mnuAdFacturas);
         jMenu2.add(jSeparator1);
+
+        mnuAdCentrosDeCosto.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
+        mnuAdCentrosDeCosto.setText("Administrar Centros de Costo");
+        mnuAdCentrosDeCosto.setEnabled(false);
+        mnuAdCentrosDeCosto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdCentrosDeCostoActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuAdCentrosDeCosto);
+
+        mnuAdRubrosDdjj.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
+        mnuAdRubrosDdjj.setText("Administrar Rubros DDJJ");
+        mnuAdRubrosDdjj.setEnabled(false);
+        mnuAdRubrosDdjj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdRubrosDdjjActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuAdRubrosDdjj);
+
+        mnuAdCuentasContables.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
+        mnuAdCuentasContables.setText("Administrar Plan de Cuentas");
+        mnuAdCuentasContables.setEnabled(false);
+        mnuAdCuentasContables.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdCuentasContablesActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuAdCuentasContables);
+        jMenu2.add(jSeparator7);
 
         mnuAdIglesia.setText("Administrar Iglesia");
         mnuAdIglesia.setEnabled(false);
@@ -977,6 +1019,52 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuOpCobrarTransferenciasAyCActionPerformed
 
+    private void mnuAdCentrosDeCostoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdCentrosDeCostoActionPerformed
+        try {
+            FrameCentrosDeCostoAdmin frame = new FrameCentrosDeCostoAdmin();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_mnuAdCentrosDeCostoActionPerformed
+
+    private void mnuAdRubrosDdjjActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdRubrosDdjjActionPerformed
+        try {
+            FrameRubrosDdjjAdmin frame = new FrameRubrosDdjjAdmin();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_mnuAdRubrosDdjjActionPerformed
+
+    private void mnuAdCuentasContablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdCuentasContablesActionPerformed
+
+        try {
+            FrameCuentasContablesAdmin frame = new FrameCuentasContablesAdmin();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_mnuAdCuentasContablesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1034,11 +1122,14 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
+    private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JMenuItem mnuAdCat;
+    private javax.swing.JMenuItem mnuAdCentrosDeCosto;
     private javax.swing.JMenuItem mnuAdConfig;
     private javax.swing.JMenuItem mnuAdConfig1;
+    private javax.swing.JMenuItem mnuAdCuentasContables;
     private javax.swing.JMenuItem mnuAdCuotas;
     private javax.swing.JMenuItem mnuAdEventos;
     private javax.swing.JMenuItem mnuAdFacturas;
@@ -1048,6 +1139,7 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAdInformesTransferencias;
     private javax.swing.JMenuItem mnuAdMiembros;
     private javax.swing.JMenuItem mnuAdRecibos;
+    private javax.swing.JMenuItem mnuAdRubrosDdjj;
     private javax.swing.JMenuItem mnuAdTimbrados;
     private javax.swing.JMenuItem mnuAdTransf;
     private javax.swing.JMenuItem mnuAdUsuarios;
