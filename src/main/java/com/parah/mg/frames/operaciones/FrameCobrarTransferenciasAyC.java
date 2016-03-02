@@ -5,9 +5,9 @@
  */
 package com.parah.mg.frames.operaciones;
 
-import com.parah.mg.domain.miembros.TblEntidades;
-import com.parah.mg.domain.eventos.TblEventoTipos;
 import com.parah.mg.domain.TblTransferencias;
+import com.parah.mg.domain.eventos.TblEventoTipos;
+import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.models.PagosMensualesPendientes;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -270,8 +270,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                     entityManager.persist(t);
                     t.setIdEntidad(pago.getEntidad());
                     t.setConcepto(((TblEventoTipos) cboEventoTipo.getSelectedItem()).getDescripcion() + " " + pago.getMes().toString() + "/" + pago.getAno().toString());
-                    t.setMonto(pago.getMontoAporte() + pago.getMontoDonacion());
-                    t.setPorcentajeAporte(pago.getMontoAporte() / (pago.getMontoAporte() + pago.getMontoDonacion()) * 100);
+                    t.setMontoAporte(pago.getMontoAporte());
+                    t.setMontoDonacion(pago.getMontoDonacion());
                     t.setCobrado(true);
                     t.setFechahora(new Date());
                     t.setIdEventoTipo((TblEventoTipos) cboEventoTipo.getSelectedItem());
@@ -431,16 +431,16 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                         + "                                 (SELECT m.id, m.ctacte,"
                         + "                                      MONTH(p.fechahora),"
                         + "                                      YEAR(p.fechahora),"
-                        + "                                      COALESCE(SUM(p.monto*p.PORCENTAJE_APORTE/100),0) AS montoAporte,"
-                        + "                                      COALESCE(SUM(p.monto*(100-p.PORCENTAJE_APORTE)/100),0) AS montoDonacion"
+                        + "                                      COALESCE(SUM(p.MONTO_APORTE),0) AS montoAporte,"
+                        + "                                      COALESCE(SUM(p.MONTO_DONACION),0) AS montoDonacion"
                         + "                                      FROM TBL_ENTIDADES m"
                         + "                                      LEFT JOIN (SELECT * FROM MG.TBL_TRANSFERENCIAS WHERE ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + ") p ON m.id = p.ID_ENTIDAD"
                         + "                                      group by m.id, m.ctacte, MONTH(p.FECHAHORA), YEAR(p.FECHAHORA)) transferencias,"
                         + "                                 (SELECT m.id, m.ctacte,"
                         + "                                      MONTH(p.fechahora),"
                         + "                                      YEAR(p.fechahora),"
-                        + "                                      COALESCE(SUM(p.monto*p.PORCENTAJE_APORTE/100),0) AS montoAporte,"
-                        + "                                      COALESCE(SUM(p.monto*(100-p.PORCENTAJE_APORTE)/100),0) AS montoDonacion"
+                        + "                                      COALESCE(SUM(p.MONTO_APORTE),0) AS montoAporte,"
+                        + "                                      COALESCE(SUM(p.MONTO_DONACION),0) AS montoDonacion"
                         + "                                      FROM TBL_ENTIDADES m"
                         + "                                      LEFT JOIN (SELECT * FROM MG.TBL_RECIBOS WHERE ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + ") p ON m.id = p.ID_ENTIDAD"
                         + "                                      group by m.id, m.ctacte, MONTH(p.FECHAHORA), YEAR(p.FECHAHORA)) recibos"

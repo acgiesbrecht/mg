@@ -137,6 +137,8 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         cboEvento = new javax.swing.JComboBox();
         conceptoLabel1 = new javax.swing.JLabel();
         montoField = new javax.swing.JFormattedTextField();
+        montoDonacionField = new javax.swing.JFormattedTextField();
+        montoLabel1 = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
@@ -161,28 +163,41 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
         columnBinding.setColumnName("Razon Social");
         columnBinding.setColumnClass(com.parah.mg.domain.miembros.TblEntidades.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${concepto}"));
         columnBinding.setColumnName("Concepto");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
-        columnBinding.setColumnName("Monto");
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoAporte}"));
+        columnBinding.setColumnName("Monto Aporte");
         columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoDonacion}"));
+        columnBinding.setColumnName("Monto Donacion");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoTotal}"));
+        columnBinding.setColumnName("Monto");
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cobrado}"));
         columnBinding.setColumnName("Cobrado");
         columnBinding.setColumnClass(Boolean.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(1).setCellRenderer(dateTableCellRenderer1);
             masterTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(5).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
         }
 
         fechahoraLabel.setText("Fecha/Hora:");
 
         conceptoLabel.setText("Concepto:");
 
-        montoLabel.setText("Monto:");
+        montoLabel.setText("Monto Aporte:");
 
         idLabel.setDisplayedMnemonic('N');
         idLabel.setLabelFor(idField);
@@ -279,7 +294,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         montoField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
         montoField.setText("0");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.monto}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoAporte}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("value"));
         binding.setConverter(integerLongConverter1);
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
@@ -289,6 +304,22 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         montoField.addMouseListener(formListener);
         montoField.addActionListener(formListener);
 
+        montoDonacionField.setColumns(9);
+        montoDonacionField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        montoDonacionField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        montoDonacionField.setText("0");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoDonacion}"), montoDonacionField, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoDonacionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        montoDonacionField.addFocusListener(formListener);
+        montoDonacionField.addMouseListener(formListener);
+        montoDonacionField.addActionListener(formListener);
+
+        montoLabel1.setText("Monto Donacion:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -297,7 +328,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 406, Short.MAX_VALUE)
                         .addComponent(newButton1)
                         .addGap(18, 18, 18)
                         .addComponent(newButton)
@@ -307,14 +338,22 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
                         .addComponent(refreshButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton))
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+                    .addComponent(masterScrollPane)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(idMiembroLabel)
+                        .addGap(24, 24, 24)
+                        .addComponent(idMiembroLabel1)
+                        .addGap(12, 12, 12)
+                        .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(idMiembroLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cboMiembro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(montoLabel)
-                                .addGap(16, 16, 16))
-                            .addComponent(conceptoLabel, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(14, 14, 14)
+                            .addComponent(montoLabel)
+                            .addComponent(conceptoLabel))
+                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cboEvento, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(conceptoField)
@@ -327,24 +366,18 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(conceptoLabel1)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(montoLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(montoDonacionField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(fechahoraLabel)
                                     .addComponent(idLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(44, 44, 44)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(idMiembroLabel)
-                        .addGap(24, 24, 24)
-                        .addComponent(idMiembroLabel1)
-                        .addGap(12, 12, 12)
-                        .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(idMiembroLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cboMiembro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -382,9 +415,13 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(montoLabel)
                     .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(montoLabel1)
+                    .addComponent(montoDonacionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(chkCobrado)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
@@ -429,6 +466,9 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             else if (evt.getSource() == montoField) {
                 FrameTransferenciasAdmin.this.montoFieldActionPerformed(evt);
             }
+            else if (evt.getSource() == montoDonacionField) {
+                FrameTransferenciasAdmin.this.montoDonacionFieldActionPerformed(evt);
+            }
         }
 
         public void focusGained(java.awt.event.FocusEvent evt) {
@@ -437,6 +477,9 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             }
             else if (evt.getSource() == montoField) {
                 FrameTransferenciasAdmin.this.montoFieldFocusGained(evt);
+            }
+            else if (evt.getSource() == montoDonacionField) {
+                FrameTransferenciasAdmin.this.montoDonacionFieldFocusGained(evt);
             }
         }
 
@@ -464,6 +507,9 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             if (evt.getSource() == montoField) {
                 FrameTransferenciasAdmin.this.montoFieldMouseClicked(evt);
+            }
+            else if (evt.getSource() == montoDonacionField) {
+                FrameTransferenciasAdmin.this.montoDonacionFieldMouseClicked(evt);
             }
         }
 
@@ -700,6 +746,18 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
 
     }//GEN-LAST:event_montoFieldActionPerformed
 
+    private void montoDonacionFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_montoDonacionFieldFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_montoDonacionFieldFocusGained
+
+    private void montoDonacionFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_montoDonacionFieldMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_montoDonacionFieldMouseClicked
+
+    private void montoDonacionFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_montoDonacionFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_montoDonacionFieldActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboEvento;
     private javax.swing.JComboBox cboMiembro;
@@ -724,8 +782,10 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
     private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
+    private javax.swing.JFormattedTextField montoDonacionField;
     private javax.swing.JFormattedTextField montoField;
     private javax.swing.JLabel montoLabel;
+    private javax.swing.JLabel montoLabel1;
     private javax.swing.JButton newButton;
     private javax.swing.JButton newButton1;
     private com.parah.mg.utils.NumberCellRenderer numberCellRenderer1;

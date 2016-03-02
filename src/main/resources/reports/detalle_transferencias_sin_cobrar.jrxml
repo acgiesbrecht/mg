@@ -16,7 +16,8 @@ ORDER BY t.FECHAHORA]]>
     <field name="fechahora" class="java.sql.Timestamp"/>
     <field name="id" class="java.lang.Integer"/>
     <field name="ID_ENTIDAD" class="java.lang.Integer"/>
-    <field name="monto" class="java.lang.Integer"/>
+    <field name="monto_aporte" class="java.lang.Integer"/>
+    <field name="monto_donacion" class="java.lang.Integer"/>
     <field name="id_evento" class="java.lang.Integer"/>
     <field name="descripcion" class="java.lang.String"/>
     <field name="domicilio" class="java.lang.String"/>
@@ -24,7 +25,7 @@ ORDER BY t.FECHAHORA]]>
     <field name="concepto" class="java.lang.String"/>
     <field name="COLUMN_9" class="java.lang.Integer"/>
     <variable name="sum_monto" class="java.lang.Integer" calculation="Sum">
-        <variableExpression><![CDATA[$F{monto}]]></variableExpression>
+        <variableExpression><![CDATA[$F{monto_aporte}+$F{monto_donacion}]]></variableExpression>
     </variable>
     <group name="nombre">
         <groupExpression><![CDATA[$F{NOMBRES}+ " " + $F{APELLIDOS}]]></groupExpression>
@@ -129,7 +130,7 @@ ORDER BY t.FECHAHORA]]>
                     <rightPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
                 </box>
                 <textElement textAlignment="Right" verticalAlignment="Middle"/>
-                <textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{monto_aporte}+$F{monto_donacion}]]></textFieldExpression>
             </textField>
             <textField pattern="dd/MM/yyyy HH:mm">
                 <reportElement x="120" y="0" width="126" height="20" uuid="465b7a77-8b4c-46af-b098-038a15a17c78"/>

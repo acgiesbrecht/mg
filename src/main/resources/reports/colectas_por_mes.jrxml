@@ -94,8 +94,16 @@ ORDER BY m.CTACTE, e.FECHA]]>
             </textField>
         </band>
     </title>
-    <pageHeader>
+<!--    <pageHeader>
             <band height="100" splitType="Stretch">
+
+        </band>
+    </pageHeader>-->
+    <!--<columnHeader>
+        <band height="11" splitType="Stretch"/>
+    </columnHeader>-->
+    <detail>
+        <band height="100" splitType="Stretch">
             <crosstab>
                 <reportElement x="0" y="0" width="554" height="72" uuid="9992c8e8-d4b2-4424-a6dd-f8dcce08d1df"/>
                 <crosstabDataset isDataPreSorted="true">
@@ -227,16 +235,8 @@ ORDER BY m.CTACTE, e.FECHA]]>
                 </crosstabCell>
             </crosstab>
         </band>
-    </pageHeader>
-    <!--<columnHeader>
-        <band height="11" splitType="Stretch"/>
-    </columnHeader>
-    <detail>
-        <band height="100" splitType="Stretch">
-
-        </band>
     </detail>
-    <columnFooter>
+    <!--<columnFooter>
 
     </columnFooter>-->
     <pageFooter>

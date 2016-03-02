@@ -5,16 +5,18 @@
  */
 package com.parah.mg.utils;
 
-import com.parah.mg.domain.miembros.TblEntidades;
-import com.parah.mg.domain.eventos.TblEventoCuotas;
 import com.parah.mg.domain.TblFacturas;
+import com.parah.mg.domain.eventos.TblEventoCuotas;
+import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.models.CuotaModel;
 import java.awt.Component;
 import java.io.IOException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -33,6 +35,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,8 +46,9 @@ import org.apache.logging.log4j.Logger;
  */
 public class Utils extends Component {
 
-    private static final Utils utils = new Utils();
+    private static final Utils UTILS = new Utils();
     private static final Logger LOGGER = LogManager.getLogger(Utils.class);
+    CurrentUser currentUser = CurrentUser.getInstance();
 
     /* A private Constructor prevents any other
      * class from instantiating.
@@ -54,7 +58,7 @@ public class Utils extends Component {
 
     /* Static 'instance' method */
     public static Utils getInstance() {
-        return utils;
+        return UTILS;
     }
 
     public List<CuotaModel> getCuotas(TblEventoCuotas eventoCuotas, Integer monto) {
@@ -112,6 +116,7 @@ public class Utils extends Component {
             persistenceMap.put("javax.persistence.jdbc.user", "mg");
             persistenceMap.put("javax.persistence.jdbc.password", "123456");
             persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
+            persistenceMap.put("backUpDir", Preferences.userRoot().node("MG").get("Datadir", (new JFileChooser()).getFileSystemView().getDefaultDirectory().toString() + "\\javadb") + "\\autoBackUp");
             return persistenceMap;
         } catch (Exception exx) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + exx.getMessage());
@@ -176,12 +181,23 @@ public class Utils extends Component {
             Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
             Boolean error = false;
             Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
-            String ss = IOUtils.toString(getClass().getResourceAsStream("/sql/" + filename));
+            //JOptionPane.showMessageDialog(null, filename);
+            String ss = IOUtils.toString(getClass().getResourceAsStream(filename));
             List<String> sql = Arrays.asList(ss.split(";"));
             Statement stmt = conn.createStatement();
             for (String s : sql) {
                 try {
                     stmt.executeUpdate(s);
+                } catch (SQLException exx) {
+                    error = true;
+                    JOptionPane.showMessageDialog(null, exx.getMessage() + String.valueOf(exx.getErrorCode()));
+                    LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), exx);
+                }
+            }
+
+            if (!filename.equals("/sql/javadb.sql")) {
+                try {
+                    stmt.executeUpdate("INSERT INTO TBL_DATABASE_UPDATES (ID) VALUES('" + filename + "')");
                 } catch (SQLException exx) {
                     error = true;
                     JOptionPane.showMessageDialog(null, exx.getMessage() + String.valueOf(exx.getErrorCode()));
@@ -201,6 +217,41 @@ public class Utils extends Component {
         } catch (SQLException | IOException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }
+
+    public void exectueBackUp(String backupDirectory) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+            String backupfile = backupDirectory + "\\BackUp_" + sdf.format(new Date());
+
+            Connection conn = DriverManager.getConnection(getPersistenceMap().get("javax.persistence.jdbc.url"), getPersistenceMap().get("javax.persistence.jdbc.user"), getPersistenceMap().get("javax.persistence.jdbc.password"));
+
+            try (CallableStatement cs = conn.prepareCall("CALL SYSCS_UTIL.SYSCS_BACKUP_DATABASE(?)")) {
+                cs.setString(1, backupfile);
+                cs.execute();
+                cs.close();
+            }
+            JOptionPane.showMessageDialog(null, "BackUp guardado con exito en: " + backupfile);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }
+
+    public void showReport(String reportFile, Map parameters) {
+        try {
+            String url = getPersistenceMap().get("javax.persistence.jdbc.url");
+            String user = getPersistenceMap().get("javax.persistence.jdbc.user");
+            String pass = getPersistenceMap().get("javax.persistence.jdbc.password");
+            parameters.put("user", currentUser.getUser().getNombrecompleto());
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFile + ".jrxml"));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, DriverManager.getConnection(url, user, pass));
+            JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
+            jReportsViewer.setVisible(true);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
 
