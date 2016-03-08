@@ -43,7 +43,6 @@ import java.beans.PropertyChangeEvent;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.DriverManager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,11 +57,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
 import org.apache.derby.drda.NetworkServerControl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -161,7 +155,6 @@ public class MdiFrame extends javax.swing.JFrame {
                             mnuAdGrupos.setEnabled(currentUser.hasRole(3));
 
                             mnuAdInformes.setEnabled(currentUser.hasRole(1));
-                            mnuAdInformesTransferencias.setEnabled(currentUser.hasRole(2));
                             mnuInformesCyA.setEnabled(currentUser.hasRole(2));
 
                         }
@@ -266,7 +259,6 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         mnuAdInformes = new javax.swing.JMenuItem();
         mnuInformesCyA = new javax.swing.JMenuItem();
-        mnuAdInformesTransferencias = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mnuAdMiembros = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -419,15 +411,6 @@ public class MdiFrame extends javax.swing.JFrame {
             }
         });
         jMenu4.add(mnuInformesCyA);
-
-        mnuAdInformesTransferencias.setText("Informe Transferencias Pendientes");
-        mnuAdInformesTransferencias.setEnabled(false);
-        mnuAdInformesTransferencias.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuAdInformesTransferenciasActionPerformed(evt);
-            }
-        });
-        jMenu4.add(mnuAdInformesTransferencias);
 
         jMenuBar1.add(jMenu4);
 
@@ -957,23 +940,6 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuAdBackUpActionPerformed
 
-    private void mnuAdInformesTransferenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdInformesTransferenciasActionPerformed
-        try {
-            String url = persistenceMap.get("javax.persistence.jdbc.url");
-            String user = persistenceMap.get("javax.persistence.jdbc.user");
-            String pass = persistenceMap.get("javax.persistence.jdbc.password");
-
-            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/detalle_transferencias_sin_cobrar.jrxml"));
-            Map parameters = new HashMap();
-            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, DriverManager.getConnection(url, user, pass));
-            JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-            jReportsViewer.setVisible(true);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_mnuAdInformesTransferenciasActionPerformed
-
     private void mnuOpCobrarTransferenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpCobrarTransferenciasActionPerformed
         try {
             FrameCobrarTransferencias frame = new FrameCobrarTransferencias();
@@ -1114,7 +1080,6 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAdCat;
     private javax.swing.JMenuItem mnuAdCentrosDeCosto;
     private javax.swing.JMenuItem mnuAdConfig;
-    private javax.swing.JMenuItem mnuAdConfig1;
     private javax.swing.JMenuItem mnuAdCuentasContables;
     private javax.swing.JMenuItem mnuAdCuotas;
     private javax.swing.JMenuItem mnuAdEventos;
@@ -1122,7 +1087,6 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAdGrupos;
     private javax.swing.JMenuItem mnuAdIglesia;
     private javax.swing.JMenuItem mnuAdInformes;
-    private javax.swing.JMenuItem mnuAdInformesTransferencias;
     private javax.swing.JMenuItem mnuAdMiembros;
     private javax.swing.JMenuItem mnuAdRecibos;
     private javax.swing.JMenuItem mnuAdRubrosDdjj;

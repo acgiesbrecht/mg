@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -45,6 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblFacturasCompras.findByAnulado", query = "SELECT t FROM TblFacturasCompras t WHERE t.anulado = :anulado"),
     @NamedQuery(name = "TblFacturasCompras.findByIdUser", query = "SELECT t FROM TblFacturasCompras t WHERE t.idUser = :idUser")})
 public class TblFacturasCompras implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -87,10 +89,9 @@ public class TblFacturasCompras implements Serializable {
     @NotNull
     @Column(name = "ANULADO")
     private Boolean anulado;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_USER")
-    private int idUser;
+    @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblUsers idUser;
     @JoinTable(name = "TBL_FACTURAS_TRANSACCIONES", joinColumns = {
         @JoinColumn(name = "ID_FACTURA", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_TRANSACCION", referencedColumnName = "ID")})
@@ -104,7 +105,7 @@ public class TblFacturasCompras implements Serializable {
         this.id = id;
     }
 
-    public TblFacturasCompras(Integer id, int nro, int nroTimbrado, Date vencimientoTimbrado, Date fechahora, String razonSocial, String ruc, int importe, Boolean anulado, int idUser) {
+    public TblFacturasCompras(Integer id, int nro, int nroTimbrado, Date vencimientoTimbrado, Date fechahora, String razonSocial, String ruc, int importe, Boolean anulado, TblUsers idUser) {
         this.id = id;
         this.nro = nro;
         this.nroTimbrado = nroTimbrado;
@@ -189,11 +190,11 @@ public class TblFacturasCompras implements Serializable {
         this.anulado = anulado;
     }
 
-    public int getIdUser() {
+    public TblUsers getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(TblUsers idUser) {
         this.idUser = idUser;
     }
 

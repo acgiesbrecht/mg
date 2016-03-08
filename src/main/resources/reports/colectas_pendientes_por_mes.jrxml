@@ -115,7 +115,7 @@
                     <rightPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
                 </box>
                 <textElement verticalAlignment="Middle"/>
-                <textFieldExpression><![CDATA[$F{nombres}+ " " + $F{apellidos}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{apellidos} + " " + $F{nombres}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="110" y="0" width="70" height="20" uuid="38526967-f7ac-4e30-a805-ad9fdaac2432"/>

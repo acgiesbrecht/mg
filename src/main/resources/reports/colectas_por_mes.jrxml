@@ -146,7 +146,7 @@ ORDER BY m.CTACTE, e.FECHA]]>
                 </rowGroup>
                 <rowGroup name="APELLIDOS1" width="104">
                     <bucket class="java.lang.String">
-                        <bucketExpression><![CDATA[$F{NOMBRES} + " " + $F{APELLIDOS}]]></bucketExpression>
+                        <bucketExpression><![CDATA[$F{APELLIDOS} + " " + $F{NOMBRES}]]></bucketExpression>
                     </bucket>
                     <crosstabRowHeader>
                         <cellContents mode="Opaque" style="Crosstab_CH">

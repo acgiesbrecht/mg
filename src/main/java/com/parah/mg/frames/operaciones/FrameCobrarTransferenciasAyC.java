@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.Beans;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +106,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         refreshButton = new javax.swing.JButton();
         cboEventoTipo = new javax.swing.JComboBox();
         descripcionLabel3 = new javax.swing.JLabel();
+        cboMarcarSeleccionados = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -138,7 +139,6 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${mes}"));
         columnBinding.setColumnName("Mes");
-        columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${ano}"));
         columnBinding.setColumnName("Año");
@@ -175,6 +175,9 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
 
         descripcionLabel3.setText("Tipo de Evento:");
 
+        cboMarcarSeleccionados.setText("Marcar como cobrado a las filas seleccionadas");
+        cboMarcarSeleccionados.addActionListener(formListener);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -183,7 +186,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(cboMarcarSeleccionados)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(saveButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(refreshButton))
@@ -191,7 +195,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(descripcionLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cboEventoTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(cboEventoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -205,11 +210,12 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                     .addComponent(descripcionLabel3)
                     .addComponent(cboEventoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 585, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
-                    .addComponent(refreshButton))
+                    .addComponent(refreshButton)
+                    .addComponent(cboMarcarSeleccionados))
                 .addContainerGap())
         );
 
@@ -229,6 +235,9 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
             }
             else if (evt.getSource() == cboEventoTipo) {
                 FrameCobrarTransferenciasAyC.this.cboEventoTipoActionPerformed(evt);
+            }
+            else if (evt.getSource() == cboMarcarSeleccionados) {
+                FrameCobrarTransferenciasAyC.this.cboMarcarSeleccionadosActionPerformed(evt);
             }
         }
 
@@ -273,7 +282,11 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                     t.setMontoAporte(pago.getMontoAporte());
                     t.setMontoDonacion(pago.getMontoDonacion());
                     t.setCobrado(true);
-                    t.setFechahora(new Date());
+                    Calendar c = Calendar.getInstance();
+                    c.set(Calendar.MONTH, pago.getMes());
+                    c.set(Calendar.YEAR, pago.getAno());
+                    c.getActualMaximum(Calendar.DAY_OF_MONTH);
+                    t.setFechahora(c.getTime());
                     t.setIdEventoTipo((TblEventoTipos) cboEventoTipo.getSelectedItem());
                     t.setIdUser(currentUser.getUser());
                 }
@@ -299,6 +312,19 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cboEventoTipoActionPerformed
+
+    private void cboMarcarSeleccionadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMarcarSeleccionadosActionPerformed
+        try {
+            int[] selectedRows = masterTable.getSelectedRows();
+            for (int i = 0; i < selectedRows.length; i++) {
+                //list.get(i).setCobrado(true);
+                masterTable.setValueAt(true, selectedRows[i], 5);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_cboMarcarSeleccionadosActionPerformed
 
     void refresh() {
         try {
@@ -420,25 +446,25 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                         + "                             eventodetalle.montoDonacion - transferencias.montoDonacion - recibos.montoDonacion"
                         + "                          FROM"
                         + "                                 (SELECT m.id, m.ctacte,"
-                        + "                                     MONTH(rd.fechahora) AS MES,"
-                        + "                                     YEAR(rd.fechahora) AS ANO,"
+                        + "                                     MONTH(rd.FECHA) AS MES,"
+                        + "                                     YEAR(rd.FECHA) AS ANO,"
                         + "                                     SUM(rd.monto*rd.PORCENTAJE_APORTE/100) AS montoAporte,"
                         + "                                     SUM(rd.monto*(100-rd.PORCENTAJE_APORTE)/100) AS montoDonacion"
                         + "                                  FROM TBL_ENTIDADES m"
                         + "                                     LEFT JOIN (SELECT ed.*, ev.* FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + ") rd"
                         + "                                     ON m.id = rd.ID_ENTIDAD"
-                        + "                                     group by m.id, m.ctacte, MONTH(rd.FECHAHORA), YEAR(rd.FECHAHORA)) eventodetalle,"
+                        + "                                     group by m.id, m.ctacte, MONTH(rd.FECHA), YEAR(rd.FECHA)) eventodetalle,"
                         + "                                 (SELECT m.id, m.ctacte,"
-                        + "                                      MONTH(p.fechahora),"
-                        + "                                      YEAR(p.fechahora),"
+                        + "                                      MONTH(p.fechahora) AS MES,"
+                        + "                                      YEAR(p.fechahora) AS ANO,"
                         + "                                      COALESCE(SUM(p.MONTO_APORTE),0) AS montoAporte,"
                         + "                                      COALESCE(SUM(p.MONTO_DONACION),0) AS montoDonacion"
                         + "                                      FROM TBL_ENTIDADES m"
                         + "                                      LEFT JOIN (SELECT * FROM MG.TBL_TRANSFERENCIAS WHERE ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + ") p ON m.id = p.ID_ENTIDAD"
                         + "                                      group by m.id, m.ctacte, MONTH(p.FECHAHORA), YEAR(p.FECHAHORA)) transferencias,"
                         + "                                 (SELECT m.id, m.ctacte,"
-                        + "                                      MONTH(p.fechahora),"
-                        + "                                      YEAR(p.fechahora),"
+                        + "                                      MONTH(p.fechahora) AS MES,"
+                        + "                                      YEAR(p.fechahora) AS ANO,"
                         + "                                      COALESCE(SUM(p.MONTO_APORTE),0) AS montoAporte,"
                         + "                                      COALESCE(SUM(p.MONTO_DONACION),0) AS montoDonacion"
                         + "                                      FROM TBL_ENTIDADES m"
@@ -473,6 +499,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboEventoTipo;
+    private javax.swing.JButton cboMarcarSeleccionados;
     private com.parah.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;

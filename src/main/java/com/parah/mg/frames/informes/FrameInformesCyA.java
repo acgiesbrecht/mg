@@ -48,7 +48,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
      */
     public FrameInformesCyA() {
 
-        super("Informes Remates",
+        super("Informes Aportes y Colectas",
                 true, //resizable
                 true, //closable
                 true, //maximizable

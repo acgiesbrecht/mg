@@ -54,21 +54,6 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblContribuyentes&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="com.parah.mg.utils.DateToStringConverter" name="dateToStringConverter1">
-    </Component>
-    <Component class="com.parah.mg.utils.DateTimeTableCellRenderer" name="dateTableCellRenderer1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="dateTableCellRenderer1"/>
-      </Properties>
-    </Component>
-    <Component class="com.parah.mg.utils.NumberCellRenderer" name="numberCellRenderer1">
-      <Properties>
-        <Property name="horizontalAlignment" type="int" value="4"/>
-        <Property name="text" type="java.lang.String" value="numberCellRenderer1"/>
-      </Properties>
-    </Component>
-    <Component class="com.parah.mg.utils.IntegerLongConverter" name="integerLongConverter1">
-    </Component>
     <Component class="javax.persistence.Query" name="queryCuentasContables">
       <Properties>
         <Property name="query" type="java.lang.String" value="SELECT t FROM TblCuentasContables t"/>
@@ -90,7 +75,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.eventos.TblCuentasContables&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblCuentasContables&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -103,7 +88,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.eventos.TblCentrosDeCosto&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblCentrosDeCosto&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -364,7 +349,7 @@
                   <Title/>
                   <Editor/>
                   <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="dateTableCellRenderer1"/>
+                    <ComponentRef name="default"/>
                   </Renderer>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
@@ -381,7 +366,7 @@
                   <Title/>
                   <Editor/>
                   <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="numberCellRenderer1"/>
+                    <ComponentRef name="default"/>
                   </Renderer>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
@@ -450,9 +435,6 @@
     <Component class="javax.swing.JLabel" name="idLabel">
       <Properties>
         <Property name="displayedMnemonic" type="int" value="78"/>
-        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="default"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="Nro Factura:"/>
       </Properties>
     </Component>
@@ -594,7 +576,7 @@
       <BindingProperties>
         <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.monto}" target="txtExentas" targetPath="value" updateStrategy="0" immediately="false">
           <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.ComponentChooserEditor">
-            <ComponentRef name="integerLongConverter1"/>
+            <ComponentRef name="default"/>
           </Property>
         </BindingProperty>
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="txtExentas" targetPath="enabled" updateStrategy="0" immediately="false"/>
@@ -630,9 +612,6 @@
     <Component class="javax.swing.JLabel" name="idLabel1">
       <Properties>
         <Property name="displayedMnemonic" type="int" value="78"/>
-        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="default"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="Nro Timbrado:"/>
       </Properties>
     </Component>

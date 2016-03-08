@@ -5,10 +5,10 @@
  */
 package com.parah.mg.domain;
 
-import com.parah.mg.domain.eventos.TblEventos;
 import com.parah.mg.domain.eventos.TblEventoDetalle;
-import com.parah.mg.domain.miembros.TblMiembrosRelaciones;
+import com.parah.mg.domain.eventos.TblEventos;
 import com.parah.mg.domain.miembros.TblEntidades;
+import com.parah.mg.domain.miembros.TblMiembrosRelaciones;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -44,6 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblUsers.findByPassword", query = "SELECT t FROM TblUsers t WHERE t.password = :password"),
     @NamedQuery(name = "TblUsers.findByNombrecompleto", query = "SELECT t FROM TblUsers t WHERE t.nombrecompleto = :nombrecompleto")})
 public class TblUsers implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
     private List<TblTransacciones> tblTransaccionesList;
 
@@ -90,6 +91,8 @@ public class TblUsers implements Serializable {
     private List<TblTransferencias> tblTransferenciasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
     private List<TblFacturas> tblFacturasList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblFacturasCompras> tblFacturasComprasList;
     @OneToMany(mappedBy = "idUser")
     private List<TblEntidades> tblEntidadesList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
@@ -210,6 +213,15 @@ public class TblUsers implements Serializable {
     }
 
     public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
+        this.tblFacturasList = tblFacturasList;
+    }
+
+    @XmlTransient
+    public List<TblFacturas> getTblFacturasComprasList() {
+        return tblFacturasList;
+    }
+
+    public void setTblFacturasComprasList(List<TblFacturas> tblFacturasList) {
         this.tblFacturasList = tblFacturasList;
     }
 
