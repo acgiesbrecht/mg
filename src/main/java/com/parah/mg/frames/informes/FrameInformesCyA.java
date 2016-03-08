@@ -5,29 +5,18 @@
  */
 package com.parah.mg.frames.informes;
 
-import ca.odell.glazedlists.GlazedLists;
-import ca.odell.glazedlists.matchers.TextMatcherEditor;
-import ca.odell.glazedlists.swing.AutoCompleteSupport;
-import com.parah.mg.domain.eventos.TblEventos;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
-import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,13 +47,11 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             persistenceMap = Utils.getInstance().getPersistenceMap();
             initComponents();
 
-            AutoCompleteSupport support = AutoCompleteSupport.install(cboFechaRemate, GlazedLists.eventListOf(listEventos.toArray()));
-            support.setFilterMode(TextMatcherEditor.CONTAINS);
-            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboMiembro, GlazedLists.eventListOf(listMiembros.toArray()));
-            support1.setFilterMode(TextMatcherEditor.CONTAINS);
-
             jspAno.setValue(Calendar.getInstance().get(Calendar.YEAR));
             cboMes.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH));
+
+            jspAnoA.setValue(Calendar.getInstance().get(Calendar.YEAR));
+            cboMesA.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH));
 
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -80,7 +67,6 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
         dateToStringConverter1 = new com.parah.mg.utils.DateToStringConverter();
@@ -91,19 +77,6 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 1 AND t.idGrupo IN :grupos ORDER BY t.fecha");
         queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
-        cboFechaRemate = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        idMiembroLabel = new javax.swing.JLabel();
-        idMiembroLabel1 = new javax.swing.JLabel();
-        txtCtaCte = new javax.swing.JTextField();
-        idMiembroLabel2 = new javax.swing.JLabel();
-        cboMiembro = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         cboMes = new javax.swing.JComboBox<>();
@@ -112,6 +85,14 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         cmdResumenPorMes = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         cmdPendientesPorMes = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        cboMesA = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jspAnoA = new javax.swing.JSpinner();
+        cmdResumenPorMesA = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        cmdPendientesPorMesA = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
 
         dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
 
@@ -136,112 +117,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             }
         });
 
-        cboFechaRemate.setEnabled(false);
-
-        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventos, cboFechaRemate);
-        bindingGroup.addBinding(jComboBoxBinding);
-
-        cboFechaRemate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboFechaRemateActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Evento");
-        jLabel1.setEnabled(false);
-
-        jButton1.setText("Listado de Deudas pendientes");
-        jButton1.setEnabled(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("Detalle del Evento");
-        jButton2.setEnabled(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jButton3.setText("Detalle de Transferencias");
-        jButton3.setEnabled(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jButton4.setText("Detalle de Recibos");
-        jButton4.setEnabled(false);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
-        jButton5.setText("Detalle de Donaciones/Aportes");
-        jButton5.setEnabled(false);
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
-        jButton6.setText("Detalle de Pagos");
-        jButton6.setEnabled(false);
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-
-        idMiembroLabel.setText("Miembro:");
-        idMiembroLabel.setEnabled(false);
-
-        idMiembroLabel1.setText("Cta. Cte.:");
-        idMiembroLabel1.setEnabled(false);
-
-        txtCtaCte.setEnabled(false);
-        txtCtaCte.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtCtaCteFocusGained(evt);
-            }
-        });
-        txtCtaCte.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCtaCteActionPerformed(evt);
-            }
-        });
-        txtCtaCte.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtCtaCteKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtCtaCteKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCtaCteKeyTyped(evt);
-            }
-        });
-
-        idMiembroLabel2.setText("Nombre:");
-        idMiembroLabel2.setEnabled(false);
-
-        cboMiembro.setEnabled(false);
-
-        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listMiembros, cboMiembro);
-        bindingGroup.addBinding(jComboBoxBinding);
-
-        cboMiembro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboMiembroActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("Resumen por Mes:");
+        jLabel2.setText("Resumen de Colectas por Mes:");
 
         jLabel3.setText("Mes:");
 
@@ -266,6 +142,31 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel6.setText("Mes:");
+
+        cboMesA.setEditable(true);
+        cboMesA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+
+        jLabel7.setText("Año:");
+
+        cmdResumenPorMesA.setText("Ver");
+        cmdResumenPorMesA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdResumenPorMesAActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Aportes pendientes de cobro:");
+
+        cmdPendientesPorMesA.setText("Ver");
+        cmdPendientesPorMesA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdPendientesPorMesAActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setText("Resumen de Aportes por Mes:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -273,47 +174,41 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(cboFechaRemate, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(idMiembroLabel)
-                                .addGap(37, 37, 37)
-                                .addComponent(idMiembroLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(idMiembroLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel5)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cmdPendientesPorMes))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(12, 12, 12)
-                                    .addComponent(jLabel3)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(cboMes, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jLabel4)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jspAno, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(cmdResumenPorMes))))
-                        .addGap(0, 130, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel5)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmdPendientesPorMes))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addGap(12, 12, 12)
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(cboMes, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jspAno, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cmdResumenPorMes)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel8)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmdPendientesPorMesA))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel9)
+                            .addGap(12, 12, 12)
+                            .addComponent(jLabel6)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(cboMesA, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jLabel7)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jspAnoA, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cmdResumenPorMesA))))
+                .addContainerGap(274, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,47 +225,23 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(jspAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmdResumenPorMes))
-                .addGap(41, 41, 41)
+                .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cboFechaRemate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(cmdPendientesPorMesA)
+                    .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idMiembroLabel)
-                    .addComponent(idMiembroLabel1)
-                    .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idMiembroLabel2)
-                    .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(130, Short.MAX_VALUE))
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel6)
+                    .addComponent(cboMesA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(jspAnoA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdResumenPorMesA))
+                .addContainerGap(472, Short.MAX_VALUE))
         );
-
-        bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void cboFechaRemateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFechaRemateActionPerformed
-        try {
-            if (cboFechaRemate.getSelectedIndex() > -1) {
-
-            }
-        } catch (Exception ex) {
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-        }
-    }//GEN-LAST:event_cboFechaRemateActionPerformed
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
     }//GEN-LAST:event_formInternalFrameActivated
@@ -388,154 +259,6 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             return null;
         }
     }
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-
-            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/detalle_remate.jrxml"));
-            Map parameters = new HashMap();
-            parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
-            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getConnection());
-            JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-            jReportsViewer.setVisible(true);
-            //JasperPrintManager.printReport(jasperPrint, false);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-
-            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/detalle_transferencias.jrxml"));
-            Map parameters = new HashMap();
-            parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
-            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getConnection());
-            JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-            jReportsViewer.setVisible(true);
-            //JasperPrintManager.printReport(jasperPrint, false);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        try {
-
-            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/detalle_recibos.jrxml"));
-            Map parameters = new HashMap();
-            parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
-            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getConnection());
-            JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-            jReportsViewer.setVisible(true);
-            //JasperPrintManager.printReport(jasperPrint, false);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-
-            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/pendientes.jrxml"));
-            Map parameters = new HashMap();
-            parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
-            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getConnection());
-            JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-            jReportsViewer.setVisible(true);
-            //JasperPrintManager.printReport(jasperPrint, false);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        try {
-
-            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/detalle_compras_miembro.jrxml"));
-            Map parameters = new HashMap();
-            parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
-            parameters.put("id_miembro", ((TblEntidades) cboMiembro.getSelectedItem()).getId());
-            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getConnection());
-            JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-            jReportsViewer.setVisible(true);
-            //JasperPrintManager.printReport(jasperPrint, false);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        try {
-
-            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/detalle_pagos_miembro.jrxml"));
-            Map parameters = new HashMap();
-            parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
-            parameters.put("id_miembro", ((TblEntidades) cboMiembro.getSelectedItem()).getId());
-            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getConnection());
-            JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-            jReportsViewer.setVisible(true);
-            //JasperPrintManager.printReport(jasperPrint, false);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void txtCtaCteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCtaCteFocusGained
-        txtCtaCte.setSelectionStart(0);
-        txtCtaCte.setSelectionEnd(txtCtaCte.getText().length());
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCtaCteFocusGained
-
-    private void txtCtaCteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCtaCteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCtaCteActionPerformed
-
-    private void txtCtaCteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCtaCteKeyPressed
-
-    private void txtCtaCteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyReleased
-        try {
-            txtCtaCte.setBackground(Color.white);
-            if (txtCtaCte.getText().length() > 4) {
-                listMiembrosFiltered = listMiembros;
-                Optional<TblEntidades> value = listMiembrosFiltered.stream().filter(a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
-                        .findFirst();
-                if (value.isPresent()) {
-                    cboMiembro.setSelectedItem(value.get());
-                    txtCtaCte.setBackground(Color.green);
-                }
-
-                /*for (TblMiembros value : listMiembrosFiltered) {
-                 if (value.getCtacte().equals(Integer.valueOf(txtCtaCte.getText()))) {
-                 cboMiembro.setSelectedItem(value);
-                 txtCtaCte.setBackground(Color.green);
-                 }
-                 }*/
-            }
-        } catch (Exception ex) {
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-        }        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCtaCteKeyReleased
-
-    private void txtCtaCteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyTyped
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCtaCteKeyTyped
-
-    private void cboMiembroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMiembroActionPerformed
-        if (cboMiembro.getSelectedItem() != null) {
-            txtCtaCte.setText(((TblEntidades) cboMiembro.getSelectedItem()).getCtacte().toString());
-        }
-    }//GEN-LAST:event_cboMiembroActionPerformed
 
     private void cmdResumenPorMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdResumenPorMesActionPerformed
         try {
@@ -561,6 +284,30 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }//GEN-LAST:event_cmdPendientesPorMesActionPerformed
+
+    private void cmdResumenPorMesAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdResumenPorMesAActionPerformed
+        try {
+            if (Integer.parseInt(cboMesA.getSelectedItem().toString()) > 0 && Integer.parseInt(jspAnoA.getValue().toString()) > 0) {
+                Map parameters = new HashMap();
+                parameters.put("pMes", Integer.parseInt(cboMesA.getSelectedItem().toString()));
+                parameters.put("pAno", Integer.parseInt(jspAnoA.getValue().toString()));
+                Utils.getInstance().showReport("aportes_por_mes", parameters);
+            }
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdResumenPorMesAActionPerformed
+
+    private void cmdPendientesPorMesAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdPendientesPorMesAActionPerformed
+        try {
+            Map parameters = new HashMap();
+            Utils.getInstance().showReport("aportes_pendientes_por_mes", parameters);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdPendientesPorMesAActionPerformed
 
     /**
      * @param args the command line arguments
@@ -610,35 +357,29 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox cboFechaRemate;
     private javax.swing.JComboBox<String> cboMes;
-    private javax.swing.JComboBox cboMiembro;
+    private javax.swing.JComboBox<String> cboMesA;
     private javax.swing.JButton cmdPendientesPorMes;
+    private javax.swing.JButton cmdPendientesPorMesA;
     private javax.swing.JButton cmdResumenPorMes;
+    private javax.swing.JButton cmdResumenPorMesA;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.persistence.EntityManager entityManager;
-    private javax.swing.JLabel idMiembroLabel;
-    private javax.swing.JLabel idMiembroLabel1;
-    private javax.swing.JLabel idMiembroLabel2;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JSpinner jspAno;
+    private javax.swing.JSpinner jspAnoA;
     private java.util.List<com.parah.mg.domain.eventos.TblEventos> listEventos;
     private java.util.List<com.parah.mg.domain.miembros.TblEntidades> listMiembros;
     private com.parah.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryMiembros;
-    private javax.swing.JTextField txtCtaCte;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

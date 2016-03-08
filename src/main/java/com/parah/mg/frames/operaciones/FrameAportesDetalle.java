@@ -11,11 +11,10 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblCategoriasArticulos;
-import com.parah.mg.domain.miembros.TblEntidades;
+import com.parah.mg.domain.TblFormasDePago;
 import com.parah.mg.domain.eventos.TblEventoDetalle;
 import com.parah.mg.domain.eventos.TblEventos;
-import com.parah.mg.domain.TblRecibos;
-import com.parah.mg.domain.TblTransferencias;
+import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.Color;
@@ -866,11 +865,15 @@ public class FrameAportesDetalle extends JInternalFrame {
                         entityManager.persist(t);
                         t.setFechahora(currEvento.getFecha());
                         t.setIdEvento(currEvento);
-                        t.setIdUser(currentUser.getUser());
                         t.setIdCategoriaArticulo(entityManager.find(TblCategoriasArticulos.class, 2));
                         t.setIdEntidad(miembro);
-                        t.setIdFormaDePagoPreferida(miembro.getIdFormaDePagoPreferida());
+                        if (miembro.getIdFormaDePagoPreferida() == null) {
+                            t.setIdFormaDePagoPreferida(entityManager.find(TblFormasDePago.class, 1));
+                        } else {
+                            t.setIdFormaDePagoPreferida(miembro.getIdFormaDePagoPreferida());
+                        }
                         t.setMonto(miembro.getAporteMensual());
+                        t.setIdUser(currentUser.getUser());
                         listEventoDetalle.add(t);
                         int row = listEventoDetalle.size() - 1;
                         masterTable.setRowSelectionInterval(row, row);

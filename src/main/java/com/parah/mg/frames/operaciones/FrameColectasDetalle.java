@@ -11,10 +11,10 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblCategoriasArticulos;
-import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.eventos.TblEventoDetalle;
 import com.parah.mg.domain.eventos.TblEventoTipos;
 import com.parah.mg.domain.eventos.TblEventos;
+import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.Color;
@@ -703,9 +703,9 @@ public class FrameColectasDetalle extends JInternalFrame {
                 montoField.requestFocusInWindow();
                 return;
             }
-            TblEventos currentEvento = (TblEventos) cboFechaColecta.getSelectedItem();
+            /*TblEventos currentEvento = (TblEventos) cboFechaColecta.getSelectedItem();
 
-            /*actialuazr transferencias y recibos
+            actialuazr transferencias y recibos
              if ((int) (long) entityManager.createQuery("SELECT COUNT(t) FROM TblTransferencias t WHERE t.cobrado = true AND t.idEvento.id = " + String.valueOf(currentEvento.getId())).getSingleResult() > 0) {
              JOptionPane.showMessageDialog(null, "Los cambios realizados a este evento no tendrán efecto sobre los pagos realizados porque ya hay transferencias cobradas para este evento. Deberá modificar las transferencias y los recibos manualmente.");
              } else {
