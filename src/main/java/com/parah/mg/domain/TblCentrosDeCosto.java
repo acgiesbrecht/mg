@@ -35,12 +35,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblCentrosDeCosto.findById", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.id = :id"),
     @NamedQuery(name = "TblCentrosDeCosto.findByDescripcion", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.descripcion = :descripcion")})
 public class TblCentrosDeCosto implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
+    @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
@@ -49,7 +47,7 @@ public class TblCentrosDeCosto implements Serializable {
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCosto")
-    private List<TblTransacciones> tblTransaccionesList;
+    private List<TblAsientos> tblAsientosList;
 
     public TblCentrosDeCosto() {
     }
@@ -80,12 +78,12 @@ public class TblCentrosDeCosto implements Serializable {
     }
 
     @XmlTransient
-    public List<TblTransacciones> getTblTransaccionesList() {
-        return tblTransaccionesList;
+    public List<TblAsientos> getTblAsientosList() {
+        return tblAsientosList;
     }
 
-    public void setTblTransaccionesList(List<TblTransacciones> tblTransaccionesList) {
-        this.tblTransaccionesList = tblTransaccionesList;
+    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList = tblAsientosList;
     }
 
     @Override
@@ -110,7 +108,7 @@ public class TblCentrosDeCosto implements Serializable {
 
     @Override
     public String toString() {
-        return descripcion;
+        return "com.parah.mg.domain.TblCentrosDeCosto[ id=" + id + " ]";
     }
 
 }

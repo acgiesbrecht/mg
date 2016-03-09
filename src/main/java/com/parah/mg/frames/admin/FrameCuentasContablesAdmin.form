@@ -29,25 +29,6 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblCuentasContables&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.persistence.Query" name="queryRubrosDdjj">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblRubrosDdjj t"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="entityManager"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="listRubrosDdjj">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="query"/>
-        </Property>
-        <Property name="observable" type="boolean" value="true"/>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblRubrosDdjj&gt;"/>
-      </AuxValues>
-    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -74,14 +55,12 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="descripcionLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="descripcionLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="descripcionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="idLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="descripcionField" max="32767" attributes="0"/>
-                          <Component id="cboRubrosDdjj" max="32767" attributes="0"/>
                           <Component id="cboCuentaMadre" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="idField" min="-2" pref="115" max="-2" attributes="0"/>
@@ -101,8 +80,8 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="descripcionLabel3" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="18" max="32767" attributes="0"/>
-                      <Component id="chkEsCuentaMadre" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="57" max="32767" attributes="0"/>
+                      <Component id="chkImputable" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="448" pref="448" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -131,16 +110,11 @@
                   <Component id="descripcionLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="cboRubrosDdjj" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="descripcionLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="chkEsCuentaMadre" min="-2" max="-2" attributes="0"/>
+                  <Component id="chkImputable" min="-2" max="-2" attributes="0"/>
                   <Component id="descripcionLabel3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="11" max="32767" attributes="0"/>
+              <EmptySpace pref="41" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -175,11 +149,6 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="false">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
               </TableColumnModel>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
@@ -196,11 +165,6 @@
               <Subbinding sourcePath="${descripcion}">
                 <BindingParameter name="NAME" value="Descripcion"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
-              </Subbinding>
-              <Subbinding sourcePath="${rubroDdjj}">
-                <BindingParameter name="NAME" value="Rubro DDJJ"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblRubrosDdjj.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
             </BindingProperty>
@@ -305,34 +269,18 @@
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="cboCuentaMadre" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="cboRubrosDdjj">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
-        </Property>
-      </Properties>
-      <BindingProperties>
-        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.rubroDdjj}" target="cboRubrosDdjj" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="cboRubrosDdjj" targetPath="enabled" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="descripcionLabel2">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Rubro DDJJ:"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="descripcionLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Es Cuenta Madre?:"/>
+        <Property name="text" type="java.lang.String" value="Imputable:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="chkEsCuentaMadre">
+    <Component class="javax.swing.JCheckBox" name="chkImputable">
       <BindingProperties>
-        <BindingProperty name="selected" source="masterTable" sourcePath="${selectedElement.esCuentaMadre}" target="chkEsCuentaMadre" targetPath="selected" updateStrategy="0" immediately="false">
+        <BindingProperty name="selected" source="masterTable" sourcePath="${selectedElement.imputable}" target="chkImputable" targetPath="selected" updateStrategy="0" immediately="false">
           <Property name="nullValue" type="boolean" value="false"/>
           <Property name="incompletePathValue" type="boolean" value="false"/>
         </BindingProperty>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="chkEsCuentaMadre" targetPath="enabled" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="chkImputable" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
     </Component>
   </SubComponents>

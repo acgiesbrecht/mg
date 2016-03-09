@@ -55,13 +55,13 @@ public class FrameFacturasCompras extends JInternalFrame {
 
         AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
         support2.setFilterMode(TextMatcherEditor.CONTAINS);
+        /*
+         AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaDebito, GlazedLists.eventListOf(listCuentasContables.toArray()));
+         support3.setFilterMode(TextMatcherEditor.CONTAINS);
 
-        AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaDebito, GlazedLists.eventListOf(listCuentasContables.toArray()));
-        support3.setFilterMode(TextMatcherEditor.CONTAINS);
-
-        AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaCredito, GlazedLists.eventListOf(listCuentasContables.toArray()));
-        support4.setFilterMode(TextMatcherEditor.CONTAINS);
-
+         AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaCredito, GlazedLists.eventListOf(listCuentasContables.toArray()));
+         support4.setFilterMode(TextMatcherEditor.CONTAINS);
+         */
         AutoCompleteSupport support1 = AutoCompleteSupport.install(cboContribuyente, GlazedLists.eventListOf(listContribuyentes.toArray()));
         support1.setFilterMode(TextMatcherEditor.CONTAINS);
 
@@ -117,14 +117,12 @@ public class FrameFacturasCompras extends JInternalFrame {
         montoLabel1 = new javax.swing.JLabel();
         txtMontoIVA10 = new javax.swing.JFormattedTextField();
         montoLabel2 = new javax.swing.JLabel();
-        conceptoLabel3 = new javax.swing.JLabel();
-        cboCuentaDebito = new javax.swing.JComboBox();
-        cboCuentaCredito = new javax.swing.JComboBox();
-        conceptoLabel4 = new javax.swing.JLabel();
         txtIVA5 = new javax.swing.JFormattedTextField();
         montoLabel3 = new javax.swing.JLabel();
         txtIVA10 = new javax.swing.JFormattedTextField();
         montoLabel4 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         FormListener formListener = new FormListener();
 
@@ -156,10 +154,6 @@ public class FrameFacturasCompras extends JInternalFrame {
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
-        if (masterTable.getColumnModel().getColumnCount() > 0) {
-            masterTable.getColumnModel().getColumn(1).setCellRenderer(null);
-            masterTable.getColumnModel().getColumn(4).setCellRenderer(null);
-        }
 
         fechahoraLabel.setText("Fecha/Hora:");
 
@@ -240,7 +234,6 @@ public class FrameFacturasCompras extends JInternalFrame {
         txtExentas.setText("0");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.monto}"), txtExentas, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        binding.setConverter(null);
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtExentas, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -289,14 +282,6 @@ public class FrameFacturasCompras extends JInternalFrame {
 
         montoLabel2.setText("Monto incl. IVA 10%:");
 
-        conceptoLabel3.setText("Cuenta Debito:");
-
-        cboCuentaDebito.addActionListener(formListener);
-
-        cboCuentaCredito.addActionListener(formListener);
-
-        conceptoLabel4.setText("Cuenta Credito:");
-
         txtIVA5.setColumns(9);
         txtIVA5.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         txtIVA5.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
@@ -317,6 +302,21 @@ public class FrameFacturasCompras extends JInternalFrame {
 
         montoLabel4.setText("Monto incl. IVA 10%:");
 
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.tblAsientosList}");
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, eLProperty, jTable1);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCuentaContable}"));
+        columnBinding.setColumnName("Cuenta Contable");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCuentasContables.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCentroDeCosto}"));
+        columnBinding.setColumnName("Centro De Costo");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCentrosDeCosto.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
+        columnBinding.setColumnName("Importe");
+        columnBinding.setColumnClass(Integer.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        jScrollPane1.setViewportView(jTable1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -325,14 +325,6 @@ public class FrameFacturasCompras extends JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(masterScrollPane)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(conceptoLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(cboCuentaDebito, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(conceptoLabel4)
-                        .addGap(6, 6, 6)
-                        .addComponent(cboCuentaCredito, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(fechahoraLabel)
@@ -355,7 +347,6 @@ public class FrameFacturasCompras extends JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(conceptoLabel1)
-                            .addComponent(conceptoLabel)
                             .addComponent(idMiembroLabel))
                         .addGap(8, 8, 8)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -367,8 +358,20 @@ public class FrameFacturasCompras extends JInternalFrame {
                                 .addComponent(idMiembroLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cboContribuyente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(conceptoField)
                             .addComponent(cboCentroDeCosto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(newButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(conceptoLabel)
+                        .addGap(8, 8, 8)
+                        .addComponent(conceptoField))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -376,7 +379,7 @@ public class FrameFacturasCompras extends JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(montoLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGap(10, 10, 10)
                                         .addComponent(txtMontoIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(montoLabel1)
@@ -386,26 +389,19 @@ public class FrameFacturasCompras extends JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(newButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deleteButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(refreshButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(saveButton))
+                                .addComponent(montoLabel4)
+                                .addGap(12, 12, 12)
+                                .addComponent(txtIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(montoLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(montoLabel3)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtIVA5, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addComponent(montoLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtIVA5, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(334, 334, 334))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, newButton, refreshButton, saveButton});
@@ -441,12 +437,6 @@ public class FrameFacturasCompras extends JInternalFrame {
                     .addComponent(cboCentroDeCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(conceptoLabel3)
-                    .addComponent(cboCuentaDebito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(conceptoLabel4)
-                    .addComponent(cboCuentaCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(conceptoLabel)
                     .addComponent(conceptoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -460,24 +450,25 @@ public class FrameFacturasCompras extends JInternalFrame {
                             .addComponent(montoLabel1)
                             .addComponent(txtMontoIVA5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(montoLabel2)
-                            .addComponent(txtMontoIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtMontoIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(montoLabel2)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(montoLabel3)
                             .addComponent(txtIVA5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(montoLabel4)
-                            .addComponent(txtIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
+                            .addComponent(txtIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(montoLabel4))))
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 318, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
                     .addComponent(deleteButton)
-                    .addComponent(newButton))
-                .addGap(21, 21, 21))
+                    .addComponent(newButton)))
         );
 
         bindingGroup.bind();
@@ -517,12 +508,6 @@ public class FrameFacturasCompras extends JInternalFrame {
             }
             else if (evt.getSource() == txtMontoIVA10) {
                 FrameFacturasCompras.this.txtMontoIVA10ActionPerformed(evt);
-            }
-            else if (evt.getSource() == cboCuentaDebito) {
-                FrameFacturasCompras.this.cboCuentaDebitoActionPerformed(evt);
-            }
-            else if (evt.getSource() == cboCuentaCredito) {
-                FrameFacturasCompras.this.cboCuentaCreditoActionPerformed(evt);
             }
             else if (evt.getSource() == txtIVA5) {
                 FrameFacturasCompras.this.txtIVA5ActionPerformed(evt);
@@ -662,9 +647,9 @@ public class FrameFacturasCompras extends JInternalFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             int[] selected = masterTable.getSelectedRows();
-            List<com.parah.mg.domain.TblFacturasCompras> toRemove = new ArrayList<>(selected.length);
+            List<com.parah.mg.domain.TblFacturasCompra> toRemove = new ArrayList<>(selected.length);
             for (int idx = 0; idx < selected.length; idx++) {
-                com.parah.mg.domain.TblFacturasCompras t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                com.parah.mg.domain.TblFacturasCompra t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
                 entityManager.remove(t);
             }
@@ -677,7 +662,7 @@ public class FrameFacturasCompras extends JInternalFrame {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         try {
-            com.parah.mg.domain.TblFacturasCompras t = new com.parah.mg.domain.TblFacturasCompras();
+            com.parah.mg.domain.TblFacturasCompra t = new com.parah.mg.domain.TblFacturasCompra();
             entityManager.persist(t);
             t.setIdUser(currentUser.getUser());
             list.add(t);
@@ -704,8 +689,8 @@ public class FrameFacturasCompras extends JInternalFrame {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
-            List<com.parah.mg.domain.TblFacturasCompras> merged = new ArrayList<>(list.size());
-            for (com.parah.mg.domain.TblFacturasCompras t : list) {
+            List<com.parah.mg.domain.TblFacturasCompra> merged = new ArrayList<>(list.size());
+            for (com.parah.mg.domain.TblFacturasCompra t : list) {
                 merged.add(entityManager.merge(t));
             }
             list.clear();
@@ -788,14 +773,6 @@ public class FrameFacturasCompras extends JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMontoIVA10ActionPerformed
 
-    private void cboCuentaDebitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCuentaDebitoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboCuentaDebitoActionPerformed
-
-    private void cboCuentaCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCuentaCreditoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboCuentaCreditoActionPerformed
-
     private void txtIVA5FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtIVA5FocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIVA5FocusGained
@@ -827,13 +804,9 @@ public class FrameFacturasCompras extends JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboCentroDeCosto;
     private javax.swing.JComboBox cboContribuyente;
-    private javax.swing.JComboBox cboCuentaCredito;
-    private javax.swing.JComboBox cboCuentaDebito;
     private javax.swing.JTextField conceptoField;
     private javax.swing.JLabel conceptoLabel;
     private javax.swing.JLabel conceptoLabel1;
-    private javax.swing.JLabel conceptoLabel3;
-    private javax.swing.JLabel conceptoLabel4;
     private javax.swing.JButton deleteButton;
     private org.jdesktop.swingx.JXDatePicker dtpFecha;
     private org.jdesktop.swingx.JXDatePicker dtpVencimientoTimbrado;
@@ -846,7 +819,9 @@ public class FrameFacturasCompras extends JInternalFrame {
     private javax.swing.JLabel idMiembroLabel2;
     private javax.swing.JLabel idMiembroLabel3;
     private javax.swing.JFormattedTextField jFormattedTextField1;
-    private java.util.List<com.parah.mg.domain.TblFacturasCompras> list;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private java.util.List<com.parah.mg.domain.TblFacturasCompra> list;
     private java.util.List<com.parah.mg.domain.TblCentrosDeCosto> listCentrosDeCosto;
     private java.util.List<com.parah.mg.domain.TblContribuyentes> listContribuyentes;
     private java.util.List<com.parah.mg.domain.TblCuentasContables> listCuentasContables;

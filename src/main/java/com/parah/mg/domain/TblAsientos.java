@@ -11,6 +11,8 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -29,18 +31,19 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Adrian Giesbrecht
  */
 @Entity
-@Table(name = "TBL_TRANSACCIONES")
+@Table(name = "TBL_ASIENTOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblTransacciones.findAll", query = "SELECT t FROM TblTransacciones t"),
-    @NamedQuery(name = "TblTransacciones.findById", query = "SELECT t FROM TblTransacciones t WHERE t.id = :id"),
-    @NamedQuery(name = "TblTransacciones.findByFechahora", query = "SELECT t FROM TblTransacciones t WHERE t.fechahora = :fechahora"),
-    @NamedQuery(name = "TblTransacciones.findByTipoTransaccion", query = "SELECT t FROM TblTransacciones t WHERE t.tipoTransaccion = :tipoTransaccion")})
-public class TblTransacciones implements Serializable {
+    @NamedQuery(name = "TblAsientos.findAll", query = "SELECT t FROM TblAsientos t"),
+    @NamedQuery(name = "TblAsientos.findById", query = "SELECT t FROM TblAsientos t WHERE t.id = :id"),
+    @NamedQuery(name = "TblAsientos.findByFechahora", query = "SELECT t FROM TblAsientos t WHERE t.fechahora = :fechahora"),
+    @NamedQuery(name = "TblAsientos.findByTipoAsiento", query = "SELECT t FROM TblAsientos t WHERE t.tipoAsiento = :tipoAsiento")})
+public class TblAsientos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
@@ -50,10 +53,14 @@ public class TblTransacciones implements Serializable {
     private Date fechahora;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "TIPO_TRANSACCION")
-    private int tipoTransaccion;
-    @ManyToMany(mappedBy = "tblTransaccionesList")
-    private List<TblFacturasCompras> tblFacturasComprasList;
+    @Column(name = "TIPO_ASIENTO")
+    private int tipoAsiento;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "MONTO")
+    private Integer monto;
+    @ManyToMany(mappedBy = "tblAsientosList")
+    private List<TblFacturasCompra> tblFacturasCompraList;
     @JoinColumn(name = "ID_CENTRO_DE_COSTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCentrosDeCosto idCentroDeCosto;
@@ -64,17 +71,17 @@ public class TblTransacciones implements Serializable {
     @ManyToOne(optional = false)
     private TblUsers idUser;
 
-    public TblTransacciones() {
+    public TblAsientos() {
     }
 
-    public TblTransacciones(Integer id) {
+    public TblAsientos(Integer id) {
         this.id = id;
     }
 
-    public TblTransacciones(Integer id, Date fechahora, int tipoTransaccion) {
+    public TblAsientos(Integer id, Date fechahora, int tipoAsiento) {
         this.id = id;
         this.fechahora = fechahora;
-        this.tipoTransaccion = tipoTransaccion;
+        this.tipoAsiento = tipoAsiento;
     }
 
     public Integer getId() {
@@ -93,21 +100,21 @@ public class TblTransacciones implements Serializable {
         this.fechahora = fechahora;
     }
 
-    public int getTipoTransaccion() {
-        return tipoTransaccion;
+    public int getTipoAsiento() {
+        return tipoAsiento;
     }
 
-    public void setTipoTransaccion(int tipoTransaccion) {
-        this.tipoTransaccion = tipoTransaccion;
+    public void setTipoAsiento(int tipoAsiento) {
+        this.tipoAsiento = tipoAsiento;
     }
 
     @XmlTransient
-    public List<TblFacturasCompras> getTblFacturasComprasList() {
-        return tblFacturasComprasList;
+    public List<TblFacturasCompra> getTblFacturasCompraList() {
+        return tblFacturasCompraList;
     }
 
-    public void setTblFacturasComprasList(List<TblFacturasCompras> tblFacturasComprasList) {
-        this.tblFacturasComprasList = tblFacturasComprasList;
+    public void setTblFacturasCompraList(List<TblFacturasCompra> tblFacturasCompraList) {
+        this.tblFacturasCompraList = tblFacturasCompraList;
     }
 
     public TblCentrosDeCosto getIdCentroDeCosto() {
@@ -144,10 +151,10 @@ public class TblTransacciones implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblTransacciones)) {
+        if (!(object instanceof TblAsientos)) {
             return false;
         }
-        TblTransacciones other = (TblTransacciones) object;
+        TblAsientos other = (TblAsientos) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -156,7 +163,21 @@ public class TblTransacciones implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.TblTransacciones[ id=" + id + " ]";
+        return "com.parah.mg.domain.TblAsientos[ id=" + id + " ]";
+    }
+
+    /**
+     * @return the monto
+     */
+    public Integer getMonto() {
+        return monto;
+    }
+
+    /**
+     * @param monto the monto to set
+     */
+    public void setMonto(Integer monto) {
+        this.monto = monto;
     }
 
 }

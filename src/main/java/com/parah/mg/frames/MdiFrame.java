@@ -18,7 +18,6 @@ import com.parah.mg.frames.admin.FrameFacturasAdmin;
 import com.parah.mg.frames.admin.FrameGruposAdmin;
 import com.parah.mg.frames.admin.FrameIglesiaAdmin;
 import com.parah.mg.frames.admin.FrameRecibosAdmin;
-import com.parah.mg.frames.admin.FrameRubrosDdjjAdmin;
 import com.parah.mg.frames.admin.FrameTimbradosAdmin;
 import com.parah.mg.frames.admin.FrameTransferenciasAdmin;
 import com.parah.mg.frames.admin.FrameUsuariosAdmin;
@@ -146,7 +145,6 @@ public class MdiFrame extends javax.swing.JFrame {
                             mnuAdFacturas.setEnabled(currentUser.hasRole(2));
 
                             mnuAdCentrosDeCosto.setEnabled(currentUser.hasRole(3));
-                            mnuAdRubrosDdjj.setEnabled(currentUser.hasRole(3));
                             mnuAdCuentasContables.setEnabled(currentUser.hasRole(3));
 
                             mnuAdIglesia.setEnabled(currentUser.hasRole(3));
@@ -274,7 +272,6 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuAdFacturas = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mnuAdCentrosDeCosto = new javax.swing.JMenuItem();
-        mnuAdRubrosDdjj = new javax.swing.JMenuItem();
         mnuAdCuentasContables = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
         mnuAdIglesia = new javax.swing.JMenuItem();
@@ -509,16 +506,6 @@ public class MdiFrame extends javax.swing.JFrame {
             }
         });
         jMenu2.add(mnuAdCentrosDeCosto);
-
-        mnuAdRubrosDdjj.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
-        mnuAdRubrosDdjj.setText("Administrar Rubros DDJJ");
-        mnuAdRubrosDdjj.setEnabled(false);
-        mnuAdRubrosDdjj.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuAdRubrosDdjjActionPerformed(evt);
-            }
-        });
-        jMenu2.add(mnuAdRubrosDdjj);
 
         mnuAdCuentasContables.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
         mnuAdCuentasContables.setText("Administrar Plan de Cuentas");
@@ -985,21 +972,6 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuAdCentrosDeCostoActionPerformed
 
-    private void mnuAdRubrosDdjjActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdRubrosDdjjActionPerformed
-        try {
-            FrameRubrosDdjjAdmin frame = new FrameRubrosDdjjAdmin();
-            frame.setVisible(true);
-
-            desktop.add(frame);
-
-            frame.setSelected(true);
-            frame.setMaximum(true);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_mnuAdRubrosDdjjActionPerformed
-
     private void mnuAdCuentasContablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdCuentasContablesActionPerformed
 
         try {
@@ -1089,7 +1061,6 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAdInformes;
     private javax.swing.JMenuItem mnuAdMiembros;
     private javax.swing.JMenuItem mnuAdRecibos;
-    private javax.swing.JMenuItem mnuAdRubrosDdjj;
     private javax.swing.JMenuItem mnuAdTimbrados;
     private javax.swing.JMenuItem mnuAdTransf;
     private javax.swing.JMenuItem mnuAdUsuarios;

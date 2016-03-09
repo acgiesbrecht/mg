@@ -49,7 +49,7 @@ where ed.id_evento = e.id AND ed.id_entidad = m.id
 AND MONTH(e.fecha) = $P{mes} AND YEAR(e.fecha) = $P{ano}
 AND e.ID_EVENTO_TIPO = 2
 GROUP BY e.FECHA, m.CTACTE, m.APELLIDOS, m.NOMBRES
-ORDER BY m.CTACTE, e.FECHA]]>
+ORDER BY e.FECHA, m.CTACTE]]>
         </queryString>
         <field name="FECHA" class="java.sql.Timestamp"/>
         <field name="SUMA" class="java.lang.Integer"/>
@@ -64,7 +64,7 @@ ORDER BY m.CTACTE, e.FECHA]]>
     <parameter name="ano" class="java.lang.Integer"/>
     <parameter name="user" class="java.lang.String"/>
     <queryString language="SQL">
-		<![CDATA[SELECT DISTINCT ID_EVENTO_TIPO FROM TBL_EVENTOS]]>
+		<![CDATA[SELECT DISTINCT ID_EVENTO_TIPO FROM TBL_EVENTOS WHERE ID = 2]]>
     </queryString>
     <field name="ID_EVENTO_TIPO" class="java.lang.Integer"/>
     <background>
@@ -106,7 +106,7 @@ ORDER BY m.CTACTE, e.FECHA]]>
         <band height="100" splitType="Stretch">
             <crosstab>
                 <reportElement x="0" y="0" width="554" height="72" uuid="9992c8e8-d4b2-4424-a6dd-f8dcce08d1df"/>
-                <crosstabDataset isDataPreSorted="true">
+                <crosstabDataset isDataPreSorted="false">
                     <dataset>
                         <datasetRun subDataset="subdataset" uuid="d8c9f55e-ed53-44b8-b801-8f2f4a235dee">
                             <datasetParameter name="ano">
@@ -135,7 +135,7 @@ ORDER BY m.CTACTE, e.FECHA]]>
                     <crosstabTotalRowHeader>
                         <cellContents mode="Opaque" style="Crosstab_CT">
                             <staticText>
-                                <reportElement x="0" y="0" width="60" height="16" uuid="53a8e94e-445d-43bf-a1a8-96447c1e7adb"/>
+                                <reportElement x="0" y="0" width="50" height="16" uuid="53a8e94e-445d-43bf-a1a8-96447c1e7adb"/>
                                 <textElement verticalAlignment="Middle">
                                     <font isBold="true"/>
                                 </textElement>

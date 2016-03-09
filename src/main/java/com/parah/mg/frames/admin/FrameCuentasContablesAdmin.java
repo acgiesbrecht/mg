@@ -54,9 +54,6 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
             AutoCompleteSupport support = AutoCompleteSupport.install(cboCuentaMadre, eventListCuentasContables);
             support.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboRubrosDdjj, GlazedLists.eventListOf(listRubrosDdjj.toArray()));
-            support1.setFilterMode(TextMatcherEditor.CONTAINS);
-
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -76,8 +73,6 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCuentasContables t ORDER BY t.id");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
-        queryRubrosDdjj = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblRubrosDdjj t");
-        listRubrosDdjj = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         idLabel = new javax.swing.JLabel();
@@ -90,10 +85,8 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         deleteButton = new javax.swing.JButton();
         descripcionLabel1 = new javax.swing.JLabel();
         cboCuentaMadre = new javax.swing.JComboBox();
-        cboRubrosDdjj = new javax.swing.JComboBox();
-        descripcionLabel2 = new javax.swing.JLabel();
         descripcionLabel3 = new javax.swing.JLabel();
-        chkEsCuentaMadre = new javax.swing.JCheckBox();
+        chkImputable = new javax.swing.JCheckBox();
 
         FormListener formListener = new FormListener();
 
@@ -108,10 +101,6 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         columnBinding.setColumnName("Descripcion");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${rubroDdjj}"));
-        columnBinding.setColumnName("Rubro DDJJ");
-        columnBinding.setColumnClass(com.parah.mg.domain.TblRubrosDdjj.class);
-        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
@@ -120,8 +109,6 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
             masterTable.getColumnModel().getColumn(0).setPreferredWidth(100);
             masterTable.getColumnModel().getColumn(1).setResizable(false);
             masterTable.getColumnModel().getColumn(1).setPreferredWidth(400);
-            masterTable.getColumnModel().getColumn(2).setResizable(false);
-            masterTable.getColumnModel().getColumn(2).setPreferredWidth(200);
         }
 
         idLabel.setText("Nro.:");
@@ -163,20 +150,13 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboCuentaMadre, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.rubroDdjj}"), cboRubrosDdjj, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboRubrosDdjj, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
+        descripcionLabel3.setText("Imputable:");
 
-        descripcionLabel2.setText("Rubro DDJJ:");
-
-        descripcionLabel3.setText("Es Cuenta Madre?:");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.esCuentaMadre}"), chkEsCuentaMadre, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.imputable}"), chkImputable, org.jdesktop.beansbinding.BeanProperty.create("selected"));
         binding.setSourceNullValue(false);
         binding.setSourceUnreadableValue(false);
         bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), chkEsCuentaMadre, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), chkImputable, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -190,13 +170,11 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(descripcionLabel1)
-                            .addComponent(descripcionLabel2)
                             .addComponent(descripcionLabel)
                             .addComponent(idLabel))
                         .addGap(37, 37, 37)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(descripcionField)
-                            .addComponent(cboRubrosDdjj, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cboCuentaMadre, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -212,8 +190,8 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
                         .addComponent(saveButton))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(descripcionLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                        .addComponent(chkEsCuentaMadre)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                        .addComponent(chkImputable)
                         .addGap(448, 448, 448)))
                 .addContainerGap())
         );
@@ -238,14 +216,10 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
                     .addComponent(cboCuentaMadre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(descripcionLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cboRubrosDdjj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(descripcionLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(chkEsCuentaMadre)
+                    .addComponent(chkImputable)
                     .addComponent(descripcionLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
@@ -346,24 +320,20 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboCuentaMadre;
-    private javax.swing.JComboBox cboRubrosDdjj;
-    private javax.swing.JCheckBox chkEsCuentaMadre;
+    private javax.swing.JCheckBox chkImputable;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField descripcionField;
     private javax.swing.JLabel descripcionLabel;
     private javax.swing.JLabel descripcionLabel1;
-    private javax.swing.JLabel descripcionLabel2;
     private javax.swing.JLabel descripcionLabel3;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JTextField idField;
     private javax.swing.JLabel idLabel;
     private java.util.List<com.parah.mg.domain.TblCuentasContables> list;
-    private java.util.List<com.parah.mg.domain.TblRubrosDdjj> listRubrosDdjj;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
     private javax.persistence.Query query;
-    private javax.persistence.Query queryRubrosDdjj;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;

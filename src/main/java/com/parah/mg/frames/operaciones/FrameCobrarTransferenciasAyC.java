@@ -283,9 +283,9 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                     t.setMontoDonacion(pago.getMontoDonacion());
                     t.setCobrado(true);
                     Calendar c = Calendar.getInstance();
-                    c.set(Calendar.MONTH, pago.getMes());
+                    c.set(Calendar.MONTH, pago.getMes() - 1);
                     c.set(Calendar.YEAR, pago.getAno());
-                    c.getActualMaximum(Calendar.DAY_OF_MONTH);
+                    c.set(Calendar.DATE, c.getActualMaximum(Calendar.DAY_OF_MONTH));
                     t.setFechahora(c.getTime());
                     t.setIdEventoTipo((TblEventoTipos) cboEventoTipo.getSelectedItem());
                     t.setIdUser(currentUser.getUser());

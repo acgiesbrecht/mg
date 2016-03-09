@@ -33,9 +33,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TblCuentasContables.findAll", query = "SELECT t FROM TblCuentasContables t"),
     @NamedQuery(name = "TblCuentasContables.findById", query = "SELECT t FROM TblCuentasContables t WHERE t.id = :id"),
-    @NamedQuery(name = "TblCuentasContables.findByDescripcion", query = "SELECT t FROM TblCuentasContables t WHERE t.descripcion = :descripcion")})
+    @NamedQuery(name = "TblCuentasContables.findByDescripcion", query = "SELECT t FROM TblCuentasContables t WHERE t.descripcion = :descripcion"),
+    @NamedQuery(name = "TblCuentasContables.findByImputable", query = "SELECT t FROM TblCuentasContables t WHERE t.imputable = :imputable")})
 public class TblCuentasContables implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -47,20 +47,15 @@ public class TblCuentasContables implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ES_CUENTA_MADRE")
-    private Boolean esCuentaMadre;
+    @Column(name = "IMPUTABLE")
+    private Boolean imputable;
     @OneToMany(mappedBy = "idCuentaMadre")
     private List<TblCuentasContables> tblCuentasContablesList;
     @JoinColumn(name = "ID_CUENTA_MADRE", referencedColumnName = "ID")
     @ManyToOne
     private TblCuentasContables idCuentaMadre;
-    @JoinColumn(name = "RUBRO_DDJJ", referencedColumnName = "ID")
-    @ManyToOne
-    private TblRubrosDdjj rubroDdjj;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaContable")
-    private List<TblTransacciones> tblTransaccionesList;
+    private List<TblAsientos> tblAsientosList;
 
     public TblCuentasContables() {
     }
@@ -90,6 +85,14 @@ public class TblCuentasContables implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public Boolean getImputable() {
+        return imputable;
+    }
+
+    public void setImputable(Boolean imputable) {
+        this.imputable = imputable;
+    }
+
     @XmlTransient
     public List<TblCuentasContables> getTblCuentasContablesList() {
         return tblCuentasContablesList;
@@ -107,21 +110,13 @@ public class TblCuentasContables implements Serializable {
         this.idCuentaMadre = idCuentaMadre;
     }
 
-    public TblRubrosDdjj getRubroDdjj() {
-        return rubroDdjj;
-    }
-
-    public void setRubroDdjj(TblRubrosDdjj rubroDdjj) {
-        this.rubroDdjj = rubroDdjj;
-    }
-
     @XmlTransient
-    public List<TblTransacciones> getTblTransaccionesList() {
-        return tblTransaccionesList;
+    public List<TblAsientos> getTblAsientosList() {
+        return tblAsientosList;
     }
 
-    public void setTblTransaccionesList(List<TblTransacciones> tblTransaccionesList) {
-        this.tblTransaccionesList = tblTransaccionesList;
+    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList = tblAsientosList;
     }
 
     @Override
@@ -146,21 +141,7 @@ public class TblCuentasContables implements Serializable {
 
     @Override
     public String toString() {
-        return descripcion;
-    }
-
-    /**
-     * @return the esCuentaMadre
-     */
-    public Boolean getEsCuentaMadre() {
-        return esCuentaMadre;
-    }
-
-    /**
-     * @param esCuentaMadre the esCuentaMadre to set
-     */
-    public void setEsCuentaMadre(Boolean esCuentaMadre) {
-        this.esCuentaMadre = esCuentaMadre;
+        return "com.parah.mg.domain.TblCuentasContables[ id=" + id + " ]";
     }
 
 }
