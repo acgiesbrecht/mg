@@ -30,10 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
-@Table(name = "TBL_FACTURAS_COMPRA")
+@Table(name = "TBL_FACTURAS_COMPRA", catalog = "", schema = "MG")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblFacturasCompra.findAll", query = "SELECT t FROM TblFacturasCompra t"),
@@ -50,8 +50,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblFacturasCompra.findByMontoIva10", query = "SELECT t FROM TblFacturasCompra t WHERE t.montoIva10 = :montoIva10"),
     @NamedQuery(name = "TblFacturasCompra.findByIva5", query = "SELECT t FROM TblFacturasCompra t WHERE t.iva5 = :iva5"),
     @NamedQuery(name = "TblFacturasCompra.findByIva10", query = "SELECT t FROM TblFacturasCompra t WHERE t.iva10 = :iva10"),
-    @NamedQuery(name = "TblFacturasCompra.findByAnulado", query = "SELECT t FROM TblFacturasCompra t WHERE t.anulado = :anulado")})
+    @NamedQuery(name = "TblFacturasCompra.findByObservacion", query = "SELECT t FROM TblFacturasCompra t WHERE t.observacion = :observacion")})
 public class TblFacturasCompra implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -110,10 +111,9 @@ public class TblFacturasCompra implements Serializable {
     @NotNull
     @Column(name = "IVA10")
     private int iva10;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ANULADO")
-    private Boolean anulado;
+    @Size(max = 255)
+    @Column(name = "OBSERVACION")
+    private String observacion;
     @JoinTable(name = "TBL_FACTURAS_COMPRA_ASIENTOS", joinColumns = {
         @JoinColumn(name = "ID_FACTURA_COMPRA", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
@@ -130,7 +130,7 @@ public class TblFacturasCompra implements Serializable {
         this.id = id;
     }
 
-    public TblFacturasCompra(Integer id, int nro, int nroTimbrado, Date vencimientoTimbrado, Boolean condicionContado, Date fechahora, String razonSocial, String ruc, int montoExentas, int montoIva5, int montoIva10, int iva5, int iva10, Boolean anulado) {
+    public TblFacturasCompra(Integer id, int nro, int nroTimbrado, Date vencimientoTimbrado, Boolean condicionContado, Date fechahora, String razonSocial, String ruc, int montoExentas, int montoIva5, int montoIva10, int iva5, int iva10) {
         this.id = id;
         this.nro = nro;
         this.nroTimbrado = nroTimbrado;
@@ -144,7 +144,6 @@ public class TblFacturasCompra implements Serializable {
         this.montoIva10 = montoIva10;
         this.iva5 = iva5;
         this.iva10 = iva10;
-        this.anulado = anulado;
     }
 
     public Integer getId() {
@@ -251,12 +250,12 @@ public class TblFacturasCompra implements Serializable {
         this.iva10 = iva10;
     }
 
-    public Boolean getAnulado() {
-        return anulado;
+    public String getObservacion() {
+        return observacion;
     }
 
-    public void setAnulado(Boolean anulado) {
-        this.anulado = anulado;
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
 
     @XmlTransient

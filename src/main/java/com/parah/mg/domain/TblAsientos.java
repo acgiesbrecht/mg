@@ -28,16 +28,16 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
-@Table(name = "TBL_ASIENTOS")
+@Table(name = "TBL_ASIENTOS", catalog = "", schema = "MG")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblAsientos.findAll", query = "SELECT t FROM TblAsientos t"),
     @NamedQuery(name = "TblAsientos.findById", query = "SELECT t FROM TblAsientos t WHERE t.id = :id"),
     @NamedQuery(name = "TblAsientos.findByFechahora", query = "SELECT t FROM TblAsientos t WHERE t.fechahora = :fechahora"),
-    @NamedQuery(name = "TblAsientos.findByTipoAsiento", query = "SELECT t FROM TblAsientos t WHERE t.tipoAsiento = :tipoAsiento")})
+    @NamedQuery(name = "TblAsientos.findByMonto", query = "SELECT t FROM TblAsientos t WHERE t.monto = :monto")})
 public class TblAsientos implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,20 +53,19 @@ public class TblAsientos implements Serializable {
     private Date fechahora;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "TIPO_ASIENTO")
-    private int tipoAsiento;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "MONTO")
-    private Integer monto;
+    private int monto;
     @ManyToMany(mappedBy = "tblAsientosList")
     private List<TblFacturasCompra> tblFacturasCompraList;
     @JoinColumn(name = "ID_CENTRO_DE_COSTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCentrosDeCosto idCentroDeCosto;
-    @JoinColumn(name = "ID_CUENTA_CONTABLE", referencedColumnName = "ID")
+    @JoinColumn(name = "ID_CUENTA_CONTABLE_HABER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private TblCuentasContables idCuentaContable;
+    private TblCuentasContables idCuentaContableHaber;
+    @JoinColumn(name = "ID_CUENTA_CONTABLE_DEBE", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblCuentasContables idCuentaContableDebe;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
@@ -78,10 +77,10 @@ public class TblAsientos implements Serializable {
         this.id = id;
     }
 
-    public TblAsientos(Integer id, Date fechahora, int tipoAsiento) {
+    public TblAsientos(Integer id, Date fechahora, int monto) {
         this.id = id;
         this.fechahora = fechahora;
-        this.tipoAsiento = tipoAsiento;
+        this.monto = monto;
     }
 
     public Integer getId() {
@@ -100,12 +99,12 @@ public class TblAsientos implements Serializable {
         this.fechahora = fechahora;
     }
 
-    public int getTipoAsiento() {
-        return tipoAsiento;
+    public int getMonto() {
+        return monto;
     }
 
-    public void setTipoAsiento(int tipoAsiento) {
-        this.tipoAsiento = tipoAsiento;
+    public void setMonto(int monto) {
+        this.monto = monto;
     }
 
     @XmlTransient
@@ -125,12 +124,20 @@ public class TblAsientos implements Serializable {
         this.idCentroDeCosto = idCentroDeCosto;
     }
 
-    public TblCuentasContables getIdCuentaContable() {
-        return idCuentaContable;
+    public TblCuentasContables getIdCuentaContableHaber() {
+        return idCuentaContableHaber;
     }
 
-    public void setIdCuentaContable(TblCuentasContables idCuentaContable) {
-        this.idCuentaContable = idCuentaContable;
+    public void setIdCuentaContableHaber(TblCuentasContables idCuentaContableHaber) {
+        this.idCuentaContableHaber = idCuentaContableHaber;
+    }
+
+    public TblCuentasContables getIdCuentaContableDebe() {
+        return idCuentaContableDebe;
+    }
+
+    public void setIdCuentaContableDebe(TblCuentasContables idCuentaContableDebe) {
+        this.idCuentaContableDebe = idCuentaContableDebe;
     }
 
     public TblUsers getIdUser() {
@@ -164,20 +171,6 @@ public class TblAsientos implements Serializable {
     @Override
     public String toString() {
         return "com.parah.mg.domain.TblAsientos[ id=" + id + " ]";
-    }
-
-    /**
-     * @return the monto
-     */
-    public Integer getMonto() {
-        return monto;
-    }
-
-    /**
-     * @param monto the monto to set
-     */
-    public void setMonto(Integer monto) {
-        this.monto = monto;
     }
 
 }

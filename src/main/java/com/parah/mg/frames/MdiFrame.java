@@ -29,6 +29,7 @@ import com.parah.mg.frames.operaciones.FrameCobrarTransferenciasAyC;
 import com.parah.mg.frames.operaciones.FrameColectasDetalle;
 import com.parah.mg.frames.operaciones.FrameFacturacionColectiva;
 import com.parah.mg.frames.operaciones.FrameFacturacionUnica;
+import com.parah.mg.frames.operaciones.FrameFacturasCompra;
 import com.parah.mg.frames.operaciones.FrameRematesDetalle;
 import com.parah.mg.frames.operaciones.FrameRematesPagos;
 import com.parah.mg.utils.CurrentUser;
@@ -68,7 +69,6 @@ import org.mindrot.jbcrypt.BCrypt;
 public class MdiFrame extends javax.swing.JFrame {
 
     CurrentUser currentUser = CurrentUser.getInstance();
-
     private static final Logger LOGGER = LogManager.getLogger(MdiFrame.class);
 
     JDesktopPane desktop;
@@ -131,6 +131,8 @@ public class MdiFrame extends javax.swing.JFrame {
                             mnuOpFacturaPendientes.setEnabled(currentUser.hasRole(2));
                             //mnuOpCobrarTransferencias.setEnabled(currentUser.hasRole(2));
                             mnuOpCobrarTransferenciasAyC.setEnabled(currentUser.hasRole(2));
+
+                            mnuEgFacturas.setEnabled(currentUser.hasRole(2));
 
                             mnuAdMiembros.setEnabled(currentUser.hasRole(2));
 
@@ -254,6 +256,11 @@ public class MdiFrame extends javax.swing.JFrame {
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
         mnuOpFacturaPendientes = new javax.swing.JMenuItem();
         mnuOpFacturaUnica = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        mnuEgFacturas = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         mnuAdInformes = new javax.swing.JMenuItem();
         mnuInformesCyA = new javax.swing.JMenuItem();
@@ -301,7 +308,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        mnuOpFacturacion.setText("Operaciones");
+        mnuOpFacturacion.setText("Ingresos");
 
         mnuOpRemates.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         mnuOpRemates.setText("Remates");
@@ -386,6 +393,31 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOpFacturacion.add(mnuOpFacturaUnica);
 
         jMenuBar1.add(mnuOpFacturacion);
+
+        jMenu5.setText("Egresos");
+
+        mnuEgFacturas.setText("Facturas");
+        mnuEgFacturas.setEnabled(false);
+        mnuEgFacturas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuEgFacturasActionPerformed(evt);
+            }
+        });
+        jMenu5.add(mnuEgFacturas);
+
+        jMenuItem3.setText("AutoFacturas");
+        jMenuItem3.setEnabled(false);
+        jMenu5.add(jMenuItem3);
+
+        jMenuItem5.setText("Notas de Credito");
+        jMenuItem5.setEnabled(false);
+        jMenu5.add(jMenuItem5);
+
+        jMenuItem6.setText("Recibos");
+        jMenuItem6.setEnabled(false);
+        jMenu5.add(jMenuItem6);
+
+        jMenuBar1.add(jMenu5);
 
         jMenu4.setText("Informes");
 
@@ -988,6 +1020,21 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuAdCuentasContablesActionPerformed
 
+    private void mnuEgFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuEgFacturasActionPerformed
+        try {
+            FrameFacturasCompra frame = new FrameFacturasCompra();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_mnuEgFacturasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1036,9 +1083,13 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
@@ -1064,6 +1115,7 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAdTimbrados;
     private javax.swing.JMenuItem mnuAdTransf;
     private javax.swing.JMenuItem mnuAdUsuarios;
+    private javax.swing.JMenuItem mnuEgFacturas;
     private javax.swing.JMenuItem mnuInformesCyA;
     private javax.swing.JMenuItem mnuLogin;
     private javax.swing.JMenuItem mnuOpAportes;

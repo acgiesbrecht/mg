@@ -25,10 +25,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
-@Table(name = "TBL_CUENTAS_CONTABLES")
+@Table(name = "TBL_CUENTAS_CONTABLES", catalog = "", schema = "MG")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblCuentasContables.findAll", query = "SELECT t FROM TblCuentasContables t"),
@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblCuentasContables.findByDescripcion", query = "SELECT t FROM TblCuentasContables t WHERE t.descripcion = :descripcion"),
     @NamedQuery(name = "TblCuentasContables.findByImputable", query = "SELECT t FROM TblCuentasContables t WHERE t.imputable = :imputable")})
 public class TblCuentasContables implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -54,8 +55,10 @@ public class TblCuentasContables implements Serializable {
     @JoinColumn(name = "ID_CUENTA_MADRE", referencedColumnName = "ID")
     @ManyToOne
     private TblCuentasContables idCuentaMadre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaContable")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaContableHaber")
     private List<TblAsientos> tblAsientosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaContableDebe")
+    private List<TblAsientos> tblAsientosList1;
 
     public TblCuentasContables() {
     }
@@ -117,6 +120,15 @@ public class TblCuentasContables implements Serializable {
 
     public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
         this.tblAsientosList = tblAsientosList;
+    }
+
+    @XmlTransient
+    public List<TblAsientos> getTblAsientosList1() {
+        return tblAsientosList1;
+    }
+
+    public void setTblAsientosList1(List<TblAsientos> tblAsientosList1) {
+        this.tblAsientosList1 = tblAsientosList1;
     }
 
     @Override
