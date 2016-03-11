@@ -10,8 +10,8 @@ import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblContribuyentes;
-import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.TblFacturas;
+import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import com.parah.utils.CalcDV;
@@ -21,8 +21,6 @@ import java.awt.KeyboardFocusManager;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -680,14 +678,14 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
                             c.setRazonSocial(StringEscapeUtils.escapeSql(ruc[1]));
                             c.setDv(ruc[2]);
                             entityManager.persist(c);
-                            setStatus("Bajando listado de RUC con terminacion " + String.valueOf(i) + " - Cantidad de contribuyentes procesada: " + String.format("%,d", count) + " de aprox. 850.000.");
+                            setStatus("Descargando listado de RUC con terminacion " + String.valueOf(i) + " - Cantidad de contribuyentes procesada: " + String.format("%,d", count) + " de aprox. 850.000.");
                             count++;
                         } else {
                             System.out.println(temp);
                         }
 
                     }
-                    setStatus("Procesando datos...");
+                    //setStatus("Procesando datos...");
                     entityManager.getTransaction().commit();
                     entityManager.getTransaction().begin();
                 }

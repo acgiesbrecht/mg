@@ -153,7 +153,7 @@ public class TblCuentasContables implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.TblCuentasContables[ id=" + id + " ]";
+        return descripcion;
     }
 
 }

@@ -75,7 +75,7 @@ public class TblFacturasCompra implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CONDICION_CONTADO")
-    private Boolean condicionContado;
+    private Boolean condicionContado = true;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAHORA")

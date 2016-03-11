@@ -1,5 +1,6 @@
 DROP VIEW MG.RECIBO;
 DROP VIEW MG.TRANSFERENCIA;
+/*DROP VIEW MG.ENTIDADES_CON_PAGOS_PENDIENTES;*/
 DROP TRIGGER MG.EVENTO_CUOTA_TRIGGER;
 DROP TABLE MG.TBL_DATABASE_UPDATES;
 DROP TABLE MG.TBL_RECIBOS;
@@ -27,6 +28,17 @@ DROP TABLE MG.TBL_ROLES;
 DROP TABLE MG.TBL_GRUPOS;
 DROP TABLE MG.TBL_USERS;
 DROP TABLE MG.TBL_CONTRIBUYENTES;
+
+/*
+ID_TIPO_EVENTO
+    1   REMATE
+    2   COLECTA
+    3   APORTE
+
+ID_CATEGORIA_TRIBUTARIA
+    1   APORTE
+    2   DONACION
+*/
 
 CREATE TABLE MG.TBL_EVENTOS (
 	ID INTEGER GENERATED ALWAYS AS IDENTITY NOT NULL,
@@ -455,3 +467,55 @@ REFERENCING NEW AS new_row
 FOR EACH ROW
 MODE DB2SQL
 INSERT INTO MG.TBL_EVENTO_CUOTAS (ID_EVENTO, FECHA_1) VALUES (new_row.ID, new_row.FECHA);
+
+/*
+CREATE VIEW MG.ENTIDADES_CON_PAGOS_PENDIENTES AS
+SELECT remates.id, remates.nombre, remates.ctacte, remates.domicilio, remates.box FROM
+        (SELECT m.id, m.nombres || ' ' || m.apellidos AS nombre, m.ctacte, m.domicilio, m.box, SUM(rd.monto) AS monto FROM TBL_ENTIDADES m
+            LEFT JOIN TBL_EVENTO_DETALLE rd ON m.id = rd.ID_ENTIDAD
+            group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida,
+                    m.ID_ENTIDAD_PAGANTE_APORTES,
+                    m.IS_MIEMBRO_ACTIVO,
+                    m.ID_FORMA_DE_PAGO_PREFERIDA,
+                    m.APORTE_MENSUAL,
+                    m.FECHA_NACIMIENTO,
+                    m.FECHA_BAUTISMO,
+                    m.FECHA_ENTRADA_CONGREGACION,
+                    m.FECHA_SALIDA_CONGREGACION,
+                    m.FECHA_DEFUNCION,
+                    m.ID_AREA_SERVICIO_EN_IGLESIA,
+                    m.ID_MIEMBROS_CATEGORIA_DE_PAGO,
+                    m.ID_MIEMBROS_ALERGIA) remates,
+        (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_ENTIDADES m
+            LEFT JOIN TBL_TRANSFERENCIAS p ON m.id = p.ID_ENTIDAD
+            group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida,
+                    m.IS_MIEMBRO_ACTIVO,
+                    m.ID_ENTIDAD_PAGANTE_APORTES,
+                    m.ID_FORMA_DE_PAGO_PREFERIDA,
+                    m.APORTE_MENSUAL,
+                    m.FECHA_NACIMIENTO,
+                    m.FECHA_BAUTISMO,
+                    m.FECHA_ENTRADA_CONGREGACION,
+                    m.FECHA_SALIDA_CONGREGACION,
+                    m.FECHA_DEFUNCION,
+                    m.ID_AREA_SERVICIO_EN_IGLESIA,
+                    m.ID_MIEMBROS_CATEGORIA_DE_PAGO,
+                    m.ID_MIEMBROS_ALERGIA) transferencias,
+        (SELECT m.*, COALESCE(SUM(p.monto),0) AS monto FROM TBL_ENTIDADES m
+            LEFT JOIN TBL_RECIBOS p ON m.id = p.ID_ENTIDAD
+            group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida,
+                    m.IS_MIEMBRO_ACTIVO,
+                    m.ID_FORMA_DE_PAGO_PREFERIDA,
+                    m.APORTE_MENSUAL,
+                    m.ID_ENTIDAD_PAGANTE_APORTES,
+                    m.FECHA_NACIMIENTO,
+                    m.FECHA_BAUTISMO,
+                    m.FECHA_ENTRADA_CONGREGACION,
+                    m.FECHA_SALIDA_CONGREGACION,
+                    m.FECHA_DEFUNCION,
+                    m.ID_AREA_SERVICIO_EN_IGLESIA,
+                    m.ID_MIEMBROS_CATEGORIA_DE_PAGO,
+                    m.ID_MIEMBROS_ALERGIA) recibos
+    WHERE remates.id = transferencias.id AND remates.id = recibos.id AND (remates.monto - transferencias.monto - recibos.monto) > 0
+    ORDER BY remates.nombre;
+*/
