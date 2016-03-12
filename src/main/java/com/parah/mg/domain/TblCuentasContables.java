@@ -37,6 +37,19 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblCuentasContables.findByImputable", query = "SELECT t FROM TblCuentasContables t WHERE t.imputable = :imputable")})
 public class TblCuentasContables implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaDebeCompras")
+    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaDebeDonaciones")
+    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaDebeAportes")
+    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaHaberFacturaCredito")
+    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList3;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaHaberFacturaContado")
+    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList4;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaIvaCredito")
+    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList5;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -154,6 +167,60 @@ public class TblCuentasContables implements Serializable {
     @Override
     public String toString() {
         return descripcion;
+    }
+
+    @XmlTransient
+    public List<TblCuentasContablesPorDefecto> getTblCuentasContablesPorDefectoList() {
+        return tblCuentasContablesPorDefectoList;
+    }
+
+    public void setTblCuentasContablesPorDefectoList(List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList) {
+        this.tblCuentasContablesPorDefectoList = tblCuentasContablesPorDefectoList;
+    }
+
+    @XmlTransient
+    public List<TblCuentasContablesPorDefecto> getTblCuentasContablesPorDefectoList1() {
+        return tblCuentasContablesPorDefectoList1;
+    }
+
+    public void setTblCuentasContablesPorDefectoList1(List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList1) {
+        this.tblCuentasContablesPorDefectoList1 = tblCuentasContablesPorDefectoList1;
+    }
+
+    @XmlTransient
+    public List<TblCuentasContablesPorDefecto> getTblCuentasContablesPorDefectoList2() {
+        return tblCuentasContablesPorDefectoList2;
+    }
+
+    public void setTblCuentasContablesPorDefectoList2(List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList2) {
+        this.tblCuentasContablesPorDefectoList2 = tblCuentasContablesPorDefectoList2;
+    }
+
+    @XmlTransient
+    public List<TblCuentasContablesPorDefecto> getTblCuentasContablesPorDefectoList3() {
+        return tblCuentasContablesPorDefectoList3;
+    }
+
+    public void setTblCuentasContablesPorDefectoList3(List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList3) {
+        this.tblCuentasContablesPorDefectoList3 = tblCuentasContablesPorDefectoList3;
+    }
+
+    @XmlTransient
+    public List<TblCuentasContablesPorDefecto> getTblCuentasContablesPorDefectoList4() {
+        return tblCuentasContablesPorDefectoList4;
+    }
+
+    public void setTblCuentasContablesPorDefectoList4(List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList4) {
+        this.tblCuentasContablesPorDefectoList4 = tblCuentasContablesPorDefectoList4;
+    }
+
+    @XmlTransient
+    public List<TblCuentasContablesPorDefecto> getTblCuentasContablesPorDefectoList5() {
+        return tblCuentasContablesPorDefectoList5;
+    }
+
+    public void setTblCuentasContablesPorDefectoList5(List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList5) {
+        this.tblCuentasContablesPorDefectoList5 = tblCuentasContablesPorDefectoList5;
     }
 
 }

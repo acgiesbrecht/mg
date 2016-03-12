@@ -7,10 +7,10 @@ package com.parah.mg.frames.admin;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
-import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblCuentasContables;
+import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
 import java.beans.Beans;
@@ -35,6 +35,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
     private static final Logger LOGGER = LogManager.getLogger(FrameCuentasContablesAdmin.class);
     Map<String, String> persistenceMap = new HashMap<>();
     EventList<TblCuentasContables> eventListCuentasContables = new BasicEventList<>();
+    TblCuentasContablesPorDefecto cuentas;
 
     public FrameCuentasContablesAdmin() {
         super("Administrar Categorias",
@@ -53,6 +54,26 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
             eventListCuentasContables.addAll(list);
             AutoCompleteSupport support = AutoCompleteSupport.install(cboCuentaMadre, eventListCuentasContables);
             support.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCuentaContado, eventListCuentasContables);
+            support1.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCuentaCredito, eventListCuentasContables);
+            support2.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaIVACredito, eventListCuentasContables);
+            support3.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaCompras, eventListCuentasContables);
+            support4.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCuentaAportes, eventListCuentasContables);
+            support5.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support7 = AutoCompleteSupport.install(cboCuentaDonaciones, eventListCuentasContables);
+            support7.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            readCuentasPorDefecto();
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -73,6 +94,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCuentasContables t ORDER BY t.id");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
+        cuentaContableCellRenderer1 = new com.parah.mg.utils.CuentaContableCellRenderer();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         idLabel = new javax.swing.JLabel();
@@ -87,10 +109,28 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         cboCuentaMadre = new javax.swing.JComboBox();
         descripcionLabel3 = new javax.swing.JLabel();
         chkImputable = new javax.swing.JCheckBox();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        cboCuentaContado = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        cboCuentaCredito = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        cboCuentaIVACredito = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        cboCuentaAportes = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        cboCuentaDonaciones = new javax.swing.JComboBox<>();
+        cboCuentaCompras = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
+        cuentaContableCellRenderer1.setText("cuentaContableCellRenderer1");
+
         masterTable.setAutoCreateRowSorter(true);
+        masterTable.setRowHeight(20);
+        masterTable.setRowMargin(3);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${id}"));
@@ -107,6 +147,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(0).setResizable(false);
             masterTable.getColumnModel().getColumn(0).setPreferredWidth(100);
+            masterTable.getColumnModel().getColumn(0).setCellRenderer(cuentaContableCellRenderer1);
             masterTable.getColumnModel().getColumn(1).setResizable(false);
             masterTable.getColumnModel().getColumn(1).setPreferredWidth(400);
         }
@@ -159,40 +200,128 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), chkImputable, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        jLabel1.setText("Cuenta Haber para Facturas Contado");
+
+        cboCuentaContado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel2.setText("Cuenta Haber para Facturas Credito");
+
+        cboCuentaCredito.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel3.setText("Cuenta Haber para IVA Credito");
+
+        cboCuentaIVACredito.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel4.setText("Cuenta Debe para Aportes");
+
+        cboCuentaAportes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel5.setText("Cuenta Debe para Donaciones");
+
+        cboCuentaDonaciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        cboCuentaCompras.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel6.setText("Cuenta Debe para Compras");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(45, 45, 45)
+                        .addComponent(cboCuentaDonaciones, 0, 169, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cboCuentaAportes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cboCuentaCompras, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cboCuentaIVACredito, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cboCuentaCredito, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cboCuentaContado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(cboCuentaContado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(cboCuentaCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(cboCuentaIVACredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboCuentaCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboCuentaAportes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboCuentaDonaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Cuentas por defecto", jPanel1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(newButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(deleteButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(refreshButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saveButton)
+                .addGap(10, 10, 10))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(masterScrollPane)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(descripcionLabel1)
-                            .addComponent(descripcionLabel)
-                            .addComponent(idLabel))
-                        .addGap(37, 37, 37)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(descripcionLabel3)
+                                .addGap(28, 28, 28))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(descripcionLabel1)
+                                    .addComponent(descripcionLabel)
+                                    .addComponent(idLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addComponent(chkImputable)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(descripcionField)
-                            .addComponent(cboCuentaMadre, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(idField)
+                            .addComponent(cboCuentaMadre, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(newButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(refreshButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(descripcionLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-                        .addComponent(chkImputable)
-                        .addGap(448, 448, 448)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -202,24 +331,29 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idLabel)
-                    .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(descripcionLabel)
-                    .addComponent(descripcionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cboCuentaMadre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(descripcionLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(chkImputable)
-                    .addComponent(descripcionLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(idLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(descripcionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(descripcionLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cboCuentaMadre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(descripcionLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(descripcionLabel3)
+                            .addComponent(chkImputable))
+                        .addGap(111, 111, 111)
+                        .addComponent(jTabbedPane1)
+                        .addGap(17, 17, 17))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(masterScrollPane)
+                        .addGap(20, 20, 20)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
@@ -262,6 +396,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         }
         list.clear();
         list.addAll(data);
+        readCuentasPorDefecto();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -296,6 +431,8 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
+            saveCuentasPorDefecto();
+            entityManager.merge(cuentas);
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
             java.util.Collection data = query.getResultList();
@@ -306,6 +443,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
             list.addAll(data);
             eventListCuentasContables.clear();
             eventListCuentasContables.addAll(list);
+
         } catch (RollbackException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
             entityManager.getTransaction().begin();
@@ -318,9 +456,35 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    private void readCuentasPorDefecto() {
+        cuentas = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
+        cboCuentaContado.setSelectedItem(cuentas.getIdCuentaHaberFacturaContado());
+        cboCuentaCredito.setSelectedItem(cuentas.getIdCuentaHaberFacturaCredito());
+        cboCuentaIVACredito.setSelectedItem(cuentas.getIdCuentaIvaCredito());
+        cboCuentaCompras.setSelectedItem(cuentas.getIdCuentaDebeCompras());
+        cboCuentaAportes.setSelectedItem(cuentas.getIdCuentaDebeAportes());
+        cboCuentaDonaciones.setSelectedItem(cuentas.getIdCuentaDebeDonaciones());
+    }
+
+    private void saveCuentasPorDefecto() {
+        cuentas.setIdCuentaHaberFacturaContado((TblCuentasContables) cboCuentaContado.getSelectedItem());
+        cuentas.setIdCuentaHaberFacturaCredito((TblCuentasContables) cboCuentaCredito.getSelectedItem());
+        cuentas.setIdCuentaIvaCredito((TblCuentasContables) cboCuentaIVACredito.getSelectedItem());
+        cuentas.setIdCuentaDebeCompras((TblCuentasContables) cboCuentaCompras.getSelectedItem());
+        cuentas.setIdCuentaDebeAportes((TblCuentasContables) cboCuentaAportes.getSelectedItem());
+        cuentas.setIdCuentaDebeDonaciones((TblCuentasContables) cboCuentaDonaciones.getSelectedItem());
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cboCuentaAportes;
+    private javax.swing.JComboBox<String> cboCuentaCompras;
+    private javax.swing.JComboBox<String> cboCuentaContado;
+    private javax.swing.JComboBox<String> cboCuentaCredito;
+    private javax.swing.JComboBox<String> cboCuentaDonaciones;
+    private javax.swing.JComboBox<String> cboCuentaIVACredito;
     private javax.swing.JComboBox cboCuentaMadre;
     private javax.swing.JCheckBox chkImputable;
+    private com.parah.mg.utils.CuentaContableCellRenderer cuentaContableCellRenderer1;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField descripcionField;
     private javax.swing.JLabel descripcionLabel;
@@ -329,6 +493,14 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JTextField idField;
     private javax.swing.JLabel idLabel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private java.util.List<com.parah.mg.domain.TblCuentasContables> list;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
