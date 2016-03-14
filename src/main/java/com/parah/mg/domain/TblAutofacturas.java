@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_AUTOFACTURAS")
@@ -46,6 +46,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblAutofacturas.findByIva10", query = "SELECT t FROM TblAutofacturas t WHERE t.iva10 = :iva10"),
     @NamedQuery(name = "TblAutofacturas.findByAnulado", query = "SELECT t FROM TblAutofacturas t WHERE t.anulado = :anulado")})
 public class TblAutofacturas implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,8 +55,9 @@ public class TblAutofacturas implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 15)
     @Column(name = "NRO")
-    private int nro;
+    private String nro;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CONDICION_CONTADO")
@@ -67,7 +69,7 @@ public class TblAutofacturas implements Serializable {
     private Date fechahora;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 255)
     @Column(name = "RAZON_SOCIAL")
     private String razonSocial;
     @Basic(optional = false)
@@ -113,7 +115,7 @@ public class TblAutofacturas implements Serializable {
         this.id = id;
     }
 
-    public TblAutofacturas(Integer id, int nro, Boolean condicionContado, Date fechahora, String razonSocial, String ruc, int montoExentas, int montoIva5, int montoIva10, int iva5, int iva10, Boolean anulado) {
+    public TblAutofacturas(Integer id, String nro, Boolean condicionContado, Date fechahora, String razonSocial, String ruc, int montoExentas, int montoIva5, int montoIva10, int iva5, int iva10, Boolean anulado) {
         this.id = id;
         this.nro = nro;
         this.condicionContado = condicionContado;
@@ -136,11 +138,11 @@ public class TblAutofacturas implements Serializable {
         this.id = id;
     }
 
-    public int getNro() {
+    public String getNro() {
         return nro;
     }
 
-    public void setNro(int nro) {
+    public void setNro(String nro) {
         this.nro = nro;
     }
 

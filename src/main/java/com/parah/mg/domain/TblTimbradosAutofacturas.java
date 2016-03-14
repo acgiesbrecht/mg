@@ -20,18 +20,20 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_TIMBRADOS_AUTOFACTURAS")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblTimbradosAutofacturas.findAll", query = "SELECT t FROM TblTimbradosAutofacturas t"),
+    @NamedQuery(name = "TblTimbradosAutofacturas.findById", query = "SELECT t FROM TblTimbradosAutofacturas t WHERE t.id = :id"),
     @NamedQuery(name = "TblTimbradosAutofacturas.findByNro", query = "SELECT t FROM TblTimbradosAutofacturas t WHERE t.nro = :nro"),
     @NamedQuery(name = "TblTimbradosAutofacturas.findByFechaInicio", query = "SELECT t FROM TblTimbradosAutofacturas t WHERE t.fechaInicio = :fechaInicio"),
     @NamedQuery(name = "TblTimbradosAutofacturas.findByFechaVencimiento", query = "SELECT t FROM TblTimbradosAutofacturas t WHERE t.fechaVencimiento = :fechaVencimiento"),
@@ -40,12 +42,17 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblTimbradosAutofacturas.findByActivo", query = "SELECT t FROM TblTimbradosAutofacturas t WHERE t.activo = :activo"),
     @NamedQuery(name = "TblTimbradosAutofacturas.findByIdUser", query = "SELECT t FROM TblTimbradosAutofacturas t WHERE t.idUser = :idUser")})
 public class TblTimbradosAutofacturas implements Serializable {
+
     private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @Column(name = "ID")
+    private int id;
     @Id
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 8)
     @Column(name = "NRO")
-    private Integer nro;
+    private String nro;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_INICIO")
@@ -78,12 +85,13 @@ public class TblTimbradosAutofacturas implements Serializable {
     public TblTimbradosAutofacturas() {
     }
 
-    public TblTimbradosAutofacturas(Integer nro) {
+    public TblTimbradosAutofacturas(String nro) {
         this.nro = nro;
     }
 
-    public TblTimbradosAutofacturas(Integer nro, Date fechaInicio, Date fechaVencimiento, int nroFacturaIncio, int nroFacturaFin, Boolean activo, int idUser) {
+    public TblTimbradosAutofacturas(String nro, int id, Date fechaInicio, Date fechaVencimiento, int nroFacturaIncio, int nroFacturaFin, Boolean activo, int idUser) {
         this.nro = nro;
+        this.id = id;
         this.fechaInicio = fechaInicio;
         this.fechaVencimiento = fechaVencimiento;
         this.nroFacturaIncio = nroFacturaIncio;
@@ -92,11 +100,19 @@ public class TblTimbradosAutofacturas implements Serializable {
         this.idUser = idUser;
     }
 
-    public Integer getNro() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNro() {
         return nro;
     }
 
-    public void setNro(Integer nro) {
+    public void setNro(String nro) {
         this.nro = nro;
     }
 

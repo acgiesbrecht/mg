@@ -21,6 +21,7 @@ import com.parah.mg.frames.admin.FrameRecibosAdmin;
 import com.parah.mg.frames.admin.FrameTimbradosAdmin;
 import com.parah.mg.frames.admin.FrameTransferenciasAdmin;
 import com.parah.mg.frames.admin.FrameUsuariosAdmin;
+import com.parah.mg.frames.informes.FrameInformesContabilidad;
 import com.parah.mg.frames.informes.FrameInformesCyA;
 import com.parah.mg.frames.informes.FrameInformesRemates;
 import com.parah.mg.frames.operaciones.FrameAportesDetalle;
@@ -156,6 +157,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
                             mnuAdInformes.setEnabled(currentUser.hasRole(1));
                             mnuInformesCyA.setEnabled(currentUser.hasRole(2));
+                            mnuInformesContabilidad.setEnabled(currentUser.hasRole(2));
 
                         }
                     }
@@ -264,6 +266,7 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         mnuAdInformes = new javax.swing.JMenuItem();
         mnuInformesCyA = new javax.swing.JMenuItem();
+        mnuInformesContabilidad = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mnuAdMiembros = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -440,6 +443,15 @@ public class MdiFrame extends javax.swing.JFrame {
             }
         });
         jMenu4.add(mnuInformesCyA);
+
+        mnuInformesContabilidad.setText("Informes Contabilidad");
+        mnuInformesContabilidad.setEnabled(false);
+        mnuInformesContabilidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuInformesContabilidadActionPerformed(evt);
+            }
+        });
+        jMenu4.add(mnuInformesContabilidad);
 
         jMenuBar1.add(jMenu4);
 
@@ -1035,6 +1047,21 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuEgFacturasActionPerformed
 
+    private void mnuInformesContabilidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuInformesContabilidadActionPerformed
+        try {
+            FrameInformesContabilidad frame = new FrameInformesContabilidad();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_mnuInformesContabilidadActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1116,6 +1143,7 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAdTransf;
     private javax.swing.JMenuItem mnuAdUsuarios;
     private javax.swing.JMenuItem mnuEgFacturas;
+    private javax.swing.JMenuItem mnuInformesContabilidad;
     private javax.swing.JMenuItem mnuInformesCyA;
     private javax.swing.JMenuItem mnuLogin;
     private javax.swing.JMenuItem mnuOpAportes;

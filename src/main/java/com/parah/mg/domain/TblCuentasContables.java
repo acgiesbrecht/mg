@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author adriang
  */
 @Entity
-@Table(name = "TBL_CUENTAS_CONTABLES", catalog = "", schema = "MG")
+@Table(name = "TBL_CUENTAS_CONTABLES")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblCuentasContables.findAll", query = "SELECT t FROM TblCuentasContables t"),
@@ -36,19 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblCuentasContables.findByDescripcion", query = "SELECT t FROM TblCuentasContables t WHERE t.descripcion = :descripcion"),
     @NamedQuery(name = "TblCuentasContables.findByImputable", query = "SELECT t FROM TblCuentasContables t WHERE t.imputable = :imputable")})
 public class TblCuentasContables implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaDebeCompras")
-    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaDebeDonaciones")
-    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaDebeAportes")
-    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList2;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaHaberFacturaCredito")
-    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList3;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaHaberFacturaContado")
-    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList4;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaIvaCredito")
-    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList5;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -68,6 +55,16 @@ public class TblCuentasContables implements Serializable {
     @JoinColumn(name = "ID_CUENTA_MADRE", referencedColumnName = "ID")
     @ManyToOne
     private TblCuentasContables idCuentaMadre;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaDebeCompras")
+    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaDebeDonaciones")
+    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaDebeAportes")
+    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaHaberFacturaCredito")
+    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList3;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaHaberFacturaContado")
+    private List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList4;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaContableHaber")
     private List<TblAsientos> tblAsientosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaContableDebe")
@@ -127,49 +124,6 @@ public class TblCuentasContables implements Serializable {
     }
 
     @XmlTransient
-    public List<TblAsientos> getTblAsientosList() {
-        return tblAsientosList;
-    }
-
-    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
-        this.tblAsientosList = tblAsientosList;
-    }
-
-    @XmlTransient
-    public List<TblAsientos> getTblAsientosList1() {
-        return tblAsientosList1;
-    }
-
-    public void setTblAsientosList1(List<TblAsientos> tblAsientosList1) {
-        this.tblAsientosList1 = tblAsientosList1;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblCuentasContables)) {
-            return false;
-        }
-        TblCuentasContables other = (TblCuentasContables) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return descripcion;
-    }
-
-    @XmlTransient
     public List<TblCuentasContablesPorDefecto> getTblCuentasContablesPorDefectoList() {
         return tblCuentasContablesPorDefectoList;
     }
@@ -215,12 +169,46 @@ public class TblCuentasContables implements Serializable {
     }
 
     @XmlTransient
-    public List<TblCuentasContablesPorDefecto> getTblCuentasContablesPorDefectoList5() {
-        return tblCuentasContablesPorDefectoList5;
+    public List<TblAsientos> getTblAsientosList() {
+        return tblAsientosList;
     }
 
-    public void setTblCuentasContablesPorDefectoList5(List<TblCuentasContablesPorDefecto> tblCuentasContablesPorDefectoList5) {
-        this.tblCuentasContablesPorDefectoList5 = tblCuentasContablesPorDefectoList5;
+    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList = tblAsientosList;
+    }
+
+    @XmlTransient
+    public List<TblAsientos> getTblAsientosList1() {
+        return tblAsientosList1;
+    }
+
+    public void setTblAsientosList1(List<TblAsientos> tblAsientosList1) {
+        this.tblAsientosList1 = tblAsientosList1;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof TblCuentasContables)) {
+            return false;
+        }
+        TblCuentasContables other = (TblCuentasContables) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return descripcion;
     }
 
 }

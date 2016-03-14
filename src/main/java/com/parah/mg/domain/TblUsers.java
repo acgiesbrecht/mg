@@ -8,6 +8,7 @@ package com.parah.mg.domain;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -38,6 +40,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblUsers.findByPassword", query = "SELECT t FROM TblUsers t WHERE t.password = :password"),
     @NamedQuery(name = "TblUsers.findByNombrecompleto", query = "SELECT t FROM TblUsers t WHERE t.nombrecompleto = :nombrecompleto")})
 public class TblUsers implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblAsientos> tblAsientosList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -158,6 +163,15 @@ public class TblUsers implements Serializable {
     @Override
     public String toString() {
         return "com.parah.mg.domain.TblUsers[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public List<TblAsientos> getTblAsientosList() {
+        return tblAsientosList;
+    }
+
+    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList = tblAsientosList;
     }
 
 }

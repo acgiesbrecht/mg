@@ -39,6 +39,8 @@
     <class>com.parah.mg.domain.models.Transferencia</class>
     <class>com.parah.mg.domain.TblAsientos</class>
     <class>com.parah.mg.domain.TblCuentasContablesPorDefecto</class>
+    <class>com.parah.mg.domain.TblAutofacturas</class>
+    <class>com.parah.mg.domain.TblTimbradosAutofacturas</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/mgdb;create=true"/>
       <property name="javax.persistence.jdbc.user" value="mg"/>

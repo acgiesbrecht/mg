@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_CUENTAS_CONTABLES_POR_DEFECTO")
@@ -51,9 +51,6 @@ public class TblCuentasContablesPorDefecto implements Serializable {
     @JoinColumn(name = "ID_CUENTA_HABER_FACTURA_CONTADO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCuentasContables idCuentaHaberFacturaContado;
-    @JoinColumn(name = "ID_CUENTA_IVA_CREDITO", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private TblCuentasContables idCuentaIvaCredito;
 
     public TblCuentasContablesPorDefecto() {
     }
@@ -108,14 +105,6 @@ public class TblCuentasContablesPorDefecto implements Serializable {
 
     public void setIdCuentaHaberFacturaContado(TblCuentasContables idCuentaHaberFacturaContado) {
         this.idCuentaHaberFacturaContado = idCuentaHaberFacturaContado;
-    }
-
-    public TblCuentasContables getIdCuentaIvaCredito() {
-        return idCuentaIvaCredito;
-    }
-
-    public void setIdCuentaIvaCredito(TblCuentasContables idCuentaIvaCredito) {
-        this.idCuentaIvaCredito = idCuentaIvaCredito;
     }
 
     @Override

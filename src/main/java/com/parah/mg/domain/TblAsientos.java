@@ -7,7 +7,6 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -24,14 +22,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author adriang
  */
 @Entity
-@Table(name = "TBL_ASIENTOS", catalog = "", schema = "MG")
+@Table(name = "TBL_ASIENTOS")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblAsientos.findAll", query = "SELECT t FROM TblAsientos t"),
@@ -55,8 +52,6 @@ public class TblAsientos implements Serializable {
     @NotNull
     @Column(name = "MONTO")
     private int monto;
-    @ManyToMany(mappedBy = "tblAsientosList")
-    private List<TblFacturasCompra> tblFacturasCompraList;
     @JoinColumn(name = "ID_CENTRO_DE_COSTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCentrosDeCosto idCentroDeCosto;
@@ -105,15 +100,6 @@ public class TblAsientos implements Serializable {
 
     public void setMonto(int monto) {
         this.monto = monto;
-    }
-
-    @XmlTransient
-    public List<TblFacturasCompra> getTblFacturasCompraList() {
-        return tblFacturasCompraList;
-    }
-
-    public void setTblFacturasCompraList(List<TblFacturasCompra> tblFacturasCompraList) {
-        this.tblFacturasCompraList = tblFacturasCompraList;
     }
 
     public TblCentrosDeCosto getIdCentroDeCosto() {

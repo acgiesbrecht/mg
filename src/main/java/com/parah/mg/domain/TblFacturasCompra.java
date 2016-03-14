@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author adriang
  */
 @Entity
-@Table(name = "TBL_FACTURAS_COMPRA", catalog = "", schema = "MG")
+@Table(name = "TBL_FACTURAS_COMPRA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblFacturasCompra.findAll", query = "SELECT t FROM TblFacturasCompra t"),
@@ -42,6 +42,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblFacturasCompra.findByNroTimbrado", query = "SELECT t FROM TblFacturasCompra t WHERE t.nroTimbrado = :nroTimbrado"),
     @NamedQuery(name = "TblFacturasCompra.findByVencimientoTimbrado", query = "SELECT t FROM TblFacturasCompra t WHERE t.vencimientoTimbrado = :vencimientoTimbrado"),
     @NamedQuery(name = "TblFacturasCompra.findByCondicionContado", query = "SELECT t FROM TblFacturasCompra t WHERE t.condicionContado = :condicionContado"),
+    @NamedQuery(name = "TblFacturasCompra.findByFechaVencimientoCredito", query = "SELECT t FROM TblFacturasCompra t WHERE t.fechaVencimientoCredito = :fechaVencimientoCredito"),
+    @NamedQuery(name = "TblFacturasCompra.findByCuotasCredito", query = "SELECT t FROM TblFacturasCompra t WHERE t.cuotasCredito = :cuotasCredito"),
     @NamedQuery(name = "TblFacturasCompra.findByFechahora", query = "SELECT t FROM TblFacturasCompra t WHERE t.fechahora = :fechahora"),
     @NamedQuery(name = "TblFacturasCompra.findByRazonSocial", query = "SELECT t FROM TblFacturasCompra t WHERE t.razonSocial = :razonSocial"),
     @NamedQuery(name = "TblFacturasCompra.findByRuc", query = "SELECT t FROM TblFacturasCompra t WHERE t.ruc = :ruc"),
@@ -61,12 +63,14 @@ public class TblFacturasCompra implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 15)
     @Column(name = "NRO")
-    private int nro;
+    private String nro;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 8)
     @Column(name = "NRO_TIMBRADO")
-    private int nroTimbrado;
+    private String nroTimbrado;
     @Basic(optional = false)
     @NotNull
     @Column(name = "VENCIMIENTO_TIMBRADO")
@@ -75,7 +79,12 @@ public class TblFacturasCompra implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CONDICION_CONTADO")
-    private Boolean condicionContado = true;
+    private Boolean condicionContado;
+    @Column(name = "FECHA_VENCIMIENTO_CREDITO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaVencimientoCredito;
+    @Column(name = "CUOTAS_CREDITO")
+    private Integer cuotasCredito;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAHORA")
@@ -83,7 +92,7 @@ public class TblFacturasCompra implements Serializable {
     private Date fechahora;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 255)
     @Column(name = "RAZON_SOCIAL")
     private String razonSocial;
     @Basic(optional = false)
@@ -130,7 +139,7 @@ public class TblFacturasCompra implements Serializable {
         this.id = id;
     }
 
-    public TblFacturasCompra(Integer id, int nro, int nroTimbrado, Date vencimientoTimbrado, Boolean condicionContado, Date fechahora, String razonSocial, String ruc, int montoExentas, int montoIva5, int montoIva10, int iva5, int iva10) {
+    public TblFacturasCompra(Integer id, String nro, String nroTimbrado, Date vencimientoTimbrado, Boolean condicionContado, Date fechahora, String razonSocial, String ruc, int montoExentas, int montoIva5, int montoIva10, int iva5, int iva10) {
         this.id = id;
         this.nro = nro;
         this.nroTimbrado = nroTimbrado;
@@ -154,19 +163,19 @@ public class TblFacturasCompra implements Serializable {
         this.id = id;
     }
 
-    public int getNro() {
+    public String getNro() {
         return nro;
     }
 
-    public void setNro(int nro) {
+    public void setNro(String nro) {
         this.nro = nro;
     }
 
-    public int getNroTimbrado() {
+    public String getNroTimbrado() {
         return nroTimbrado;
     }
 
-    public void setNroTimbrado(int nroTimbrado) {
+    public void setNroTimbrado(String nroTimbrado) {
         this.nroTimbrado = nroTimbrado;
     }
 
@@ -184,6 +193,22 @@ public class TblFacturasCompra implements Serializable {
 
     public void setCondicionContado(Boolean condicionContado) {
         this.condicionContado = condicionContado;
+    }
+
+    public Date getFechaVencimientoCredito() {
+        return fechaVencimientoCredito;
+    }
+
+    public void setFechaVencimientoCredito(Date fechaVencimientoCredito) {
+        this.fechaVencimientoCredito = fechaVencimientoCredito;
+    }
+
+    public Integer getCuotasCredito() {
+        return cuotasCredito;
+    }
+
+    public void setCuotasCredito(Integer cuotasCredito) {
+        this.cuotasCredito = cuotasCredito;
     }
 
     public Date getFechahora() {

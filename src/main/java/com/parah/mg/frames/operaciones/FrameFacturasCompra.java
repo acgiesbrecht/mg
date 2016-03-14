@@ -40,7 +40,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 import org.apache.logging.log4j.LogManager;
@@ -116,6 +115,34 @@ public class FrameFacturasCompra extends JInternalFrame {
                 }
             });
 
+            txtMontoExentas.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                public void process() {
+                    try {
+                        if (txtMontoExentas.getText().length() > 0 && txtMontoExentas.getValue() != null) {
+                            createAndUpdateAsientoInicial();
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+                        LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+                    }
+                }
+            });
+
             txtMontoIVA5.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
                 public void changedUpdate(DocumentEvent e) {
@@ -138,6 +165,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                             Integer i = ((Number) txtMontoIVA5.getValue()).intValue();
                             Integer x = ((Number) Math.round(i / 21.0)).intValue();
                             txtIVA5.setValue(x);
+                            createAndUpdateAsientoInicial();
                         }
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -168,6 +196,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                             Integer i = ((Number) txtMontoIVA10.getValue()).intValue();
                             Integer x = ((Number) Math.round(i / 11.0)).intValue();
                             txtIVA10.setValue(x);
+                            createAndUpdateAsientoInicial();
                         }
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -202,6 +231,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                             }
                         }
                     });
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -231,6 +261,9 @@ public class FrameFacturasCompra extends JInternalFrame {
         rucTableCellRenderer1 = new com.parah.mg.utils.RucTableCellRenderer();
         condicionFacturaTableCellRenderer1 = new com.parah.mg.utils.CondicionFacturaTableCellRenderer();
         integerLongConverter1 = new com.parah.mg.utils.IntegerLongConverter();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        queryCuentasContablesPorDefecto = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCuentasContablesPorDefecto t");
+        listCuentasContablesPorDefecto = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCuentasContablesPorDefecto.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         fechahoraLabel = new javax.swing.JLabel();
@@ -246,9 +279,9 @@ public class FrameFacturasCompra extends JInternalFrame {
         rucField = new javax.swing.JTextField();
         idMiembroLabel2 = new javax.swing.JLabel();
         dtpFecha = new org.jdesktop.swingx.JXDatePicker();
-        txtExentas = new javax.swing.JFormattedTextField();
+        txtMontoExentas = new javax.swing.JFormattedTextField();
         idMiembroLabel3 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        txtNro = new javax.swing.JFormattedTextField();
         txtTimbrado = new javax.swing.JFormattedTextField();
         idLabel1 = new javax.swing.JLabel();
         dtpVencimientoTimbrado = new org.jdesktop.swingx.JXDatePicker();
@@ -269,6 +302,10 @@ public class FrameFacturasCompra extends JInternalFrame {
         txtRazonSocial = new javax.swing.JTextField();
         rbContado = new javax.swing.JRadioButton();
         rbCredito = new javax.swing.JRadioButton();
+        idLabel2 = new javax.swing.JLabel();
+        txtCuotas = new javax.swing.JFormattedTextField();
+        fechahoraLabel2 = new javax.swing.JLabel();
+        dtpVencimientoFactura = new org.jdesktop.swingx.JXDatePicker();
 
         FormListener formListener = new FormListener();
 
@@ -278,18 +315,16 @@ public class FrameFacturasCompra extends JInternalFrame {
 
         condicionFacturaTableCellRenderer1.setText("condicionFacturaTableCellRenderer1");
 
-        addInternalFrameListener(formListener);
-
         masterTable.setAutoCreateRowSorter(true);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nro}"));
         columnBinding.setColumnName("Nro");
-        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nroTimbrado}"));
         columnBinding.setColumnName("Timbrado");
-        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha");
         columnBinding.setColumnClass(java.util.Date.class);
@@ -381,37 +416,42 @@ public class FrameFacturasCompra extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        txtExentas.setColumns(9);
-        txtExentas.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        txtExentas.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        txtExentas.setText("0");
+        txtMontoExentas.setColumns(9);
+        txtMontoExentas.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        txtMontoExentas.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        txtMontoExentas.setText("0");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoExentas}"), txtExentas, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoExentas}"), txtMontoExentas, org.jdesktop.beansbinding.BeanProperty.create("value"));
         binding.setConverter(integerLongConverter1);
         bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtExentas, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtMontoExentas, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        txtExentas.addFocusListener(formListener);
-        txtExentas.addMouseListener(formListener);
-        txtExentas.addActionListener(formListener);
+        txtMontoExentas.addFocusListener(formListener);
+        txtMontoExentas.addMouseListener(formListener);
+        txtMontoExentas.addActionListener(formListener);
 
         idMiembroLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel3.setText("RUC:");
 
         try {
-            jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###-###-#######")));
+            txtNro.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###-###-#######")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), jFormattedTextField1, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nro}"), txtNro, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtNro, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        txtTimbrado.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        try {
+            txtTimbrado.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("########")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nroTimbrado}"), txtTimbrado, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        binding.setConverter(integerLongConverter1);
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtTimbrado, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -475,7 +515,7 @@ public class FrameFacturasCompra extends JInternalFrame {
         txtIVA5.addMouseListener(formListener);
         txtIVA5.addActionListener(formListener);
 
-        montoLabel3.setText("Monto incl. IVA 5%:");
+        montoLabel3.setText("Monto IVA 5%:");
 
         txtIVA10.setColumns(9);
         txtIVA10.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
@@ -492,8 +532,9 @@ public class FrameFacturasCompra extends JInternalFrame {
         txtIVA10.addMouseListener(formListener);
         txtIVA10.addActionListener(formListener);
 
-        montoLabel4.setText("Monto incl. IVA 10%:");
+        montoLabel4.setText("Monto IVA 10%:");
 
+        asientosTable.setAutoCreateRowSorter(true);
         asientosTable.setRowHeight(20);
         asientosTable.setRowSelectionAllowed(false);
 
@@ -512,7 +553,9 @@ public class FrameFacturasCompra extends JInternalFrame {
         columnBinding.setColumnName("Importe");
         columnBinding.setColumnClass(Integer.class);
         bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
+        jTableBinding.bind();binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), asientosTable, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
         jScrollPane1.setViewportView(asientosTable);
         if (asientosTable.getColumnModel().getColumnCount() > 0) {
             asientosTable.getColumnModel().getColumn(3).setCellRenderer(numberCellRenderer1);
@@ -539,14 +582,44 @@ public class FrameFacturasCompra extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtRazonSocial, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        buttonGroup1.add(rbContado);
         rbContado.setText("Contado");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.condicionContado}"), rbContado, org.jdesktop.beansbinding.BeanProperty.create("selected"));
         binding.setSourceNullValue(false);
         binding.setSourceUnreadableValue(false);
         bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), rbContado, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
 
+        buttonGroup1.add(rbCredito);
         rbCredito.setText("Credito");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), rbCredito, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        idLabel2.setDisplayedMnemonic('N');
+        idLabel2.setText("Catidad de Cuotas:");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, rbCredito, org.jdesktop.beansbinding.ELProperty.create("${selected}"), idLabel2, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        txtCuotas.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.cuotasCredito}"), txtCuotas, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, rbCredito, org.jdesktop.beansbinding.ELProperty.create("${selected}"), txtCuotas, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        fechahoraLabel2.setText("Vencimiento de Factura:");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, rbCredito, org.jdesktop.beansbinding.ELProperty.create("${selected}"), fechahoraLabel2, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechaVencimientoCredito}"), dtpVencimientoFactura, org.jdesktop.beansbinding.BeanProperty.create("date"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, rbCredito, org.jdesktop.beansbinding.ELProperty.create("${selected}"), dtpVencimientoFactura, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -555,12 +628,74 @@ public class FrameFacturasCompra extends JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(masterScrollPane)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(newButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(idMiembroLabel)
+                                .addGap(42, 42, 42)
+                                .addComponent(idMiembroLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(idMiembroLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cmdAddAsiento)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmdBorrarAsiento))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(fechahoraLabel)
+                                    .addComponent(idLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtNro, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(idLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(fechahoraLabel1))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(rbContado)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(rbCredito)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(idLabel2)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(dtpVencimientoTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtCuotas, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(fechahoraLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(dtpVencimientoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(conceptoLabel)
+                                    .addGap(8, 8, 8)
+                                    .addComponent(conceptoField))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(montoLabel5)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(txtExentas, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtMontoExentas, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(montoLabel2)
@@ -580,67 +715,9 @@ public class FrameFacturasCompra extends JInternalFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(montoLabel3)
                                         .addGap(18, 18, 18)
-                                        .addComponent(txtIVA5, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(montoLabel5)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cmdAddAsiento)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmdBorrarAsiento)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(masterScrollPane)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(newButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deleteButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(refreshButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(saveButton))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(idMiembroLabel)
-                                .addGap(42, 42, 42)
-                                .addComponent(idMiembroLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(idMiembroLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtRazonSocial))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(fechahoraLabel)
-                                            .addComponent(idLabel))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(rbContado)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(rbCredito))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(idLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(fechahoraLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(dtpVencimientoTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addComponent(conceptoLabel)
-                                            .addGap(8, 8, 8)
-                                            .addComponent(conceptoField))
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 207, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                                        .addComponent(txtIVA5, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, newButton, refreshButton, saveButton});
@@ -653,7 +730,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(idLabel))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -665,8 +742,12 @@ public class FrameFacturasCompra extends JInternalFrame {
                     .addComponent(fechahoraLabel)
                     .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rbContado)
-                    .addComponent(rbCredito))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(rbCredito)
+                    .addComponent(idLabel2)
+                    .addComponent(txtCuotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fechahoraLabel2)
+                    .addComponent(dtpVencimientoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idMiembroLabel)
                     .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -678,7 +759,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(montoLabel)
-                            .addComponent(txtExentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtMontoExentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(montoLabel1)
@@ -695,7 +776,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(montoLabel4))))
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
                 .addComponent(montoLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -713,7 +794,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                     .addComponent(refreshButton)
                     .addComponent(deleteButton)
                     .addComponent(newButton))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         bindingGroup.bind();
@@ -721,7 +802,7 @@ public class FrameFacturasCompra extends JInternalFrame {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener, java.awt.event.MouseListener, javax.swing.event.InternalFrameListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener, java.awt.event.MouseListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -739,8 +820,8 @@ public class FrameFacturasCompra extends JInternalFrame {
             else if (evt.getSource() == rucField) {
                 FrameFacturasCompra.this.rucFieldActionPerformed(evt);
             }
-            else if (evt.getSource() == txtExentas) {
-                FrameFacturasCompra.this.txtExentasActionPerformed(evt);
+            else if (evt.getSource() == txtMontoExentas) {
+                FrameFacturasCompra.this.txtMontoExentasActionPerformed(evt);
             }
             else if (evt.getSource() == txtMontoIVA5) {
                 FrameFacturasCompra.this.txtMontoIVA5ActionPerformed(evt);
@@ -766,8 +847,8 @@ public class FrameFacturasCompra extends JInternalFrame {
             if (evt.getSource() == rucField) {
                 FrameFacturasCompra.this.rucFieldFocusGained(evt);
             }
-            else if (evt.getSource() == txtExentas) {
-                FrameFacturasCompra.this.txtExentasFocusGained(evt);
+            else if (evt.getSource() == txtMontoExentas) {
+                FrameFacturasCompra.this.txtMontoExentasFocusGained(evt);
             }
             else if (evt.getSource() == txtMontoIVA5) {
                 FrameFacturasCompra.this.txtMontoIVA5FocusGained(evt);
@@ -805,8 +886,8 @@ public class FrameFacturasCompra extends JInternalFrame {
         }
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
-            if (evt.getSource() == txtExentas) {
-                FrameFacturasCompra.this.txtExentasMouseClicked(evt);
+            if (evt.getSource() == txtMontoExentas) {
+                FrameFacturasCompra.this.txtMontoExentasMouseClicked(evt);
             }
             else if (evt.getSource() == txtMontoIVA5) {
                 FrameFacturasCompra.this.txtMontoIVA5MouseClicked(evt);
@@ -832,30 +913,6 @@ public class FrameFacturasCompra extends JInternalFrame {
         }
 
         public void mouseReleased(java.awt.event.MouseEvent evt) {
-        }
-
-        public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            if (evt.getSource() == FrameFacturasCompra.this) {
-                FrameFacturasCompra.this.formInternalFrameActivated(evt);
-            }
-        }
-
-        public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
-        }
-
-        public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-        }
-
-        public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
-        }
-
-        public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
-        }
-
-        public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
-        }
-
-        public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
         }
     }// </editor-fold>//GEN-END:initComponents
 
@@ -910,6 +967,7 @@ public class FrameFacturasCompra extends JInternalFrame {
             com.parah.mg.domain.TblFacturasCompra t = new com.parah.mg.domain.TblFacturasCompra();
             entityManager.persist(t);
             t.setIdUser(currentUser.getUser());
+            t.setCondicionContado(true);
             list.add(t);
             int row = list.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
@@ -944,10 +1002,6 @@ public class FrameFacturasCompra extends JInternalFrame {
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
-
-    }//GEN-LAST:event_formInternalFrameActivated
-
     private void rucFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rucFieldFocusGained
         try {
             rucField.selectAll();
@@ -975,17 +1029,17 @@ public class FrameFacturasCompra extends JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_rucFieldKeyTyped
 
-    private void txtExentasFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtExentasFocusGained
-        txtExentas.selectAll();
-    }//GEN-LAST:event_txtExentasFocusGained
+    private void txtMontoExentasFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMontoExentasFocusGained
+        txtMontoExentas.selectAll();
+    }//GEN-LAST:event_txtMontoExentasFocusGained
 
-    private void txtExentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtExentasMouseClicked
+    private void txtMontoExentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtMontoExentasMouseClicked
 
-    }//GEN-LAST:event_txtExentasMouseClicked
+    }//GEN-LAST:event_txtMontoExentasMouseClicked
 
-    private void txtExentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtExentasActionPerformed
+    private void txtMontoExentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMontoExentasActionPerformed
 
-    }//GEN-LAST:event_txtExentasActionPerformed
+    }//GEN-LAST:event_txtMontoExentasActionPerformed
 
     private void txtMontoIVA5FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMontoIVA5FocusGained
         // TODO add your handling code here:
@@ -1067,34 +1121,81 @@ public class FrameFacturasCompra extends JInternalFrame {
     }//GEN-LAST:event_cmdBorrarAsientoActionPerformed
 
     private void cmdAddAsientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAddAsientoActionPerformed
-
-        int index = masterTable.getSelectedRow();
-        TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
-        Collection<TblAsientos> ts = T.getTblAsientosList();
-        if (ts == null) {
-            ts = new LinkedList<>();
-            T.setTblAsientosList((List) ts);
-        }
-        TblAsientos t = new TblAsientos();
-        t.setFechahora(T.getFechahora());
-        t.setIdUser(currentUser.getUser());
-        entityManager.persist(t);
-        ts.add(t);
-        masterTable.clearSelection();
-        masterTable.setRowSelectionInterval(index, index);
-        int row = ts.size() - 1;
-        asientosTable.setRowSelectionInterval(row, row);
-        asientosTable.scrollRectToVisible(asientosTable.getCellRect(row, 0, true));
-
-        if (asientosTable.getColumnModel().getColumnCount() > 0) {
-            asientosTable.getColumn("Centro de Costo").setCellEditor(new DefaultCellEditor(cboCentroDeCosto));
-            asientosTable.getColumn("Cuenta Contable Debe").setCellEditor(new DefaultCellEditor(cboCuentaDebe));
-            asientosTable.getColumn("Cuenta Contable Haber").setCellEditor(new DefaultCellEditor(cboCuentaHaber));
-        }
+        addAsiento();
     }//GEN-LAST:event_cmdAddAsientoActionPerformed
+
+    private void addAsiento() {
+        try {
+            int index = masterTable.getSelectedRow();
+            TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
+            Collection<TblAsientos> ts = T.getTblAsientosList();
+            if (ts == null) {
+                ts = new LinkedList<>();
+                T.setTblAsientosList((List) ts);
+            }
+            TblAsientos t = new TblAsientos();
+            t.setFechahora(T.getFechahora());
+            t.setIdUser(currentUser.getUser());
+            entityManager.persist(t);
+            ts.add(t);
+            masterTable.clearSelection();
+            masterTable.setRowSelectionInterval(index, index);
+            int row = ts.size() - 1;
+            asientosTable.setRowSelectionInterval(row, row);
+            asientosTable.scrollRectToVisible(asientosTable.getCellRect(row, 0, true));
+
+            if (asientosTable.getColumnModel().getColumnCount() > 0) {
+                asientosTable.getColumn("Centro de Costo").setCellEditor(new DefaultCellEditor(cboCentroDeCosto));
+                asientosTable.getColumn("Cuenta Contable Debe").setCellEditor(new DefaultCellEditor(cboCuentaDebe));
+                asientosTable.getColumn("Cuenta Contable Haber").setCellEditor(new DefaultCellEditor(cboCuentaHaber));
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }
+
+    private void createAndUpdateAsientoInicial() {
+        try {
+            if (masterTable.getSelectedRow() > -1) {
+                int index = masterTable.getSelectedRow();
+                TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
+                List<TblAsientos> ts = T.getTblAsientosList();
+                if (ts != null) {
+                    if (ts.size() == 1) {
+                        TblAsientos asiento = ts.get(0);
+                        /*asiento.setMonto(((Long) ((Long) (txtMontoExentas.getValue() != null ? txtMontoExentas.getValue() : 0)
+                            + (Long) (txtMontoIVA5.getValue() != null ? txtMontoIVA5.getValue() : 0)
+                            + (Long) (txtMontoIVA10.getValue() != null ? txtMontoIVA10.getValue() : 0))).intValue());*/
+                        asiento.setFechahora(T.getFechahora());
+                        asiento.setMonto(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10());
+                        entityManager.merge(asiento);
+                    }
+                } else {
+                    addAsiento();
+                    ts = T.getTblAsientosList();
+                    TblAsientos asiento = ts.get(0);
+                    asiento.setMonto(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10());
+                    asiento.setIdCentroDeCosto(listCentrosDeCosto.get(0));
+                    asiento.setIdCuentaContableDebe(listCuentasContablesPorDefecto.get(0).getIdCuentaDebeCompras());
+                    if (T.getCondicionContado()) {
+                        asiento.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaContado());
+                    } else {
+                        asiento.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaCredito());
+                    }
+                    entityManager.merge(asiento);
+                }
+
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable asientosTable;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cmdAddAsiento;
     private javax.swing.JButton cmdBorrarAsiento;
     private javax.swing.JTextField conceptoField;
@@ -1102,22 +1203,25 @@ public class FrameFacturasCompra extends JInternalFrame {
     private com.parah.mg.utils.CondicionFacturaTableCellRenderer condicionFacturaTableCellRenderer1;
     private javax.swing.JButton deleteButton;
     private org.jdesktop.swingx.JXDatePicker dtpFecha;
+    private org.jdesktop.swingx.JXDatePicker dtpVencimientoFactura;
     private org.jdesktop.swingx.JXDatePicker dtpVencimientoTimbrado;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fechahoraLabel;
     private javax.swing.JLabel fechahoraLabel1;
+    private javax.swing.JLabel fechahoraLabel2;
     private javax.swing.JLabel idLabel;
     private javax.swing.JLabel idLabel1;
+    private javax.swing.JLabel idLabel2;
     private javax.swing.JLabel idMiembroLabel;
     private javax.swing.JLabel idMiembroLabel2;
     private javax.swing.JLabel idMiembroLabel3;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JScrollPane jScrollPane1;
     private java.util.List<com.parah.mg.domain.TblFacturasCompra> list;
     private java.util.List<com.parah.mg.domain.TblCentrosDeCosto> listCentrosDeCosto;
     private java.util.List<com.parah.mg.domain.TblContribuyentes> listContribuyentes;
     private java.util.List<com.parah.mg.domain.TblCuentasContables> listCuentasContables;
+    private java.util.List<com.parah.mg.domain.TblCuentasContablesPorDefecto> listCuentasContablesPorDefecto;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JLabel montoLabel;
@@ -1132,17 +1236,20 @@ public class FrameFacturasCompra extends JInternalFrame {
     private javax.persistence.Query queryCentrosDeCosto;
     private javax.persistence.Query queryContribuyentes;
     private javax.persistence.Query queryCuentasContables;
+    private javax.persistence.Query queryCuentasContablesPorDefecto;
     private javax.swing.JRadioButton rbContado;
     private javax.swing.JRadioButton rbCredito;
     private javax.swing.JButton refreshButton;
     private javax.swing.JTextField rucField;
     private com.parah.mg.utils.RucTableCellRenderer rucTableCellRenderer1;
     private javax.swing.JButton saveButton;
-    private javax.swing.JFormattedTextField txtExentas;
+    private javax.swing.JFormattedTextField txtCuotas;
     private javax.swing.JFormattedTextField txtIVA10;
     private javax.swing.JFormattedTextField txtIVA5;
+    private javax.swing.JFormattedTextField txtMontoExentas;
     private javax.swing.JFormattedTextField txtMontoIVA10;
     private javax.swing.JFormattedTextField txtMontoIVA5;
+    private javax.swing.JFormattedTextField txtNro;
     private javax.swing.JTextField txtRazonSocial;
     private javax.swing.JFormattedTextField txtTimbrado;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
