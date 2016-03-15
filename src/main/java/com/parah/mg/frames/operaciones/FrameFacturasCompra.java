@@ -22,7 +22,9 @@ import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -40,6 +42,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 import org.apache.logging.log4j.LogManager;
@@ -134,7 +138,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                 public void process() {
                     try {
                         if (txtMontoExentas.getText().length() > 0 && txtMontoExentas.getValue() != null) {
-                            createAndUpdateAsientoInicial();
+                            updateAsientoInicial();
                         }
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -165,7 +169,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                             Integer i = ((Number) txtMontoIVA5.getValue()).intValue();
                             Integer x = ((Number) Math.round(i / 21.0)).intValue();
                             txtIVA5.setValue(x);
-                            createAndUpdateAsientoInicial();
+                            updateAsientoInicial();
                         }
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -196,11 +200,25 @@ public class FrameFacturasCompra extends JInternalFrame {
                             Integer i = ((Number) txtMontoIVA10.getValue()).intValue();
                             Integer x = ((Number) Math.round(i / 11.0)).intValue();
                             txtIVA10.setValue(x);
-                            createAndUpdateAsientoInicial();
+                            updateAsientoInicial();
                         }
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
                         LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+                    }
+                }
+            });
+
+            masterTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent lse) {
+                    if (!lse.getValueIsAdjusting()) {
+                        if (asientosTable.getColumnModel().getColumnCount() > 0) {
+                            asientosTable.getColumn("Centro de Costo").setCellEditor(new DefaultCellEditor(cboCentroDeCosto));
+                            asientosTable.getColumn("Cuenta Contable Debe").setCellEditor(new DefaultCellEditor(cboCuentaDebe));
+                            asientosTable.getColumn("Cuenta Contable Haber").setCellEditor(new DefaultCellEditor(cboCuentaHaber));
+                            asientosTable.getColumnModel().getColumn(3).setCellRenderer(numberCellRenderer1);
+                        }
                     }
                 }
             });
@@ -416,6 +434,8 @@ public class FrameFacturasCompra extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        dtpFecha.addPropertyChangeListener(formListener);
+
         txtMontoExentas.setColumns(9);
         txtMontoExentas.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         txtMontoExentas.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
@@ -504,6 +524,7 @@ public class FrameFacturasCompra extends JInternalFrame {
         txtIVA5.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         txtIVA5.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
         txtIVA5.setText("0");
+        txtIVA5.setFocusable(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.iva5}"), txtIVA5, org.jdesktop.beansbinding.BeanProperty.create("value"));
         binding.setConverter(integerLongConverter1);
@@ -536,7 +557,6 @@ public class FrameFacturasCompra extends JInternalFrame {
 
         asientosTable.setAutoCreateRowSorter(true);
         asientosTable.setRowHeight(20);
-        asientosTable.setRowSelectionAllowed(false);
 
         org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.tblAsientosList}");
         jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, eLProperty, asientosTable);
@@ -598,6 +618,8 @@ public class FrameFacturasCompra extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), rbCredito, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        rbCredito.addActionListener(formListener);
+
         idLabel2.setDisplayedMnemonic('N');
         idLabel2.setText("Catidad de Cuotas:");
 
@@ -607,6 +629,7 @@ public class FrameFacturasCompra extends JInternalFrame {
         txtCuotas.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.cuotasCredito}"), txtCuotas, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding.setConverter(integerLongConverter1);
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, rbCredito, org.jdesktop.beansbinding.ELProperty.create("${selected}"), txtCuotas, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -802,7 +825,7 @@ public class FrameFacturasCompra extends JInternalFrame {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener, java.awt.event.MouseListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener, java.awt.event.MouseListener, java.beans.PropertyChangeListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -840,6 +863,9 @@ public class FrameFacturasCompra extends JInternalFrame {
             }
             else if (evt.getSource() == cmdAddAsiento) {
                 FrameFacturasCompra.this.cmdAddAsientoActionPerformed(evt);
+            }
+            else if (evt.getSource() == rbCredito) {
+                FrameFacturasCompra.this.rbCreditoActionPerformed(evt);
             }
         }
 
@@ -914,6 +940,12 @@ public class FrameFacturasCompra extends JInternalFrame {
 
         public void mouseReleased(java.awt.event.MouseEvent evt) {
         }
+
+        public void propertyChange(java.beans.PropertyChangeEvent evt) {
+            if (evt.getSource() == dtpFecha) {
+                FrameFacturasCompra.this.dtpFechaPropertyChange(evt);
+            }
+        }
     }// </editor-fold>//GEN-END:initComponents
 
     void refresh() {
@@ -964,15 +996,16 @@ public class FrameFacturasCompra extends JInternalFrame {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         try {
-            com.parah.mg.domain.TblFacturasCompra t = new com.parah.mg.domain.TblFacturasCompra();
+            TblFacturasCompra t = new TblFacturasCompra();
             entityManager.persist(t);
             t.setIdUser(currentUser.getUser());
             t.setCondicionContado(true);
             list.add(t);
+
             int row = list.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
-
+            createAsientoInicial();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -1124,6 +1157,20 @@ public class FrameFacturasCompra extends JInternalFrame {
         addAsiento();
     }//GEN-LAST:event_cmdAddAsientoActionPerformed
 
+    private void dtpFechaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dtpFechaPropertyChange
+
+    }//GEN-LAST:event_dtpFechaPropertyChange
+
+    private void rbCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCreditoActionPerformed
+        if (rbCredito.isSelected()) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(dtpFecha.getDate());
+            c.set(Calendar.DATE, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+            dtpVencimientoFactura.setDate(c.getTime());
+            txtCuotas.setValue(1L);
+        }
+    }//GEN-LAST:event_rbCreditoActionPerformed
+
     private void addAsiento() {
         try {
             int index = masterTable.getSelectedRow();
@@ -1136,18 +1183,31 @@ public class FrameFacturasCompra extends JInternalFrame {
             TblAsientos t = new TblAsientos();
             t.setFechahora(T.getFechahora());
             t.setIdUser(currentUser.getUser());
+
+            t.setIdCentroDeCosto(listCentrosDeCosto.get(0));
+            t.setIdCuentaContableDebe(listCuentasContablesPorDefecto.get(0).getIdCuentaDebeCompras());
+            if (T.getCondicionContado()) {
+                t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaContado());
+            } else {
+                t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaCredito());
+            }
+            if (ts.isEmpty()) {
+                t.setMonto(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10());
+            }
             entityManager.persist(t);
             ts.add(t);
+
             masterTable.clearSelection();
             masterTable.setRowSelectionInterval(index, index);
             int row = ts.size() - 1;
             asientosTable.setRowSelectionInterval(row, row);
             asientosTable.scrollRectToVisible(asientosTable.getCellRect(row, 0, true));
-
-            if (asientosTable.getColumnModel().getColumnCount() > 0) {
+            if (asientosTable.getColumnModel().getColumnCount() > 0 && asientosTable.getRowCount() == 1) {
                 asientosTable.getColumn("Centro de Costo").setCellEditor(new DefaultCellEditor(cboCentroDeCosto));
                 asientosTable.getColumn("Cuenta Contable Debe").setCellEditor(new DefaultCellEditor(cboCuentaDebe));
                 asientosTable.getColumn("Cuenta Contable Haber").setCellEditor(new DefaultCellEditor(cboCuentaHaber));
+                asientosTable.getColumn("Importe").setCellEditor(new DefaultCellEditor(txtMontoExentas));
+                asientosTable.getColumnModel().getColumn(3).setCellRenderer(numberCellRenderer1);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -1155,7 +1215,16 @@ public class FrameFacturasCompra extends JInternalFrame {
         }
     }
 
-    private void createAndUpdateAsientoInicial() {
+    private void createAsientoInicial() {
+        try {
+            addAsiento();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }
+
+    private void updateAsientoInicial() {
         try {
             if (masterTable.getSelectedRow() > -1) {
                 int index = masterTable.getSelectedRow();
@@ -1163,27 +1232,15 @@ public class FrameFacturasCompra extends JInternalFrame {
                 List<TblAsientos> ts = T.getTblAsientosList();
                 if (ts != null) {
                     if (ts.size() == 1) {
+                        asientosTable.getModel().setValueAt(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10(), 0, 3);
                         TblAsientos asiento = ts.get(0);
                         /*asiento.setMonto(((Long) ((Long) (txtMontoExentas.getValue() != null ? txtMontoExentas.getValue() : 0)
                             + (Long) (txtMontoIVA5.getValue() != null ? txtMontoIVA5.getValue() : 0)
                             + (Long) (txtMontoIVA10.getValue() != null ? txtMontoIVA10.getValue() : 0))).intValue());*/
                         asiento.setFechahora(T.getFechahora());
-                        asiento.setMonto(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10());
+                        //asiento.setMonto(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10());
                         entityManager.merge(asiento);
                     }
-                } else {
-                    addAsiento();
-                    ts = T.getTblAsientosList();
-                    TblAsientos asiento = ts.get(0);
-                    asiento.setMonto(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10());
-                    asiento.setIdCentroDeCosto(listCentrosDeCosto.get(0));
-                    asiento.setIdCuentaContableDebe(listCuentasContablesPorDefecto.get(0).getIdCuentaDebeCompras());
-                    if (T.getCondicionContado()) {
-                        asiento.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaContado());
-                    } else {
-                        asiento.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaCredito());
-                    }
-                    entityManager.merge(asiento);
                 }
 
             }
