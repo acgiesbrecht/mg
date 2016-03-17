@@ -66,6 +66,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
             TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
             filterHeader.setAdaptiveChoices(false);
+            filterHeader.getParserModel().setIgnoreCase(true);
             filterHeader.setPosition(TableFilterHeader.Position.TOP);
 
         } catch (Exception ex) {
@@ -300,6 +301,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     + "     FROM TBL_ENTIDADES m"
                     + "     LEFT JOIN TBL_FACTURAS f ON m.id = f.id_entidad "
                     + "     WHERE YEAR(f.fechahora) >= " + ano
+                    + "     AND f.anulado = false"
                     + "     GROUP BY m.id"
                     + "	) facturas ON m.id = facturas.id", PagosRealizados.class).getResultList();
             TblEntidades m;

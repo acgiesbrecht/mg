@@ -78,6 +78,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
             filterHeader.setAdaptiveChoices(false);
             filterHeader.setPosition(TableFilterHeader.Position.TOP);
+            filterHeader.getParserModel().setIgnoreCase(true);
 
             AutoCompleteSupport support = AutoCompleteSupport.install(cboFormaDePago, GlazedLists.eventListOf(listFormasDePago.toArray()));
             support.setFilterMode(TextMatcherEditor.CONTAINS);

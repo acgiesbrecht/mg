@@ -69,6 +69,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
         filterHeader.setPosition(TableFilterHeader.Position.TOP);
         filterHeader.setAdaptiveChoices(false);
+        filterHeader.getParserModel().setIgnoreCase(true);
 
         AutoCompleteSupport support2 = AutoCompleteSupport.install(cboEvento, GlazedLists.eventListOf(listEventos.toArray()));
         support2.setFilterMode(TextMatcherEditor.CONTAINS);

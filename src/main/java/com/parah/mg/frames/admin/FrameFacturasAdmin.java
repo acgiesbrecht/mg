@@ -57,6 +57,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
 
         TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
         filterHeader.setAdaptiveChoices(false);
+        filterHeader.getParserModel().setIgnoreCase(true);
         filterHeader.setPosition(TableFilterHeader.Position.TOP);
     }
 

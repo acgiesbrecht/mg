@@ -25,6 +25,7 @@ import com.parah.mg.frames.informes.FrameInformesContabilidad;
 import com.parah.mg.frames.informes.FrameInformesCyA;
 import com.parah.mg.frames.informes.FrameInformesRemates;
 import com.parah.mg.frames.operaciones.FrameAportesDetalle;
+import com.parah.mg.frames.operaciones.FrameAsientosManuales;
 import com.parah.mg.frames.operaciones.FrameCobrarTransferencias;
 import com.parah.mg.frames.operaciones.FrameCobrarTransferenciasAyC;
 import com.parah.mg.frames.operaciones.FrameColectasDetalle;
@@ -134,6 +135,7 @@ public class MdiFrame extends javax.swing.JFrame {
                             mnuOpCobrarTransferenciasAyC.setEnabled(currentUser.hasRole(2));
 
                             mnuEgFacturas.setEnabled(currentUser.hasRole(2));
+                            mnuEgAsientosManuales.setEnabled(currentUser.hasRole(3));
 
                             mnuAdMiembros.setEnabled(currentUser.hasRole(2));
 
@@ -263,6 +265,7 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
+        mnuEgAsientosManuales = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         mnuAdInformes = new javax.swing.JMenuItem();
         mnuInformesCyA = new javax.swing.JMenuItem();
@@ -419,6 +422,15 @@ public class MdiFrame extends javax.swing.JFrame {
         jMenuItem6.setText("Recibos");
         jMenuItem6.setEnabled(false);
         jMenu5.add(jMenuItem6);
+
+        mnuEgAsientosManuales.setText("Asientos Manuales");
+        mnuEgAsientosManuales.setEnabled(false);
+        mnuEgAsientosManuales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuEgAsientosManualesActionPerformed(evt);
+            }
+        });
+        jMenu5.add(mnuEgAsientosManuales);
 
         jMenuBar1.add(jMenu5);
 
@@ -1062,6 +1074,22 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuInformesContabilidadActionPerformed
 
+    private void mnuEgAsientosManualesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuEgAsientosManualesActionPerformed
+        try {
+            FrameAsientosManuales frame = new FrameAsientosManuales();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+
+    }//GEN-LAST:event_mnuEgAsientosManualesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1142,6 +1170,7 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAdTimbrados;
     private javax.swing.JMenuItem mnuAdTransf;
     private javax.swing.JMenuItem mnuAdUsuarios;
+    private javax.swing.JMenuItem mnuEgAsientosManuales;
     private javax.swing.JMenuItem mnuEgFacturas;
     private javax.swing.JMenuItem mnuInformesContabilidad;
     private javax.swing.JMenuItem mnuInformesCyA;

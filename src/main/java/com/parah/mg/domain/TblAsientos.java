@@ -7,6 +7,7 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,6 +24,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -61,6 +64,8 @@ public class TblAsientos implements Serializable {
     @JoinColumn(name = "ID_CUENTA_CONTABLE_DEBE", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCuentasContables idCuentaContableDebe;
+    @ManyToMany(mappedBy = "tblAsientosList")
+    private List<TblFacturasCompra> tblFacturasCompraList;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
@@ -157,6 +162,21 @@ public class TblAsientos implements Serializable {
     @Override
     public String toString() {
         return "com.parah.mg.domain.TblAsientos[ id=" + id + " ]";
+    }
+
+    /**
+     * @return the tblFacturasCompraList
+     */
+    @XmlTransient
+    public List<TblFacturasCompra> getTblFacturasCompraList() {
+        return tblFacturasCompraList;
+    }
+
+    /**
+     * @param tblFacturasCompraList the tblFacturasCompraList to set
+     */
+    public void setTblFacturasCompraList(List<TblFacturasCompra> tblFacturasCompraList) {
+        this.tblFacturasCompraList = tblFacturasCompraList;
     }
 
 }

@@ -58,6 +58,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
 
         TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
         filterHeader.setAdaptiveChoices(false);
+        filterHeader.getParserModel().setIgnoreCase(true);
         filterHeader.setPosition(TableFilterHeader.Position.TOP);
 
         Action marcarCobrado = new AbstractAction() {

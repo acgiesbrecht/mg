@@ -70,6 +70,7 @@ public class FrameCobrarTransferencias extends JInternalFrame {
 
         TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
         filterHeader.setAdaptiveChoices(false);
+        filterHeader.getParserModel().setIgnoreCase(true);
         filterHeader.setPosition(TableFilterHeader.Position.TOP);
 
         AutoCompleteSupport support2 = AutoCompleteSupport.install(cboEvento, GlazedLists.eventListOf(listEventos.toArray()));

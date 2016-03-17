@@ -79,6 +79,7 @@ public class FrameFacturasCompra extends JInternalFrame {
             TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
             filterHeader.setPosition(TableFilterHeader.Position.TOP);
             filterHeader.setAdaptiveChoices(false);
+            filterHeader.getParserModel().setIgnoreCase(true);
 
             AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
@@ -1194,9 +1195,9 @@ public class FrameFacturasCompra extends JInternalFrame {
             if (ts.isEmpty()) {
                 t.setMonto(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10());
             }
-            entityManager.persist(t);
-            ts.add(t);
 
+            T.getTblAsientosList().add(t);
+            entityManager.merge(T);
             masterTable.clearSelection();
             masterTable.setRowSelectionInterval(index, index);
             int row = ts.size() - 1;
