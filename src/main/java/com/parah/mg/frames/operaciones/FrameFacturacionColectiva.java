@@ -262,6 +262,10 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
     private void generate() {
         try {
+            if (listTimbrados.size() < 1) {
+                JOptionPane.showMessageDialog(null, "Debe tener un timbrado activo para poder facturar.");
+                return;
+            }
             list.clear();
             list.addAll(query.getResultList());
             int siguienteFacturaNro;
