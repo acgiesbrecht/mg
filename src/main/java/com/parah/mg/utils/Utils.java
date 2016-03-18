@@ -241,6 +241,17 @@ public class Utils extends Component {
         }
     }
 
+    public void showReport(String reportFile, String subReportFile, Map parameters) {
+        try {
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + subReportFile + ".jrxml"));
+            parameters.put("subreportObject", report);
+            showReport(reportFile, parameters);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }
+
     public void showReport(String reportFile, Map parameters) {
         try {
             String url = getPersistenceMap().get("javax.persistence.jdbc.url");

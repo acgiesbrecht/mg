@@ -143,7 +143,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel10.setText("Libro Diario");
+        jLabel10.setText("Libro Mayor");
 
         txtFechaInicioMayor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
 
@@ -331,7 +331,14 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cmdLibroDiarioActionPerformed
 
     private void cmdLibroMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayorActionPerformed
-        // TODO add your handling code here:
+        try {
+            Map parameters = new HashMap();
+            Utils.getInstance().showReport("libro_mayor", "libro_mayor_subreport", parameters);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+
     }//GEN-LAST:event_cmdLibroMayorActionPerformed
 
     private void cmdLibroMayor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayor1ActionPerformed

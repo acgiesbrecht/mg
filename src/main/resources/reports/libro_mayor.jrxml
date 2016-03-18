@@ -2,85 +2,86 @@
 <!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
 <!-- 2016-03-16T20:14:27 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libro_mayor" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MGCB"/>
-	<parameter name="desdeFecha" class="java.util.Date">
-		<parameterDescription><![CDATA[]]></parameterDescription>
-	</parameter>
-	<parameter name="hastaFecha" class="java.util.Date">
-		<parameterDescription><![CDATA[]]></parameterDescription>
-	</parameter>
-	<queryString language="SQL">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="MGCB"/>
+    <parameter name="desdeFecha" class="java.util.Date">
+        <parameterDescription><![CDATA[]]></parameterDescription>
+    </parameter>
+    <parameter name="hastaFecha" class="java.util.Date">
+        <parameterDescription><![CDATA[]]></parameterDescription>
+    </parameter>
+    <parameter name="subreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
+    <queryString language="SQL">
 		<![CDATA[SELECT cc.* FROM  "TBL_CUENTAS_CONTABLES" cc LEFT JOIN
 	(SELECT ID_CUENTA_CONTABLE_DEBE c FROM "TBL_ASIENTOS"
 	UNION ALL
 	SELECT ID_CUENTA_CONTABLE_HABER c FROM "TBL_ASIENTOS") u ON cc.ID = u.c
 WHERE cc.IMPUTABLE = TRUE AND u.c IS NOT NULL
 GROUP BY cc.ID, cc.DESCRIPCION, cc.ID_CUENTA_MADRE, cc.IMPUTABLE]]>
-	</queryString>
-	<field name="ID" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="DESCRIPCION" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="ID_CUENTA_MADRE" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="IMPUTABLE" class="java.lang.Boolean">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
-	<title>
-		<band height="80" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="30" width="554" height="30" uuid="a63323e5-1d25-45b0-bc23-c36c39a4393e"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["de "+$P{desdeFecha}+" a "+$P{hastaFecha}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="0" width="555" height="30" uuid="f4897dda-0521-4f9e-81de-fd9130737515"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[LIBRO MAYOR]]></text>
-			</staticText>
-		</band>
-	</title>
-	<pageHeader>
-		<band height="35" splitType="Stretch"/>
-	</pageHeader>
-	<columnHeader>
-		<band height="23" splitType="Stretch"/>
-	</columnHeader>
-	<detail>
-		<band height="34" splitType="Stretch">
-			<subreport>
-				<reportElement x="0" y="14" width="555" height="20" uuid="d2a3e78e-f05e-418d-a9d4-1d3b98d67e06"/>
-				<subreportParameter name="ctaContable">
-					<subreportParameterExpression><![CDATA[$F{ID}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["libro_mayor_subreport.jasper"]]></subreportExpression>
-			</subreport>
-			<staticText>
-				<reportElement x="0" y="0" width="50" height="14" uuid="81404e3d-68a2-4b7e-8c91-26397a8febc9"/>
-				<text><![CDATA[Cuenta]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="50" y="0" width="270" height="14" uuid="2e3eb9f9-80f4-4e9b-8eaf-6f952c15b245"/>
-				<textFieldExpression><![CDATA[$F{ID} + " - " + $F{DESCRIPCION}]]></textFieldExpression>
-			</textField>
-		</band>
-	</detail>
-	<columnFooter>
-		<band height="53" splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
+    </queryString>
+    <field name="ID" class="java.lang.Integer">
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <field name="DESCRIPCION" class="java.lang.String">
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <field name="ID_CUENTA_MADRE" class="java.lang.Integer">
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <field name="IMPUTABLE" class="java.lang.Boolean">
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="80" splitType="Stretch">
+            <textField>
+                <reportElement x="0" y="30" width="554" height="30" uuid="a63323e5-1d25-45b0-bc23-c36c39a4393e"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["de "+$P{desdeFecha}+" a "+$P{hastaFecha}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="30" uuid="f4897dda-0521-4f9e-81de-fd9130737515"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <text><![CDATA[LIBRO MAYOR]]></text>
+            </staticText>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="35" splitType="Stretch"/>
+    </pageHeader>
+    <columnHeader>
+        <band height="23" splitType="Stretch"/>
+    </columnHeader>
+    <detail>
+        <band height="34" splitType="Stretch">
+            <subreport>
+                <reportElement x="0" y="14" width="555" height="20" uuid="d2a3e78e-f05e-418d-a9d4-1d3b98d67e06"/>
+                <subreportParameter name="ctaContable">
+                    <subreportParameterExpression><![CDATA[$F{ID}]]></subreportParameterExpression>
+                </subreportParameter>
+                <connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+                <subreportExpression class="net.sf.jasperreports.engine.JasperReport"><![CDATA[$P{subreportObject}]]></subreportExpression>
+            </subreport>
+            <staticText>
+                <reportElement x="0" y="0" width="50" height="14" uuid="81404e3d-68a2-4b7e-8c91-26397a8febc9"/>
+                <text><![CDATA[Cuenta]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="50" y="0" width="270" height="14" uuid="2e3eb9f9-80f4-4e9b-8eaf-6f952c15b245"/>
+                <textFieldExpression><![CDATA[$F{ID} + " - " + $F{DESCRIPCION}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band height="53" splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band height="54" splitType="Stretch"/>
+    </pageFooter>
+    <summary>
+        <band height="42" splitType="Stretch"/>
+    </summary>
 </jasperReport>
