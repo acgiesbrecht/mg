@@ -3,19 +3,16 @@
 <!-- 2016-03-16T20:14:27 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libro_mayor" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="MGCB"/>
-    <parameter name="desdeFecha" class="java.util.Date">
-        <parameterDescription><![CDATA[]]></parameterDescription>
-    </parameter>
-    <parameter name="hastaFecha" class="java.util.Date">
-        <parameterDescription><![CDATA[]]></parameterDescription>
-    </parameter>
+    <parameter name="fechaDesde" class="java.util.Date"/>
+    <parameter name="fechaHasta" class="java.util.Date"/>
     <parameter name="subreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
     <queryString language="SQL">
 		<![CDATA[SELECT cc.* FROM  "TBL_CUENTAS_CONTABLES" cc LEFT JOIN
-	(SELECT ID_CUENTA_CONTABLE_DEBE c FROM "TBL_ASIENTOS"
+	(SELECT ID_CUENTA_CONTABLE_DEBE c, FECHAHORA f FROM "TBL_ASIENTOS"
 	UNION ALL
-	SELECT ID_CUENTA_CONTABLE_HABER c FROM "TBL_ASIENTOS") u ON cc.ID = u.c
+	SELECT ID_CUENTA_CONTABLE_HABER c, FECHAHORA f FROM "TBL_ASIENTOS") u ON cc.ID = u.c
 WHERE cc.IMPUTABLE = TRUE AND u.c IS NOT NULL
+AND u.f BETWEEN $P{fechaDesde} AND $P{fechaHasta}
 GROUP BY cc.ID, cc.DESCRIPCION, cc.ID_CUENTA_MADRE, cc.IMPUTABLE]]>
     </queryString>
     <field name="ID" class="java.lang.Integer">
@@ -40,7 +37,7 @@ GROUP BY cc.ID, cc.DESCRIPCION, cc.ID_CUENTA_MADRE, cc.IMPUTABLE]]>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="9" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA["de "+$P{desdeFecha}+" a "+$P{hastaFecha}]]></textFieldExpression>
+                <textFieldExpression><![CDATA["de "+$P{fechaDesde}+" a "+$P{fechaHasta}]]></textFieldExpression>
             </textField>
             <staticText>
                 <reportElement x="0" y="0" width="555" height="30" uuid="f4897dda-0521-4f9e-81de-fd9130737515"/>
@@ -61,6 +58,12 @@ GROUP BY cc.ID, cc.DESCRIPCION, cc.ID_CUENTA_MADRE, cc.IMPUTABLE]]>
                 <reportElement x="0" y="14" width="555" height="20" uuid="d2a3e78e-f05e-418d-a9d4-1d3b98d67e06"/>
                 <subreportParameter name="ctaContable">
                     <subreportParameterExpression><![CDATA[$F{ID}]]></subreportParameterExpression>
+                </subreportParameter>
+                <subreportParameter name="fechaDesde">
+                    <subreportParameterExpression><![CDATA[$P{fechaDesde}]]></subreportParameterExpression>
+                </subreportParameter>
+                <subreportParameter name="fechaHasta">
+                    <subreportParameterExpression><![CDATA[$P{fechaHasta}]]></subreportParameterExpression>
                 </subreportParameter>
                 <connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
                 <subreportExpression class="net.sf.jasperreports.engine.JasperReport"><![CDATA[$P{subreportObject}]]></subreportExpression>

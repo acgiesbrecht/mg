@@ -435,6 +435,7 @@ public class FrameFacturasCompra extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        dtpFecha.addActionListener(formListener);
         dtpFecha.addPropertyChangeListener(formListener);
 
         txtMontoExentas.setColumns(9);
@@ -868,6 +869,9 @@ public class FrameFacturasCompra extends JInternalFrame {
             else if (evt.getSource() == rbCredito) {
                 FrameFacturasCompra.this.rbCreditoActionPerformed(evt);
             }
+            else if (evt.getSource() == dtpFecha) {
+                FrameFacturasCompra.this.dtpFechaActionPerformed(evt);
+            }
         }
 
         public void focusGained(java.awt.event.FocusEvent evt) {
@@ -1171,6 +1175,16 @@ public class FrameFacturasCompra extends JInternalFrame {
             txtCuotas.setValue(1L);
         }
     }//GEN-LAST:event_rbCreditoActionPerformed
+
+    private void dtpFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dtpFechaActionPerformed
+        int index = masterTable.getSelectedRow();
+        TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
+        T.getTblAsientosList().stream().forEach((t) -> {
+            t.setFechahora(dtpFecha.getDate());
+        });
+        entityManager.merge(T);
+
+    }//GEN-LAST:event_dtpFechaActionPerformed
 
     private void addAsiento() {
         try {

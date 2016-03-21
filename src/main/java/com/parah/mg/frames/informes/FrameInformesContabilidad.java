@@ -53,7 +53,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             c.set(Calendar.MINUTE, 0);
             c.set(Calendar.SECOND, 0);
             Date startDate = c.getTime();
-            c.set(Calendar.DATE, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+            c.set(Calendar.DATE, c.getActualMaximum(Calendar.DAY_OF_MONTH) - 1);
             c.set(Calendar.HOUR, 23);
             c.set(Calendar.MINUTE, 59);
             c.set(Calendar.SECOND, 59);
@@ -62,6 +62,11 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             txtFechaInicioDiario.setValue(startDate);
             txtFechaInicioCompras.setValue(startDate);
             txtFechaInicioVentas.setValue(startDate);
+
+            txtFechaFinMayor.setValue(endDate);
+            txtFechaFinDiario.setValue(endDate);
+            txtFechaFinCompras.setValue(endDate);
+            txtFechaFinVentas.setValue(endDate);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -333,6 +338,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private void cmdLibroMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayorActionPerformed
         try {
             Map parameters = new HashMap();
+            parameters.put("fechaDesde", (Date) txtFechaInicioMayor.getValue());
+            parameters.put("fechaHasta", (Date) txtFechaFinMayor.getValue());
             Utils.getInstance().showReport("libro_mayor", "libro_mayor_subreport", parameters);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);

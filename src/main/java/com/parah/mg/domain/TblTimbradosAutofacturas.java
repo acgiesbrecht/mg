@@ -12,6 +12,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author adriang
+ * @author Adrian Giesbrecht
  */
 @Entity
 @Table(name = "TBL_TIMBRADOS_AUTOFACTURAS")
@@ -44,10 +46,11 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TblTimbradosAutofacturas implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
-    private int id;
-    @Id
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 8)
@@ -79,19 +82,19 @@ public class TblTimbradosAutofacturas implements Serializable {
     @NotNull
     @Column(name = "ID_USER")
     private int idUser;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nroTimbrado")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTimbrado")
     private List<TblAutofacturas> tblAutofacturasList;
 
     public TblTimbradosAutofacturas() {
     }
 
-    public TblTimbradosAutofacturas(String nro) {
-        this.nro = nro;
+    public TblTimbradosAutofacturas(Integer id) {
+        this.id = id;
     }
 
-    public TblTimbradosAutofacturas(String nro, int id, Date fechaInicio, Date fechaVencimiento, int nroFacturaIncio, int nroFacturaFin, Boolean activo, int idUser) {
-        this.nro = nro;
+    public TblTimbradosAutofacturas(Integer id, String nro, Date fechaInicio, Date fechaVencimiento, int nroFacturaIncio, int nroFacturaFin, Boolean activo, int idUser) {
         this.id = id;
+        this.nro = nro;
         this.fechaInicio = fechaInicio;
         this.fechaVencimiento = fechaVencimiento;
         this.nroFacturaIncio = nroFacturaIncio;
@@ -100,11 +103,11 @@ public class TblTimbradosAutofacturas implements Serializable {
         this.idUser = idUser;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -176,7 +179,7 @@ public class TblTimbradosAutofacturas implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (nro != null ? nro.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -187,7 +190,7 @@ public class TblTimbradosAutofacturas implements Serializable {
             return false;
         }
         TblTimbradosAutofacturas other = (TblTimbradosAutofacturas) object;
-        if ((this.nro == null && other.nro != null) || (this.nro != null && !this.nro.equals(other.nro))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -195,7 +198,7 @@ public class TblTimbradosAutofacturas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.TblTimbradosAutofacturas[ nro=" + nro + " ]";
+        return "com.parah.mg.domain.TblTimbradosAutofacturas[ id=" + id + " ]";
     }
 
 }

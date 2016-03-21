@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,6 +21,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -54,6 +56,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblFacturasCompra.findByIva10", query = "SELECT t FROM TblFacturasCompra t WHERE t.iva10 = :iva10"),
     @NamedQuery(name = "TblFacturasCompra.findByObservacion", query = "SELECT t FROM TblFacturasCompra t WHERE t.observacion = :observacion")})
 public class TblFacturasCompra implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tblFacturasCompra")
+    private List<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -323,6 +328,15 @@ public class TblFacturasCompra implements Serializable {
     @Override
     public String toString() {
         return "com.parah.mg.domain.TblFacturasCompra[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public List<TblRecibosCompraFacturasCompra> getTblRecibosCompraFacturasCompraList() {
+        return tblRecibosCompraFacturasCompraList;
+    }
+
+    public void setTblRecibosCompraFacturasCompraList(List<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraList) {
+        this.tblRecibosCompraFacturasCompraList = tblRecibosCompraFacturasCompraList;
     }
 
 }

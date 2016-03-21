@@ -42,6 +42,11 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TblUsers implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblFacturasCompra> tblFacturasCompraList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblAutofacturas> tblAutofacturasList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
     private List<TblAsientos> tblAsientosList;
 
     private static final long serialVersionUID = 1L;
@@ -172,6 +177,24 @@ public class TblUsers implements Serializable {
 
     public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
         this.tblAsientosList = tblAsientosList;
+    }
+
+    @XmlTransient
+    public List<TblFacturasCompra> getTblFacturasCompraList() {
+        return tblFacturasCompraList;
+    }
+
+    public void setTblFacturasCompraList(List<TblFacturasCompra> tblFacturasCompraList) {
+        this.tblFacturasCompraList = tblFacturasCompraList;
+    }
+
+    @XmlTransient
+    public List<TblAutofacturas> getTblAutofacturasList() {
+        return tblAutofacturasList;
+    }
+
+    public void setTblAutofacturasList(List<TblAutofacturas> tblAutofacturasList) {
+        this.tblAutofacturasList = tblAutofacturasList;
     }
 
 }

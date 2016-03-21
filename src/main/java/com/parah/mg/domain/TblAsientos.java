@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author adriang
+ * @author Adrian Giesbrecht
  */
 @Entity
 @Table(name = "TBL_ASIENTOS")
@@ -39,6 +39,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblAsientos.findByFechahora", query = "SELECT t FROM TblAsientos t WHERE t.fechahora = :fechahora"),
     @NamedQuery(name = "TblAsientos.findByMonto", query = "SELECT t FROM TblAsientos t WHERE t.monto = :monto")})
 public class TblAsientos implements Serializable {
+
+    @ManyToMany(mappedBy = "tblAsientosList")
+    private List<TblFacturasCompra> tblFacturasCompraList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -55,6 +58,12 @@ public class TblAsientos implements Serializable {
     @NotNull
     @Column(name = "MONTO")
     private int monto;
+    @ManyToMany(mappedBy = "tblAsientosList")
+    private List<TblNotasDeCredito> tblNotasDeCreditoList;
+    @ManyToMany(mappedBy = "tblAsientosList")
+    private List<TblAutofacturas> tblAutofacturasList;
+    @ManyToMany(mappedBy = "tblAsientosList")
+    private List<TblRecibosCompra> tblRecibosCompraList;
     @JoinColumn(name = "ID_CENTRO_DE_COSTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCentrosDeCosto idCentroDeCosto;
@@ -64,8 +73,6 @@ public class TblAsientos implements Serializable {
     @JoinColumn(name = "ID_CUENTA_CONTABLE_DEBE", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCuentasContables idCuentaContableDebe;
-    @ManyToMany(mappedBy = "tblAsientosList")
-    private List<TblFacturasCompra> tblFacturasCompraList;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
@@ -105,6 +112,33 @@ public class TblAsientos implements Serializable {
 
     public void setMonto(int monto) {
         this.monto = monto;
+    }
+
+    @XmlTransient
+    public List<TblNotasDeCredito> getTblNotasDeCreditoList() {
+        return tblNotasDeCreditoList;
+    }
+
+    public void setTblNotasDeCreditoList(List<TblNotasDeCredito> tblNotasDeCreditoList) {
+        this.tblNotasDeCreditoList = tblNotasDeCreditoList;
+    }
+
+    @XmlTransient
+    public List<TblAutofacturas> getTblAutofacturasList() {
+        return tblAutofacturasList;
+    }
+
+    public void setTblAutofacturasList(List<TblAutofacturas> tblAutofacturasList) {
+        this.tblAutofacturasList = tblAutofacturasList;
+    }
+
+    @XmlTransient
+    public List<TblRecibosCompra> getTblRecibosCompraList() {
+        return tblRecibosCompraList;
+    }
+
+    public void setTblRecibosCompraList(List<TblRecibosCompra> tblRecibosCompraList) {
+        this.tblRecibosCompraList = tblRecibosCompraList;
     }
 
     public TblCentrosDeCosto getIdCentroDeCosto() {
@@ -164,17 +198,11 @@ public class TblAsientos implements Serializable {
         return "com.parah.mg.domain.TblAsientos[ id=" + id + " ]";
     }
 
-    /**
-     * @return the tblFacturasCompraList
-     */
     @XmlTransient
     public List<TblFacturasCompra> getTblFacturasCompraList() {
         return tblFacturasCompraList;
     }
 
-    /**
-     * @param tblFacturasCompraList the tblFacturasCompraList to set
-     */
     public void setTblFacturasCompraList(List<TblFacturasCompra> tblFacturasCompraList) {
         this.tblFacturasCompraList = tblFacturasCompraList;
     }

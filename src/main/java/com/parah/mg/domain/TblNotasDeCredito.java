@@ -17,7 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -33,23 +32,25 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Adrian Giesbrecht
  */
 @Entity
-@Table(name = "TBL_AUTOFACTURAS")
+@Table(name = "TBL_NOTAS_DE_CREDITO")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblAutofacturas.findAll", query = "SELECT t FROM TblAutofacturas t"),
-    @NamedQuery(name = "TblAutofacturas.findById", query = "SELECT t FROM TblAutofacturas t WHERE t.id = :id"),
-    @NamedQuery(name = "TblAutofacturas.findByNro", query = "SELECT t FROM TblAutofacturas t WHERE t.nro = :nro"),
-    @NamedQuery(name = "TblAutofacturas.findByFechahora", query = "SELECT t FROM TblAutofacturas t WHERE t.fechahora = :fechahora"),
-    @NamedQuery(name = "TblAutofacturas.findByRazonSocial", query = "SELECT t FROM TblAutofacturas t WHERE t.razonSocial = :razonSocial"),
-    @NamedQuery(name = "TblAutofacturas.findByRuc", query = "SELECT t FROM TblAutofacturas t WHERE t.ruc = :ruc"),
-    @NamedQuery(name = "TblAutofacturas.findByMontoExentas", query = "SELECT t FROM TblAutofacturas t WHERE t.montoExentas = :montoExentas"),
-    @NamedQuery(name = "TblAutofacturas.findByMontoIva5", query = "SELECT t FROM TblAutofacturas t WHERE t.montoIva5 = :montoIva5"),
-    @NamedQuery(name = "TblAutofacturas.findByMontoIva10", query = "SELECT t FROM TblAutofacturas t WHERE t.montoIva10 = :montoIva10"),
-    @NamedQuery(name = "TblAutofacturas.findByIva5", query = "SELECT t FROM TblAutofacturas t WHERE t.iva5 = :iva5"),
-    @NamedQuery(name = "TblAutofacturas.findByIva10", query = "SELECT t FROM TblAutofacturas t WHERE t.iva10 = :iva10"),
-    @NamedQuery(name = "TblAutofacturas.findByObservacion", query = "SELECT t FROM TblAutofacturas t WHERE t.observacion = :observacion"),
-    @NamedQuery(name = "TblAutofacturas.findByAnulado", query = "SELECT t FROM TblAutofacturas t WHERE t.anulado = :anulado")})
-public class TblAutofacturas implements Serializable {
+    @NamedQuery(name = "TblNotasDeCredito.findAll", query = "SELECT t FROM TblNotasDeCredito t"),
+    @NamedQuery(name = "TblNotasDeCredito.findById", query = "SELECT t FROM TblNotasDeCredito t WHERE t.id = :id"),
+    @NamedQuery(name = "TblNotasDeCredito.findByNro", query = "SELECT t FROM TblNotasDeCredito t WHERE t.nro = :nro"),
+    @NamedQuery(name = "TblNotasDeCredito.findByNroTimbrado", query = "SELECT t FROM TblNotasDeCredito t WHERE t.nroTimbrado = :nroTimbrado"),
+    @NamedQuery(name = "TblNotasDeCredito.findByVencimientoTimbrado", query = "SELECT t FROM TblNotasDeCredito t WHERE t.vencimientoTimbrado = :vencimientoTimbrado"),
+    @NamedQuery(name = "TblNotasDeCredito.findByFechahora", query = "SELECT t FROM TblNotasDeCredito t WHERE t.fechahora = :fechahora"),
+    @NamedQuery(name = "TblNotasDeCredito.findByRazonSocial", query = "SELECT t FROM TblNotasDeCredito t WHERE t.razonSocial = :razonSocial"),
+    @NamedQuery(name = "TblNotasDeCredito.findByRuc", query = "SELECT t FROM TblNotasDeCredito t WHERE t.ruc = :ruc"),
+    @NamedQuery(name = "TblNotasDeCredito.findByMontoExentas", query = "SELECT t FROM TblNotasDeCredito t WHERE t.montoExentas = :montoExentas"),
+    @NamedQuery(name = "TblNotasDeCredito.findByMontoIva5", query = "SELECT t FROM TblNotasDeCredito t WHERE t.montoIva5 = :montoIva5"),
+    @NamedQuery(name = "TblNotasDeCredito.findByMontoIva10", query = "SELECT t FROM TblNotasDeCredito t WHERE t.montoIva10 = :montoIva10"),
+    @NamedQuery(name = "TblNotasDeCredito.findByIva5", query = "SELECT t FROM TblNotasDeCredito t WHERE t.iva5 = :iva5"),
+    @NamedQuery(name = "TblNotasDeCredito.findByIva10", query = "SELECT t FROM TblNotasDeCredito t WHERE t.iva10 = :iva10"),
+    @NamedQuery(name = "TblNotasDeCredito.findByObservacion", query = "SELECT t FROM TblNotasDeCredito t WHERE t.observacion = :observacion"),
+    @NamedQuery(name = "TblNotasDeCredito.findByIdUser", query = "SELECT t FROM TblNotasDeCredito t WHERE t.idUser = :idUser")})
+public class TblNotasDeCredito implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -62,6 +63,16 @@ public class TblAutofacturas implements Serializable {
     @Size(min = 1, max = 15)
     @Column(name = "NRO")
     private String nro;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 8)
+    @Column(name = "NRO_TIMBRADO")
+    private String nroTimbrado;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "VENCIMIENTO_TIMBRADO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date vencimientoTimbrado;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAHORA")
@@ -102,30 +113,26 @@ public class TblAutofacturas implements Serializable {
     private String observacion;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ANULADO")
-    private Boolean anulado;
-    @JoinTable(name = "TBL_AUTOFACTURAS_ASIENTOS", joinColumns = {
-        @JoinColumn(name = "ID_AUTOFACTURA", referencedColumnName = "ID")}, inverseJoinColumns = {
+    @Column(name = "ID_USER")
+    private int idUser;
+    @JoinTable(name = "TBL_NOTAS_DE_CREDITO_ASIENTOS", joinColumns = {
+        @JoinColumn(name = "ID_NOTA_DE_CREDITO", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
     @ManyToMany
     private List<TblAsientos> tblAsientosList;
-    @JoinColumn(name = "ID_TIMBRADO", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private TblTimbradosAutofacturas idTimbrado;
-    @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private TblUsers idUser;
 
-    public TblAutofacturas() {
+    public TblNotasDeCredito() {
     }
 
-    public TblAutofacturas(Integer id) {
+    public TblNotasDeCredito(Integer id) {
         this.id = id;
     }
 
-    public TblAutofacturas(Integer id, String nro, Date fechahora, String razonSocial, String ruc, int montoExentas, int montoIva5, int montoIva10, int iva5, int iva10, Boolean anulado) {
+    public TblNotasDeCredito(Integer id, String nro, String nroTimbrado, Date vencimientoTimbrado, Date fechahora, String razonSocial, String ruc, int montoExentas, int montoIva5, int montoIva10, int iva5, int iva10, int idUser) {
         this.id = id;
         this.nro = nro;
+        this.nroTimbrado = nroTimbrado;
+        this.vencimientoTimbrado = vencimientoTimbrado;
         this.fechahora = fechahora;
         this.razonSocial = razonSocial;
         this.ruc = ruc;
@@ -134,7 +141,7 @@ public class TblAutofacturas implements Serializable {
         this.montoIva10 = montoIva10;
         this.iva5 = iva5;
         this.iva10 = iva10;
-        this.anulado = anulado;
+        this.idUser = idUser;
     }
 
     public Integer getId() {
@@ -151,6 +158,22 @@ public class TblAutofacturas implements Serializable {
 
     public void setNro(String nro) {
         this.nro = nro;
+    }
+
+    public String getNroTimbrado() {
+        return nroTimbrado;
+    }
+
+    public void setNroTimbrado(String nroTimbrado) {
+        this.nroTimbrado = nroTimbrado;
+    }
+
+    public Date getVencimientoTimbrado() {
+        return vencimientoTimbrado;
+    }
+
+    public void setVencimientoTimbrado(Date vencimientoTimbrado) {
+        this.vencimientoTimbrado = vencimientoTimbrado;
     }
 
     public Date getFechahora() {
@@ -225,12 +248,12 @@ public class TblAutofacturas implements Serializable {
         this.observacion = observacion;
     }
 
-    public Boolean getAnulado() {
-        return anulado;
+    public int getIdUser() {
+        return idUser;
     }
 
-    public void setAnulado(Boolean anulado) {
-        this.anulado = anulado;
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     @XmlTransient
@@ -240,22 +263,6 @@ public class TblAutofacturas implements Serializable {
 
     public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
         this.tblAsientosList = tblAsientosList;
-    }
-
-    public TblTimbradosAutofacturas getIdTimbrado() {
-        return idTimbrado;
-    }
-
-    public void setIdTimbrado(TblTimbradosAutofacturas idTimbrado) {
-        this.idTimbrado = idTimbrado;
-    }
-
-    public TblUsers getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(TblUsers idUser) {
-        this.idUser = idUser;
     }
 
     @Override
@@ -268,10 +275,10 @@ public class TblAutofacturas implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblAutofacturas)) {
+        if (!(object instanceof TblNotasDeCredito)) {
             return false;
         }
-        TblAutofacturas other = (TblAutofacturas) object;
+        TblNotasDeCredito other = (TblNotasDeCredito) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -280,7 +287,7 @@ public class TblAutofacturas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.TblAutofacturas[ id=" + id + " ]";
+        return "com.parah.mg.domain.TblNotasDeCredito[ id=" + id + " ]";
     }
 
 }
