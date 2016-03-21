@@ -15,14 +15,14 @@
                              eventodetalle.montoDonacion - transferencias.montoDonacion - recibos.montoDonacion AS montoDonacion
                           FROM
                                  (SELECT m.id, m.ctacte, m.nombres, m.apellidos,
-                                     MONTH(rd.fechahora) AS MES,
-                                     YEAR(rd.fechahora) AS ANO,
+                                     MONTH(rd.FECHA) AS MES,
+                                     YEAR(rd.FECHA) AS ANO,
                                      SUM(rd.monto*rd.PORCENTAJE_APORTE/100) AS montoAporte,
                                      SUM(rd.monto*(100-rd.PORCENTAJE_APORTE)/100) AS montoDonacion
                                   FROM TBL_ENTIDADES m
                                      LEFT JOIN (SELECT ed.*, ev.* FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = 2) rd
                                      ON m.id = rd.ID_ENTIDAD
-                                     group by YEAR(rd.FECHAHORA), MONTH(rd.FECHAHORA), m.id, m.ctacte, m.nombres, m.apellidos) eventodetalle,
+                                     group by YEAR(rd.FECHA), MONTH(rd.FECHA), m.id, m.ctacte, m.nombres, m.apellidos) eventodetalle,
                                  (SELECT m.id, m.ctacte,
                                       MONTH(p.fechahora),
                                       YEAR(p.fechahora),

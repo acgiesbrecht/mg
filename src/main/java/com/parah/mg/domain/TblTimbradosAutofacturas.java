@@ -7,28 +7,26 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author adriang
  */
 @Entity
 @Table(name = "TBL_TIMBRADOS_AUTOFACTURAS")
@@ -41,8 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblTimbradosAutofacturas.findByFechaVencimiento", query = "SELECT t FROM TblTimbradosAutofacturas t WHERE t.fechaVencimiento = :fechaVencimiento"),
     @NamedQuery(name = "TblTimbradosAutofacturas.findByNroFacturaIncio", query = "SELECT t FROM TblTimbradosAutofacturas t WHERE t.nroFacturaIncio = :nroFacturaIncio"),
     @NamedQuery(name = "TblTimbradosAutofacturas.findByNroFacturaFin", query = "SELECT t FROM TblTimbradosAutofacturas t WHERE t.nroFacturaFin = :nroFacturaFin"),
-    @NamedQuery(name = "TblTimbradosAutofacturas.findByActivo", query = "SELECT t FROM TblTimbradosAutofacturas t WHERE t.activo = :activo"),
-    @NamedQuery(name = "TblTimbradosAutofacturas.findByIdUser", query = "SELECT t FROM TblTimbradosAutofacturas t WHERE t.idUser = :idUser")})
+    @NamedQuery(name = "TblTimbradosAutofacturas.findByActivo", query = "SELECT t FROM TblTimbradosAutofacturas t WHERE t.activo = :activo")})
 public class TblTimbradosAutofacturas implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -78,12 +75,9 @@ public class TblTimbradosAutofacturas implements Serializable {
     @NotNull
     @Column(name = "ACTIVO")
     private Boolean activo;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_USER")
-    private int idUser;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTimbrado")
-    private List<TblAutofacturas> tblAutofacturasList;
+    @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblUsers idUser;
 
     public TblTimbradosAutofacturas() {
     }
@@ -92,7 +86,7 @@ public class TblTimbradosAutofacturas implements Serializable {
         this.id = id;
     }
 
-    public TblTimbradosAutofacturas(Integer id, String nro, Date fechaInicio, Date fechaVencimiento, int nroFacturaIncio, int nroFacturaFin, Boolean activo, int idUser) {
+    public TblTimbradosAutofacturas(Integer id, String nro, Date fechaInicio, Date fechaVencimiento, int nroFacturaIncio, int nroFacturaFin, Boolean activo) {
         this.id = id;
         this.nro = nro;
         this.fechaInicio = fechaInicio;
@@ -100,7 +94,6 @@ public class TblTimbradosAutofacturas implements Serializable {
         this.nroFacturaIncio = nroFacturaIncio;
         this.nroFacturaFin = nroFacturaFin;
         this.activo = activo;
-        this.idUser = idUser;
     }
 
     public Integer getId() {
@@ -159,21 +152,12 @@ public class TblTimbradosAutofacturas implements Serializable {
         this.activo = activo;
     }
 
-    public int getIdUser() {
+    public TblUsers getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(TblUsers idUser) {
         this.idUser = idUser;
-    }
-
-    @XmlTransient
-    public List<TblAutofacturas> getTblAutofacturasList() {
-        return tblAutofacturasList;
-    }
-
-    public void setTblAutofacturasList(List<TblAutofacturas> tblAutofacturasList) {
-        this.tblAutofacturasList = tblAutofacturasList;
     }
 
     @Override

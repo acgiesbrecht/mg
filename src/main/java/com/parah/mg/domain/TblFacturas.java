@@ -8,11 +8,14 @@ package com.parah.mg.domain;
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,6 +25,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -74,6 +78,11 @@ public class TblFacturas implements Serializable {
     @NotNull
     @Column(name = "ANULADO")
     private Boolean anulado;
+    @JoinTable(name = "TBL_FACTURAS_ASIENTOS", joinColumns = {
+        @JoinColumn(name = "NRO_FACTURA", referencedColumnName = "NRO")}, inverseJoinColumns = {
+        @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
+    @ManyToMany
+    private List<TblAsientos> tblAsientosList;
     @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEntidades idEntidad;
@@ -155,6 +164,15 @@ public class TblFacturas implements Serializable {
 
     public void setAnulado(Boolean anulado) {
         this.anulado = anulado;
+    }
+
+    @XmlTransient
+    public List<TblAsientos> getTblAsientosList() {
+        return tblAsientosList;
+    }
+
+    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList = tblAsientosList;
     }
 
     public TblEntidades getIdEntidad() {

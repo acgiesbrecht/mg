@@ -101,6 +101,8 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         cmdFacturaPrintTest = new javax.swing.JButton();
         cboSqlFiles = new javax.swing.JComboBox();
+        jLabel7 = new javax.swing.JLabel();
+        cboFormatoFactura = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -226,6 +228,10 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel7.setText("Impresion de Facturas");
+
+        cboFormatoFactura.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preimpreso con rejilla", "Preimpreso sin rejilla" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -263,12 +269,17 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(cboModoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cboFormatoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cboModoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmdReset, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(cmdReset, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel7))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -288,11 +299,11 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cboModoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmdReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(57, 57, 57)
+                    .addComponent(jLabel7)
+                    .addComponent(cboFormatoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(72, 72, 72)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFacturaX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
@@ -306,7 +317,11 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addGap(99, 99, 99))
+                .addGap(65, 65, 65)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmdReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -319,6 +334,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
             Preferences.userRoot().node("MG").put("Datadir", txtDatadir.getText());
             Preferences.userRoot().node("MG").put("isServer", String.valueOf(rbServidor.isSelected()));
             Preferences.userRoot().node("MG").put("modoImpresion", cboModoImpresion.getSelectedItem().toString());
+            Preferences.userRoot().node("MG").put("formatoFactura", cboFormatoFactura.getSelectedItem().toString());
             Preferences.userRoot().node("MG").put("facturaLeftMargin", txtFacturaX.getText());
             Preferences.userRoot().node("MG").put("facturaTopMargin", txtFacturaY.getText());
 
@@ -340,6 +356,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
         txtDatadir.setText(Preferences.userRoot().node("MG").get("Datadir", "C:\\javadb"));
         rbServidor.setSelected(Boolean.parseBoolean(Preferences.userRoot().node("MG").get("isServer", "true")));
         cboModoImpresion.setSelectedItem(Preferences.userRoot().node("MG").get("modoImpresion", "Normal"));
+        cboFormatoFactura.setSelectedItem(Preferences.userRoot().node("MG").get("formateFactura", "Preimpreso sin rejilla"));
         txtFacturaX.setText(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0"));
         txtFacturaY.setText(Preferences.userRoot().node("MG").get("facturaTopMargin", "0"));
 
@@ -485,6 +502,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox cboFormatoFactura;
     private javax.swing.JComboBox cboModoImpresion;
     private javax.swing.JComboBox cboSqlFiles;
     private javax.swing.JButton cmdDatadir;
@@ -497,6 +515,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private java.awt.Panel panelDatadir;
     private javax.swing.JRadioButton rbRemoto;
     private javax.swing.JRadioButton rbServidor;

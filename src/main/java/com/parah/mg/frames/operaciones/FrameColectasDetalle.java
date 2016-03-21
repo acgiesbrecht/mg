@@ -668,11 +668,11 @@ public class FrameColectasDetalle extends JInternalFrame {
 
     private void newDetalle() {
         try {
-            com.parah.mg.domain.eventos.TblEventoDetalle t = new com.parah.mg.domain.eventos.TblEventoDetalle();
-
-            t.setFechahora(new Date());
+            TblEventoDetalle t = new TblEventoDetalle();
+            TblEventos currEvento = (TblEventos) cboFechaColecta.getSelectedItem();
+            t.setFechahora(currEvento.getFecha());
             t.setIdCategoriaArticulo(entityManager.find(TblCategoriasArticulos.class, 1));
-            t.setIdEvento((TblEventos) cboFechaColecta.getSelectedItem());
+            t.setIdEvento(currEvento);
             t.setIdUser(currentUser.getUser());
             entityManager.persist(t);
             listEventoDetalle.add(t);

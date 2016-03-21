@@ -41,6 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TblAsientos implements Serializable {
 
     @ManyToMany(mappedBy = "tblAsientosList")
+    private List<TblFacturas> tblFacturasList;
+
+    @ManyToMany(mappedBy = "tblAsientosList")
     private List<TblFacturasCompra> tblFacturasCompraList;
 
     private static final long serialVersionUID = 1L;
@@ -205,6 +208,15 @@ public class TblAsientos implements Serializable {
 
     public void setTblFacturasCompraList(List<TblFacturasCompra> tblFacturasCompraList) {
         this.tblFacturasCompraList = tblFacturasCompraList;
+    }
+
+    @XmlTransient
+    public List<TblFacturas> getTblFacturasList() {
+        return tblFacturasList;
+    }
+
+    public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
+        this.tblFacturasList = tblFacturasList;
     }
 
 }

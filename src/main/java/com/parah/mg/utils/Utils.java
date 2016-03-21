@@ -142,7 +142,10 @@ public class Utils extends Component {
             parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
             parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
             //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
-            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/factura.jrxml"));
+            String reportFactura = Preferences.userRoot().node("MG").get("formateFactura", "Preimpreso sin rejilla").equals("Preimpreso sin rejilla")
+                    ? "factura_sin_rejilla"
+                    : "factura";
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFactura + ".jrxml"));
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
             jasperPrint.setLeftMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0")));
