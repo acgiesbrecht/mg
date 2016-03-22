@@ -3,44 +3,34 @@
 <!-- 2016-02-19T10:26:15 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="MGCB"/>
-    <parameter name="id_evento" class="java.lang.Integer"/>
     <queryString language="SQL">
-		<![CDATA[SELECT eventodetalle.id,
-                             eventodetalle.ctacte,
-                             eventodetalle.nombres,
-                             eventodetalle.apellidos,
-                             eventodetalle.mes,
-                             eventodetalle.ano,
-                             eventodetalle.montoAporte - transferencias.montoAporte - recibos.montoAporte AS montoAporte,
-                             eventodetalle.montoDonacion - transferencias.montoDonacion - recibos.montoDonacion AS montoDonacion
-                          FROM
-                                 (SELECT m.id, m.ctacte, m.nombres, m.apellidos,
-                                     MONTH(rd.fechahora) AS MES,
-                                     YEAR(rd.fechahora) AS ANO,
-                                     SUM(rd.monto*rd.PORCENTAJE_APORTE/100) AS montoAporte,
-                                     SUM(rd.monto*(100-rd.PORCENTAJE_APORTE)/100) AS montoDonacion
-                                  FROM TBL_ENTIDADES m
-                                     LEFT JOIN (SELECT ed.*, ev.* FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = 2) rd
-                                     ON m.id = rd.ID_ENTIDAD
-                                     group by YEAR(rd.FECHAHORA), MONTH(rd.FECHAHORA), m.id, m.ctacte, m.nombres, m.apellidos) eventodetalle,
-                                 (SELECT m.id, m.ctacte,
-                                      MONTH(p.fechahora),
-                                      YEAR(p.fechahora),
-                                      COALESCE(SUM(p.MONTO_APORTE),0) AS montoAporte,
-                                      COALESCE(SUM(p.MONTO_DONACION),0) AS montoDonacion
-                                      FROM TBL_ENTIDADES m
-                                      LEFT JOIN (SELECT * FROM MG.TBL_TRANSFERENCIAS WHERE ID_EVENTO_TIPO = 2) p ON m.id = p.ID_ENTIDAD
-                                      group by YEAR(p.FECHAHORA), MONTH(p.FECHAHORA), m.id, m.ctacte) transferencias,
-                                 (SELECT m.id, m.ctacte,
-                                      MONTH(p.fechahora),
-                                      YEAR(p.fechahora),
-                                      COALESCE(SUM(p.MONTO_APORTE),0) AS montoAporte,
-                                      COALESCE(SUM(p.MONTO_DONACION),0) AS montoDonacion
-                                      FROM TBL_ENTIDADES m
-                                      LEFT JOIN (SELECT * FROM MG.TBL_RECIBOS WHERE ID_EVENTO_TIPO = 2) p ON m.id = p.ID_ENTIDAD
-                                      group by YEAR(p.FECHAHORA), MONTH(p.FECHAHORA), m.id, m.ctacte) recibos
-                                      WHERE eventodetalle.id = transferencias.id AND eventodetalle.id = recibos.id AND (eventodetalle.montoAporte - transferencias.montoAporte - recibos.montoAporte + eventodetalle.montoDonacion - transferencias.montoDonacion - recibos.montoDonacion) > 0
-                            ORDER BY eventodetalle.ctacte]]>
+		<![CDATA[SELECT * FROM (SELECT e.ID, e.CTACTE, e.APELLIDOS, e.NOMBRES, DETALLE.mes, DETALLE.ano, SUM(DETALLE.MONTOAPORTE) AS MONTOAPORTE, SUM(DETALLE.MONTODONACION) AS MONTODONACION FROM
+(SELECT ed.id_entidad,
+                MONTH(ev.FECHA) AS mes,
+                YEAR(ev.FECHA) AS ano,
+                SUM(ed.monto*ev.PORCENTAJE_APORTE/100) AS montoAporte,
+                SUM(ed.monto*(100-ev.PORCENTAJE_APORTE)/100) AS montoDonacion
+              FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = 2
+                group by MONTH(ev.FECHA), YEAR(ev.FECHA), ed.id_entidad
+UNION ALL
+SELECT p.id_entidad,
+                 MONTH(p.fechahora) AS mes,
+                 YEAR(p.fechahora) AS ano,
+                 -SUM(p.MONTO_APORTE) AS montoAporte,
+                 -SUM(p.MONTO_DONACION) AS montoDonacion
+                 FROM MG.TBL_TRANSFERENCIAS p WHERE ID_EVENTO_TIPO = 2
+                 group by YEAR(p.FECHAHORA), MONTH(p.FECHAHORA), p.id_entidad
+UNION ALL
+SELECT p.id_entidad,
+        MONTH(p.fechahora) AS mes,
+        YEAR(p.fechahora) AS ano,
+        -SUM(p.MONTO_APORTE) AS montoAporte,
+        -SUM(p.MONTO_DONACION) AS montoDonacion
+        FROM MG.TBL_RECIBOS p WHERE ID_EVENTO_TIPO = 2
+        group by YEAR(p.FECHAHORA), MONTH(p.FECHAHORA), p.id_entidad) DETALLE LEFT JOIN MG.TBL_ENTIDADES e ON DETALLE.ID_ENTIDAD = e.ID
+GROUP BY e.ID, e.CTACTE, e.APELLIDOS, e.NOMBRES, DETALLE.ano, DETALLE.mes) d
+WHERE MONTODONACION + MONTOAPORTE > 0
+ORDER BY CTACTE]]>
     </queryString>
     <field name="mes" class="java.lang.Integer"/>
     <field name="ano" class="java.lang.Integer"/>

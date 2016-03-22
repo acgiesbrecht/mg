@@ -28,12 +28,14 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author adriang
  */
 @Entity
-@Table(name = "TBL_CENTROS_DE_COSTO", catalog = "", schema = "MG")
+@Table(name = "TBL_CENTROS_DE_COSTO")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblCentrosDeCosto.findAll", query = "SELECT t FROM TblCentrosDeCosto t"),
     @NamedQuery(name = "TblCentrosDeCosto.findById", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.id = :id"),
-    @NamedQuery(name = "TblCentrosDeCosto.findByDescripcion", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.descripcion = :descripcion")})
+    @NamedQuery(name = "TblCentrosDeCosto.findByDescripcion", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.descripcion = :descripcion"),
+    @NamedQuery(name = "TblCentrosDeCosto.findByCtaCte", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.ctaCte = :ctaCte"),
+    @NamedQuery(name = "TblCentrosDeCosto.findByPreferido", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = :preferido")})
 public class TblCentrosDeCosto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,6 +49,14 @@ public class TblCentrosDeCosto implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "DESCRIPCION")
     private String descripcion;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CTA_CTE")
+    private int ctaCte;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "PREFERIDO")
+    private Boolean preferido;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCosto")
     private List<TblAsientos> tblAsientosList;
 
@@ -57,9 +67,11 @@ public class TblCentrosDeCosto implements Serializable {
         this.id = id;
     }
 
-    public TblCentrosDeCosto(Integer id, String descripcion) {
+    public TblCentrosDeCosto(Integer id, String descripcion, int ctaCte, Boolean preferido) {
         this.id = id;
         this.descripcion = descripcion;
+        this.ctaCte = ctaCte;
+        this.preferido = preferido;
     }
 
     public Integer getId() {
@@ -76,6 +88,22 @@ public class TblCentrosDeCosto implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public int getCtaCte() {
+        return ctaCte;
+    }
+
+    public void setCtaCte(int ctaCte) {
+        this.ctaCte = ctaCte;
+    }
+
+    public Boolean getPreferido() {
+        return preferido;
+    }
+
+    public void setPreferido(Boolean preferido) {
+        this.preferido = preferido;
     }
 
     @XmlTransient
@@ -109,7 +137,7 @@ public class TblCentrosDeCosto implements Serializable {
 
     @Override
     public String toString() {
-        return descripcion;
+        return "com.parah.mg.domain.TblCentrosDeCosto[ id=" + id + " ]";
     }
 
 }

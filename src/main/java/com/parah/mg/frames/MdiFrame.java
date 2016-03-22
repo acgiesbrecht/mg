@@ -19,6 +19,7 @@ import com.parah.mg.frames.admin.FrameGruposAdmin;
 import com.parah.mg.frames.admin.FrameIglesiaAdmin;
 import com.parah.mg.frames.admin.FrameRecibosAdmin;
 import com.parah.mg.frames.admin.FrameTimbradosAdmin;
+import com.parah.mg.frames.admin.FrameTimbradosAutofacturasAdmin;
 import com.parah.mg.frames.admin.FrameTransferenciasAdmin;
 import com.parah.mg.frames.admin.FrameUsuariosAdmin;
 import com.parah.mg.frames.informes.FrameInformesContabilidad;
@@ -129,14 +130,17 @@ public class MdiFrame extends javax.swing.JFrame {
                             mnuOpColectas.setEnabled(currentUser.hasRole(1));
                             mnuOpAportes.setEnabled(currentUser.hasRole(1));
 
-                            mnuOpFacturaUnica.setEnabled(currentUser.hasRole(2));
-                            mnuOpFacturaPendientes.setEnabled(currentUser.hasRole(2));
+                            //mnuOpFacturaUnica.setEnabled(currentUser.hasRole(2));
+                            //mnuOpFacturaPendientes.setEnabled(currentUser.hasRole(2));
                             //mnuOpCobrarTransferencias.setEnabled(currentUser.hasRole(2));
                             mnuOpCobrarTransferenciasAyC.setEnabled(currentUser.hasRole(2));
 
-                            mnuEgFacturas.setEnabled(currentUser.hasRole(2));
+                            /*mnuEgFacturas.setEnabled(currentUser.hasRole(2));
+                            mnuEgAutofacturas.setEnabled(currentUser.hasRole(2));
+                            mnuEgNotasDeCredito.setEnabled(currentUser.hasRole(2));
+                            mnuEgRecibos.setEnabled(currentUser.hasRole(2));
                             mnuEgAsientosManuales.setEnabled(currentUser.hasRole(3));
-
+                             */
                             mnuAdMiembros.setEnabled(currentUser.hasRole(2));
 
                             mnuAdEventos.setEnabled(currentUser.hasRole(3));
@@ -146,12 +150,15 @@ public class MdiFrame extends javax.swing.JFrame {
                             mnuAdTransf.setEnabled(currentUser.hasRole(2));
                             mnuAdRecibos.setEnabled(currentUser.hasRole(2));
 
-                            mnuAdTimbrados.setEnabled(currentUser.hasRole(2));
+                            mnuAdTimbrados.setEnabled(currentUser.hasRole(3));
                             mnuAdFacturas.setEnabled(currentUser.hasRole(2));
+
+                            /*mnuAdTimbradosAutofacturas.setEnabled(currentUser.hasRole(3));
+                            mnuAdAutofacturas.setEnabled(currentUser.hasRole(2));
 
                             mnuAdCentrosDeCosto.setEnabled(currentUser.hasRole(3));
                             mnuAdCuentasContables.setEnabled(currentUser.hasRole(3));
-
+                             */
                             mnuAdIglesia.setEnabled(currentUser.hasRole(3));
                             mnuAdConfig.setEnabled(currentUser.hasRole(3));
                             mnuAdUsuarios.setEnabled(currentUser.hasRole(3));
@@ -159,7 +166,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
                             mnuAdInformes.setEnabled(currentUser.hasRole(1));
                             mnuInformesCyA.setEnabled(currentUser.hasRole(2));
-                            mnuInformesContabilidad.setEnabled(currentUser.hasRole(2));
+                            //mnuInformesContabilidad.setEnabled(currentUser.hasRole(2));
 
                         }
                     }
@@ -262,9 +269,9 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOpFacturaUnica = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         mnuEgFacturas = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        mnuEgAutofacturas = new javax.swing.JMenuItem();
+        mnuEgNotasDeCredito = new javax.swing.JMenuItem();
+        mnuEgRecibos = new javax.swing.JMenuItem();
         mnuEgAsientosManuales = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         mnuAdInformes = new javax.swing.JMenuItem();
@@ -283,6 +290,9 @@ public class MdiFrame extends javax.swing.JFrame {
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         mnuAdTimbrados = new javax.swing.JMenuItem();
         mnuAdFacturas = new javax.swing.JMenuItem();
+        jSeparator10 = new javax.swing.JPopupMenu.Separator();
+        mnuAdTimbradosAutofacturas = new javax.swing.JMenuItem();
+        mnuAdAutofacturas = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mnuAdCentrosDeCosto = new javax.swing.JMenuItem();
         mnuAdCuentasContables = new javax.swing.JMenuItem();
@@ -411,17 +421,17 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         jMenu5.add(mnuEgFacturas);
 
-        jMenuItem3.setText("AutoFacturas");
-        jMenuItem3.setEnabled(false);
-        jMenu5.add(jMenuItem3);
+        mnuEgAutofacturas.setText("AutoFacturas");
+        mnuEgAutofacturas.setEnabled(false);
+        jMenu5.add(mnuEgAutofacturas);
 
-        jMenuItem5.setText("Notas de Credito");
-        jMenuItem5.setEnabled(false);
-        jMenu5.add(jMenuItem5);
+        mnuEgNotasDeCredito.setText("Notas de Credito");
+        mnuEgNotasDeCredito.setEnabled(false);
+        jMenu5.add(mnuEgNotasDeCredito);
 
-        jMenuItem6.setText("Recibos");
-        jMenuItem6.setEnabled(false);
-        jMenu5.add(jMenuItem6);
+        mnuEgRecibos.setText("Recibos");
+        mnuEgRecibos.setEnabled(false);
+        jMenu5.add(mnuEgRecibos);
 
         mnuEgAsientosManuales.setText("Asientos Manuales");
         mnuEgAsientosManuales.setEnabled(false);
@@ -551,6 +561,27 @@ public class MdiFrame extends javax.swing.JFrame {
             }
         });
         jMenu2.add(mnuAdFacturas);
+        jMenu2.add(jSeparator10);
+
+        mnuAdTimbradosAutofacturas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
+        mnuAdTimbradosAutofacturas.setText("Administrar Timbrados Autofacturas");
+        mnuAdTimbradosAutofacturas.setEnabled(false);
+        mnuAdTimbradosAutofacturas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdTimbradosAutofacturasActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuAdTimbradosAutofacturas);
+
+        mnuAdAutofacturas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
+        mnuAdAutofacturas.setText("Administrar Autofacturas");
+        mnuAdAutofacturas.setEnabled(false);
+        mnuAdAutofacturas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdAutofacturasActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuAdAutofacturas);
         jMenu2.add(jSeparator1);
 
         mnuAdCentrosDeCosto.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
@@ -1090,6 +1121,25 @@ public class MdiFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_mnuEgAsientosManualesActionPerformed
 
+    private void mnuAdTimbradosAutofacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdTimbradosAutofacturasActionPerformed
+        try {
+            FrameTimbradosAutofacturasAdmin frame = new FrameTimbradosAutofacturasAdmin();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_mnuAdTimbradosAutofacturasActionPerformed
+
+    private void mnuAdAutofacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdAutofacturasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnuAdAutofacturasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1141,11 +1191,9 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
@@ -1154,6 +1202,7 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
+    private javax.swing.JMenuItem mnuAdAutofacturas;
     private javax.swing.JMenuItem mnuAdBackUp;
     private javax.swing.JMenuItem mnuAdCat;
     private javax.swing.JMenuItem mnuAdCentrosDeCosto;
@@ -1168,10 +1217,14 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAdMiembros;
     private javax.swing.JMenuItem mnuAdRecibos;
     private javax.swing.JMenuItem mnuAdTimbrados;
+    private javax.swing.JMenuItem mnuAdTimbradosAutofacturas;
     private javax.swing.JMenuItem mnuAdTransf;
     private javax.swing.JMenuItem mnuAdUsuarios;
     private javax.swing.JMenuItem mnuEgAsientosManuales;
+    private javax.swing.JMenuItem mnuEgAutofacturas;
     private javax.swing.JMenuItem mnuEgFacturas;
+    private javax.swing.JMenuItem mnuEgNotasDeCredito;
+    private javax.swing.JMenuItem mnuEgRecibos;
     private javax.swing.JMenuItem mnuInformesContabilidad;
     private javax.swing.JMenuItem mnuInformesCyA;
     private javax.swing.JMenuItem mnuLogin;

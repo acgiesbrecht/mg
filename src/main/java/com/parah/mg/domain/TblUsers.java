@@ -5,6 +5,7 @@
  */
 package com.parah.mg.domain;
 
+import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -40,6 +41,16 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblUsers.findByPassword", query = "SELECT t FROM TblUsers t WHERE t.password = :password"),
     @NamedQuery(name = "TblUsers.findByNombrecompleto", query = "SELECT t FROM TblUsers t WHERE t.nombrecompleto = :nombrecompleto")})
 public class TblUsers implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblTimbrados> tblTimbradosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblFacturas> tblFacturasList;
+    @OneToMany(mappedBy = "idUser")
+    private List<TblEntidades> tblEntidadesList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblTimbradosAutofacturas> tblTimbradosAutofacturasList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
     private List<TblFacturasCompra> tblFacturasCompraList;
@@ -195,6 +206,42 @@ public class TblUsers implements Serializable {
 
     public void setTblAutofacturasList(List<TblAutofacturas> tblAutofacturasList) {
         this.tblAutofacturasList = tblAutofacturasList;
+    }
+
+    @XmlTransient
+    public List<TblTimbradosAutofacturas> getTblTimbradosAutofacturasList() {
+        return tblTimbradosAutofacturasList;
+    }
+
+    public void setTblTimbradosAutofacturasList(List<TblTimbradosAutofacturas> tblTimbradosAutofacturasList) {
+        this.tblTimbradosAutofacturasList = tblTimbradosAutofacturasList;
+    }
+
+    @XmlTransient
+    public List<TblTimbrados> getTblTimbradosList() {
+        return tblTimbradosList;
+    }
+
+    public void setTblTimbradosList(List<TblTimbrados> tblTimbradosList) {
+        this.tblTimbradosList = tblTimbradosList;
+    }
+
+    @XmlTransient
+    public List<TblFacturas> getTblFacturasList() {
+        return tblFacturasList;
+    }
+
+    public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
+        this.tblFacturasList = tblFacturasList;
+    }
+
+    @XmlTransient
+    public List<TblEntidades> getTblEntidadesList() {
+        return tblEntidadesList;
+    }
+
+    public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
+        this.tblEntidadesList = tblEntidadesList;
     }
 
 }

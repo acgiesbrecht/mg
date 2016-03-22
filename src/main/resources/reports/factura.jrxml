@@ -17,7 +17,7 @@
     <parameter name="factura_id" class="java.lang.Integer"/>
     <parameter name="fechahora" class="java.sql.Date"/>
     <parameter name="razon_social" class="java.lang.String"/>
-    <parameter name="ruc" class="java.lang.Integer"/>
+    <parameter name="ruc" class="java.lang.String"/>
     <parameter name="importe_donacion" class="java.lang.Integer"/>
     <parameter name="importe_aporte" class="java.lang.Integer"/>
     <background>
@@ -83,7 +83,7 @@
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font fontName="Times New Roman" size="10" isBold="false"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$P{ruc}+"-"+com.parah.utils.CalcDV.Pa_Calcular_Dv_11_A($P{ruc}.toString(), 11)]]></textFieldExpression>
+                <textFieldExpression><![CDATA[com.parah.utils.CalcDV.getRucEntero($P{ruc})]]></textFieldExpression>
             </textField>
             <textField pattern="#000000" isBlankWhenNull="false">
                 <reportElement x="340" y="83" width="186" height="24" uuid="8e001246-49f6-4bc3-b931-bbd496e29651"/>
@@ -193,7 +193,7 @@
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font fontName="Times New Roman" size="10" isBold="false"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$P{ruc}+"-"+com.parah.utils.CalcDV.Pa_Calcular_Dv_11_A($P{ruc}.toString(), 11)]]></textFieldExpression>
+                <textFieldExpression><![CDATA[com.parah.utils.CalcDV.getRucEntero($P{ruc})]]></textFieldExpression>
             </textField>
             <textField pattern="#000000" isBlankWhenNull="false">
                 <reportElement x="340" y="498" width="186" height="24" uuid="8e001246-49f6-4bc3-b931-bbd496e29651"/>

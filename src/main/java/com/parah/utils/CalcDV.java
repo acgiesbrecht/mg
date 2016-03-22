@@ -45,7 +45,8 @@ public class CalcDV {
         return String.valueOf(Pa_Calcular_Dv_11_A(base, 11)).equals(dv);
     }
 
-    public static String getRucEntero(String rucSinDv) {
+    public static String
+            getRucEntero(String rucSinDv) {
         return rucSinDv + "-" + String.valueOf(Pa_Calcular_Dv_11_A(rucSinDv, 11));
     }
 }

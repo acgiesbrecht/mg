@@ -84,6 +84,8 @@ public class TblEntidades implements Serializable {
     @Size(max = 20)
     @Column(name = "RUC_SIN_DV")
     private String rucSinDv = "44444401";
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "CTACTE")
     private Integer ctacte = 99999;
     @Size(max = 50)
