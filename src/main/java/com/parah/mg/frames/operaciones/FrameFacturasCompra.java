@@ -1199,12 +1199,14 @@ public class FrameFacturasCompra extends JInternalFrame {
             t.setFechahora(T.getFechahora());
             t.setIdUser(currentUser.getUser());
 
-            t.setIdCentroDeCosto(listCentrosDeCosto.get(0));
+            t.setIdCentroDeCosto((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
             t.setIdCuentaContableDebe(listCuentasContablesPorDefecto.get(0).getIdCuentaDebeCompras());
             if (T.getCondicionContado()) {
-                t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaContado());
+                //t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaContado());
+                t.setIdCuentaContableHaber(t.getIdCentroDeCosto().getIdCuentaHaberFacturaContadoPorDefecto());
             } else {
-                t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaCredito());
+                //t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaCredito());
+                t.setIdCuentaContableHaber(t.getIdCentroDeCosto().getIdCuentaHaberFacturaCreditoPorDefecto());
             }
             if (ts.isEmpty()) {
                 t.setMonto(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10());

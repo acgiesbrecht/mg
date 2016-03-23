@@ -6,6 +6,7 @@
 package com.parah.mg.domain;
 
 import com.parah.mg.domain.eventos.TblEventoTipos;
+import com.parah.mg.domain.eventos.TblEventos;
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.Date;
@@ -28,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author adriang
+ * @author Adrian Giesbrecht
  */
 @Entity
 @Table(name = "TBL_TRANSFERENCIAS")
@@ -38,6 +39,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblTransferencias.findById", query = "SELECT t FROM TblTransferencias t WHERE t.id = :id"),
     @NamedQuery(name = "TblTransferencias.findByFechahora", query = "SELECT t FROM TblTransferencias t WHERE t.fechahora = :fechahora"),
     @NamedQuery(name = "TblTransferencias.findByConcepto", query = "SELECT t FROM TblTransferencias t WHERE t.concepto = :concepto"),
+    @NamedQuery(name = "TblTransferencias.findByMontoAporte", query = "SELECT t FROM TblTransferencias t WHERE t.montoAporte = :montoAporte"),
+    @NamedQuery(name = "TblTransferencias.findByMontoDonacion", query = "SELECT t FROM TblTransferencias t WHERE t.montoDonacion = :montoDonacion"),
     @NamedQuery(name = "TblTransferencias.findByCobrado", query = "SELECT t FROM TblTransferencias t WHERE t.cobrado = :cobrado")})
 public class TblTransferencias implements Serializable {
 
@@ -70,6 +73,9 @@ public class TblTransferencias implements Serializable {
     @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEntidades idEntidad;
+    @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID")
+    @ManyToOne
+    private TblEventos idEvento;
     @JoinColumn(name = "ID_EVENTO_TIPO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEventoTipos idEventoTipo;
@@ -148,6 +154,14 @@ public class TblTransferencias implements Serializable {
         this.idEntidad = idEntidad;
     }
 
+    public TblEventos getIdEvento() {
+        return idEvento;
+    }
+
+    public void setIdEvento(TblEventos idEvento) {
+        this.idEvento = idEvento;
+    }
+
     public TblEventoTipos getIdEventoTipo() {
         return idEventoTipo;
     }
@@ -187,10 +201,6 @@ public class TblTransferencias implements Serializable {
     @Override
     public String toString() {
         return "com.parah.mg.domain.TblTransferencias[ id=" + id + " ]";
-    }
-
-    public Integer getMontoTotal() {
-        return montoAporte + montoDonacion;
     }
 
 }

@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -25,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author adriang
+ * @author Adrian Giesbrecht
  */
 @Entity
 @Table(name = "TBL_CENTROS_DE_COSTO")
@@ -37,6 +39,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblCentrosDeCosto.findByCtaCte", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.ctaCte = :ctaCte"),
     @NamedQuery(name = "TblCentrosDeCosto.findByPreferido", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = :preferido")})
 public class TblCentrosDeCosto implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCosto")
+    private List<TblAsientos> tblAsientosList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -57,8 +62,12 @@ public class TblCentrosDeCosto implements Serializable {
     @NotNull
     @Column(name = "PREFERIDO")
     private Boolean preferido;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCosto")
-    private List<TblAsientos> tblAsientosList;
+    @JoinColumn(name = "ID_CUENTA_HABER_FACTURA_CREDITO_POR_DEFECTO", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblCuentasContables idCuentaHaberFacturaCreditoPorDefecto;
+    @JoinColumn(name = "ID_CUENTA_HABER_FACTURA_CONTADO_POR_DEFECTO", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblCuentasContables idCuentaHaberFacturaContadoPorDefecto;
 
     public TblCentrosDeCosto() {
     }
@@ -106,13 +115,20 @@ public class TblCentrosDeCosto implements Serializable {
         this.preferido = preferido;
     }
 
-    @XmlTransient
-    public List<TblAsientos> getTblAsientosList() {
-        return tblAsientosList;
+    public TblCuentasContables getIdCuentaHaberFacturaCreditoPorDefecto() {
+        return idCuentaHaberFacturaCreditoPorDefecto;
     }
 
-    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
-        this.tblAsientosList = tblAsientosList;
+    public void setIdCuentaHaberFacturaCreditoPorDefecto(TblCuentasContables idCuentaHaberFacturaCreditoPorDefecto) {
+        this.idCuentaHaberFacturaCreditoPorDefecto = idCuentaHaberFacturaCreditoPorDefecto;
+    }
+
+    public TblCuentasContables getIdCuentaHaberFacturaContadoPorDefecto() {
+        return idCuentaHaberFacturaContadoPorDefecto;
+    }
+
+    public void setIdCuentaHaberFacturaContadoPorDefecto(TblCuentasContables idCuentaHaberFacturaContadoPorDefecto) {
+        this.idCuentaHaberFacturaContadoPorDefecto = idCuentaHaberFacturaContadoPorDefecto;
     }
 
     @Override
@@ -138,6 +154,15 @@ public class TblCentrosDeCosto implements Serializable {
     @Override
     public String toString() {
         return "com.parah.mg.domain.TblCentrosDeCosto[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public List<TblAsientos> getTblAsientosList() {
+        return tblAsientosList;
+    }
+
+    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList = tblAsientosList;
     }
 
 }

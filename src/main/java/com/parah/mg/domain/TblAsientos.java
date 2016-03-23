@@ -7,7 +7,6 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -23,8 +21,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,14 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblAsientos.findAll", query = "SELECT t FROM TblAsientos t"),
     @NamedQuery(name = "TblAsientos.findById", query = "SELECT t FROM TblAsientos t WHERE t.id = :id"),
     @NamedQuery(name = "TblAsientos.findByFechahora", query = "SELECT t FROM TblAsientos t WHERE t.fechahora = :fechahora"),
+    @NamedQuery(name = "TblAsientos.findByObservacion", query = "SELECT t FROM TblAsientos t WHERE t.observacion = :observacion"),
     @NamedQuery(name = "TblAsientos.findByMonto", query = "SELECT t FROM TblAsientos t WHERE t.monto = :monto")})
 public class TblAsientos implements Serializable {
-
-    @ManyToMany(mappedBy = "tblAsientosList")
-    private List<TblFacturas> tblFacturasList;
-
-    @ManyToMany(mappedBy = "tblAsientosList")
-    private List<TblFacturasCompra> tblFacturasCompraList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -57,16 +50,13 @@ public class TblAsientos implements Serializable {
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechahora;
+    @Size(max = 255)
+    @Column(name = "OBSERVACION")
+    private String observacion;
     @Basic(optional = false)
     @NotNull
     @Column(name = "MONTO")
     private int monto;
-    @ManyToMany(mappedBy = "tblAsientosList")
-    private List<TblNotasDeCredito> tblNotasDeCreditoList;
-    @ManyToMany(mappedBy = "tblAsientosList")
-    private List<TblAutofacturas> tblAutofacturasList;
-    @ManyToMany(mappedBy = "tblAsientosList")
-    private List<TblRecibosCompra> tblRecibosCompraList;
     @JoinColumn(name = "ID_CENTRO_DE_COSTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCentrosDeCosto idCentroDeCosto;
@@ -109,39 +99,20 @@ public class TblAsientos implements Serializable {
         this.fechahora = fechahora;
     }
 
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+
     public int getMonto() {
         return monto;
     }
 
     public void setMonto(int monto) {
         this.monto = monto;
-    }
-
-    @XmlTransient
-    public List<TblNotasDeCredito> getTblNotasDeCreditoList() {
-        return tblNotasDeCreditoList;
-    }
-
-    public void setTblNotasDeCreditoList(List<TblNotasDeCredito> tblNotasDeCreditoList) {
-        this.tblNotasDeCreditoList = tblNotasDeCreditoList;
-    }
-
-    @XmlTransient
-    public List<TblAutofacturas> getTblAutofacturasList() {
-        return tblAutofacturasList;
-    }
-
-    public void setTblAutofacturasList(List<TblAutofacturas> tblAutofacturasList) {
-        this.tblAutofacturasList = tblAutofacturasList;
-    }
-
-    @XmlTransient
-    public List<TblRecibosCompra> getTblRecibosCompraList() {
-        return tblRecibosCompraList;
-    }
-
-    public void setTblRecibosCompraList(List<TblRecibosCompra> tblRecibosCompraList) {
-        this.tblRecibosCompraList = tblRecibosCompraList;
     }
 
     public TblCentrosDeCosto getIdCentroDeCosto() {
@@ -199,24 +170,6 @@ public class TblAsientos implements Serializable {
     @Override
     public String toString() {
         return "com.parah.mg.domain.TblAsientos[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public List<TblFacturasCompra> getTblFacturasCompraList() {
-        return tblFacturasCompraList;
-    }
-
-    public void setTblFacturasCompraList(List<TblFacturasCompra> tblFacturasCompraList) {
-        this.tblFacturasCompraList = tblFacturasCompraList;
-    }
-
-    @XmlTransient
-    public List<TblFacturas> getTblFacturasList() {
-        return tblFacturasList;
-    }
-
-    public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
-        this.tblFacturasList = tblFacturasList;
     }
 
 }

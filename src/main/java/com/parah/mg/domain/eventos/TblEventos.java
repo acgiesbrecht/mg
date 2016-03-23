@@ -6,6 +6,8 @@
 package com.parah.mg.domain.eventos;
 
 import com.parah.mg.domain.TblGrupos;
+import com.parah.mg.domain.TblRecibos;
+import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.TblUsers;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -46,6 +48,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblEventos.findByDescripcion", query = "SELECT t FROM TblEventos t WHERE t.descripcion = :descripcion"),
     @NamedQuery(name = "TblEventos.findByPorcentajeAporte", query = "SELECT t FROM TblEventos t WHERE t.porcentajeAporte = :porcentajeAporte")})
 public class TblEventos implements Serializable {
+
+    @OneToMany(mappedBy = "idEvento")
+    private List<TblRecibos> tblRecibosList;
+    @OneToMany(mappedBy = "idEvento")
+    private List<TblTransferencias> tblTransferenciasList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -189,6 +196,24 @@ public class TblEventos implements Serializable {
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(fecha) + " - " + descripcion;
+    }
+
+    @XmlTransient
+    public List<TblRecibos> getTblRecibosList() {
+        return tblRecibosList;
+    }
+
+    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
+        this.tblRecibosList = tblRecibosList;
+    }
+
+    @XmlTransient
+    public List<TblTransferencias> getTblTransferenciasList() {
+        return tblTransferenciasList;
+    }
+
+    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
+        this.tblTransferenciasList = tblTransferenciasList;
     }
 
 }

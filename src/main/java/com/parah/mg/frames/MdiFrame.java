@@ -153,12 +153,12 @@ public class MdiFrame extends javax.swing.JFrame {
                             mnuAdTimbrados.setEnabled(currentUser.hasRole(3));
                             mnuAdFacturas.setEnabled(currentUser.hasRole(2));
 
-                            /*mnuAdTimbradosAutofacturas.setEnabled(currentUser.hasRole(3));
+                            mnuAdTimbradosAutofacturas.setEnabled(currentUser.hasRole(3));
                             mnuAdAutofacturas.setEnabled(currentUser.hasRole(2));
 
                             mnuAdCentrosDeCosto.setEnabled(currentUser.hasRole(3));
                             mnuAdCuentasContables.setEnabled(currentUser.hasRole(3));
-                             */
+
                             mnuAdIglesia.setEnabled(currentUser.hasRole(3));
                             mnuAdConfig.setEnabled(currentUser.hasRole(3));
                             mnuAdUsuarios.setEnabled(currentUser.hasRole(3));
@@ -188,44 +188,31 @@ public class MdiFrame extends javax.swing.JFrame {
             try {
                 Object o = entityManager.createNativeQuery("select count(*) from tbl_database_updates where 1=2").getSingleResult();
             } catch (Exception e) {
-                if (!hasBackedUp) {
-                    int reply = JOptionPane.showConfirmDialog(null, "Se encuentró una actualización de la base de datos. Se procederá a hacer un BackUp de sus base de datos existente. Desea proceder?", "Seguridad", JOptionPane.YES_NO_OPTION);
-                    if (reply == JOptionPane.YES_OPTION) {
-                        Utils.getInstance().exectueBackUp(persistenceMap.get("backUpDir"));
-                        Utils.getInstance().executeSQL("/sql/javadb_20160224.sql");
-                    } else {
-                        this.clone();
-                    }
-                } else {
-                    Utils.getInstance().executeSQL("/sql/javadb_20160224.sql");
-                }
+                hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20160224.sql", hasBackedUp);
             }
 
-            Object o = entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20160219.sql");
-            if (o == null) {
-                if (!hasBackedUp) {
-                    int reply = JOptionPane.showConfirmDialog(null, "Se encuentró una actualización de la base de datos. Se procederá a hacer un BackUp de sus base de datos existente. Desea proceder?", "Seguridad", JOptionPane.YES_NO_OPTION);
-                    if (reply == JOptionPane.YES_OPTION) {
-                        Utils.getInstance().exectueBackUp(persistenceMap.get("backUpDir"));
-                        Utils.getInstance().executeSQL("/sql/javadb_20160219.sql");
-                    } else {
-                        this.clone();
-                    }
-                } else {
-                    Utils.getInstance().executeSQL("/sql/javadb_20160219.sql");
-                }
+            if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20160219.sql") == null) {
+                hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20160219.sql", hasBackedUp);
+            }
+
+            if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20160219.sql") == null) {
+                hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20160219.sql", hasBackedUp);
+            }
+
+            if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20160323.sql") == null) {
+                hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20160323.sql", hasBackedUp);
             }
 
             List<TblUsers> list = entityManager.createQuery("SELECT t FROM TblUsers t").getResultList();
             for (TblUsers user : list) {
-                if (user.getNombre().equals("adrian")) {
-                    if (BCrypt.checkpw(String.valueOf("adrian"), user.getPassword())) {
-                        currentUser.setUser(user);
-                    }
+                if (user.getNombre().equals("adrian") && BCrypt.checkpw(String.valueOf("adrian"), user.getPassword())) {
+                    currentUser.setUser(user);
                 }
             }
             //-------------------------------------
-            if (currentUser.getUser() == null) {
+
+            if (currentUser.getUser()
+                    == null) {
                 FormLogin frame = new FormLogin(this, true);
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
@@ -1162,12 +1149,15 @@ public class MdiFrame extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(MdiFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(MdiFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(MdiFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MdiFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);

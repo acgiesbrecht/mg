@@ -5,6 +5,9 @@
  */
 package com.parah.mg.frames.admin;
 
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.matchers.TextMatcherEditor;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
 import java.beans.Beans;
@@ -41,6 +44,13 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
             }
+
+            AutoCompleteSupport support = AutoCompleteSupport.install(cboCuentaContado, GlazedLists.eventListOf(listCuentasContables.toArray()));
+            support.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCuentaCredito, GlazedLists.eventListOf(listCuentasContables.toArray()));
+            support1.setFilterMode(TextMatcherEditor.CONTAINS);
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -60,6 +70,9 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
+        queryCuentasContables = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCuentasContables t where t.imputable = true");
+        listCuentasContables = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCuentasContables.getResultList());
+        ctaCteTableCellRenderer1 = new com.parah.mg.utils.CtaCteTableCellRenderer();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         idLabel = new javax.swing.JLabel();
@@ -70,8 +83,18 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         refreshButton = new javax.swing.JButton();
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
+        conceptoLabel2 = new javax.swing.JLabel();
+        cboCuentaContado = new javax.swing.JComboBox();
+        conceptoLabel3 = new javax.swing.JLabel();
+        cboCuentaCredito = new javax.swing.JComboBox();
+        ctacteLabel = new javax.swing.JLabel();
+        ctacteField = new javax.swing.JTextField();
+        ctacteLabel1 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         FormListener formListener = new FormListener();
+
+        ctaCteTableCellRenderer1.setText("ctaCteTableCellRenderer1");
 
         masterTable.setAutoCreateRowSorter(true);
 
@@ -83,14 +106,31 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descripcion}"));
         columnBinding.setColumnName("Descripcion");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCuentaHaberFacturaContadoPorDefecto}"));
+        columnBinding.setColumnName("Cuenta Contado por defecto");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCuentasContables.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCuentaHaberFacturaCreditoPorDefecto}"));
+        columnBinding.setColumnName("Cuenta Credito por defecto");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCuentasContables.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${ctaCte}"));
+        columnBinding.setColumnName("Cta Cte C.Ch.");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(0).setResizable(false);
             masterTable.getColumnModel().getColumn(0).setPreferredWidth(100);
-            masterTable.getColumnModel().getColumn(1).setResizable(false);
-            masterTable.getColumnModel().getColumn(1).setPreferredWidth(500);
+            masterTable.getColumnModel().getColumn(1).setPreferredWidth(300);
+            masterTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+            masterTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+            masterTable.getColumnModel().getColumn(4).setResizable(false);
+            masterTable.getColumnModel().getColumn(4).setPreferredWidth(100);
+            masterTable.getColumnModel().getColumn(4).setCellRenderer(ctaCteTableCellRenderer1);
         }
 
         idLabel.setText("Nro.:");
@@ -127,37 +167,81 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
 
         deleteButton.addActionListener(formListener);
 
+        conceptoLabel2.setText("Cuenta por defecto para Facturas Contado:");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCuentaHaberFacturaContadoPorDefecto}"), cboCuentaContado, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        cboCuentaContado.addActionListener(formListener);
+
+        conceptoLabel3.setText("Cuenta por defecto para Facturas Credito:");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCuentaHaberFacturaCreditoPorDefecto}"), cboCuentaCredito, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        cboCuentaCredito.addActionListener(formListener);
+
+        ctacteLabel.setText("Cta Cte C.Ch.:");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.ctaCte}"), ctacteField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        ctacteLabel1.setForeground(new java.awt.Color(153, 153, 153));
+        ctacteLabel1.setText("Formato: 7123801 201237 (Solo numeros sin simbolos como - o /)");
+
+        jCheckBox1.setText("Es el Centro de Costo ppor defecto");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.preferido}"), jCheckBox1, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        binding.setSourceNullValue(false);
+        binding.setSourceUnreadableValue(false);
+        bindingGroup.addBinding(binding);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(newButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deleteButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(refreshButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(saveButton)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(idLabel)
                             .addComponent(descripcionLabel))
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(descripcionField)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jCheckBox1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(newButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveButton))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(descripcionField))
-                        .addGap(13, 13, 13))))
+                                .addComponent(ctacteLabel)
+                                .addGap(18, 18, 18)
+                                .addComponent(ctacteField, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(ctacteLabel1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(conceptoLabel2)
+                                    .addComponent(conceptoLabel3))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cboCuentaCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cboCuentaContado, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, newButton, refreshButton, saveButton});
@@ -166,7 +250,7 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idLabel)
@@ -177,11 +261,25 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
                     .addComponent(descripcionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(conceptoLabel2)
+                    .addComponent(cboCuentaContado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(conceptoLabel3)
+                    .addComponent(cboCuentaCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ctacteLabel)
+                    .addComponent(ctacteField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ctacteLabel1))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
                     .addComponent(deleteButton)
-                    .addComponent(newButton))
-                .addGap(6, 6, 6))
+                    .addComponent(newButton)
+                    .addComponent(jCheckBox1))
+                .addContainerGap())
         );
 
         bindingGroup.bind();
@@ -203,6 +301,12 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
             }
             else if (evt.getSource() == deleteButton) {
                 FrameCentrosDeCostoAdmin.this.deleteButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == cboCuentaContado) {
+                FrameCentrosDeCostoAdmin.this.cboCuentaContadoActionPerformed(evt);
+            }
+            else if (evt.getSource() == cboCuentaCredito) {
+                FrameCentrosDeCostoAdmin.this.cboCuentaCreditoActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -272,18 +376,37 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    private void cboCuentaContadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCuentaContadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboCuentaContadoActionPerformed
+
+    private void cboCuentaCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCuentaCreditoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboCuentaCreditoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox cboCuentaContado;
+    private javax.swing.JComboBox cboCuentaCredito;
+    private javax.swing.JLabel conceptoLabel2;
+    private javax.swing.JLabel conceptoLabel3;
+    private com.parah.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
+    private javax.swing.JTextField ctacteField;
+    private javax.swing.JLabel ctacteLabel;
+    private javax.swing.JLabel ctacteLabel1;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField descripcionField;
     private javax.swing.JLabel descripcionLabel;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JTextField idField;
     private javax.swing.JLabel idLabel;
+    private javax.swing.JCheckBox jCheckBox1;
     private java.util.List<com.parah.mg.domain.TblCentrosDeCosto> list;
+    private java.util.List<com.parah.mg.domain.TblCuentasContables> listCuentasContables;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
     private javax.persistence.Query query;
+    private javax.persistence.Query queryCuentasContables;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;

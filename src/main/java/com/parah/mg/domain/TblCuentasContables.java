@@ -37,6 +37,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblCuentasContables.findByImputable", query = "SELECT t FROM TblCuentasContables t WHERE t.imputable = :imputable")})
 public class TblCuentasContables implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaHaberFacturaCreditoPorDefecto")
+    private List<TblCentrosDeCosto> tblCentrosDeCostoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaHaberFacturaContadoPorDefecto")
+    private List<TblCentrosDeCosto> tblCentrosDeCostoList1;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -209,6 +214,24 @@ public class TblCuentasContables implements Serializable {
     @Override
     public String toString() {
         return descripcion;
+    }
+
+    @XmlTransient
+    public List<TblCentrosDeCosto> getTblCentrosDeCostoList() {
+        return tblCentrosDeCostoList;
+    }
+
+    public void setTblCentrosDeCostoList(List<TblCentrosDeCosto> tblCentrosDeCostoList) {
+        this.tblCentrosDeCostoList = tblCentrosDeCostoList;
+    }
+
+    @XmlTransient
+    public List<TblCentrosDeCosto> getTblCentrosDeCostoList1() {
+        return tblCentrosDeCostoList1;
+    }
+
+    public void setTblCentrosDeCostoList1(List<TblCentrosDeCosto> tblCentrosDeCostoList1) {
+        this.tblCentrosDeCostoList1 = tblCentrosDeCostoList1;
     }
 
 }

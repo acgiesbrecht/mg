@@ -181,6 +181,19 @@ public class Utils extends Component {
         return ent.getNombres() + " " + ent.getApellidos();
     }
 
+    public Boolean executeUpdateSQL(String filename, Boolean hasBackedUp) {
+        if (!hasBackedUp) {
+            int reply = JOptionPane.showConfirmDialog(null, "Se encuentró una actualización de la base de datos. Se procederá a hacer un BackUp de sus base de datos existente. Desea proceder?", "Seguridad", JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+                hasBackedUp = exectueBackUp(getPersistenceMap().get("backUpDir"));
+                executeSQL(filename);
+            }
+        } else {
+            executeSQL(filename);
+        }
+        return hasBackedUp;
+    }
+
     public void executeSQL(String filename) {
         try {
             Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
@@ -225,7 +238,7 @@ public class Utils extends Component {
         }
     }
 
-    public void exectueBackUp(String backupDirectory) {
+    public Boolean exectueBackUp(String backupDirectory) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
             String backupfile = backupDirectory + "\\BackUp_" + sdf.format(new Date());
@@ -238,9 +251,11 @@ public class Utils extends Component {
                 cs.close();
             }
             JOptionPane.showMessageDialog(null, "BackUp guardado con exito en: " + backupfile);
+            return true;
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            return false;
         }
     }
 

@@ -5,9 +5,11 @@
  */
 package com.parah.mg.domain;
 
+import com.parah.mg.domain.eventos.TblEventos;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -34,6 +37,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblGrupos.findById", query = "SELECT t FROM TblGrupos t WHERE t.id = :id"),
     @NamedQuery(name = "TblGrupos.findByDescripcion", query = "SELECT t FROM TblGrupos t WHERE t.descripcion = :descripcion")})
 public class TblGrupos implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGrupo")
+    private List<TblEventos> tblEventosList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -109,6 +115,15 @@ public class TblGrupos implements Serializable {
     @Override
     public String toString() {
         return descripcion;
+    }
+
+    @XmlTransient
+    public List<TblEventos> getTblEventosList() {
+        return tblEventosList;
+    }
+
+    public void setTblEventosList(List<TblEventos> tblEventosList) {
+        this.tblEventosList = tblEventosList;
     }
 
 }

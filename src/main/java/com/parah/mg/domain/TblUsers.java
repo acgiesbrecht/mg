@@ -5,6 +5,7 @@
  */
 package com.parah.mg.domain;
 
+import com.parah.mg.domain.eventos.TblEventos;
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.List;
@@ -41,6 +42,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblUsers.findByPassword", query = "SELECT t FROM TblUsers t WHERE t.password = :password"),
     @NamedQuery(name = "TblUsers.findByNombrecompleto", query = "SELECT t FROM TblUsers t WHERE t.nombrecompleto = :nombrecompleto")})
 public class TblUsers implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblRecibos> tblRecibosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblEventos> tblEventosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<TblTransferencias> tblTransferenciasList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
     private List<TblTimbrados> tblTimbradosList;
@@ -242,6 +250,33 @@ public class TblUsers implements Serializable {
 
     public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
         this.tblEntidadesList = tblEntidadesList;
+    }
+
+    @XmlTransient
+    public List<TblRecibos> getTblRecibosList() {
+        return tblRecibosList;
+    }
+
+    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
+        this.tblRecibosList = tblRecibosList;
+    }
+
+    @XmlTransient
+    public List<TblEventos> getTblEventosList() {
+        return tblEventosList;
+    }
+
+    public void setTblEventosList(List<TblEventos> tblEventosList) {
+        this.tblEventosList = tblEventosList;
+    }
+
+    @XmlTransient
+    public List<TblTransferencias> getTblTransferenciasList() {
+        return tblTransferenciasList;
+    }
+
+    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
+        this.tblTransferenciasList = tblTransferenciasList;
     }
 
 }
