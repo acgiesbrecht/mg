@@ -319,13 +319,24 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     f.setIdTimbrado(listTimbrados.get(0));
                     f.setFechahora(new Date());
                     f.setIdEntidad(m);
-                    f.setRazonSocial(m.getNombres() + " " + m.getApellidos());
+                    if (m.getRazonSocial() != null) {
+                        if (!m.getRazonSocial().equals("")) {
+                            f.setRazonSocial(m.getRazonSocial());
+                        } else {
+                            f.setRazonSocial(m.getNombreCompleto());
+                        }
+                    } else {
+                        f.setRazonSocial(m.getNombreCompleto());
+                    }
+
                     if (m.getRucSinDv() != null) {
                         f.setRuc(m.getRucSinDv());
                     } else {
                         f.setRuc("44444401");
                     }
                     f.setAnulado(false);
+                    f.setDomicilio(m.getDomicilio());
+                    f.setCasillaDeCorreo(m.getBox());
                     f.setImporteAporte(pr.getRAporte() + pr.getTAporte() - pr.getFAporte());
                     f.setImporteDonacion(pr.getRDonacion() + pr.getTDonacion() - pr.getFDonacion());
                     f.setIdUser(currentUser.getUser());

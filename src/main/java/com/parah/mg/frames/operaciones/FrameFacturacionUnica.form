@@ -170,53 +170,64 @@
                       <Component id="cancelarButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="montoLabel" min="-2" max="-2" attributes="0"/>
+                                      <Component id="montoLabel1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="fecha1Label" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="txtTimbrado" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
+                                      <Component id="txtNro" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
+                                      <Component id="dtpFecha" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="idMiembroLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
+                                  <Component id="idMiembroLabel1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="txtCtaCte" min="-2" pref="61" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                  <Component id="idMiembroLabel2" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="cboEntidad" min="-2" pref="324" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="montoLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="ctacteLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="txtRazonSocial" max="32767" attributes="0"/>
+                                      <Component id="txtDomicilio" max="32767" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="rucField" min="-2" pref="124" max="-2" attributes="0"/>
+                                          <EmptySpace min="0" pref="499" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <Component id="montoLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="montoLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="montoLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="montoLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="ctacteLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="montoLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtRazonSocial" max="32767" attributes="0"/>
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="txtAporte" min="-2" pref="124" max="-2" attributes="0"/>
-                                          <Component id="txtDonacion" min="-2" pref="124" max="-2" attributes="0"/>
-                                          <Component id="rucField" min="-2" pref="124" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  </Group>
+                                  <Component id="txtCdC" min="-2" pref="124" max="-2" attributes="0"/>
+                                  <Component id="txtAporte" min="-2" pref="124" max="-2" attributes="0"/>
+                                  <Component id="txtDonacion" min="-2" pref="124" max="-2" attributes="0"/>
                               </Group>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="montoLabel" min="-2" max="-2" attributes="0"/>
-                                  <Component id="montoLabel1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="fecha1Label" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtTimbrado" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
-                                  <Component id="txtNro" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
-                                  <Component id="dtpFecha" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="idMiembroLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
-                              <Component id="idMiembroLabel1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="txtCtaCte" min="-2" pref="61" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                              <Component id="idMiembroLabel2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cboEntidad" min="-2" pref="324" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="199" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -261,15 +272,25 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtDonacion" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="montoLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="montoLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtDomicilio" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="txtCdC" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="montoLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="montoLabel3" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtDonacion" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="txtAporte" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="montoLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="80" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="cancelarButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -472,6 +493,32 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtRazonSocial">
+    </Component>
+    <Component class="javax.swing.JLabel" name="montoLabel5">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="12" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Domicilio:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtDomicilio">
+    </Component>
+    <Component class="javax.swing.JLabel" name="montoLabel6">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="12" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Casilla de Correo:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="txtCdC">
+      <Properties>
+        <Property name="columns" type="int" value="9"/>
+        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+          <Format subtype="1" type="0"/>
+        </Property>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

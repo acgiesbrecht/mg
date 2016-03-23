@@ -5,16 +5,13 @@
  */
 package com.parah.mg.domain.eventos;
 
+import com.parah.mg.domain.TblCentrosDeCosto;
 import com.parah.mg.domain.TblGrupos;
-import com.parah.mg.domain.TblRecibos;
-import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.TblUsers;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,15 +21,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -48,11 +42,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblEventos.findByDescripcion", query = "SELECT t FROM TblEventos t WHERE t.descripcion = :descripcion"),
     @NamedQuery(name = "TblEventos.findByPorcentajeAporte", query = "SELECT t FROM TblEventos t WHERE t.porcentajeAporte = :porcentajeAporte")})
 public class TblEventos implements Serializable {
-
-    @OneToMany(mappedBy = "idEvento")
-    private List<TblRecibos> tblRecibosList;
-    @OneToMany(mappedBy = "idEvento")
-    private List<TblTransferencias> tblTransferenciasList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -72,10 +61,9 @@ public class TblEventos implements Serializable {
     @NotNull
     @Column(name = "PORCENTAJE_APORTE")
     private int porcentajeAporte;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
-    private List<TblEventoDetalle> tblEventoDetalleList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tblEventos")
-    private TblEventoCuotas tblEventoCuotas;
+    @JoinColumn(name = "ID_CENTRO_DE_COSTO", referencedColumnName = "ID")
+    @ManyToOne
+    private TblCentrosDeCosto idCentroDeCosto;
     @JoinColumn(name = "ID_EVENTO_TIPO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEventoTipos idEventoTipo;
@@ -131,21 +119,12 @@ public class TblEventos implements Serializable {
         this.porcentajeAporte = porcentajeAporte;
     }
 
-    @XmlTransient
-    public List<TblEventoDetalle> getTblEventoDetalleList() {
-        return tblEventoDetalleList;
+    public TblCentrosDeCosto getIdCentroDeCosto() {
+        return idCentroDeCosto;
     }
 
-    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
-        this.tblEventoDetalleList = tblEventoDetalleList;
-    }
-
-    public TblEventoCuotas getTblEventoCuotas() {
-        return tblEventoCuotas;
-    }
-
-    public void setTblEventoCuotas(TblEventoCuotas tblEventoCuotas) {
-        this.tblEventoCuotas = tblEventoCuotas;
+    public void setIdCentroDeCosto(TblCentrosDeCosto idCentroDeCosto) {
+        this.idCentroDeCosto = idCentroDeCosto;
     }
 
     public TblEventoTipos getIdEventoTipo() {
@@ -194,26 +173,8 @@ public class TblEventos implements Serializable {
 
     @Override
     public String toString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MMMM/yy");
         return sdf.format(fecha) + " - " + descripcion;
-    }
-
-    @XmlTransient
-    public List<TblRecibos> getTblRecibosList() {
-        return tblRecibosList;
-    }
-
-    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
-        this.tblRecibosList = tblRecibosList;
-    }
-
-    @XmlTransient
-    public List<TblTransferencias> getTblTransferenciasList() {
-        return tblTransferenciasList;
-    }
-
-    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
-        this.tblTransferenciasList = tblTransferenciasList;
     }
 
 }
