@@ -585,7 +585,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                         + "WHERE remates.id = transferencias.id AND remates.id = recibos.id AND (remates.monto - transferencias.monto - recibos.monto) > 0 "
                         + "ORDER BY remates.nombre", TblEntidades.class);
              */
-            queryEntidades = entityManager.createNativeQuery("SELECT eventodetalle.id, "
+ /*queryEntidades = entityManager.createNativeQuery("SELECT eventodetalle.id, "
                     + "                     eventodetalle.nombres, "
                     + "                     eventodetalle.apellidos, "
                     + "                     eventodetalle.RAZON_SOCIAL, "
@@ -656,7 +656,32 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                     + "                    m.ID_MIEMBROS_ALERGIA) recibos "
                     + "    WHERE eventodetalle.id = transferencias.id AND eventodetalle.id = recibos.id AND (eventodetalle.monto - transferencias.monto - recibos.monto) > 0 "
                     + "    ORDER BY eventodetalle.ctacte", TblEntidades.class);
-
+             */
+            queryEntidades = entityManager.createNativeQuery("SELECT e.* FROM TBL_ENTIDADES WHERE e.ID IN"
+                    + "(SELECT ed.id_entidad,"
+                    + "                SUM(ed.monto*ev.PORCENTAJE_APORTE/100) AS montoAporte,"
+                    + "                SUM(ed.monto*(100-ev.PORCENTAJE_APORTE)/100) AS montoDonacion"
+                    + "              FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = 1"
+                    + "                group by ed.id_entidad"
+                    + " UNION ALL  "
+                    + " SELECT p.id_entidad,"
+                    + "                 MONTH(p.fechahora) AS mes,"
+                    + "                 YEAR(p.fechahora) AS ano,"
+                    + "                 -SUM(p.MONTO_APORTE) AS montoAporte,"
+                    + "                 -SUM(p.MONTO_DONACION) AS montoDonacion"
+                    + "                 FROM MG.TBL_TRANSFERENCIAS p WHERE p.ID_EVENTO_TIPO = 1"
+                    + "                 group by p.id_entidad"
+                    + " UNION ALL "
+                    + " SELECT p.id_entidad,"
+                    + "        MONTH(p.fechahora) AS mes,"
+                    + "        YEAR(p.fechahora) AS ano,"
+                    + "        -SUM(p.MONTO_APORTE) AS montoAporte,"
+                    + "        -SUM(p.MONTO_DONACION) AS montoDonacion"
+                    + "        FROM MG.TBL_RECIBOS p WHERE p.ID_EVENTO_TIPO = 1"
+                    + "        group by p.id_entidad) DETALLE LEFT JOIN MG.TBL_ENTIDADES e ON DETALLE.ID_ENTIDAD = e.ID"
+                    + " GROUP BY e.ID, e.CTACTE, e.APELLIDOS, e.NOMBRES) d"
+                    + " WHERE MONTODONACION + MONTOAPORTE > 0"
+                    + " ORDER BY CTACTE", TblEntidades.class);
             listEntidades.clear();
             listEntidades.addAll(queryEntidades.getResultList());
             eventListEntidades.clear();

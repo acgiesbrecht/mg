@@ -135,12 +135,12 @@ public class MdiFrame extends javax.swing.JFrame {
                             //mnuOpCobrarTransferencias.setEnabled(currentUser.hasRole(2));
                             mnuOpCobrarTransferenciasAyC.setEnabled(currentUser.hasRole(2));
 
-                            /*mnuEgFacturas.setEnabled(currentUser.hasRole(2));
+                            mnuEgFacturas.setEnabled(currentUser.hasRole(2));
                             mnuEgAutofacturas.setEnabled(currentUser.hasRole(2));
                             mnuEgNotasDeCredito.setEnabled(currentUser.hasRole(2));
                             mnuEgRecibos.setEnabled(currentUser.hasRole(2));
                             mnuEgAsientosManuales.setEnabled(currentUser.hasRole(3));
-                             */
+
                             mnuAdMiembros.setEnabled(currentUser.hasRole(2));
 
                             mnuAdEventos.setEnabled(currentUser.hasRole(3));
@@ -166,7 +166,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
                             mnuAdInformes.setEnabled(currentUser.hasRole(1));
                             mnuInformesCyA.setEnabled(currentUser.hasRole(2));
-                            //mnuInformesContabilidad.setEnabled(currentUser.hasRole(2));
+                            mnuInformesContabilidad.setEnabled(currentUser.hasRole(2));
 
                         }
                     }
