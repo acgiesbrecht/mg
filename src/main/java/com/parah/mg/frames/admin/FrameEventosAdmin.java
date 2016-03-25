@@ -8,7 +8,7 @@ package com.parah.mg.frames.admin;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
-import com.parah.mg.domain.eventos.TblEventoTipos;
+import com.parah.mg.domain.TblEventoTipos;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
@@ -118,7 +118,7 @@ public class FrameEventosAdmin extends JInternalFrame {
         columnBinding.setColumnClass(java.util.Date.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEventoTipo}"));
         columnBinding.setColumnName("Tipo");
-        columnBinding.setColumnClass(com.parah.mg.domain.eventos.TblEventoTipos.class);
+        columnBinding.setColumnClass(com.parah.mg.domain.TblEventoTipos.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descripcion}"));
         columnBinding.setColumnName("Descripcion");
         columnBinding.setColumnClass(String.class);
@@ -359,9 +359,9 @@ public class FrameEventosAdmin extends JInternalFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int[] selected = masterTable.getSelectedRows();
-        List<com.parah.mg.domain.eventos.TblEventos> toRemove = new ArrayList<>(selected.length);
+        List<com.parah.mg.domain.TblEventos> toRemove = new ArrayList<>(selected.length);
         for (int idx = 0; idx < selected.length; idx++) {
-            com.parah.mg.domain.eventos.TblEventos t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+            com.parah.mg.domain.TblEventos t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
             toRemove.add(t);
             entityManager.remove(t);
         }
@@ -369,7 +369,7 @@ public class FrameEventosAdmin extends JInternalFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        com.parah.mg.domain.eventos.TblEventos t = new com.parah.mg.domain.eventos.TblEventos();
+        com.parah.mg.domain.TblEventos t = new com.parah.mg.domain.TblEventos();
         t.setIdUser(currentUser.getUser());
         entityManager.persist(t);
         list.add(t);
@@ -391,8 +391,8 @@ public class FrameEventosAdmin extends JInternalFrame {
         } catch (RollbackException ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
-            List<com.parah.mg.domain.eventos.TblEventos> merged = new ArrayList<>(list.size());
-            for (com.parah.mg.domain.eventos.TblEventos t : list) {
+            List<com.parah.mg.domain.TblEventos> merged = new ArrayList<>(list.size());
+            for (com.parah.mg.domain.TblEventos t : list) {
                 merged.add(entityManager.merge(t));
             }
             list.clear();
@@ -433,8 +433,8 @@ public class FrameEventosAdmin extends JInternalFrame {
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
     private javax.swing.JLabel lblAporte;
     private javax.swing.JLabel lblDonacion;
-    private java.util.List<com.parah.mg.domain.eventos.TblEventos> list;
-    private java.util.List<com.parah.mg.domain.eventos.TblEventoTipos> listEventoTipos;
+    private java.util.List<com.parah.mg.domain.TblEventos> list;
+    private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
     private java.util.List<com.parah.mg.domain.TblGrupos> listGrupos;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
