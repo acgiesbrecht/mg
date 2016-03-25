@@ -40,6 +40,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblCentrosDeCosto.findByPreferido", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = :preferido")})
 public class TblCentrosDeCosto implements Serializable {
 
+    @OneToMany(mappedBy = "idCentroDeCosto")
+    private List<TblEventos> tblEventosList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCosto")
     private List<TblAsientos> tblAsientosList;
 
@@ -163,6 +166,15 @@ public class TblCentrosDeCosto implements Serializable {
 
     public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
         this.tblAsientosList = tblAsientosList;
+    }
+
+    @XmlTransient
+    public List<TblEventos> getTblEventosList() {
+        return tblEventosList;
+    }
+
+    public void setTblEventosList(List<TblEventos> tblEventosList) {
+        this.tblEventosList = tblEventosList;
     }
 
 }

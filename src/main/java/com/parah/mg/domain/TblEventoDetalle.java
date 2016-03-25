@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.parah.mg.domain.eventos;
+package com.parah.mg.domain;
 
-import com.parah.mg.domain.TblCategoriasArticulos;
-import com.parah.mg.domain.TblFormasDePago;
-import com.parah.mg.domain.TblUsers;
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -27,10 +27,11 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author adriang
+ * @author Adrian Giesbrecht
  */
 @Entity
 @Table(name = "TBL_EVENTO_DETALLE")
@@ -61,6 +62,11 @@ public class TblEventoDetalle implements Serializable {
     @NotNull
     @Column(name = "MONTO")
     private int monto;
+    @JoinTable(name = "TBL_EVENTO_DETALLE_ASIENTOS", joinColumns = {
+        @JoinColumn(name = "ID_EVENTO_DETALLE", referencedColumnName = "ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
+    @ManyToMany
+    private List<TblAsientos> tblAsientosList;
     @JoinColumn(name = "ID_CATEGORIA_ARTICULO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCategoriasArticulos idCategoriaArticulo;
@@ -120,6 +126,15 @@ public class TblEventoDetalle implements Serializable {
 
     public void setMonto(int monto) {
         this.monto = monto;
+    }
+
+    @XmlTransient
+    public List<TblAsientos> getTblAsientosList() {
+        return tblAsientosList;
+    }
+
+    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList = tblAsientosList;
     }
 
     public TblCategoriasArticulos getIdCategoriaArticulo() {
@@ -184,7 +199,7 @@ public class TblEventoDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.TblEventoDetalle[ id=" + id + " ]";
+        return "com.parah.mg.domain.eventos.TblEventoDetalle[ id=" + id + " ]";
     }
 
 }

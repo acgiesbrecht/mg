@@ -20,14 +20,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author adriang
+ * @author Adrian Giesbrecht
  */
 @Entity
 @Table(name = "TBL_CUENTAS_CONTABLES_POR_DEFECTO")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblCuentasContablesPorDefecto.findAll", query = "SELECT t FROM TblCuentasContablesPorDefecto t"),
-    @NamedQuery(name = "TblCuentasContablesPorDefecto.findById", query = "SELECT t FROM TblCuentasContablesPorDefecto t WHERE t.id = :id")})
+    @NamedQuery(name = "TblCuentasContablesPorDefecto.findById", query = "SELECT t FROM TblCuentasContablesPorDefecto t WHERE t.id = :id"),
+    @NamedQuery(name = "TblCuentasContablesPorDefecto.findByIdCuentaACobrar", query = "SELECT t FROM TblCuentasContablesPorDefecto t WHERE t.idCuentaACobrar = :idCuentaACobrar")})
 public class TblCuentasContablesPorDefecto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,6 +37,9 @@ public class TblCuentasContablesPorDefecto implements Serializable {
     @NotNull
     @Column(name = "ID")
     private Integer id;
+    @JoinColumn(name = "ID_CUENTA_A_COBRAR", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblCuentasContables idCuentaACobrar;
     @JoinColumn(name = "ID_CUENTA_DEBE_COMPRAS", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCuentasContables idCuentaDebeCompras;
@@ -65,6 +69,14 @@ public class TblCuentasContablesPorDefecto implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public TblCuentasContables getIdCuentaACobrar() {
+        return idCuentaACobrar;
+    }
+
+    public void setIdCuentaACobrar(TblCuentasContables idCuentaACobrar) {
+        this.idCuentaACobrar = idCuentaACobrar;
     }
 
     public TblCuentasContables getIdCuentaDebeCompras() {

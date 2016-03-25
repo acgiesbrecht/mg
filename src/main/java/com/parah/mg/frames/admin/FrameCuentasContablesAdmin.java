@@ -61,6 +61,9 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
             AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCuentaCredito, eventListCuentasContables);
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
 
+            AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaACobrar, eventListCuentasContables);
+            support3.setFilterMode(TextMatcherEditor.CONTAINS);
+
             AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaCompras, eventListCuentasContables);
             support4.setFilterMode(TextMatcherEditor.CONTAINS);
 
@@ -118,6 +121,8 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         cboCuentaDonaciones = new javax.swing.JComboBox<>();
         cboCuentaCompras = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        cboCuentaACobrar = new javax.swing.JComboBox<>();
 
         FormListener formListener = new FormListener();
 
@@ -215,6 +220,10 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
 
         jLabel6.setText("Cuenta Debe para Compras");
 
+        jLabel7.setText("Cuenta A Cobrar");
+
+        cboCuentaACobrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -226,9 +235,11 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
                     .addComponent(jLabel2)
                     .addComponent(jLabel6)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cboCuentaACobrar, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cboCuentaDonaciones, 0, 228, Short.MAX_VALUE)
                     .addComponent(cboCuentaAportes, 0, 228, Short.MAX_VALUE)
                     .addComponent(cboCuentaCompras, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -247,11 +258,15 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(cboCuentaCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboCuentaACobrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cboCuentaCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cboCuentaAportes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
@@ -259,7 +274,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cboCuentaDonaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Cuentas por defecto", jPanel1);
@@ -442,6 +457,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
             cuentas = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
             cboCuentaContado.setSelectedItem(cuentas.getIdCuentaHaberFacturaContado());
             cboCuentaCredito.setSelectedItem(cuentas.getIdCuentaHaberFacturaCredito());
+            cboCuentaACobrar.setSelectedItem(cuentas.getIdCuentaACobrar());
             cboCuentaCompras.setSelectedItem(cuentas.getIdCuentaDebeCompras());
             cboCuentaAportes.setSelectedItem(cuentas.getIdCuentaDebeAportes());
             cboCuentaDonaciones.setSelectedItem(cuentas.getIdCuentaDebeDonaciones());
@@ -455,6 +471,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         try {
             cuentas.setIdCuentaHaberFacturaContado((TblCuentasContables) cboCuentaContado.getSelectedItem());
             cuentas.setIdCuentaHaberFacturaCredito((TblCuentasContables) cboCuentaCredito.getSelectedItem());
+            cuentas.setIdCuentaACobrar((TblCuentasContables) cboCuentaACobrar.getSelectedItem());
             cuentas.setIdCuentaDebeCompras((TblCuentasContables) cboCuentaCompras.getSelectedItem());
             cuentas.setIdCuentaDebeAportes((TblCuentasContables) cboCuentaAportes.getSelectedItem());
             cuentas.setIdCuentaDebeDonaciones((TblCuentasContables) cboCuentaDonaciones.getSelectedItem());
@@ -465,6 +482,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cboCuentaACobrar;
     private javax.swing.JComboBox<String> cboCuentaAportes;
     private javax.swing.JComboBox<String> cboCuentaCompras;
     private javax.swing.JComboBox<String> cboCuentaContado;
@@ -486,6 +504,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private java.util.List<com.parah.mg.domain.TblCuentasContables> list;

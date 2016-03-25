@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.parah.mg.domain.eventos;
+package com.parah.mg.domain;
 
-import com.parah.mg.domain.TblRecibos;
-import com.parah.mg.domain.TblTransferencias;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;

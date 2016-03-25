@@ -5,7 +5,6 @@
  */
 package com.parah.mg.domain;
 
-import com.parah.mg.domain.eventos.TblEventoDetalle;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;

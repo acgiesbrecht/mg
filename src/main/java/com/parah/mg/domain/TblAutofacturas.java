@@ -40,13 +40,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblAutofacturas.findById", query = "SELECT t FROM TblAutofacturas t WHERE t.id = :id"),
     @NamedQuery(name = "TblAutofacturas.findByNro", query = "SELECT t FROM TblAutofacturas t WHERE t.nro = :nro"),
     @NamedQuery(name = "TblAutofacturas.findByFechahora", query = "SELECT t FROM TblAutofacturas t WHERE t.fechahora = :fechahora"),
-    @NamedQuery(name = "TblAutofacturas.findByRazonSocial", query = "SELECT t FROM TblAutofacturas t WHERE t.razonSocial = :razonSocial"),
-    @NamedQuery(name = "TblAutofacturas.findByRuc", query = "SELECT t FROM TblAutofacturas t WHERE t.ruc = :ruc"),
-    @NamedQuery(name = "TblAutofacturas.findByMontoExentas", query = "SELECT t FROM TblAutofacturas t WHERE t.montoExentas = :montoExentas"),
-    @NamedQuery(name = "TblAutofacturas.findByMontoIva5", query = "SELECT t FROM TblAutofacturas t WHERE t.montoIva5 = :montoIva5"),
-    @NamedQuery(name = "TblAutofacturas.findByMontoIva10", query = "SELECT t FROM TblAutofacturas t WHERE t.montoIva10 = :montoIva10"),
-    @NamedQuery(name = "TblAutofacturas.findByIva5", query = "SELECT t FROM TblAutofacturas t WHERE t.iva5 = :iva5"),
-    @NamedQuery(name = "TblAutofacturas.findByIva10", query = "SELECT t FROM TblAutofacturas t WHERE t.iva10 = :iva10"),
+    @NamedQuery(name = "TblAutofacturas.findByNombre", query = "SELECT t FROM TblAutofacturas t WHERE t.nombre = :nombre"),
+    @NamedQuery(name = "TblAutofacturas.findByDomicilio", query = "SELECT t FROM TblAutofacturas t WHERE t.domicilio = :domicilio"),
+    @NamedQuery(name = "TblAutofacturas.findByDireccionDeTransaccion", query = "SELECT t FROM TblAutofacturas t WHERE t.direccionDeTransaccion = :direccionDeTransaccion"),
+    @NamedQuery(name = "TblAutofacturas.findByCi", query = "SELECT t FROM TblAutofacturas t WHERE t.ci = :ci"),
+    @NamedQuery(name = "TblAutofacturas.findByCantidad", query = "SELECT t FROM TblAutofacturas t WHERE t.cantidad = :cantidad"),
+    @NamedQuery(name = "TblAutofacturas.findByConcepto", query = "SELECT t FROM TblAutofacturas t WHERE t.concepto = :concepto"),
+    @NamedQuery(name = "TblAutofacturas.findByPrecioUnitario", query = "SELECT t FROM TblAutofacturas t WHERE t.precioUnitario = :precioUnitario"),
+    @NamedQuery(name = "TblAutofacturas.findByMonto", query = "SELECT t FROM TblAutofacturas t WHERE t.monto = :monto"),
     @NamedQuery(name = "TblAutofacturas.findByObservacion", query = "SELECT t FROM TblAutofacturas t WHERE t.observacion = :observacion"),
     @NamedQuery(name = "TblAutofacturas.findByAnulado", query = "SELECT t FROM TblAutofacturas t WHERE t.anulado = :anulado")})
 public class TblAutofacturas implements Serializable {
@@ -70,33 +71,40 @@ public class TblAutofacturas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "RAZON_SOCIAL")
-    private String razonSocial;
+    @Column(name = "NOMBRE")
+    private String nombre;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "DOMICILIO")
+    private String domicilio;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "DIRECCION_DE_TRANSACCION")
+    private String direccionDeTransaccion;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
-    @Column(name = "RUC")
-    private String ruc;
+    @Column(name = "CI")
+    private String ci;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "MONTO_EXENTAS")
-    private int montoExentas;
+    @Column(name = "CANTIDAD")
+    private int cantidad;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "MONTO_IVA5")
-    private int montoIva5;
+    @Size(min = 1, max = 255)
+    @Column(name = "CONCEPTO")
+    private String concepto;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "MONTO_IVA10")
-    private int montoIva10;
+    @Column(name = "PRECIO_UNITARIO")
+    private int precioUnitario;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "IVA5")
-    private int iva5;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "IVA10")
-    private int iva10;
+    @Column(name = "MONTO")
+    private int monto;
     @Size(max = 255)
     @Column(name = "OBSERVACION")
     private String observacion;
@@ -123,17 +131,18 @@ public class TblAutofacturas implements Serializable {
         this.id = id;
     }
 
-    public TblAutofacturas(Integer id, String nro, Date fechahora, String razonSocial, String ruc, int montoExentas, int montoIva5, int montoIva10, int iva5, int iva10, Boolean anulado) {
+    public TblAutofacturas(Integer id, String nro, Date fechahora, String nombre, String domicilio, String direccionDeTransaccion, String ci, int cantidad, String concepto, int precioUnitario, int monto, Boolean anulado) {
         this.id = id;
         this.nro = nro;
         this.fechahora = fechahora;
-        this.razonSocial = razonSocial;
-        this.ruc = ruc;
-        this.montoExentas = montoExentas;
-        this.montoIva5 = montoIva5;
-        this.montoIva10 = montoIva10;
-        this.iva5 = iva5;
-        this.iva10 = iva10;
+        this.nombre = nombre;
+        this.domicilio = domicilio;
+        this.direccionDeTransaccion = direccionDeTransaccion;
+        this.ci = ci;
+        this.cantidad = cantidad;
+        this.concepto = concepto;
+        this.precioUnitario = precioUnitario;
+        this.monto = monto;
         this.anulado = anulado;
     }
 
@@ -161,60 +170,68 @@ public class TblAutofacturas implements Serializable {
         this.fechahora = fechahora;
     }
 
-    public String getRazonSocial() {
-        return razonSocial;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setRazonSocial(String razonSocial) {
-        this.razonSocial = razonSocial;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getRuc() {
-        return ruc;
+    public String getDomicilio() {
+        return domicilio;
     }
 
-    public void setRuc(String ruc) {
-        this.ruc = ruc;
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
     }
 
-    public int getMontoExentas() {
-        return montoExentas;
+    public String getDireccionDeTransaccion() {
+        return direccionDeTransaccion;
     }
 
-    public void setMontoExentas(int montoExentas) {
-        this.montoExentas = montoExentas;
+    public void setDireccionDeTransaccion(String direccionDeTransaccion) {
+        this.direccionDeTransaccion = direccionDeTransaccion;
     }
 
-    public int getMontoIva5() {
-        return montoIva5;
+    public String getCi() {
+        return ci;
     }
 
-    public void setMontoIva5(int montoIva5) {
-        this.montoIva5 = montoIva5;
+    public void setCi(String ci) {
+        this.ci = ci;
     }
 
-    public int getMontoIva10() {
-        return montoIva10;
+    public int getCantidad() {
+        return cantidad;
     }
 
-    public void setMontoIva10(int montoIva10) {
-        this.montoIva10 = montoIva10;
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
-    public int getIva5() {
-        return iva5;
+    public String getConcepto() {
+        return concepto;
     }
 
-    public void setIva5(int iva5) {
-        this.iva5 = iva5;
+    public void setConcepto(String concepto) {
+        this.concepto = concepto;
     }
 
-    public int getIva10() {
-        return iva10;
+    public int getPrecioUnitario() {
+        return precioUnitario;
     }
 
-    public void setIva10(int iva10) {
-        this.iva10 = iva10;
+    public void setPrecioUnitario(int precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
+
+    public int getMonto() {
+        return monto;
+    }
+
+    public void setMonto(int monto) {
+        this.monto = monto;
     }
 
     public String getObservacion() {

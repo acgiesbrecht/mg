@@ -11,10 +11,10 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblCategoriasArticulos;
+import com.parah.mg.domain.TblEventoCuotas;
+import com.parah.mg.domain.TblEventoDetalle;
+import com.parah.mg.domain.TblEventos;
 import com.parah.mg.domain.TblTransferencias;
-import com.parah.mg.domain.eventos.TblEventoCuotas;
-import com.parah.mg.domain.eventos.TblEventoDetalle;
-import com.parah.mg.domain.eventos.TblEventos;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.models.CuotaModel;
 import com.parah.mg.utils.CurrentUser;
@@ -146,18 +146,15 @@ public class FrameRematesDetalle extends JInternalFrame {
         tblCategoriasArticulosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(tblCategoriasArticulosQuery.getResultList());
         queryEntidades = java.beans.Beans.isDesignTime() ? null : entityManager1.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
         listEntidades = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEntidades.getResultList());
-        normalTableCellRenderer1 = new com.parah.mg.utils.NormalTableCellRenderer();
-        categoriasConverter1 = new com.parah.mg.utils.CategoriasConverter();
         queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 1 AND t.idGrupo IN :grupos ORDER BY t.fecha");
         queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
         jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
-        dateTimeTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
-        integerLongConverter1 = new com.parah.mg.utils.IntegerLongConverter();
-        numberCellRenderer1 = new com.parah.mg.utils.NumberCellRenderer();
-        dateTimeToStringConverter1 = new com.parah.mg.utils.DateTimeToStringConverter();
         queryFormasDePago = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblFormasDePago t");
         listFormasDePago = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryFormasDePago.getResultList());
+        dateTimeTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
+        numberCellRenderer1 = new com.parah.mg.utils.NumberCellRenderer();
+        normalTableCellRenderer1 = new com.parah.mg.utils.NormalTableCellRenderer();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         fechahoraLabel = new javax.swing.JLabel();
@@ -174,7 +171,6 @@ public class FrameRematesDetalle extends JInternalFrame {
         idMiembroLabel1 = new javax.swing.JLabel();
         txtCtaCte = new javax.swing.JTextField();
         idMiembroLabel2 = new javax.swing.JLabel();
-        dateTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
         cboCategoria = new javax.swing.JComboBox();
         cboEntidad = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
@@ -192,12 +188,11 @@ public class FrameRematesDetalle extends JInternalFrame {
 
         FormListener formListener = new FormListener();
 
-        normalTableCellRenderer1.setText("normalTableCellRenderer1");
-
         dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
 
-        numberCellRenderer1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         numberCellRenderer1.setText("numberCellRenderer1");
+
+        normalTableCellRenderer1.setText("normalTableCellRenderer1");
 
         addInternalFrameListener(formListener);
 
@@ -253,7 +248,7 @@ public class FrameRematesDetalle extends JInternalFrame {
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), fechahoraField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
-        binding.setConverter(dateTimeToStringConverter1);
+        binding.setConverter(null);
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechahoraField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -382,7 +377,7 @@ public class FrameRematesDetalle extends JInternalFrame {
         montoField.setText("0");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.monto}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        binding.setConverter(integerLongConverter1);
+        binding.setConverter(null);
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -460,14 +455,9 @@ public class FrameRematesDetalle extends JInternalFrame {
                                             .addComponent(deleteButton, javax.swing.GroupLayout.Alignment.TRAILING)))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(332, 332, 332)
-                                        .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(cboFechaRemate, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cboFechaRemate, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(fechahoraLabel)
@@ -536,9 +526,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                                 .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(saveButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(30, 30, 30)
-                .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(467, Short.MAX_VALUE))
+                .addContainerGap(517, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -948,14 +936,11 @@ public class FrameRematesDetalle extends JInternalFrame {
     }//GEN-LAST:event_cboFormaDePagoPreferidaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.parah.mg.utils.CategoriasConverter categoriasConverter1;
     private javax.swing.JComboBox cboCategoria;
     private javax.swing.JComboBox<com.parah.mg.domain.miembros.TblEntidades> cboEntidad;
     private javax.swing.JComboBox cboFechaRemate;
     private javax.swing.JComboBox<com.parah.mg.domain.TblFormasDePago> cboFormaDePagoPreferida;
-    private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
-    private com.parah.mg.utils.DateTimeToStringConverter dateTimeToStringConverter1;
     private javax.swing.JButton deleteButton;
     private javax.persistence.EntityManager entityManager;
     private javax.persistence.EntityManager entityManager1;
@@ -965,7 +950,6 @@ public class FrameRematesDetalle extends JInternalFrame {
     private javax.swing.JLabel idMiembroLabel;
     private javax.swing.JLabel idMiembroLabel1;
     private javax.swing.JLabel idMiembroLabel2;
-    private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -976,8 +960,8 @@ public class FrameRematesDetalle extends JInternalFrame {
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalOperaciones;
     private java.util.List<com.parah.mg.domain.miembros.TblEntidades> listEntidades;
-    private java.util.List<com.parah.mg.domain.eventos.TblEventos> listEventos;
-    private java.util.List<com.parah.mg.domain.eventos.TblEventoDetalle> listEventosDetalle;
+    private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
+    private java.util.List<com.parah.mg.domain.TblEventoDetalle> listEventosDetalle;
     private java.util.List<com.parah.mg.domain.TblFormasDePago> listFormasDePago;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;

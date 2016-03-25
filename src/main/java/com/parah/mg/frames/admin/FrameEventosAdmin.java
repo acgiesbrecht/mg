@@ -8,7 +8,9 @@ package com.parah.mg.frames.admin;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.parah.mg.domain.TblCentrosDeCosto;
 import com.parah.mg.domain.TblEventoTipos;
+import com.parah.mg.domain.TblEventos;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
@@ -47,13 +49,17 @@ public class FrameEventosAdmin extends JInternalFrame {
 
         //System.out.print(currentUser.getUser().getTblGruposList().size());
         initComponents();
+
+        if (!Beans.isDesignTime()) {
+            entityManager.getTransaction().begin();
+        }
+
         AutoCompleteSupport support1 = AutoCompleteSupport.install(cboGrupo, GlazedLists.eventListOf(listGrupos.toArray()));
         support1.setFilterMode(TextMatcherEditor.CONTAINS);
         AutoCompleteSupport support2 = AutoCompleteSupport.install(cboEventoTipo, GlazedLists.eventListOf(listEventoTipos.toArray()));
         support2.setFilterMode(TextMatcherEditor.CONTAINS);
-        if (!Beans.isDesignTime()) {
-            entityManager.getTransaction().begin();
-        }
+        AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+        support3.setFilterMode(TextMatcherEditor.CONTAINS);
 
         TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
         filterHeader.setAdaptiveChoices(false);
@@ -82,6 +88,8 @@ public class FrameEventosAdmin extends JInternalFrame {
         queryEventoTipos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoTipos t");
         listEventoTipos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoTipos.getResultList());
         donacionTableCellRenderer1 = new com.parah.mg.utils.DonacionTableCellRenderer();
+        queryCentrosDeCosto = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t");
+        listCentrosDeCosto = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCentrosDeCosto.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         fechaLabel = new javax.swing.JLabel();
@@ -103,6 +111,8 @@ public class FrameEventosAdmin extends JInternalFrame {
         lblDonacion = new javax.swing.JLabel();
         lblAporte = new javax.swing.JLabel();
         descripcionLabel6 = new javax.swing.JLabel();
+        cboCentroDeCosto = new javax.swing.JComboBox();
+        descripcionLabel7 = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
@@ -116,6 +126,7 @@ public class FrameEventosAdmin extends JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fecha}"));
         columnBinding.setColumnName("Fecha");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEventoTipo}"));
         columnBinding.setColumnName("Tipo");
         columnBinding.setColumnClass(com.parah.mg.domain.TblEventoTipos.class);
@@ -125,6 +136,11 @@ public class FrameEventosAdmin extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idGrupo}"));
         columnBinding.setColumnName("Grupo");
         columnBinding.setColumnClass(com.parah.mg.domain.TblGrupos.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCentroDeCosto}"));
+        columnBinding.setColumnName("Centro de Costo");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCentrosDeCosto.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${porcentajeAporte}"));
         columnBinding.setColumnName("% Donacion");
         columnBinding.setColumnClass(Integer.class);
@@ -137,8 +153,8 @@ public class FrameEventosAdmin extends JInternalFrame {
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(0).setResizable(false);
             masterTable.getColumnModel().getColumn(0).setCellRenderer(dateTableCellRenderer1);
-            masterTable.getColumnModel().getColumn(2).setResizable(false);
-            masterTable.getColumnModel().getColumn(4).setCellRenderer(donacionTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(5).setCellRenderer(donacionTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(6).setResizable(false);
         }
 
         fechaLabel.setText("Fecha:");
@@ -214,6 +230,14 @@ public class FrameEventosAdmin extends JInternalFrame {
         descripcionLabel6.setForeground(new java.awt.Color(153, 153, 153));
         descripcionLabel6.setText("Observacion: Cambios en la categoria tributaria solo tendrán efectivo en pagos realizados a partir de ese cambio.");
 
+        cboCentroDeCosto.setEditable(true);
+        cboCentroDeCosto.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCentroDeCosto}"), cboCentroDeCosto, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        descripcionLabel7.setText("Centro de Costo:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -232,27 +256,20 @@ public class FrameEventosAdmin extends JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(descripcionLabel2)
-                            .addComponent(descripcionLabel1))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(46, 46, 46)
-                                .addComponent(descripcionLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblDonacion)
-                                .addGap(18, 18, 18)
-                                .addComponent(sldCatTrib, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(15, 15, 15)
-                                .addComponent(lblAporte)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(descripcionLabel5))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(cboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(descripcionLabel2)
+                        .addGap(46, 46, 46)
+                        .addComponent(descripcionLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblDonacion)
+                        .addGap(18, 18, 18)
+                        .addComponent(sldCatTrib, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(15, 15, 15)
+                        .addComponent(lblAporte)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(descripcionLabel5))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(descripcionLabel6)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(descripcionLabel3)
@@ -263,7 +280,14 @@ public class FrameEventosAdmin extends JInternalFrame {
                                     .addComponent(jXDatePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
                                     .addComponent(cboEventoTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(descripcionField)))
-                            .addComponent(descripcionLabel6))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(descripcionLabel1)
+                                    .addComponent(descripcionLabel7))
+                                .addGap(44, 44, 44)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cboGrupo, 0, 144, Short.MAX_VALUE)
+                                    .addComponent(cboCentroDeCosto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -274,7 +298,7 @@ public class FrameEventosAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fechaLabel)
@@ -291,20 +315,23 @@ public class FrameEventosAdmin extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(descripcionLabel1)
                     .addComponent(cboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(descripcionLabel7)
+                    .addComponent(cboCentroDeCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(descripcionLabel2)
-                            .addComponent(descripcionLabel4)
-                            .addComponent(lblDonacion))
-                        .addComponent(sldCatTrib, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(descripcionLabel2)
+                        .addComponent(descripcionLabel4)
+                        .addComponent(lblDonacion))
+                    .addComponent(sldCatTrib, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(descripcionLabel5)
                         .addComponent(lblAporte)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(descripcionLabel6)
-                .addGap(21, 21, 21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
@@ -369,7 +396,10 @@ public class FrameEventosAdmin extends JInternalFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        com.parah.mg.domain.TblEventos t = new com.parah.mg.domain.TblEventos();
+        TblEventos t = new TblEventos();
+        listCentrosDeCosto.stream().filter((c) -> (c.getPreferido())).forEach((c) -> {
+            t.setIdCentroDeCosto(c);
+        });
         t.setIdUser(currentUser.getUser());
         entityManager.persist(t);
         list.add(t);
@@ -414,6 +444,7 @@ public class FrameEventosAdmin extends JInternalFrame {
     }//GEN-LAST:event_cboEventoTipoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox cboCentroDeCosto;
     private javax.swing.JComboBox cboEventoTipo;
     private javax.swing.JComboBox cboGrupo;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
@@ -427,6 +458,7 @@ public class FrameEventosAdmin extends JInternalFrame {
     private javax.swing.JLabel descripcionLabel4;
     private javax.swing.JLabel descripcionLabel5;
     private javax.swing.JLabel descripcionLabel6;
+    private javax.swing.JLabel descripcionLabel7;
     private com.parah.mg.utils.DonacionTableCellRenderer donacionTableCellRenderer1;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fechaLabel;
@@ -434,12 +466,14 @@ public class FrameEventosAdmin extends JInternalFrame {
     private javax.swing.JLabel lblAporte;
     private javax.swing.JLabel lblDonacion;
     private java.util.List<com.parah.mg.domain.TblEventos> list;
+    private java.util.List<com.parah.mg.domain.TblCentrosDeCosto> listCentrosDeCosto;
     private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
     private java.util.List<com.parah.mg.domain.TblGrupos> listGrupos;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
     private javax.persistence.Query query;
+    private javax.persistence.Query queryCentrosDeCosto;
     private javax.persistence.Query queryEventoTipos;
     private javax.persistence.Query queryGrupos;
     private javax.swing.JButton refreshButton;

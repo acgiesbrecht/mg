@@ -6,7 +6,7 @@
 package com.parah.mg.frames.operaciones;
 
 import com.parah.mg.domain.TblTransferencias;
-import com.parah.mg.domain.eventos.TblEventoTipos;
+import com.parah.mg.domain.TblEventoTipos;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.models.PagosMensualesPendientes;
 import com.parah.mg.utils.CurrentUser;
@@ -536,8 +536,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private java.util.List<com.parah.mg.domain.models.PagosMensualesPendientes> list;
-    private java.util.List<com.parah.mg.domain.eventos.TblEventoTipos> listEventoTipos;
-    private java.util.List<com.parah.mg.domain.eventos.TblEventos> listEventos;
+    private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
+    private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
     private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;

@@ -5,7 +5,6 @@
  */
 package com.parah.mg.domain;
 
-import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -30,16 +29,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Adrian Giesbrecht
  */
 @Entity
-@Table(name = "TBL_RECIBOS")
+@Table(name = "TBL_EVENTOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblRecibos.findAll", query = "SELECT t FROM TblRecibos t"),
-    @NamedQuery(name = "TblRecibos.findById", query = "SELECT t FROM TblRecibos t WHERE t.id = :id"),
-    @NamedQuery(name = "TblRecibos.findByFechahora", query = "SELECT t FROM TblRecibos t WHERE t.fechahora = :fechahora"),
-    @NamedQuery(name = "TblRecibos.findByConcepto", query = "SELECT t FROM TblRecibos t WHERE t.concepto = :concepto"),
-    @NamedQuery(name = "TblRecibos.findByMontoAporte", query = "SELECT t FROM TblRecibos t WHERE t.montoAporte = :montoAporte"),
-    @NamedQuery(name = "TblRecibos.findByMontoDonacion", query = "SELECT t FROM TblRecibos t WHERE t.montoDonacion = :montoDonacion")})
-public class TblRecibos implements Serializable {
+    @NamedQuery(name = "TblEventos.findAll", query = "SELECT t FROM TblEventos t"),
+    @NamedQuery(name = "TblEventos.findById", query = "SELECT t FROM TblEventos t WHERE t.id = :id"),
+    @NamedQuery(name = "TblEventos.findByFecha", query = "SELECT t FROM TblEventos t WHERE t.fecha = :fecha"),
+    @NamedQuery(name = "TblEventos.findByDescripcion", query = "SELECT t FROM TblEventos t WHERE t.descripcion = :descripcion"),
+    @NamedQuery(name = "TblEventos.findByPorcentajeAporte", query = "SELECT t FROM TblEventos t WHERE t.porcentajeAporte = :porcentajeAporte")})
+public class TblEventos implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -49,45 +47,40 @@ public class TblRecibos implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "FECHAHORA")
+    @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechahora;
-    @Size(max = 50)
-    @Column(name = "CONCEPTO")
-    private String concepto;
+    private Date fecha;
+    @Size(max = 100)
+    @Column(name = "DESCRIPCION")
+    private String descripcion;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "MONTO_APORTE")
-    private int montoAporte;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "MONTO_DONACION")
-    private int montoDonacion;
-    @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private TblEntidades idEntidad;
-    @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID")
+    @Column(name = "PORCENTAJE_APORTE")
+    private int porcentajeAporte;
+    @JoinColumn(name = "ID_CENTRO_DE_COSTO", referencedColumnName = "ID")
     @ManyToOne
-    private TblEventos idEvento;
+    private TblCentrosDeCosto idCentroDeCosto;
     @JoinColumn(name = "ID_EVENTO_TIPO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEventoTipos idEventoTipo;
+    @JoinColumn(name = "ID_GRUPO", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblGrupos idGrupo;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
 
-    public TblRecibos() {
+    public TblEventos() {
     }
 
-    public TblRecibos(Integer id) {
+    public TblEventos(Integer id) {
         this.id = id;
     }
 
-    public TblRecibos(Integer id, Date fechahora, int montoAporte, int montoDonacion) {
+    public TblEventos(Integer id, Date fecha, int porcentajeAporte) {
         this.id = id;
-        this.fechahora = fechahora;
-        this.montoAporte = montoAporte;
-        this.montoDonacion = montoDonacion;
+        this.fecha = fecha;
+        this.porcentajeAporte = porcentajeAporte;
     }
 
     public Integer getId() {
@@ -98,52 +91,36 @@ public class TblRecibos implements Serializable {
         this.id = id;
     }
 
-    public Date getFechahora() {
-        return fechahora;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setFechahora(Date fechahora) {
-        this.fechahora = fechahora;
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
-    public String getConcepto() {
-        return concepto;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setConcepto(String concepto) {
-        this.concepto = concepto;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public int getMontoAporte() {
-        return montoAporte;
+    public int getPorcentajeAporte() {
+        return porcentajeAporte;
     }
 
-    public void setMontoAporte(int montoAporte) {
-        this.montoAporte = montoAporte;
+    public void setPorcentajeAporte(int porcentajeAporte) {
+        this.porcentajeAporte = porcentajeAporte;
     }
 
-    public int getMontoDonacion() {
-        return montoDonacion;
+    public TblCentrosDeCosto getIdCentroDeCosto() {
+        return idCentroDeCosto;
     }
 
-    public void setMontoDonacion(int montoDonacion) {
-        this.montoDonacion = montoDonacion;
-    }
-
-    public TblEntidades getIdEntidad() {
-        return idEntidad;
-    }
-
-    public void setIdEntidad(TblEntidades idEntidad) {
-        this.idEntidad = idEntidad;
-    }
-
-    public TblEventos getIdEvento() {
-        return idEvento;
-    }
-
-    public void setIdEvento(TblEventos idEvento) {
-        this.idEvento = idEvento;
+    public void setIdCentroDeCosto(TblCentrosDeCosto idCentroDeCosto) {
+        this.idCentroDeCosto = idCentroDeCosto;
     }
 
     public TblEventoTipos getIdEventoTipo() {
@@ -152,6 +129,14 @@ public class TblRecibos implements Serializable {
 
     public void setIdEventoTipo(TblEventoTipos idEventoTipo) {
         this.idEventoTipo = idEventoTipo;
+    }
+
+    public TblGrupos getIdGrupo() {
+        return idGrupo;
+    }
+
+    public void setIdGrupo(TblGrupos idGrupo) {
+        this.idGrupo = idGrupo;
     }
 
     public TblUsers getIdUser() {
@@ -172,10 +157,10 @@ public class TblRecibos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblRecibos)) {
+        if (!(object instanceof TblEventos)) {
             return false;
         }
-        TblRecibos other = (TblRecibos) object;
+        TblEventos other = (TblEventos) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -184,7 +169,7 @@ public class TblRecibos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.TblRecibos[ id=" + id + " ]";
+        return descripcion;
     }
 
 }
