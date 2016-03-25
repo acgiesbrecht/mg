@@ -5,6 +5,7 @@
  */
 package com.parah.mg.domain;
 
+import com.parah.mg.domain.eventos.TblEventos;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -39,6 +40,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblCentrosDeCosto.findByCtaCte", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.ctaCte = :ctaCte"),
     @NamedQuery(name = "TblCentrosDeCosto.findByPreferido", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = :preferido")})
 public class TblCentrosDeCosto implements Serializable {
+
+    @OneToMany(mappedBy = "idCentroDeCosto")
+    private List<TblEventos> tblEventosList;
 
     @OneToMany(mappedBy = "idCentroDeCosto")
     private List<TblEventos> tblEventosList;

@@ -179,6 +179,10 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
         updateSETbutton = new javax.swing.JButton();
         lblStatusSET = new javax.swing.JLabel();
         txtRazonSocial = new javax.swing.JTextField();
+        montoLabel5 = new javax.swing.JLabel();
+        txtDomicilio = new javax.swing.JTextField();
+        montoLabel6 = new javax.swing.JLabel();
+        txtCdC = new javax.swing.JFormattedTextField();
 
         FormListener formListener = new FormListener();
 
@@ -249,6 +253,15 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
 
         lblStatusSET.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
+        montoLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        montoLabel5.setText("Domicilio:");
+
+        montoLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        montoLabel6.setText("Casilla de Correo:");
+
+        txtCdC.setColumns(9);
+        txtCdC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -265,43 +278,51 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelarButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(montoLabel)
+                                        .addComponent(montoLabel1)
+                                        .addComponent(fecha1Label))
+                                    .addGap(46, 46, 46)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtNro, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(idMiembroLabel)
+                                    .addGap(67, 67, 67)
+                                    .addComponent(idMiembroLabel1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(12, 12, 12)
+                                    .addComponent(idMiembroLabel2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(montoLabel2)
+                                        .addComponent(ctacteLabel3))
+                                    .addGap(44, 44, 44)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtRazonSocial)
+                                        .addComponent(txtDomicilio)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(0, 499, Short.MAX_VALUE)))))
+                            .addComponent(montoLabel5)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(montoLabel3)
                                     .addComponent(montoLabel4)
-                                    .addComponent(montoLabel2)
-                                    .addComponent(ctacteLabel3))
+                                    .addComponent(montoLabel6))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtRazonSocial)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtAporte, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtDonacion, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 0, Short.MAX_VALUE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(montoLabel)
-                                    .addComponent(montoLabel1)
-                                    .addComponent(fecha1Label))
-                                .addGap(46, 46, 46)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNro, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(idMiembroLabel)
-                                .addGap(67, 67, 67)
-                                .addComponent(idMiembroLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(12, 12, 12)
-                                .addComponent(idMiembroLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 199, Short.MAX_VALUE)))
+                                    .addComponent(txtCdC, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtAporte, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtDonacion, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -339,13 +360,21 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
                     .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDonacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(montoLabel3))
+                    .addComponent(montoLabel5)
+                    .addComponent(txtDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCdC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(montoLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(montoLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtDonacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtAporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(montoLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cancelarButton)
@@ -514,6 +543,8 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
             factura.setIdEntidad((TblEntidades) cboEntidad.getSelectedItem());
             factura.setRazonSocial(txtRazonSocial.getText());
             factura.setRuc(rucField.getText());
+            factura.setDomicilio(txtDomicilio.getText());
+            factura.setCasillaDeCorreo(((Number) txtCdC.getValue()).intValue());
             factura.setImporteDonacion(((Number) txtDonacion.getValue()).intValue());
             factura.setImporteAporte(((Number) txtAporte.getValue()).intValue());
             factura.setAnulado(false);
@@ -747,6 +778,8 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
     private javax.swing.JLabel montoLabel2;
     private javax.swing.JLabel montoLabel3;
     private javax.swing.JLabel montoLabel4;
+    private javax.swing.JLabel montoLabel5;
+    private javax.swing.JLabel montoLabel6;
     private javax.persistence.Query query;
     private javax.persistence.Query queryEntidades;
     private javax.persistence.Query queryEventoTipos;
@@ -754,7 +787,9 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
     private javax.persistence.Query queryTimbrados;
     private javax.swing.JTextField rucField;
     private javax.swing.JFormattedTextField txtAporte;
+    private javax.swing.JFormattedTextField txtCdC;
     private javax.swing.JTextField txtCtaCte;
+    private javax.swing.JTextField txtDomicilio;
     private javax.swing.JFormattedTextField txtDonacion;
     private javax.swing.JFormattedTextField txtNro;
     private javax.swing.JTextField txtRazonSocial;

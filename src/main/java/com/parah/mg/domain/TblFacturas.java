@@ -8,14 +8,11 @@ package com.parah.mg.domain;
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -25,7 +22,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -42,7 +38,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblFacturas.findByRuc", query = "SELECT t FROM TblFacturas t WHERE t.ruc = :ruc"),
     @NamedQuery(name = "TblFacturas.findByImporteDonacion", query = "SELECT t FROM TblFacturas t WHERE t.importeDonacion = :importeDonacion"),
     @NamedQuery(name = "TblFacturas.findByImporteAporte", query = "SELECT t FROM TblFacturas t WHERE t.importeAporte = :importeAporte"),
-    @NamedQuery(name = "TblFacturas.findByAnulado", query = "SELECT t FROM TblFacturas t WHERE t.anulado = :anulado")})
+    @NamedQuery(name = "TblFacturas.findByAnulado", query = "SELECT t FROM TblFacturas t WHERE t.anulado = :anulado"),
+    @NamedQuery(name = "TblFacturas.findByDomicilio", query = "SELECT t FROM TblFacturas t WHERE t.domicilio = :domicilio"),
+    @NamedQuery(name = "TblFacturas.findByCasillaDeCorreo", query = "SELECT t FROM TblFacturas t WHERE t.casillaDeCorreo = :casillaDeCorreo")})
 public class TblFacturas implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -78,11 +76,11 @@ public class TblFacturas implements Serializable {
     @NotNull
     @Column(name = "ANULADO")
     private Boolean anulado;
-    @JoinTable(name = "TBL_FACTURAS_ASIENTOS", joinColumns = {
-        @JoinColumn(name = "NRO_FACTURA", referencedColumnName = "NRO")}, inverseJoinColumns = {
-        @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
-    @ManyToMany
-    private List<TblAsientos> tblAsientosList;
+    @Size(max = 255)
+    @Column(name = "DOMICILIO")
+    private String domicilio;
+    @Column(name = "CASILLA_DE_CORREO")
+    private Integer casillaDeCorreo;
     @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEntidades idEntidad;
@@ -166,13 +164,20 @@ public class TblFacturas implements Serializable {
         this.anulado = anulado;
     }
 
-    @XmlTransient
-    public List<TblAsientos> getTblAsientosList() {
-        return tblAsientosList;
+    public String getDomicilio() {
+        return domicilio;
     }
 
-    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
-        this.tblAsientosList = tblAsientosList;
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
+    }
+
+    public Integer getCasillaDeCorreo() {
+        return casillaDeCorreo;
+    }
+
+    public void setCasillaDeCorreo(Integer casillaDeCorreo) {
+        this.casillaDeCorreo = casillaDeCorreo;
     }
 
     public TblEntidades getIdEntidad() {
