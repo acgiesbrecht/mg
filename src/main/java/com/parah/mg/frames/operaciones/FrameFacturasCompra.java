@@ -1141,7 +1141,7 @@ public class FrameFacturasCompra extends JInternalFrame {
         try {
             int index = masterTable.getSelectedRow();
             TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
-            Collection<TblAsientos> ts = T.getTblAsientosList();
+            Collection<TblAsientos> ts = T.getTblAsientosCollection();
             int[] selected = asientosTable.getSelectedRows();
             List<TblAsientos> toRemove = new ArrayList<>(selected.length);
             for (int idx = 0; idx < selected.length; idx++) {
@@ -1185,7 +1185,7 @@ public class FrameFacturasCompra extends JInternalFrame {
     private void dtpFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dtpFechaActionPerformed
         int index = masterTable.getSelectedRow();
         TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
-        T.getTblAsientosList().stream().forEach((t) -> {
+        T.getTblAsientosCollection().stream().forEach((t) -> {
             t.setFechahora(dtpFecha.getDate());
         });
         entityManager.merge(T);
@@ -1196,10 +1196,10 @@ public class FrameFacturasCompra extends JInternalFrame {
         try {
             int index = masterTable.getSelectedRow();
             TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
-            Collection<TblAsientos> ts = T.getTblAsientosList();
+            Collection<TblAsientos> ts = T.getTblAsientosCollection();
             if (ts == null) {
                 ts = new LinkedList<>();
-                T.setTblAsientosList((List) ts);
+                T.setTblAsientosCollection((List) ts);
             }
             TblAsientos t = new TblAsientos();
             t.setFechahora(T.getFechahora());
@@ -1209,16 +1209,16 @@ public class FrameFacturasCompra extends JInternalFrame {
             t.setIdCuentaContableDebe(listCuentasContablesPorDefecto.get(0).getIdCuentaDebeCompras());
             if (T.getCondicionContado()) {
                 //t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaContado());
-                t.setIdCuentaContableHaber(t.getIdCentroDeCosto().getIdCuentaHaberFacturaContadoPorDefecto());
+                t.setIdCuentaContableHaber(t.getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
             } else {
                 //t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaCredito());
-                t.setIdCuentaContableHaber(t.getIdCentroDeCosto().getIdCuentaHaberFacturaCreditoPorDefecto());
+                t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberComprasFacturaCredito());
             }
             if (ts.isEmpty()) {
                 t.setMonto(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10());
             }
 
-            T.getTblAsientosList().add(t);
+            T.getTblAsientosCollection().add(t);
             entityManager.merge(T);
             masterTable.clearSelection();
             masterTable.setRowSelectionInterval(index, index);
@@ -1251,7 +1251,7 @@ public class FrameFacturasCompra extends JInternalFrame {
             if (masterTable.getSelectedRow() > -1) {
                 int index = masterTable.getSelectedRow();
                 TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
-                List<TblAsientos> ts = T.getTblAsientosList();
+                List<TblAsientos> ts = (List) T.getTblAsientosCollection();
                 if (ts != null) {
                     if (ts.size() == 1) {
                         asientosTable.getModel().setValueAt(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10(), 0, 3);
@@ -1284,7 +1284,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                 //Importe TOTAL cuadrar
                 TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
                 Integer sumaAsientos = 0;
-                sumaAsientos = T.getTblAsientosList().stream().map((a) -> a.getMonto()).reduce(sumaAsientos, Integer::sum);
+                sumaAsientos = T.getTblAsientosCollection().stream().map((a) -> a.getMonto()).reduce(sumaAsientos, Integer::sum);
                 if (T.getMontoExentas() + T.getMontoIva10() + T.getMontoIva5() - sumaAsientos != 0) {
                     JOptionPane.showMessageDialog(null, "El importe total de la factura debe coincidir con los asientos.");
                     return false;

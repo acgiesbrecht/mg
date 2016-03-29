@@ -7,8 +7,9 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -118,8 +119,8 @@ public class TblNotasDeCredito implements Serializable {
     @JoinTable(name = "TBL_NOTAS_DE_CREDITO_ASIENTOS", joinColumns = {
         @JoinColumn(name = "ID_NOTA_DE_CREDITO", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
-    @ManyToMany
-    private List<TblAsientos> tblAsientosList;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Collection<TblAsientos> tblAsientosCollection;
 
     public TblNotasDeCredito() {
     }
@@ -257,12 +258,12 @@ public class TblNotasDeCredito implements Serializable {
     }
 
     @XmlTransient
-    public List<TblAsientos> getTblAsientosList() {
-        return tblAsientosList;
+    public Collection<TblAsientos> getTblAsientosCollection() {
+        return tblAsientosCollection;
     }
 
-    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
-        this.tblAsientosList = tblAsientosList;
+    public void setTblAsientosCollection(Collection<TblAsientos> tblAsientosCollection) {
+        this.tblAsientosCollection = tblAsientosCollection;
     }
 
     @Override

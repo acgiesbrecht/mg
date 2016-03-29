@@ -749,22 +749,22 @@ public class FrameColectasDetalle extends JInternalFrame {
 
             for (TblEventoDetalle evd : listEventoDetalle) {
                 if (entityManager.contains(evd)) {
-                    if (evd.getTblAsientosList().size() == 2) {
-                        evd.getTblAsientosList().get(0).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
-                        evd.getTblAsientosList().get(1).setMonto(evd.getMonto() - evd.getTblAsientosList().get(0).getMonto());
+                    if (evd.getTblAsientosCollection().size() == 2) {
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getMonto());
                         entityManager.merge(evd);
-                    } else if (evd.getTblAsientosList().isEmpty()) {
+                    } else if (evd.getTblAsientosCollection().isEmpty()) {
 
-                        Collection<TblAsientos> ts = evd.getTblAsientosList();
+                        Collection<TblAsientos> ts = evd.getTblAsientosCollection();
                         if (ts == null) {
                             ts = new LinkedList<>();
-                            evd.setTblAsientosList((List) ts);
+                            evd.setTblAsientosCollection((List) ts);
                         }
                         TblAsientos asientoAporte = new TblAsientos();
                         asientoAporte.setFechahora(evd.getIdEvento().getFecha());
                         asientoAporte.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
                         asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
-                        asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDebeAportes());
+                        asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
                         asientoAporte.setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
                         asientoAporte.setIdUser(currentUser.getUser());
 
@@ -774,8 +774,8 @@ public class FrameColectasDetalle extends JInternalFrame {
                         asientoDonacion.setFechahora(evd.getIdEvento().getFecha());
                         asientoDonacion.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
                         asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
-                        asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDebeDonaciones());
-                        asientoDonacion.setMonto(evd.getMonto() - evd.getTblAsientosList().get(0).getMonto());
+                        asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
+                        asientoDonacion.setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getMonto());
                         asientoDonacion.setIdUser(currentUser.getUser());
 
                         ts.add(asientoDonacion);

@@ -8,8 +8,9 @@ package com.parah.mg.domain;
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -65,8 +66,8 @@ public class TblEventoDetalle implements Serializable {
     @JoinTable(name = "TBL_EVENTO_DETALLE_ASIENTOS", joinColumns = {
         @JoinColumn(name = "ID_EVENTO_DETALLE", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
-    @ManyToMany
-    private List<TblAsientos> tblAsientosList;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Collection<TblAsientos> tblAsientosCollection;
     @JoinColumn(name = "ID_CATEGORIA_ARTICULO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCategoriasArticulos idCategoriaArticulo;
@@ -129,12 +130,12 @@ public class TblEventoDetalle implements Serializable {
     }
 
     @XmlTransient
-    public List<TblAsientos> getTblAsientosList() {
-        return tblAsientosList;
+    public Collection<TblAsientos> getTblAsientosCollection() {
+        return tblAsientosCollection;
     }
 
-    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
-        this.tblAsientosList = tblAsientosList;
+    public void setTblAsientosCollection(Collection<TblAsientos> tblAsientosCollection) {
+        this.tblAsientosCollection = tblAsientosCollection;
     }
 
     public TblCategoriasArticulos getIdCategoriaArticulo() {

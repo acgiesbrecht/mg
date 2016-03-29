@@ -6,8 +6,8 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +23,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,21 +31,15 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Adrian Giesbrecht
  */
 @Entity
-@Table(name = "TBL_ASIENTOS")
+@Table(name = "TBL_ASIENTOS_TEMPORALES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblAsientos.findAll", query = "SELECT t FROM TblAsientos t"),
-    @NamedQuery(name = "TblAsientos.findById", query = "SELECT t FROM TblAsientos t WHERE t.id = :id"),
-    @NamedQuery(name = "TblAsientos.findByFechahora", query = "SELECT t FROM TblAsientos t WHERE t.fechahora = :fechahora"),
-    @NamedQuery(name = "TblAsientos.findByObservacion", query = "SELECT t FROM TblAsientos t WHERE t.observacion = :observacion"),
-    @NamedQuery(name = "TblAsientos.findByMonto", query = "SELECT t FROM TblAsientos t WHERE t.monto = :monto")})
-public class TblAsientos implements Serializable {
-
-    @ManyToMany(mappedBy = "tblAsientosCollection")
-    private Collection<TblFacturas> tblFacturasCollection;
-
-    @ManyToMany(mappedBy = "tblAsientosCollection")
-    private Collection<TblAutofacturas> tblAutofacturasCollection;
+    @NamedQuery(name = "TblAsientosTemporales.findAll", query = "SELECT t FROM TblAsientosTemporales t"),
+    @NamedQuery(name = "TblAsientosTemporales.findById", query = "SELECT t FROM TblAsientosTemporales t WHERE t.id = :id"),
+    @NamedQuery(name = "TblAsientosTemporales.findByFechahora", query = "SELECT t FROM TblAsientosTemporales t WHERE t.fechahora = :fechahora"),
+    @NamedQuery(name = "TblAsientosTemporales.findByMonto", query = "SELECT t FROM TblAsientosTemporales t WHERE t.monto = :monto"),
+    @NamedQuery(name = "TblAsientosTemporales.findByFacturado", query = "SELECT t FROM TblAsientosTemporales t WHERE t.facturado = :facturado")})
+public class TblAsientosTemporales implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -59,13 +52,20 @@ public class TblAsientos implements Serializable {
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechahora;
-    @Size(max = 255)
-    @Column(name = "OBSERVACION")
-    private String observacion;
     @Basic(optional = false)
     @NotNull
     @Column(name = "MONTO")
     private int monto;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FACTURADO")
+    private Boolean facturado;
+    @Column(name = "ES_APORTE")
+    private Boolean esAporte;
+    @ManyToMany(mappedBy = "tblAsientosTemporalesCollection")
+    private Collection<TblRecibos> tblRecibosCollection;
+    @ManyToMany(mappedBy = "tblAsientosTemporalesCollection")
+    private Collection<TblTransferencias> tblTransferenciasCollection;
     @JoinColumn(name = "ID_CENTRO_DE_COSTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCentrosDeCosto idCentroDeCosto;
@@ -75,21 +75,19 @@ public class TblAsientos implements Serializable {
     @JoinColumn(name = "ID_CUENTA_CONTABLE_DEBE", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCuentasContables idCuentaContableDebe;
-    @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private TblUsers idUser;
 
-    public TblAsientos() {
+    public TblAsientosTemporales() {
     }
 
-    public TblAsientos(Integer id) {
+    public TblAsientosTemporales(Integer id) {
         this.id = id;
     }
 
-    public TblAsientos(Integer id, Date fechahora, int monto) {
+    public TblAsientosTemporales(Integer id, Date fechahora, int monto, Boolean facturado) {
         this.id = id;
         this.fechahora = fechahora;
         this.monto = monto;
+        this.facturado = facturado;
     }
 
     public Integer getId() {
@@ -108,20 +106,38 @@ public class TblAsientos implements Serializable {
         this.fechahora = fechahora;
     }
 
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-
     public int getMonto() {
         return monto;
     }
 
     public void setMonto(int monto) {
         this.monto = monto;
+    }
+
+    public Boolean getFacturado() {
+        return facturado;
+    }
+
+    public void setFacturado(Boolean facturado) {
+        this.facturado = facturado;
+    }
+
+    @XmlTransient
+    public Collection<TblRecibos> getTblRecibosCollection() {
+        return tblRecibosCollection;
+    }
+
+    public void setTblRecibosCollection(Collection<TblRecibos> tblRecibosCollection) {
+        this.tblRecibosCollection = tblRecibosCollection;
+    }
+
+    @XmlTransient
+    public Collection<TblTransferencias> getTblTransferenciasCollection() {
+        return tblTransferenciasCollection;
+    }
+
+    public void setTblTransferenciasCollection(Collection<TblTransferencias> tblTransferenciasCollection) {
+        this.tblTransferenciasCollection = tblTransferenciasCollection;
     }
 
     public TblCentrosDeCosto getIdCentroDeCosto() {
@@ -148,14 +164,6 @@ public class TblAsientos implements Serializable {
         this.idCuentaContableDebe = idCuentaContableDebe;
     }
 
-    public TblUsers getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(TblUsers idUser) {
-        this.idUser = idUser;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -166,10 +174,10 @@ public class TblAsientos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblAsientos)) {
+        if (!(object instanceof TblAsientosTemporales)) {
             return false;
         }
-        TblAsientos other = (TblAsientos) object;
+        TblAsientosTemporales other = (TblAsientosTemporales) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -178,25 +186,21 @@ public class TblAsientos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.TblAsientos[ id=" + id + " ]";
+        return "com.parah.mg.domain.TblAsientosTemporales[ id=" + id + " ]";
     }
 
-    @XmlTransient
-    public Collection<TblAutofacturas> getTblAutofacturasCollection() {
-        return tblAutofacturasCollection;
+    /**
+     * @return the esAporte
+     */
+    public Boolean getEsAporte() {
+        return esAporte;
     }
 
-    public void setTblAutofacturasCollection(Collection<TblAutofacturas> tblAutofacturasCollection) {
-        this.tblAutofacturasCollection = tblAutofacturasCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblFacturas> getTblFacturasCollection() {
-        return tblFacturasCollection;
-    }
-
-    public void setTblFacturasCollection(Collection<TblFacturas> tblFacturasCollection) {
-        this.tblFacturasCollection = tblFacturasCollection;
+    /**
+     * @param esAporte the esAporte to set
+     */
+    public void setEsAporte(Boolean esAporte) {
+        this.esAporte = esAporte;
     }
 
 }

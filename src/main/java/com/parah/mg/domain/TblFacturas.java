@@ -7,12 +7,16 @@ package com.parah.mg.domain;
 
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,10 +26,11 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author adriang
+ * @author Adrian Giesbrecht
  */
 @Entity
 @Table(name = "TBL_FACTURAS")
@@ -81,6 +86,11 @@ public class TblFacturas implements Serializable {
     private String domicilio;
     @Column(name = "CASILLA_DE_CORREO")
     private Integer casillaDeCorreo;
+    @JoinTable(name = "TBL_FACTURAS_ASIENTOS", joinColumns = {
+        @JoinColumn(name = "NRO_FACTURA", referencedColumnName = "NRO")}, inverseJoinColumns = {
+        @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Collection<TblAsientos> tblAsientosCollection;
     @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEntidades idEntidad;
@@ -178,6 +188,15 @@ public class TblFacturas implements Serializable {
 
     public void setCasillaDeCorreo(Integer casillaDeCorreo) {
         this.casillaDeCorreo = casillaDeCorreo;
+    }
+
+    @XmlTransient
+    public Collection<TblAsientos> getTblAsientosCollection() {
+        return tblAsientosCollection;
+    }
+
+    public void setTblAsientosCollection(Collection<TblAsientos> tblAsientosCollection) {
+        this.tblAsientosCollection = tblAsientosCollection;
     }
 
     public TblEntidades getIdEntidad() {

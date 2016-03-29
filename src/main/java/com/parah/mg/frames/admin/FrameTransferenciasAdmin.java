@@ -8,6 +8,7 @@ package com.parah.mg.frames.admin;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -586,11 +587,13 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             int[] selected = masterTable.getSelectedRows();
             List<com.parah.mg.domain.TblTransferencias> toRemove = new ArrayList<>(selected.length);
             for (int idx = 0; idx < selected.length; idx++) {
-                com.parah.mg.domain.TblTransferencias t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                int index = masterTable.convertRowIndexToModel(selected[idx]);
+                TblTransferencias t = list.get(index);
                 toRemove.add(t);
                 entityManager.remove(t);
+                list.remove(index);
             }
-            list.removeAll(toRemove);
+            //list.removeAll(toRemove);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);

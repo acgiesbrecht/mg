@@ -123,8 +123,8 @@
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="cboCuentaCredito" min="-2" pref="185" max="-2" attributes="0"/>
-                                  <Component id="cboCuentaContado" min="-2" pref="185" max="-2" attributes="0"/>
+                                  <Component id="cboCuentaCtaCte" min="-2" pref="185" max="-2" attributes="0"/>
+                                  <Component id="cboCuentaEfectivo" min="-2" pref="185" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -153,12 +153,12 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="conceptoLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cboCuentaContado" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cboCuentaEfectivo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="conceptoLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cboCuentaCredito" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cboCuentaCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -343,28 +343,28 @@
     </Component>
     <Component class="javax.swing.JLabel" name="conceptoLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Cuenta por defecto para Facturas Contado:"/>
+        <Property name="text" type="java.lang.String" value="Cuenta por defecto para Cobros en Efectivo:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="cboCuentaContado">
+    <Component class="javax.swing.JComboBox" name="cboCuentaEfectivo">
       <BindingProperties>
-        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idCuentaHaberFacturaContadoPorDefecto}" target="cboCuentaContado" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idCuentaHaberFacturaContadoPorDefecto}" target="cboCuentaEfectivo" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboCuentaContadoActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboCuentaEfectivoActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="conceptoLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Cuenta por defecto para Facturas Credito:"/>
+        <Property name="text" type="java.lang.String" value="Cuenta por defecto para Cobros por Cta.Cte.:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="cboCuentaCredito">
+    <Component class="javax.swing.JComboBox" name="cboCuentaCtaCte">
       <BindingProperties>
-        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idCuentaHaberFacturaCreditoPorDefecto}" target="cboCuentaCredito" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idCuentaHaberFacturaCreditoPorDefecto}" target="cboCuentaCtaCte" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboCuentaCreditoActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboCuentaCtaCteActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="ctacteLabel">

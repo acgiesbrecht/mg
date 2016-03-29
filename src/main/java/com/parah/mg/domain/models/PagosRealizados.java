@@ -5,109 +5,53 @@
  */
 package com.parah.mg.domain.models;
 
+import com.parah.mg.domain.TblAsientosTemporales;
+import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
+import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author adriang
  */
 @Entity
-@Table(name = "PAGOS_REALIZADOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "PagosRealizados.findAll", query = "SELECT p FROM PagosRealizados p"),
-    @NamedQuery(name = "PagosRealizados.findById", query = "SELECT p FROM PagosRealizados p WHERE p.id = :id"),
-    @NamedQuery(name = "PagosRealizados.findByTAporte", query = "SELECT p FROM PagosRealizados p WHERE p.tAporte = :tAporte"),
-    @NamedQuery(name = "PagosRealizados.findByTDonacion", query = "SELECT p FROM PagosRealizados p WHERE p.tDonacion = :tDonacion"),
-    @NamedQuery(name = "PagosRealizados.findByRAporte", query = "SELECT p FROM PagosRealizados p WHERE p.rAporte = :rAporte"),
-    @NamedQuery(name = "PagosRealizados.findByRDonacion", query = "SELECT p FROM PagosRealizados p WHERE p.rDonacion = :rDonacion")})
 public class PagosRealizados implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID")
-    private int id;
-    @Column(name = "T_APORTE")
-    private int tAporte;
-    @Column(name = "T_DONACION")
-    private int tDonacion;
-    @Column(name = "R_APORTE")
-    private int rAporte;
-    @Column(name = "R_DONACION")
-    private int rDonacion;
-    @Column(name = "F_APORTE")
-    private int fAporte;
-    @Column(name = "F_DONACION")
-    private int fDonacion;
+    private TblEntidades entidad;
 
-    public PagosRealizados() {
+    private Collection<TblAsientosTemporales> asientosTemporalesList;
+
+    /**
+     * @return the entidad
+     */
+    public TblEntidades getEntidad() {
+        return entidad;
     }
 
-    public int getId() {
-        return id;
+    /**
+     * @param entidad the entidad to set
+     */
+    public void setEntidad(TblEntidades entidad) {
+        this.entidad = entidad;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    /**
+     * @return the asientosTemporalesList
+     */
+    public Collection<TblAsientosTemporales> getAsientosTemporalesList() {
+        return asientosTemporalesList;
     }
 
-    public int getTAporte() {
-        return tAporte;
-    }
-
-    public void setTAporte(int tAporte) {
-        this.tAporte = tAporte;
-    }
-
-    public int getTDonacion() {
-        return tDonacion;
-    }
-
-    public void setTDonacion(int tDonacion) {
-        this.tDonacion = tDonacion;
-    }
-
-    public int getRAporte() {
-        return rAporte;
-    }
-
-    public void setRAporte(int rAporte) {
-        this.rAporte = rAporte;
-    }
-
-    public int getRDonacion() {
-        return rDonacion;
-    }
-
-    public void setRDonacion(int rDonacion) {
-        this.rDonacion = rDonacion;
-    }
-
-    public int getFAporte() {
-        return fAporte;
-    }
-
-    public void setFAporte(int fAporte) {
-        this.fAporte = fAporte;
-    }
-
-    public int getFDonacion() {
-        return fDonacion;
-    }
-
-    public void setFDonacion(int fDonacion) {
-        this.fDonacion = fDonacion;
+    /**
+     * @param asientosTemporalesList the asientosTemporalesList to set
+     */
+    public void setAsientosTemporalesList(Collection<TblAsientosTemporales> asientosTemporalesList) {
+        this.asientosTemporalesList = asientosTemporalesList;
     }
 
 }

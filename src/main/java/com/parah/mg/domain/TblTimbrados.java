@@ -7,7 +7,7 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -71,7 +71,7 @@ public class TblTimbrados implements Serializable {
     @Column(name = "ACTIVO")
     private Boolean activo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTimbrado")
-    private List<TblFacturas> tblFacturasList;
+    private Collection<TblFacturas> tblFacturasCollection;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
@@ -141,12 +141,12 @@ public class TblTimbrados implements Serializable {
     }
 
     @XmlTransient
-    public List<TblFacturas> getTblFacturasList() {
-        return tblFacturasList;
+    public Collection<TblFacturas> getTblFacturasCollection() {
+        return tblFacturasCollection;
     }
 
-    public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
-        this.tblFacturasList = tblFacturasList;
+    public void setTblFacturasCollection(Collection<TblFacturas> tblFacturasCollection) {
+        this.tblFacturasCollection = tblFacturasCollection;
     }
 
     public TblUsers getIdUser() {

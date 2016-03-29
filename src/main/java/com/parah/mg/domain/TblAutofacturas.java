@@ -7,8 +7,9 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -115,8 +116,8 @@ public class TblAutofacturas implements Serializable {
     @JoinTable(name = "TBL_AUTOFACTURAS_ASIENTOS", joinColumns = {
         @JoinColumn(name = "ID_AUTOFACTURA", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
-    @ManyToMany
-    private List<TblAsientos> tblAsientosList;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Collection<TblAsientos> tblAsientosCollection;
     @JoinColumn(name = "ID_TIMBRADO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblTimbradosAutofacturas idTimbrado;
@@ -251,12 +252,12 @@ public class TblAutofacturas implements Serializable {
     }
 
     @XmlTransient
-    public List<TblAsientos> getTblAsientosList() {
-        return tblAsientosList;
+    public Collection<TblAsientos> getTblAsientosCollection() {
+        return tblAsientosCollection;
     }
 
-    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
-        this.tblAsientosList = tblAsientosList;
+    public void setTblAsientosCollection(Collection<TblAsientos> tblAsientosCollection) {
+        this.tblAsientosCollection = tblAsientosCollection;
     }
 
     public TblTimbradosAutofacturas getIdTimbrado() {

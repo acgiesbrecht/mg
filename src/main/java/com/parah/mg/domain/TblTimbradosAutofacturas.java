@@ -7,7 +7,7 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -47,7 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TblTimbradosAutofacturas implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTimbrado")
-    private List<TblAutofacturas> tblAutofacturasList;
+    private Collection<TblAutofacturas> tblAutofacturasCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -193,12 +193,12 @@ public class TblTimbradosAutofacturas implements Serializable {
     }
 
     @XmlTransient
-    public List<TblAutofacturas> getTblAutofacturasList() {
-        return tblAutofacturasList;
+    public Collection<TblAutofacturas> getTblAutofacturasCollection() {
+        return tblAutofacturasCollection;
     }
 
-    public void setTblAutofacturasList(List<TblAutofacturas> tblAutofacturasList) {
-        this.tblAutofacturasList = tblAutofacturasList;
+    public void setTblAutofacturasCollection(Collection<TblAutofacturas> tblAutofacturasCollection) {
+        this.tblAutofacturasCollection = tblAutofacturasCollection;
     }
 
 }

@@ -27,8 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblCuentasContablesPorDefecto.findAll", query = "SELECT t FROM TblCuentasContablesPorDefecto t"),
-    @NamedQuery(name = "TblCuentasContablesPorDefecto.findById", query = "SELECT t FROM TblCuentasContablesPorDefecto t WHERE t.id = :id"),
-    @NamedQuery(name = "TblCuentasContablesPorDefecto.findByIdCuentaACobrar", query = "SELECT t FROM TblCuentasContablesPorDefecto t WHERE t.idCuentaACobrar = :idCuentaACobrar")})
+    @NamedQuery(name = "TblCuentasContablesPorDefecto.findById", query = "SELECT t FROM TblCuentasContablesPorDefecto t WHERE t.id = :id")})
 public class TblCuentasContablesPorDefecto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,24 +36,30 @@ public class TblCuentasContablesPorDefecto implements Serializable {
     @NotNull
     @Column(name = "ID")
     private Integer id;
+    @JoinColumn(name = "ID_CUENTA_CTA_CTE", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblCuentasContables idCuentaCtaCte;
+    @JoinColumn(name = "ID_CUENTA_CAJA", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblCuentasContables idCuentaCaja;
+    @JoinColumn(name = "ID_CUENTA_DONACIONES", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblCuentasContables idCuentaDonaciones;
+    @JoinColumn(name = "ID_CUENTA_APORTES", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblCuentasContables idCuentaAportes;
     @JoinColumn(name = "ID_CUENTA_A_COBRAR", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCuentasContables idCuentaACobrar;
     @JoinColumn(name = "ID_CUENTA_DEBE_COMPRAS", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCuentasContables idCuentaDebeCompras;
-    @JoinColumn(name = "ID_CUENTA_DEBE_DONACIONES", referencedColumnName = "ID")
+    @JoinColumn(name = "ID_CUENTA_HABER_COMPRAS_FACTURA_CREDITO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private TblCuentasContables idCuentaDebeDonaciones;
-    @JoinColumn(name = "ID_CUENTA_DEBE_APORTES", referencedColumnName = "ID")
+    private TblCuentasContables idCuentaHaberComprasFacturaCredito;
+    @JoinColumn(name = "ID_CUENTA_HABER_COMPRAS_FACTURA_CONTADO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private TblCuentasContables idCuentaDebeAportes;
-    @JoinColumn(name = "ID_CUENTA_HABER_FACTURA_CREDITO", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private TblCuentasContables idCuentaHaberFacturaCredito;
-    @JoinColumn(name = "ID_CUENTA_HABER_FACTURA_CONTADO", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private TblCuentasContables idCuentaHaberFacturaContado;
+    private TblCuentasContables idCuentaHaberComprasFacturaContado;
 
     public TblCuentasContablesPorDefecto() {
     }
@@ -69,6 +74,38 @@ public class TblCuentasContablesPorDefecto implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public TblCuentasContables getIdCuentaCtaCte() {
+        return idCuentaCtaCte;
+    }
+
+    public void setIdCuentaCtaCte(TblCuentasContables idCuentaCtaCte) {
+        this.idCuentaCtaCte = idCuentaCtaCte;
+    }
+
+    public TblCuentasContables getIdCuentaCaja() {
+        return idCuentaCaja;
+    }
+
+    public void setIdCuentaCaja(TblCuentasContables idCuentaCaja) {
+        this.idCuentaCaja = idCuentaCaja;
+    }
+
+    public TblCuentasContables getIdCuentaDonaciones() {
+        return idCuentaDonaciones;
+    }
+
+    public void setIdCuentaDonaciones(TblCuentasContables idCuentaDonaciones) {
+        this.idCuentaDonaciones = idCuentaDonaciones;
+    }
+
+    public TblCuentasContables getIdCuentaAportes() {
+        return idCuentaAportes;
+    }
+
+    public void setIdCuentaAportes(TblCuentasContables idCuentaAportes) {
+        this.idCuentaAportes = idCuentaAportes;
     }
 
     public TblCuentasContables getIdCuentaACobrar() {
@@ -87,36 +124,20 @@ public class TblCuentasContablesPorDefecto implements Serializable {
         this.idCuentaDebeCompras = idCuentaDebeCompras;
     }
 
-    public TblCuentasContables getIdCuentaDebeDonaciones() {
-        return idCuentaDebeDonaciones;
+    public TblCuentasContables getIdCuentaHaberComprasFacturaCredito() {
+        return idCuentaHaberComprasFacturaCredito;
     }
 
-    public void setIdCuentaDebeDonaciones(TblCuentasContables idCuentaDebeDonaciones) {
-        this.idCuentaDebeDonaciones = idCuentaDebeDonaciones;
+    public void setIdCuentaHaberComprasFacturaCredito(TblCuentasContables idCuentaHaberComprasFacturaCredito) {
+        this.idCuentaHaberComprasFacturaCredito = idCuentaHaberComprasFacturaCredito;
     }
 
-    public TblCuentasContables getIdCuentaDebeAportes() {
-        return idCuentaDebeAportes;
+    public TblCuentasContables getIdCuentaHaberComprasFacturaContado() {
+        return idCuentaHaberComprasFacturaContado;
     }
 
-    public void setIdCuentaDebeAportes(TblCuentasContables idCuentaDebeAportes) {
-        this.idCuentaDebeAportes = idCuentaDebeAportes;
-    }
-
-    public TblCuentasContables getIdCuentaHaberFacturaCredito() {
-        return idCuentaHaberFacturaCredito;
-    }
-
-    public void setIdCuentaHaberFacturaCredito(TblCuentasContables idCuentaHaberFacturaCredito) {
-        this.idCuentaHaberFacturaCredito = idCuentaHaberFacturaCredito;
-    }
-
-    public TblCuentasContables getIdCuentaHaberFacturaContado() {
-        return idCuentaHaberFacturaContado;
-    }
-
-    public void setIdCuentaHaberFacturaContado(TblCuentasContables idCuentaHaberFacturaContado) {
-        this.idCuentaHaberFacturaContado = idCuentaHaberFacturaContado;
+    public void setIdCuentaHaberComprasFacturaContado(TblCuentasContables idCuentaHaberComprasFacturaContado) {
+        this.idCuentaHaberComprasFacturaContado = idCuentaHaberComprasFacturaContado;
     }
 
     @Override

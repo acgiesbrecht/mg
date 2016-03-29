@@ -5,8 +5,10 @@
  */
 package com.parah.mg.frames.operaciones;
 
+import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblFacturas;
-import com.parah.mg.domain.miembros.TblEntidades;
+import com.parah.mg.domain.TblRecibos;
+import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.models.PagosRealizados;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -15,12 +17,13 @@ import java.beans.Beans;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -59,10 +62,15 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
             }
-            generate();
+
             if (masterTable.getRowCount() > 0) {
                 imprimirButton.setEnabled(true);
             }
+
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.MONTH, -1);
+            c.set(Calendar.DATE, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+            dtpFecha.setDate(c.getTime());
 
             TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
             filterHeader.setAdaptiveChoices(false);
@@ -99,6 +107,9 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         imprimirButton = new javax.swing.JButton();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        dtpFecha = new org.jdesktop.swingx.JXDatePicker();
+        cmdCalcular = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -158,6 +169,11 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
         }
 
+        jLabel1.setText("Fecha de Facturacion:");
+
+        cmdCalcular.setText("Calcular");
+        cmdCalcular.addActionListener(formListener);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -166,11 +182,18 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 585, Short.MAX_VALUE)
+                        .addGap(0, 595, Short.MAX_VALUE)
                         .addComponent(imprimirButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelarButton))
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 837, Short.MAX_VALUE))
+                    .addComponent(masterScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 847, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmdCalcular)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -180,8 +203,13 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdCalcular))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(imprimirButton))
@@ -202,6 +230,9 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             else if (evt.getSource() == imprimirButton) {
                 FrameFacturacionColectiva.this.imprimirButtonActionPerformed(evt);
             }
+            else if (evt.getSource() == cmdCalcular) {
+                FrameFacturacionColectiva.this.cmdCalcularActionPerformed(evt);
+            }
         }
     }// </editor-fold>//GEN-END:initComponents
 
@@ -212,8 +243,9 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
             list.stream().forEach((factura) -> {
-                //print((int) factura.getNro());
+
                 Utils.getInstance().printFactura(factura);
+
             });
             java.util.Collection data = query.getResultList();
             data.stream().forEach((entity) -> {
@@ -260,6 +292,13 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         }
     }//GEN-LAST:event_cancelarButtonActionPerformed
 
+    private void cmdCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCalcularActionPerformed
+        generate();
+        if (masterTable.getRowCount() > 0) {
+            imprimirButton.setEnabled(true);
+        }
+    }//GEN-LAST:event_cmdCalcularActionPerformed
+
     private void generate() {
         try {
             if (listTimbrados.size() < 1) {
@@ -271,14 +310,89 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             int siguienteFacturaNro;
             if (list.size() > 0) {
                 siguienteFacturaNro = list.get(list.size() - 1).getNro() + 1;
+                if (siguienteFacturaNro > listTimbrados.get(0).getNroFacturaFin()) {
+                    JOptionPane.showMessageDialog(null, "Ha alcanzado el nro maximo de facturas para el timbrado activo.");
+                    return;
+                }
             } else {
-                siguienteFacturaNro = 1;
+                siguienteFacturaNro = listTimbrados.get(0).getNroFacturaIncio();
             }
 
             list.clear();
-            Calendar cal = Calendar.getInstance();
-            String ano = String.valueOf(cal.get(Calendar.YEAR));
-            List<PagosRealizados> pagosRealizados = entityManager.createNativeQuery("SELECT m.id AS ID, "
+
+            List<PagosRealizados> pagosList = new ArrayList<>();
+
+            Query query = entityManager.createQuery("SELECT t FROM TblTransferencias t WHERE t.fechahora <= :fecha AND t.tblAsientosTemporalesCollection.facturado = false");
+            query.setParameter("fecha", dtpFecha.getDate());
+            List<TblTransferencias> listT = (List<TblTransferencias>) query.getResultList();
+
+            for (TblTransferencias t : listT) {
+                PagosRealizados p = new PagosRealizados();
+                p.setEntidad(t.getIdEntidad());
+                p.setAsientosTemporalesList(t.getTblAsientosTemporalesCollection());
+                pagosList.add(p);
+            }
+
+            query = entityManager.createQuery("SELECT t FROM TblRecibos t WHERE t.fechahora <= :fecha AND t.tblAsientosTemporalesCollection.facturado = false");
+            query.setParameter("fecha", dtpFecha.getDate());
+            List<TblRecibos> listR = (List<TblRecibos>) query.getResultList();
+
+            for (TblRecibos r : listR) {
+                PagosRealizados p = new PagosRealizados();
+                p.setEntidad(r.getIdEntidad());
+                p.setAsientosTemporalesList(r.getTblAsientosTemporalesCollection());
+                pagosList.add(p);
+            }
+
+            for (PagosRealizados pago : pagosList) {
+                if (siguienteFacturaNro <= listTimbrados.get(0).getNroFacturaFin()) {
+                    TblFacturas f = new TblFacturas();
+                    entityManager.persist(f);
+                    f.setNro(siguienteFacturaNro);
+                    f.setIdTimbrado(listTimbrados.get(0));
+                    f.setFechahora(dtpFecha.getDate());
+                    f.setIdEntidad(pago.getEntidad());
+                    if (pago.getEntidad().getRazonSocial() != null) {
+                        if (!pago.getEntidad().getRazonSocial().equals("")) {
+                            f.setRazonSocial(pago.getEntidad().getRazonSocial());
+                        } else {
+                            f.setRazonSocial(pago.getEntidad().getNombreCompleto());
+                        }
+                    } else {
+                        f.setRazonSocial(pago.getEntidad().getNombreCompleto());
+                    }
+
+                    if (pago.getEntidad().getRucSinDv() != null) {
+                        f.setRuc(pago.getEntidad().getRucSinDv());
+                    } else {
+                        f.setRuc("44444401");
+                    }
+                    f.setAnulado(false);
+                    f.setDomicilio(pago.getEntidad().getDomicilio());
+                    f.setCasillaDeCorreo(pago.getEntidad().getBox());
+
+                    Integer montoAporte = 0;
+                    Integer montoDonacion = 0;
+                    for (TblAsientosTemporales av : pago.getAsientosTemporalesList()) {
+                        if (av.getEsAporte()) {
+                            montoAporte += av.getMonto();
+                        } else {
+                            montoDonacion += av.getMonto();
+                        }
+                    }
+                    f.setImporteAporte(montoAporte);
+                    f.setImporteDonacion(montoDonacion);
+                    f.setIdUser(currentUser.getUser());
+                    list.add(f);
+                    int row = list.size() - 1;
+
+                    masterTable.setRowSelectionInterval(row, row);
+
+                    masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+                    siguienteFacturaNro++;
+                }
+            }
+            /*List<PagosRealizados> pagosRealizados = entityManager.createNativeQuery("SELECT m.id AS ID, "
                     + " COALESCE(transferencias.t_aporte,0) AS T_APORTE, "
                     + " COALESCE(transferencias.t_donacion,0) AS T_DONACION, "
                     + " COALESCE(recibos.r_aporte,0) AS R_APORTE,"
@@ -313,40 +427,42 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
                 m = entityManager.find(TblEntidades.class, pr.getId());
                 if ((pr.getRDonacion() + pr.getTDonacion() - pr.getFDonacion()) > 0 || (pr.getRAporte() + pr.getTAporte() - pr.getFAporte()) > 0) {
-                    TblFacturas f = new TblFacturas();
-                    entityManager.persist(f);
-                    f.setNro(siguienteFacturaNro);
-                    f.setIdTimbrado(listTimbrados.get(0));
-                    f.setFechahora(new Date());
-                    f.setIdEntidad(m);
-                    if (m.getRazonSocial() != null) {
-                        if (!m.getRazonSocial().equals("")) {
-                            f.setRazonSocial(m.getRazonSocial());
+                    if (siguienteFacturaNro <= listTimbrados.get(0).getNroFacturaFin()) {
+                        TblFacturas f = new TblFacturas();
+                        entityManager.persist(f);
+                        f.setNro(siguienteFacturaNro);
+                        f.setIdTimbrado(listTimbrados.get(0));
+                        f.setFechahora(new Date());
+                        f.setIdEntidad(m);
+                        if (m.getRazonSocial() != null) {
+                            if (!m.getRazonSocial().equals("")) {
+                                f.setRazonSocial(m.getRazonSocial());
+                            } else {
+                                f.setRazonSocial(m.getNombreCompleto());
+                            }
                         } else {
                             f.setRazonSocial(m.getNombreCompleto());
                         }
-                    } else {
-                        f.setRazonSocial(m.getNombreCompleto());
-                    }
 
-                    if (m.getRucSinDv() != null) {
-                        f.setRuc(m.getRucSinDv());
-                    } else {
-                        f.setRuc("44444401");
+                        if (m.getRucSinDv() != null) {
+                            f.setRuc(m.getRucSinDv());
+                        } else {
+                            f.setRuc("44444401");
+                        }
+                        f.setAnulado(false);
+                        f.setDomicilio(m.getDomicilio());
+                        f.setCasillaDeCorreo(m.getBox());
+                        f.setImporteAporte(pr.getRAporte() + pr.getTAporte() - pr.getFAporte());
+                        f.setImporteDonacion(pr.getRDonacion() + pr.getTDonacion() - pr.getFDonacion());
+                        f.setIdUser(currentUser.getUser());
+                        list.add(f);
+                        int row = list.size() - 1;
+                        masterTable.setRowSelectionInterval(row, row);
+                        masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+                        siguienteFacturaNro++;
                     }
-                    f.setAnulado(false);
-                    f.setDomicilio(m.getDomicilio());
-                    f.setCasillaDeCorreo(m.getBox());
-                    f.setImporteAporte(pr.getRAporte() + pr.getTAporte() - pr.getFAporte());
-                    f.setImporteDonacion(pr.getRDonacion() + pr.getTDonacion() - pr.getFDonacion());
-                    f.setIdUser(currentUser.getUser());
-                    list.add(f);
-                    int row = list.size() - 1;
-                    masterTable.setRowSelectionInterval(row, row);
-                    masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
-                    siguienteFacturaNro++;
                 }
-            }
+            }*/
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -355,9 +471,12 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelarButton;
+    private javax.swing.JButton cmdCalcular;
+    private org.jdesktop.swingx.JXDatePicker dtpFecha;
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.FacturaNroTableCellRenderer facturaNroTableCellRenderer1;
     private javax.swing.JButton imprimirButton;
+    private javax.swing.JLabel jLabel1;
     private java.util.List<com.parah.mg.domain.TblFacturas> list;
     private java.util.List<com.parah.mg.domain.miembros.TblEntidades> listEntidades;
     private java.util.List<com.parah.mg.domain.TblTimbrados> listTimbrados;
@@ -388,12 +507,15 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(FrameFacturacionColectiva.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(FrameFacturacionColectiva.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(FrameFacturacionColectiva.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(FrameFacturacionColectiva.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
