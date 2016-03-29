@@ -6,7 +6,7 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,7 +47,7 @@ public class TblRoles implements Serializable {
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @ManyToMany(mappedBy = "tblRolesList")
-    private List<TblUsers> tblUsersList;
+    private Collection<TblUsers> tblUsersCollection;
 
     public TblRoles() {
     }
@@ -78,12 +78,12 @@ public class TblRoles implements Serializable {
     }
 
     @XmlTransient
-    public List<TblUsers> getTblUsersList() {
-        return tblUsersList;
+    public Collection<TblUsers> getTblUsersCollection() {
+        return tblUsersCollection;
     }
 
-    public void setTblUsersList(List<TblUsers> tblUsersList) {
-        this.tblUsersList = tblUsersList;
+    public void setTblUsersCollection(Collection<TblUsers> tblUsersCollection) {
+        this.tblUsersCollection = tblUsersCollection;
     }
 
     @Override

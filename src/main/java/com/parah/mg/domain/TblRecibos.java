@@ -5,18 +5,20 @@
  */
 package com.parah.mg.domain;
 
-import com.parah.mg.domain.eventos.TblEventoTipos;
-import com.parah.mg.domain.eventos.TblEventos;
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,6 +28,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -65,6 +68,11 @@ public class TblRecibos implements Serializable {
     @NotNull
     @Column(name = "MONTO_DONACION")
     private int montoDonacion;
+    @JoinTable(name = "TBL_RECIBOS_ASIENTOS_TEMPORALES", joinColumns = {
+        @JoinColumn(name = "ID_RECIBO", referencedColumnName = "ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "ID_ASIENTO_TEMPORAL", referencedColumnName = "ID")})
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Collection<TblAsientosTemporales> tblAsientosTemporalesCollection;
     @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEntidades idEntidad;
@@ -130,6 +138,15 @@ public class TblRecibos implements Serializable {
 
     public void setMontoDonacion(int montoDonacion) {
         this.montoDonacion = montoDonacion;
+    }
+
+    @XmlTransient
+    public Collection<TblAsientosTemporales> getTblAsientosTemporalesCollection() {
+        return tblAsientosTemporalesCollection;
+    }
+
+    public void setTblAsientosTemporalesCollection(Collection<TblAsientosTemporales> tblAsientosTemporalesCollection) {
+        this.tblAsientosTemporalesCollection = tblAsientosTemporalesCollection;
     }
 
     public TblEntidades getIdEntidad() {

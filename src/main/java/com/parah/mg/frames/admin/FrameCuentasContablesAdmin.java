@@ -61,6 +61,9 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
             AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCuentaCredito, eventListCuentasContables);
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
 
+            AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaACobrar, eventListCuentasContables);
+            support3.setFilterMode(TextMatcherEditor.CONTAINS);
+
             AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaCompras, eventListCuentasContables);
             support4.setFilterMode(TextMatcherEditor.CONTAINS);
 
@@ -118,6 +121,12 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         cboCuentaDonaciones = new javax.swing.JComboBox<>();
         cboCuentaCompras = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        cboCuentaACobrar = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        cboCuentaEfectivo = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        cboCuentaCtaCte = new javax.swing.JComboBox<>();
 
         FormListener formListener = new FormListener();
 
@@ -195,25 +204,37 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), chkImputable, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        jLabel1.setText("Cuenta Haber para Facturas Contado");
+        jLabel1.setText("Cuenta Haber para Facturas Compra Contado");
 
         cboCuentaContado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel2.setText("Cuenta Haber para Facturas Credito");
+        jLabel2.setText("Cuenta Haber para Facturas Compra Credito");
 
         cboCuentaCredito.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel4.setText("Cuenta Debe para Aportes");
+        jLabel4.setText("Cuenta Aportes");
 
         cboCuentaAportes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel5.setText("Cuenta Debe para Donaciones");
+        jLabel5.setText("Cuenta Donaciones");
 
         cboCuentaDonaciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         cboCuentaCompras.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel6.setText("Cuenta Debe para Compras");
+
+        jLabel7.setText("Cuenta A Cobrar");
+
+        cboCuentaACobrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel8.setText("Cuenta Efectivo/CAJA");
+
+        cboCuentaEfectivo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel9.setText("Cuenta Cta. Cte. Coop. Chortitzer ");
+
+        cboCuentaCtaCte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -226,11 +247,17 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
                     .addComponent(jLabel2)
                     .addComponent(jLabel6)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cboCuentaDonaciones, 0, 228, Short.MAX_VALUE)
-                    .addComponent(cboCuentaAportes, 0, 228, Short.MAX_VALUE)
+                    .addComponent(cboCuentaCtaCte, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cboCuentaEfectivo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cboCuentaACobrar, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cboCuentaDonaciones, 0, 208, Short.MAX_VALUE)
+                    .addComponent(cboCuentaAportes, 0, 208, Short.MAX_VALUE)
                     .addComponent(cboCuentaCompras, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cboCuentaCredito, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cboCuentaContado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -247,11 +274,15 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(cboCuentaCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cboCuentaCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboCuentaACobrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cboCuentaAportes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
@@ -259,7 +290,15 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cboCuentaDonaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboCuentaEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboCuentaCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Cuentas por defecto", jPanel1);
@@ -280,7 +319,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
                 .addGap(10, 10, 10))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+                .addComponent(masterScrollPane)
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -328,7 +367,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
                             .addComponent(descripcionLabel3)
                             .addComponent(chkImputable))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE))
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -440,11 +479,14 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
     private void readCuentasPorDefecto() {
         try {
             cuentas = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
-            cboCuentaContado.setSelectedItem(cuentas.getIdCuentaHaberFacturaContado());
-            cboCuentaCredito.setSelectedItem(cuentas.getIdCuentaHaberFacturaCredito());
+            cboCuentaContado.setSelectedItem(cuentas.getIdCuentaHaberComprasFacturaContado());
+            cboCuentaCredito.setSelectedItem(cuentas.getIdCuentaHaberComprasFacturaCredito());
+            cboCuentaACobrar.setSelectedItem(cuentas.getIdCuentaACobrar());
             cboCuentaCompras.setSelectedItem(cuentas.getIdCuentaDebeCompras());
-            cboCuentaAportes.setSelectedItem(cuentas.getIdCuentaDebeAportes());
-            cboCuentaDonaciones.setSelectedItem(cuentas.getIdCuentaDebeDonaciones());
+            cboCuentaAportes.setSelectedItem(cuentas.getIdCuentaAportes());
+            cboCuentaDonaciones.setSelectedItem(cuentas.getIdCuentaDonaciones());
+            cboCuentaEfectivo.setSelectedItem(cuentas.getIdCuentaCaja());
+            cboCuentaCtaCte.setSelectedItem(cuentas.getIdCuentaCtaCte());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -453,11 +495,14 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
 
     private void saveCuentasPorDefecto() {
         try {
-            cuentas.setIdCuentaHaberFacturaContado((TblCuentasContables) cboCuentaContado.getSelectedItem());
-            cuentas.setIdCuentaHaberFacturaCredito((TblCuentasContables) cboCuentaCredito.getSelectedItem());
+            cuentas.setIdCuentaHaberComprasFacturaContado((TblCuentasContables) cboCuentaContado.getSelectedItem());
+            cuentas.setIdCuentaHaberComprasFacturaCredito((TblCuentasContables) cboCuentaCredito.getSelectedItem());
+            cuentas.setIdCuentaACobrar((TblCuentasContables) cboCuentaACobrar.getSelectedItem());
             cuentas.setIdCuentaDebeCompras((TblCuentasContables) cboCuentaCompras.getSelectedItem());
-            cuentas.setIdCuentaDebeAportes((TblCuentasContables) cboCuentaAportes.getSelectedItem());
-            cuentas.setIdCuentaDebeDonaciones((TblCuentasContables) cboCuentaDonaciones.getSelectedItem());
+            cuentas.setIdCuentaAportes((TblCuentasContables) cboCuentaAportes.getSelectedItem());
+            cuentas.setIdCuentaDonaciones((TblCuentasContables) cboCuentaDonaciones.getSelectedItem());
+            cuentas.setIdCuentaCaja((TblCuentasContables) cboCuentaEfectivo.getSelectedItem());
+            cuentas.setIdCuentaCtaCte((TblCuentasContables) cboCuentaCtaCte.getSelectedItem());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -465,11 +510,14 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cboCuentaACobrar;
     private javax.swing.JComboBox<String> cboCuentaAportes;
     private javax.swing.JComboBox<String> cboCuentaCompras;
     private javax.swing.JComboBox<String> cboCuentaContado;
     private javax.swing.JComboBox<String> cboCuentaCredito;
+    private javax.swing.JComboBox<String> cboCuentaCtaCte;
     private javax.swing.JComboBox<String> cboCuentaDonaciones;
+    private javax.swing.JComboBox<String> cboCuentaEfectivo;
     private javax.swing.JComboBox cboCuentaMadre;
     private javax.swing.JCheckBox chkImputable;
     private com.parah.mg.utils.CuentaContableCellRenderer cuentaContableCellRenderer1;
@@ -486,6 +534,9 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private java.util.List<com.parah.mg.domain.TblCuentasContables> list;

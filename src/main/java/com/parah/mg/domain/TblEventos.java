@@ -3,14 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.parah.mg.domain.eventos;
+package com.parah.mg.domain;
 
-import com.parah.mg.domain.TblCentrosDeCosto;
-import com.parah.mg.domain.TblGrupos;
-import com.parah.mg.domain.TblUsers;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,16 +18,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author adriang
+ * @author Adrian Giesbrecht
  */
 @Entity
 @Table(name = "TBL_EVENTOS")
@@ -42,6 +41,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblEventos.findByDescripcion", query = "SELECT t FROM TblEventos t WHERE t.descripcion = :descripcion"),
     @NamedQuery(name = "TblEventos.findByPorcentajeAporte", query = "SELECT t FROM TblEventos t WHERE t.porcentajeAporte = :porcentajeAporte")})
 public class TblEventos implements Serializable {
+
+    @OneToMany(mappedBy = "idEvento")
+    private Collection<TblRecibos> tblRecibosCollection;
+    @OneToMany(mappedBy = "idEvento")
+    private Collection<TblTransferencias> tblTransferenciasCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -173,8 +177,25 @@ public class TblEventos implements Serializable {
 
     @Override
     public String toString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MMMM/yy");
-        return sdf.format(fecha) + " - " + descripcion;
+        return descripcion;
+    }
+
+    @XmlTransient
+    public Collection<TblRecibos> getTblRecibosCollection() {
+        return tblRecibosCollection;
+    }
+
+    public void setTblRecibosCollection(Collection<TblRecibos> tblRecibosCollection) {
+        this.tblRecibosCollection = tblRecibosCollection;
+    }
+
+    @XmlTransient
+    public Collection<TblTransferencias> getTblTransferenciasCollection() {
+        return tblTransferenciasCollection;
+    }
+
+    public void setTblTransferenciasCollection(Collection<TblTransferencias> tblTransferenciasCollection) {
+        this.tblTransferenciasCollection = tblTransferenciasCollection;
     }
 
 }

@@ -55,7 +55,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
             masterTable.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
                 if (lse.getValueIsAdjusting() && masterTable.getSelectedRow() > -1) {
                     jlistRoles.getSelectionModel().clearSelection();
-                    List<TblRoles> selectedUserRoles = list.get(masterTable.getSelectedRow()).getTblRolesList();
+                    List<TblRoles> selectedUserRoles = (List) list.get(masterTable.getSelectedRow()).getTblRolesList();
                     for (TblRoles role : selectedUserRoles) {
                         int index = Utils.getInstance().getIndexOfModel(jlistRoles.getModel(), role);
                         if (index >= 0) {
@@ -63,7 +63,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
                         }
                     }
                     jlistGrupos.getSelectionModel().clearSelection();
-                    List<TblGrupos> selectedUserGrupos = list.get(masterTable.getSelectedRow()).getTblGruposList();
+                    List<TblGrupos> selectedUserGrupos = (List) list.get(masterTable.getSelectedRow()).getTblGruposList();
                     for (TblGrupos grupo : selectedUserGrupos) {
                         int index = Utils.getInstance().getIndexOfModel(jlistGrupos.getModel(), grupo);
                         if (index >= 0) {

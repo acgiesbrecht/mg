@@ -5,8 +5,12 @@
  */
 package com.parah.mg.frames.operaciones;
 
+import com.parah.mg.domain.TblAsientos;
+import com.parah.mg.domain.TblAsientosTemporales;
+import com.parah.mg.domain.TblCuentasContablesPorDefecto;
+import com.parah.mg.domain.TblEventoDetalle;
 import com.parah.mg.domain.TblTransferencias;
-import com.parah.mg.domain.eventos.TblEventoTipos;
+import com.parah.mg.domain.TblEventoTipos;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.models.PagosMensualesPendientes;
 import com.parah.mg.utils.CurrentUser;
@@ -16,11 +20,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.Beans;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFrame;
@@ -41,6 +49,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
     private static final Logger LOGGER = LogManager.getLogger(FrameCobrarTransferenciasAyC.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     Map<String, String> persistenceMap = new HashMap<>();
+    TblCuentasContablesPorDefecto cuentasContablesPorDefecto;
 
     public FrameCobrarTransferenciasAyC() {
         super("Cobrar Aportes y Colectas",
@@ -53,6 +62,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
+
+        cuentasContablesPorDefecto = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
 
         cboEventoTipo.setSelectedIndex(-1);
 
@@ -276,6 +287,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         try {
             for (PagosMensualesPendientes pago : list) {
                 if (pago.getCobrado()) {
+
                     TblTransferencias t = new TblTransferencias();
                     entityManager.persist(t);
                     t.setIdEntidad(pago.getEntidad());
@@ -290,6 +302,42 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                     t.setFechahora(c.getTime());
                     t.setIdEventoTipo((TblEventoTipos) cboEventoTipo.getSelectedItem());
                     t.setIdUser(currentUser.getUser());
+
+                    Query query = entityManager.createQuery("SELECT t FROM TblEventoDetalle t "
+                            + "WHERE t.idEntidad = :entidad"
+                            + " AND t.idEvento.idEventoTipo = :eventoTipo"
+                            + " AND EXTRACT(MONTH FROM t.idEvento.fecha) = " + pago.getMes().toString()
+                            + " AND EXTRACT(YEAR FROM t.idEvento.fecha) = " + pago.getAno().toString());
+                    query.setParameter("entidad", pago.getEntidad());
+                    query.setParameter("eventoTipo", t.getIdEventoTipo());
+                    List<TblEventoDetalle> listEvd = (List<TblEventoDetalle>) query.getResultList();
+                    List<TblAsientos> listAsientos = new ArrayList<>();
+                    for (TblEventoDetalle evd : listEvd) {
+                        listAsientos.addAll(evd.getTblAsientosCollection());
+                    }
+
+                    Collection<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesCollection();
+                    if (listAsientosTemporales == null) {
+                        listAsientosTemporales = new LinkedList<>();
+                        t.setTblAsientosTemporalesCollection(listAsientosTemporales);
+                    }
+
+                    for (TblAsientos asiento : listAsientos) {
+                        TblAsientosTemporales aT = new TblAsientosTemporales();
+                        entityManager.persist(aT);
+                        aT.setFacturado(false);
+                        aT.setFechahora(t.getFechahora());
+                        aT.setIdCentroDeCosto(asiento.getIdCentroDeCosto());
+                        aT.setIdCuentaContableDebe(asiento.getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
+                        aT.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
+                        if (asiento.getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
+                            aT.setEsAporte(true);
+                        } else {
+                            aT.setEsAporte(false);
+                        }
+                        aT.setMonto(asiento.getMonto());
+                        listAsientosTemporales.add(aT);
+                    }
                 }
             }
             entityManager.getTransaction().commit();
@@ -536,8 +584,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private java.util.List<com.parah.mg.domain.models.PagosMensualesPendientes> list;
-    private java.util.List<com.parah.mg.domain.eventos.TblEventoTipos> listEventoTipos;
-    private java.util.List<com.parah.mg.domain.eventos.TblEventos> listEventos;
+    private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
+    private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
     private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;

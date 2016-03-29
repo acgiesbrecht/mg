@@ -10,10 +10,10 @@ import com.parah.mg.domain.TblFormasDePago;
 import com.parah.mg.domain.TblRecibos;
 import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.TblUsers;
-import com.parah.mg.domain.eventos.TblEventoDetalle;
+import com.parah.mg.domain.TblEventoDetalle;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -117,22 +117,22 @@ public class TblEntidades implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDefuncion;
     @OneToMany(mappedBy = "idEntidad2")
-    private List<TblMiembrosRelaciones> tblMiembrosRelacionesList;
+    private Collection<TblMiembrosRelaciones> tblMiembrosRelacionesCollection;
     @OneToMany(mappedBy = "idEntidad1")
-    private List<TblMiembrosRelaciones> tblMiembrosRelacionesList1;
+    private Collection<TblMiembrosRelaciones> tblMiembrosRelacionesCollection1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
-    private List<TblEventoDetalle> tblEventoDetalleList;
+    private Collection<TblEventoDetalle> tblEventoDetalleCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
-    private List<TblRecibos> tblRecibosList;
+    private Collection<TblRecibos> tblRecibosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
-    private List<TblTransferencias> tblTransferenciasList;
+    private Collection<TblTransferencias> tblTransferenciasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
-    private List<TblFacturas> tblFacturasList;
+    private Collection<TblFacturas> tblFacturasCollection;
     @JoinColumn(name = "ID_AREA_SERVICIO_EN_IGLESIA", referencedColumnName = "ID")
     @ManyToOne
     private TblAreasServicioEnIglesia idAreaServicioEnIglesia;
     @OneToMany(mappedBy = "idEntidadPaganteAportes")
-    private List<TblEntidades> tblEntidadesList;
+    private Collection<TblEntidades> tblEntidadesCollection;
     @JoinColumn(name = "ID_ENTIDAD_PAGANTE_APORTES", referencedColumnName = "ID")
     @ManyToOne
     private TblEntidades idEntidadPaganteAportes;
@@ -288,57 +288,57 @@ public class TblEntidades implements Serializable {
     }
 
     @XmlTransient
-    public List<TblMiembrosRelaciones> getTblMiembrosRelacionesList() {
-        return tblMiembrosRelacionesList;
+    public Collection<TblMiembrosRelaciones> getTblMiembrosRelacionesCollection() {
+        return tblMiembrosRelacionesCollection;
     }
 
-    public void setTblMiembrosRelacionesList(List<TblMiembrosRelaciones> tblMiembrosRelacionesList) {
-        this.tblMiembrosRelacionesList = tblMiembrosRelacionesList;
-    }
-
-    @XmlTransient
-    public List<TblMiembrosRelaciones> getTblMiembrosRelacionesList1() {
-        return tblMiembrosRelacionesList1;
-    }
-
-    public void setTblMiembrosRelacionesList1(List<TblMiembrosRelaciones> tblMiembrosRelacionesList1) {
-        this.tblMiembrosRelacionesList1 = tblMiembrosRelacionesList1;
+    public void setTblMiembrosRelacionesCollection(Collection<TblMiembrosRelaciones> tblMiembrosRelacionesCollection) {
+        this.tblMiembrosRelacionesCollection = tblMiembrosRelacionesCollection;
     }
 
     @XmlTransient
-    public List<TblEventoDetalle> getTblEventoDetalleList() {
-        return tblEventoDetalleList;
+    public Collection<TblMiembrosRelaciones> getTblMiembrosRelacionesCollection1() {
+        return tblMiembrosRelacionesCollection1;
     }
 
-    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
-        this.tblEventoDetalleList = tblEventoDetalleList;
-    }
-
-    @XmlTransient
-    public List<TblRecibos> getTblRecibosList() {
-        return tblRecibosList;
-    }
-
-    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
-        this.tblRecibosList = tblRecibosList;
+    public void setTblMiembrosRelacionesCollection1(Collection<TblMiembrosRelaciones> tblMiembrosRelacionesCollection1) {
+        this.tblMiembrosRelacionesCollection1 = tblMiembrosRelacionesCollection1;
     }
 
     @XmlTransient
-    public List<TblTransferencias> getTblTransferenciasList() {
-        return tblTransferenciasList;
+    public Collection<TblEventoDetalle> getTblEventoDetalleCollection() {
+        return tblEventoDetalleCollection;
     }
 
-    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
-        this.tblTransferenciasList = tblTransferenciasList;
+    public void setTblEventoDetalleCollection(Collection<TblEventoDetalle> tblEventoDetalleCollection) {
+        this.tblEventoDetalleCollection = tblEventoDetalleCollection;
     }
 
     @XmlTransient
-    public List<TblFacturas> getTblFacturasList() {
-        return tblFacturasList;
+    public Collection<TblRecibos> getTblRecibosCollection() {
+        return tblRecibosCollection;
     }
 
-    public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
-        this.tblFacturasList = tblFacturasList;
+    public void setTblRecibosCollection(Collection<TblRecibos> tblRecibosCollection) {
+        this.tblRecibosCollection = tblRecibosCollection;
+    }
+
+    @XmlTransient
+    public Collection<TblTransferencias> getTblTransferenciasCollection() {
+        return tblTransferenciasCollection;
+    }
+
+    public void setTblTransferenciasCollection(Collection<TblTransferencias> tblTransferenciasCollection) {
+        this.tblTransferenciasCollection = tblTransferenciasCollection;
+    }
+
+    @XmlTransient
+    public Collection<TblFacturas> getTblFacturasCollection() {
+        return tblFacturasCollection;
+    }
+
+    public void setTblFacturasCollection(Collection<TblFacturas> tblFacturasCollection) {
+        this.tblFacturasCollection = tblFacturasCollection;
     }
 
     public TblAreasServicioEnIglesia getIdAreaServicioEnIglesia() {
@@ -350,12 +350,12 @@ public class TblEntidades implements Serializable {
     }
 
     @XmlTransient
-    public List<TblEntidades> getTblEntidadesList() {
-        return tblEntidadesList;
+    public Collection<TblEntidades> getTblEntidadesCollection() {
+        return tblEntidadesCollection;
     }
 
-    public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
-        this.tblEntidadesList = tblEntidadesList;
+    public void setTblEntidadesCollection(Collection<TblEntidades> tblEntidadesCollection) {
+        this.tblEntidadesCollection = tblEntidadesCollection;
     }
 
     public TblEntidades getIdEntidadPaganteAportes() {

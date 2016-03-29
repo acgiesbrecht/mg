@@ -19,10 +19,6 @@
     <class>com.parah.mg.domain.TblTransacciones</class>
     <class>com.parah.mg.domain.TblTransferencias</class>
     <class>com.parah.mg.domain.TblUsers</class>
-    <class>com.parah.mg.domain.eventos.TblEventoCuotas</class>
-    <class>com.parah.mg.domain.eventos.TblEventoDetalle</class>
-    <class>com.parah.mg.domain.eventos.TblEventoTipos</class>
-    <class>com.parah.mg.domain.eventos.TblEventos</class>
     <class>com.parah.mg.domain.miembros.TblAreasServicioEnIglesia</class>
     <class>com.parah.mg.domain.miembros.TblEntidades</class>
     <class>com.parah.mg.domain.miembros.TblMiembrosAlergias</class>
@@ -33,7 +29,6 @@
     <class>com.parah.mg.domain.miembros.TblMiembrosRelacionesTipos</class>
     <class>com.parah.mg.domain.models.MiembrosConPagosPendientes</class>
     <class>com.parah.mg.domain.models.PagosMensualesPendientes</class>
-    <class>com.parah.mg.domain.models.PagosRealizados</class>
     <class>com.parah.mg.domain.models.PendientesTotal</class>
     <class>com.parah.mg.domain.models.Recibo</class>
     <class>com.parah.mg.domain.models.Transferencia</class>
@@ -44,6 +39,12 @@
     <class>com.parah.mg.domain.TblRecibosCompra</class>
     <class>com.parah.mg.domain.TblNotasDeCredito</class>
     <class>com.parah.mg.domain.TblRecibosCompraFacturasCompra</class>
+    <class>com.parah.mg.domain.TblEventos</class>
+    <class>com.parah.mg.domain.TblEventoCuotas</class>
+    <class>com.parah.mg.domain.TblEventoDetalle</class>
+    <class>com.parah.mg.domain.TblEventoTipos</class>
+    <class>com.parah.mg.domain.TblAsientosTemporales</class>
+    <class>com.parah.mg.domain.models.PagosRealizados_bak</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/mgdb;create=true"/>
       <property name="javax.persistence.jdbc.user" value="mg"/>

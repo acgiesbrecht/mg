@@ -5,10 +5,9 @@
  */
 package com.parah.mg.domain;
 
-import com.parah.mg.domain.eventos.TblEventoDetalle;
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,9 +47,9 @@ public class TblFormasDePago implements Serializable {
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFormaDePagoPreferida")
-    private List<TblEventoDetalle> tblEventoDetalleList;
+    private Collection<TblEventoDetalle> tblEventoDetalleCollection;
     @OneToMany(mappedBy = "idFormaDePagoPreferida")
-    private List<TblEntidades> tblEntidadesList;
+    private Collection<TblEntidades> tblEntidadesCollection;
 
     public TblFormasDePago() {
     }
@@ -81,21 +80,21 @@ public class TblFormasDePago implements Serializable {
     }
 
     @XmlTransient
-    public List<TblEventoDetalle> getTblEventoDetalleList() {
-        return tblEventoDetalleList;
+    public Collection<TblEventoDetalle> getTblEventoDetalleCollection() {
+        return tblEventoDetalleCollection;
     }
 
-    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
-        this.tblEventoDetalleList = tblEventoDetalleList;
+    public void setTblEventoDetalleCollection(Collection<TblEventoDetalle> tblEventoDetalleCollection) {
+        this.tblEventoDetalleCollection = tblEventoDetalleCollection;
     }
 
     @XmlTransient
-    public List<TblEntidades> getTblEntidadesList() {
-        return tblEntidadesList;
+    public Collection<TblEntidades> getTblEntidadesCollection() {
+        return tblEntidadesCollection;
     }
 
-    public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
-        this.tblEntidadesList = tblEntidadesList;
+    public void setTblEntidadesCollection(Collection<TblEntidades> tblEntidadesCollection) {
+        this.tblEntidadesCollection = tblEntidadesCollection;
     }
 
     @Override

@@ -66,7 +66,7 @@
           </Group>
           <Group type="102" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="472" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" max="32767" attributes="0"/>
               <EmptySpace min="29" pref="29" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
@@ -103,7 +103,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="idField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="idLabel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -124,7 +124,7 @@
                           <Component id="chkImputable" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jTabbedPane1" min="-2" pref="218" max="-2" attributes="0"/>
+                      <Component id="jTabbedPane1" min="-2" pref="276" max="-2" attributes="0"/>
                   </Group>
                   <Component id="masterScrollPane" pref="458" max="32767" attributes="0"/>
               </Group>
@@ -325,11 +325,17 @@
                           <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="cboCuentaDonaciones" pref="228" max="32767" attributes="0"/>
-                          <Component id="cboCuentaAportes" pref="228" max="32767" attributes="0"/>
+                          <Component id="cboCuentaCtaCte" max="32767" attributes="0"/>
+                          <Component id="cboCuentaEfectivo" max="32767" attributes="0"/>
+                          <Component id="cboCuentaACobrar" max="32767" attributes="0"/>
+                          <Component id="cboCuentaDonaciones" pref="208" max="32767" attributes="0"/>
+                          <Component id="cboCuentaAportes" pref="208" max="32767" attributes="0"/>
                           <Component id="cboCuentaCompras" alignment="1" max="32767" attributes="0"/>
                           <Component id="cboCuentaCredito" max="32767" attributes="0"/>
                           <Component id="cboCuentaContado" max="32767" attributes="0"/>
@@ -351,12 +357,17 @@
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="cboCuentaCredito" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="cboCuentaCompras" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="cboCuentaACobrar" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="cboCuentaAportes" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -366,7 +377,17 @@
                           <Component id="cboCuentaDonaciones" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="15" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="cboCuentaEfectivo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="cboCuentaCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="35" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -374,7 +395,7 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cuenta Haber para Facturas Contado"/>
+                <Property name="text" type="java.lang.String" value="Cuenta Haber para Facturas Compra Contado"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JComboBox" name="cboCuentaContado">
@@ -394,7 +415,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cuenta Haber para Facturas Credito"/>
+                <Property name="text" type="java.lang.String" value="Cuenta Haber para Facturas Compra Credito"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JComboBox" name="cboCuentaCredito">
@@ -414,7 +435,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel4">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cuenta Debe para Aportes"/>
+                <Property name="text" type="java.lang.String" value="Cuenta Aportes"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JComboBox" name="cboCuentaAportes">
@@ -434,7 +455,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel5">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cuenta Debe para Donaciones"/>
+                <Property name="text" type="java.lang.String" value="Cuenta Donaciones"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JComboBox" name="cboCuentaDonaciones">
@@ -471,6 +492,66 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cuenta Debe para Compras"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel7">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cuenta A Cobrar"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="cboCuentaACobrar">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="4">
+                    <StringItem index="0" value="Item 1"/>
+                    <StringItem index="1" value="Item 2"/>
+                    <StringItem index="2" value="Item 3"/>
+                    <StringItem index="3" value="Item 4"/>
+                  </StringArray>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel8">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cuenta Efectivo/CAJA"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="cboCuentaEfectivo">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="4">
+                    <StringItem index="0" value="Item 1"/>
+                    <StringItem index="1" value="Item 2"/>
+                    <StringItem index="2" value="Item 3"/>
+                    <StringItem index="3" value="Item 4"/>
+                  </StringArray>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel9">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cuenta Cta. Cte. Coop. Chortitzer "/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="cboCuentaCtaCte">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="4">
+                    <StringItem index="0" value="Item 1"/>
+                    <StringItem index="1" value="Item 2"/>
+                    <StringItem index="2" value="Item 3"/>
+                    <StringItem index="3" value="Item 4"/>
+                  </StringArray>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

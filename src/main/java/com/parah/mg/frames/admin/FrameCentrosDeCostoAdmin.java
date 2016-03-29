@@ -45,10 +45,10 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
                 entityManager.getTransaction().begin();
             }
 
-            AutoCompleteSupport support = AutoCompleteSupport.install(cboCuentaContado, GlazedLists.eventListOf(listCuentasContables.toArray()));
+            AutoCompleteSupport support = AutoCompleteSupport.install(cboCuentaEfectivo, GlazedLists.eventListOf(listCuentasContables.toArray()));
             support.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCuentaCredito, GlazedLists.eventListOf(listCuentasContables.toArray()));
+            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCuentaCtaCte, GlazedLists.eventListOf(listCuentasContables.toArray()));
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
 
         } catch (Exception ex) {
@@ -84,9 +84,9 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         conceptoLabel2 = new javax.swing.JLabel();
-        cboCuentaContado = new javax.swing.JComboBox();
+        cboCuentaEfectivo = new javax.swing.JComboBox();
         conceptoLabel3 = new javax.swing.JLabel();
-        cboCuentaCredito = new javax.swing.JComboBox();
+        cboCuentaCtaCte = new javax.swing.JComboBox();
         ctacteLabel = new javax.swing.JLabel();
         ctacteField = new javax.swing.JTextField();
         ctacteLabel1 = new javax.swing.JLabel();
@@ -167,19 +167,19 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
 
         deleteButton.addActionListener(formListener);
 
-        conceptoLabel2.setText("Cuenta por defecto para Facturas Contado:");
+        conceptoLabel2.setText("Cuenta por defecto para Cobros en Efectivo:");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCuentaHaberFacturaContadoPorDefecto}"), cboCuentaContado, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCuentaHaberFacturaContadoPorDefecto}"), cboCuentaEfectivo, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
-        cboCuentaContado.addActionListener(formListener);
+        cboCuentaEfectivo.addActionListener(formListener);
 
-        conceptoLabel3.setText("Cuenta por defecto para Facturas Credito:");
+        conceptoLabel3.setText("Cuenta por defecto para Cobros por Cta.Cte.:");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCuentaHaberFacturaCreditoPorDefecto}"), cboCuentaCredito, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCuentaHaberFacturaCreditoPorDefecto}"), cboCuentaCtaCte, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
-        cboCuentaCredito.addActionListener(formListener);
+        cboCuentaCtaCte.addActionListener(formListener);
 
         ctacteLabel.setText("Cta Cte C.Ch.:");
 
@@ -238,8 +238,8 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
                                     .addComponent(conceptoLabel3))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cboCuentaCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cboCuentaContado, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(cboCuentaCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cboCuentaEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -262,11 +262,11 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(conceptoLabel2)
-                    .addComponent(cboCuentaContado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboCuentaEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(conceptoLabel3)
-                    .addComponent(cboCuentaCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboCuentaCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ctacteLabel)
@@ -302,11 +302,11 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
             else if (evt.getSource() == deleteButton) {
                 FrameCentrosDeCostoAdmin.this.deleteButtonActionPerformed(evt);
             }
-            else if (evt.getSource() == cboCuentaContado) {
-                FrameCentrosDeCostoAdmin.this.cboCuentaContadoActionPerformed(evt);
+            else if (evt.getSource() == cboCuentaEfectivo) {
+                FrameCentrosDeCostoAdmin.this.cboCuentaEfectivoActionPerformed(evt);
             }
-            else if (evt.getSource() == cboCuentaCredito) {
-                FrameCentrosDeCostoAdmin.this.cboCuentaCreditoActionPerformed(evt);
+            else if (evt.getSource() == cboCuentaCtaCte) {
+                FrameCentrosDeCostoAdmin.this.cboCuentaCtaCteActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -376,17 +376,17 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    private void cboCuentaContadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCuentaContadoActionPerformed
+    private void cboCuentaEfectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCuentaEfectivoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cboCuentaContadoActionPerformed
+    }//GEN-LAST:event_cboCuentaEfectivoActionPerformed
 
-    private void cboCuentaCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCuentaCreditoActionPerformed
+    private void cboCuentaCtaCteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCuentaCtaCteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cboCuentaCreditoActionPerformed
+    }//GEN-LAST:event_cboCuentaCtaCteActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox cboCuentaContado;
-    private javax.swing.JComboBox cboCuentaCredito;
+    private javax.swing.JComboBox cboCuentaCtaCte;
+    private javax.swing.JComboBox cboCuentaEfectivo;
     private javax.swing.JLabel conceptoLabel2;
     private javax.swing.JLabel conceptoLabel3;
     private com.parah.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;

@@ -293,7 +293,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
     private com.parah.mg.utils.FacturaNroTableCellRenderer facturaNroTableCellRenderer1;
     private javax.swing.JButton imprimirButton;
     private java.util.List<com.parah.mg.domain.TblFacturas> list;
-    private java.util.List<com.parah.mg.domain.eventos.TblEventoTipos> listEventoTipos;
+    private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
     private java.util.List<com.parah.mg.domain.TblGrupos> listGrupos;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;

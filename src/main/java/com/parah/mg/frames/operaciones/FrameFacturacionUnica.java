@@ -770,7 +770,7 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
     private javax.swing.JLabel lblStatusSET;
     private java.util.List<com.parah.mg.domain.TblFacturas> list;
     private java.util.List listEntidades;
-    private java.util.List<com.parah.mg.domain.eventos.TblEventoTipos> listEventoTipos;
+    private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
     private java.util.List<com.parah.mg.domain.TblGrupos> listGrupos;
     private java.util.List<com.parah.mg.domain.TblTimbrados> listTimbrados;
     private javax.swing.JLabel montoLabel;

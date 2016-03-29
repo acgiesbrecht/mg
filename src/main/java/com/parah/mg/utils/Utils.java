@@ -6,7 +6,7 @@
 package com.parah.mg.utils;
 
 import com.parah.mg.domain.TblFacturas;
-import com.parah.mg.domain.eventos.TblEventoCuotas;
+import com.parah.mg.domain.TblEventoCuotas;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.models.CuotaModel;
 import java.awt.Component;

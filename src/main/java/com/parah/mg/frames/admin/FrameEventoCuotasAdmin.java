@@ -97,7 +97,7 @@ public class FrameEventoCuotasAdmin extends JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tblEventos}"));
         columnBinding.setColumnName("Evento");
-        columnBinding.setColumnClass(com.parah.mg.domain.eventos.TblEventos.class);
+        columnBinding.setColumnClass(com.parah.mg.domain.TblEventos.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fecha1}"));
         columnBinding.setColumnName("1ª Cuota");
@@ -262,8 +262,8 @@ public class FrameEventoCuotasAdmin extends JInternalFrame {
         } catch (RollbackException ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
-            List<com.parah.mg.domain.eventos.TblEventoCuotas> merged = new ArrayList<>(list.size());
-            for (com.parah.mg.domain.eventos.TblEventoCuotas t : list) {
+            List<com.parah.mg.domain.TblEventoCuotas> merged = new ArrayList<>(list.size());
+            for (com.parah.mg.domain.TblEventoCuotas t : list) {
                 merged.add(entityManager.merge(t));
             }
             list.clear();
@@ -283,7 +283,7 @@ public class FrameEventoCuotasAdmin extends JInternalFrame {
     private org.jdesktop.swingx.JXDatePicker jXDatePicker2;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker3;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker4;
-    private java.util.List<com.parah.mg.domain.eventos.TblEventoCuotas> list;
+    private java.util.List<com.parah.mg.domain.TblEventoCuotas> list;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.persistence.Query query;

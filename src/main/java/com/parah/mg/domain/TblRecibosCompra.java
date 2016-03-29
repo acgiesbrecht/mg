@@ -7,7 +7,7 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -46,7 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TblRecibosCompra implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tblRecibosCompra")
-    private List<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraList;
+    private Collection<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -83,8 +83,8 @@ public class TblRecibosCompra implements Serializable {
     @JoinTable(name = "TBL_RECIBOS_COMPRA_ASIENTOS", joinColumns = {
         @JoinColumn(name = "ID_RECIBO", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
-    @ManyToMany
-    private List<TblAsientos> tblAsientosList;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Collection<TblAsientos> tblAsientosCollection;
 
     public TblRecibosCompra() {
     }
@@ -159,12 +159,12 @@ public class TblRecibosCompra implements Serializable {
     }
 
     @XmlTransient
-    public List<TblAsientos> getTblAsientosList() {
-        return tblAsientosList;
+    public Collection<TblAsientos> getTblAsientosCollection() {
+        return tblAsientosCollection;
     }
 
-    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
-        this.tblAsientosList = tblAsientosList;
+    public void setTblAsientosCollection(Collection<TblAsientos> tblAsientosCollection) {
+        this.tblAsientosCollection = tblAsientosCollection;
     }
 
     @Override
@@ -193,12 +193,12 @@ public class TblRecibosCompra implements Serializable {
     }
 
     @XmlTransient
-    public List<TblRecibosCompraFacturasCompra> getTblRecibosCompraFacturasCompraList() {
-        return tblRecibosCompraFacturasCompraList;
+    public Collection<TblRecibosCompraFacturasCompra> getTblRecibosCompraFacturasCompraCollection() {
+        return tblRecibosCompraFacturasCompraCollection;
     }
 
-    public void setTblRecibosCompraFacturasCompraList(List<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraList) {
-        this.tblRecibosCompraFacturasCompraList = tblRecibosCompraFacturasCompraList;
+    public void setTblRecibosCompraFacturasCompraCollection(Collection<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraCollection) {
+        this.tblRecibosCompraFacturasCompraCollection = tblRecibosCompraFacturasCompraCollection;
     }
 
 }

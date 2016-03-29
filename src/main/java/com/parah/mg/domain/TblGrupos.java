@@ -5,9 +5,8 @@
  */
 package com.parah.mg.domain;
 
-import com.parah.mg.domain.eventos.TblEventos;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TblGrupos implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGrupo")
-    private List<TblEventos> tblEventosList;
+    private Collection<TblEventos> tblEventosCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -53,7 +52,7 @@ public class TblGrupos implements Serializable {
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @ManyToMany(mappedBy = "tblGruposList")
-    private List<TblUsers> tblUsersList;
+    private Collection<TblUsers> tblUsersCollection;
 
     public TblGrupos() {
     }
@@ -84,12 +83,12 @@ public class TblGrupos implements Serializable {
     }
 
     @XmlTransient
-    public List<TblUsers> getTblUsersList() {
-        return tblUsersList;
+    public Collection<TblUsers> getTblUsersCollection() {
+        return tblUsersCollection;
     }
 
-    public void setTblUsersList(List<TblUsers> tblUsersList) {
-        this.tblUsersList = tblUsersList;
+    public void setTblUsersCollection(Collection<TblUsers> tblUsersCollection) {
+        this.tblUsersCollection = tblUsersCollection;
     }
 
     @Override
@@ -118,12 +117,12 @@ public class TblGrupos implements Serializable {
     }
 
     @XmlTransient
-    public List<TblEventos> getTblEventosList() {
-        return tblEventosList;
+    public Collection<TblEventos> getTblEventosCollection() {
+        return tblEventosCollection;
     }
 
-    public void setTblEventosList(List<TblEventos> tblEventosList) {
-        this.tblEventosList = tblEventosList;
+    public void setTblEventosCollection(Collection<TblEventos> tblEventosCollection) {
+        this.tblEventosCollection = tblEventosCollection;
     }
 
 }

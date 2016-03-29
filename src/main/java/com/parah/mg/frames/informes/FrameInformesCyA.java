@@ -376,7 +376,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JSpinner jspAno;
     private javax.swing.JSpinner jspAnoA;
-    private java.util.List<com.parah.mg.domain.eventos.TblEventos> listEventos;
+    private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
     private java.util.List<com.parah.mg.domain.miembros.TblEntidades> listMiembros;
     private com.parah.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query queryEventos;

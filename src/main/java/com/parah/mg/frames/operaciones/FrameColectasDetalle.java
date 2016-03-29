@@ -10,10 +10,12 @@ import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblCategoriasArticulos;
-import com.parah.mg.domain.eventos.TblEventoDetalle;
-import com.parah.mg.domain.eventos.TblEventoTipos;
-import com.parah.mg.domain.eventos.TblEventos;
+import com.parah.mg.domain.TblCuentasContablesPorDefecto;
+import com.parah.mg.domain.TblEventoDetalle;
+import com.parah.mg.domain.TblEventoTipos;
+import com.parah.mg.domain.TblEventos;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -31,6 +33,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -60,6 +63,8 @@ public class FrameColectasDetalle extends JInternalFrame {
 
     Set forwardKeys = getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS);
     Set newForwardKeys = new HashSet(forwardKeys);
+
+    TblCuentasContablesPorDefecto cuentasContablesPorDefecto;
 
     public FrameColectasDetalle() {
         super("Colectas",
@@ -99,6 +104,8 @@ public class FrameColectasDetalle extends JInternalFrame {
                 entityManager.getTransaction().begin();
                 entityManager1.getTransaction().begin();
             }
+
+            cuentasContablesPorDefecto = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
 
             //AutoCompleteDecorator.decorate(cboFechaRemate);
             //AutoCompleteDecorator.decorate(cboCategoria);
@@ -674,6 +681,7 @@ public class FrameColectasDetalle extends JInternalFrame {
             t.setIdCategoriaArticulo(entityManager.find(TblCategoriasArticulos.class, 1));
             t.setIdEvento(currEvento);
             t.setIdUser(currentUser.getUser());
+
             entityManager.persist(t);
             listEventoDetalle.add(t);
             int row = listEventoDetalle.size() - 1;
@@ -738,6 +746,45 @@ public class FrameColectasDetalle extends JInternalFrame {
              }
              }
              //------------------------------------*/
+
+            for (TblEventoDetalle evd : listEventoDetalle) {
+                if (entityManager.contains(evd)) {
+                    if (evd.getTblAsientosCollection().size() == 2) {
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getMonto());
+                        entityManager.merge(evd);
+                    } else if (evd.getTblAsientosCollection().isEmpty()) {
+
+                        Collection<TblAsientos> ts = evd.getTblAsientosCollection();
+                        if (ts == null) {
+                            ts = new LinkedList<>();
+                            evd.setTblAsientosCollection((List) ts);
+                        }
+                        TblAsientos asientoAporte = new TblAsientos();
+                        asientoAporte.setFechahora(evd.getIdEvento().getFecha());
+                        asientoAporte.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
+                        asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
+                        asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
+                        asientoAporte.setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                        asientoAporte.setIdUser(currentUser.getUser());
+
+                        ts.add(asientoAporte);
+
+                        TblAsientos asientoDonacion = new TblAsientos();
+                        asientoDonacion.setFechahora(evd.getIdEvento().getFecha());
+                        asientoDonacion.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
+                        asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
+                        asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
+                        asientoDonacion.setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getMonto());
+                        asientoDonacion.setIdUser(currentUser.getUser());
+
+                        ts.add(asientoDonacion);
+
+                        entityManager.merge(evd);
+                    }
+                }
+            }
+
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
             refresh();
@@ -746,7 +793,7 @@ public class FrameColectasDetalle extends JInternalFrame {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
 
             entityManager.getTransaction().begin();
-            List<com.parah.mg.domain.eventos.TblEventoDetalle> merged = new ArrayList<>(listEventoDetalle.size());
+            List<com.parah.mg.domain.TblEventoDetalle> merged = new ArrayList<>(listEventoDetalle.size());
             listEventoDetalle.stream().forEach((t) -> {
                 merged.add(entityManager.merge(t));
             });
@@ -927,8 +974,8 @@ public class FrameColectasDetalle extends JInternalFrame {
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalOperaciones;
-    private java.util.List<com.parah.mg.domain.eventos.TblEventoDetalle> listEventoDetalle;
-    private java.util.List<com.parah.mg.domain.eventos.TblEventos> listEventos;
+    private java.util.List<com.parah.mg.domain.TblEventoDetalle> listEventoDetalle;
+    private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
     private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
