@@ -19,13 +19,13 @@ import java.beans.Beans;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import javax.persistence.TemporalType;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -44,6 +44,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
+    int siguienteFacturaNro;
 
     public FrameFacturacionColectiva() {
         super("Facturacion Unica",
@@ -58,15 +59,33 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
             }
-
+            if (listTimbrados.size() < 1) {
+                JOptionPane.showMessageDialog(null, "Debe tener un timbrado activo para poder facturar.");
+                return;
+            }
             if (masterTable.getRowCount() > 0) {
                 imprimirButton.setEnabled(true);
             }
 
             Calendar c = Calendar.getInstance();
-            c.add(Calendar.MONTH, -1);
-            c.set(Calendar.DATE, c.getActualMaximum(Calendar.DAY_OF_MONTH));
-            dtpFecha.setDate(c.getTime());
+
+            c.set(Calendar.DAY_OF_MONTH, 1);
+            c.add(Calendar.DATE, -1);
+            Date date = c.getTime();
+            dtpFecha.setDate(date);
+
+            list.clear();
+            list.addAll(query.getResultList());
+            if (list.size() > 0) {
+                siguienteFacturaNro = list.get(list.size() - 1).getNro() + 1;
+                if (siguienteFacturaNro > listTimbrados.get(0).getNroFacturaFin()) {
+                    JOptionPane.showMessageDialog(null, "Ha alcanzado el nro maximo de facturas para el timbrado activo.");
+                    return;
+                }
+            } else {
+                siguienteFacturaNro = listTimbrados.get(0).getNroFacturaIncio();
+            }
+            list.clear();
 
             TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
             filterHeader.setAdaptiveChoices(false);
@@ -186,10 +205,9 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmdCalcular)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdCalcular)))
                 .addContainerGap())
         );
 
@@ -205,7 +223,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     .addComponent(cmdCalcular))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(imprimirButton))
@@ -273,34 +291,21 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
     private void generate() {
         try {
-            if (listTimbrados.size() < 1) {
-                JOptionPane.showMessageDialog(null, "Debe tener un timbrado activo para poder facturar.");
-                return;
-            }
-            list.clear();
-            list.addAll(query.getResultList());
-            int siguienteFacturaNro;
-            if (list.size() > 0) {
-                siguienteFacturaNro = list.get(list.size() - 1).getNro() + 1;
-                if (siguienteFacturaNro > listTimbrados.get(0).getNroFacturaFin()) {
-                    JOptionPane.showMessageDialog(null, "Ha alcanzado el nro maximo de facturas para el timbrado activo.");
-                    return;
-                }
-            } else {
-                siguienteFacturaNro = listTimbrados.get(0).getNroFacturaIncio();
-            }
-
-            list.clear();
 
             List<PagosRealizados> pagosList = new ArrayList<>();
 
-            Query queryE = entityManager.createQuery("SELECT e FROM TblEntidades e JOIN e.tblTransferenciasCollection t WHERE t.fechahora <= :fecha");
-            queryE.setParameter("fecha", dtpFecha.getDate(), TemporalType.DATE);
+            Query queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblTransferenciasCollection t WHERE t.fechahora <= :fecha");
+            Calendar c = Calendar.getInstance();
+            c.setTime(dtpFecha.getDate());
+            c.set(Calendar.HOUR, 23);
+            c.set(Calendar.MINUTE, 59);
+            c.set(Calendar.SECOND, 59);
+            queryE.setParameter("fecha", c.getTime());
             List<TblEntidades> listE = (List<TblEntidades>) queryE.getResultList();
 
             for (TblEntidades e : listE) {
-                Query queryT = entityManager.createQuery("SELECT t FROM TblTransferencias t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
-                queryT.setParameter("fecha", dtpFecha.getDate(), TemporalType.DATE);
+                Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
+                queryT.setParameter("fecha", c.getTime());
                 queryT.setParameter("entidad", e);
                 List<TblTransferencias> listT = (List<TblTransferencias>) queryT.getResultList();
                 if (listT.size() > 0) {
@@ -308,14 +313,15 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     p.setEntidad(e);
                     Integer montoAporte = 0;
                     Integer montoDonacion = 0;
+                    Collection<TblAsientosTemporales> ts = p.getAsientosTemporalesList();
+                    if (ts == null) {
+                        ts = new LinkedList<>();
+                        p.setAsientosTemporalesList((List) ts);
+                    }
                     for (TblTransferencias t : listT) {
-                        Collection<TblAsientosTemporales> ts = p.getAsientosTemporalesList();
-                        if (ts == null) {
-                            ts = new LinkedList<>();
-                            p.setAsientosTemporalesList((List) ts);
-                        }
+
                         ts.addAll(t.getTblAsientosTemporalesCollection());
-                        for (TblAsientosTemporales at : p.getAsientosTemporalesList()) {
+                        for (TblAsientosTemporales at : t.getTblAsientosTemporalesCollection()) {
                             if (at.getEsAporte()) {
                                 montoAporte += at.getMonto();
                             } else {
@@ -331,13 +337,13 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 }
             }
 
-            queryE = entityManager.createQuery("SELECT e FROM TblEntidades e JOIN e.tblRecibosCollection t WHERE t.fechahora <= :fecha");
-            queryE.setParameter("fecha", dtpFecha.getDate());
+            queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblRecibosCollection t WHERE t.fechahora <= :fecha");
+            queryE.setParameter("fecha", c.getTime());
             listE = (List<TblEntidades>) queryE.getResultList();
 
             for (TblEntidades e : listE) {
-                Query queryRecibos = entityManager.createQuery("SELECT t FROM TblRecibos t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
-                queryRecibos.setParameter("fecha", dtpFecha.getDate());
+                Query queryRecibos = entityManager.createQuery("SELECT distinct t FROM TblRecibos t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
+                queryRecibos.setParameter("fecha", c.getTime());
                 queryRecibos.setParameter("entidad", e);
                 List<TblRecibos> listR = (List<TblRecibos>) queryRecibos.getResultList();
                 if (listR.size() > 0) {
@@ -345,14 +351,14 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     p.setEntidad(e);
                     Integer montoAporte = 0;
                     Integer montoDonacion = 0;
+                    Collection<TblAsientosTemporales> ts = p.getAsientosTemporalesList();
+                    if (ts == null) {
+                        ts = new LinkedList<>();
+                        p.setAsientosTemporalesList((List) ts);
+                    }
                     for (TblRecibos r : listR) {
-                        Collection<TblAsientosTemporales> ts = p.getAsientosTemporalesList();
-                        if (ts == null) {
-                            ts = new LinkedList<>();
-                            p.setAsientosTemporalesList((List) ts);
-                        }
                         ts.addAll(r.getTblAsientosTemporalesCollection());
-                        for (TblAsientosTemporales at : p.getAsientosTemporalesList()) {
+                        for (TblAsientosTemporales at : r.getTblAsientosTemporalesCollection()) {
                             if (at.getEsAporte()) {
                                 montoAporte += at.getMonto();
                             } else {
@@ -368,13 +374,14 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 }
             }
 
+            list.clear();
             for (PagosRealizados pago : pagosList) {
                 if (siguienteFacturaNro <= listTimbrados.get(0).getNroFacturaFin()) {
                     TblFacturas f = new TblFacturas();
                     entityManager.persist(f);
                     f.setNro(siguienteFacturaNro);
                     f.setIdTimbrado(listTimbrados.get(0));
-                    f.setFechahora(dtpFecha.getDate());
+                    f.setFechahora(c.getTime());
                     f.setIdEntidad(pago.getEntidad());
                     if (pago.getEntidad().getRazonSocial() != null) {
                         if (!pago.getEntidad().getRazonSocial().equals("")) {

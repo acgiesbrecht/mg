@@ -206,6 +206,9 @@ public class FrameAportesDetalle extends JInternalFrame {
         columnBinding.setColumnName("Miembro");
         columnBinding.setColumnClass(com.parah.mg.domain.miembros.TblEntidades.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${observacion}"));
+        columnBinding.setColumnName("Observacion");
+        columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
         columnBinding.setColumnName("Monto");
         columnBinding.setColumnClass(Integer.class);
@@ -214,8 +217,8 @@ public class FrameAportesDetalle extends JInternalFrame {
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(0).setPreferredWidth(80);
-            masterTable.getColumnModel().getColumn(1).setPreferredWidth(20);
-            masterTable.getColumnModel().getColumn(1).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(2).setPreferredWidth(20);
+            masterTable.getColumnModel().getColumn(2).setCellRenderer(numberCellRenderer1);
         }
 
         montoLabel.setDisplayedMnemonic('M');
@@ -635,14 +638,23 @@ public class FrameAportesDetalle extends JInternalFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
-            int[] selected = masterTable.getSelectedRows();
-            List<TblEventoDetalle> toRemove = new ArrayList<>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
-                TblEventoDetalle t = listEventoDetalle.get(masterTable.convertRowIndexToModel(selected[idx]));
-                toRemove.add(t);
-                entityManager.remove(t);
+            int reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar los registros seleccionados?", title, JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+                int[] selected = masterTable.getSelectedRows();
+                for (int idx = 0; idx < selected.length; idx++) {
+                    int index = masterTable.convertRowIndexToModel(selected[idx]);
+                    TblEventoDetalle t = listEventoDetalle.get(index);
+                    entityManager.remove(t);
+                }
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+                java.util.Collection data = queryEventoDetalle.getResultList();
+                data.stream().forEach((entity) -> {
+                    entityManager.refresh(entity);
+                });
+                listEventoDetalle.clear();
+                listEventoDetalle.addAll(data);
             }
-            listEventoDetalle.removeAll(toRemove);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -759,7 +771,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                         asientoDonacion.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
                         asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
-                        asientoDonacion.setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getMonto());
+                        asientoDonacion.setMonto(evd.getMonto() - asientoAporte.getMonto());
                         asientoDonacion.setIdUser(currentUser.getUser());
 
                         ts.add(asientoDonacion);
@@ -910,7 +922,12 @@ public class FrameAportesDetalle extends JInternalFrame {
                         t.setFechahora(currEvento.getFecha());
                         t.setIdEvento(currEvento);
                         t.setIdCategoriaArticulo(entityManager.find(TblCategoriasArticulos.class, 2));
-                        t.setIdEntidad(miembro);
+                        if (miembro.getIdEntidadPaganteAportes() != null) {
+                            t.setIdEntidad(miembro.getIdEntidadPaganteAportes());
+                            t.setObservacion("Aporte de " + miembro.getNombreCompleto());
+                        } else {
+                            t.setIdEntidad(miembro);
+                        }
                         if (miembro.getIdFormaDePagoPreferida() == null) {
                             t.setIdFormaDePagoPreferida(entityManager.find(TblFormasDePago.class, 1));
                         } else {

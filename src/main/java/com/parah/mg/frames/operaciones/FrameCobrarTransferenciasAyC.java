@@ -9,8 +9,8 @@ import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.domain.TblEventoDetalle;
-import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.TblEventoTipos;
+import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.models.PagosMensualesPendientes;
 import com.parah.mg.utils.CurrentUser;
@@ -23,6 +23,7 @@ import java.beans.Beans;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -296,21 +297,23 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                     t.setMontoDonacion(pago.getMontoDonacion());
                     t.setCobrado(true);
                     Calendar c = Calendar.getInstance();
-                    c.set(Calendar.MONTH, pago.getMes() - 1);
+                    c.set(Calendar.MONTH, pago.getMes());
                     c.set(Calendar.YEAR, pago.getAno());
-                    c.set(Calendar.DATE, c.getActualMaximum(Calendar.DAY_OF_MONTH));
-                    t.setFechahora(c.getTime());
+                    c.set(Calendar.DAY_OF_MONTH, 1);
+                    c.add(Calendar.DATE, -1);
+                    Date date = c.getTime();
+                    t.setFechahora(date);
                     t.setIdEventoTipo((TblEventoTipos) cboEventoTipo.getSelectedItem());
                     t.setIdUser(currentUser.getUser());
 
-                    Query query = entityManager.createQuery("SELECT t FROM TblEventoDetalle t "
+                    Query queryEvd = entityManager.createQuery("SELECT t FROM TblEventoDetalle t "
                             + "WHERE t.idEntidad = :entidad"
                             + " AND t.idEvento.idEventoTipo = :eventoTipo"
                             + " AND EXTRACT(MONTH FROM t.idEvento.fecha) = " + pago.getMes().toString()
                             + " AND EXTRACT(YEAR FROM t.idEvento.fecha) = " + pago.getAno().toString());
-                    query.setParameter("entidad", pago.getEntidad());
-                    query.setParameter("eventoTipo", t.getIdEventoTipo());
-                    List<TblEventoDetalle> listEvd = (List<TblEventoDetalle>) query.getResultList();
+                    queryEvd.setParameter("entidad", pago.getEntidad());
+                    queryEvd.setParameter("eventoTipo", t.getIdEventoTipo());
+                    List<TblEventoDetalle> listEvd = (List<TblEventoDetalle>) queryEvd.getResultList();
                     List<TblAsientos> listAsientos = new ArrayList<>();
                     for (TblEventoDetalle evd : listEvd) {
                         listAsientos.addAll(evd.getTblAsientosCollection());
@@ -324,7 +327,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
 
                     for (TblAsientos asiento : listAsientos) {
                         TblAsientosTemporales aT = new TblAsientosTemporales();
-                        entityManager.persist(aT);
+                        //entityManager.persist(aT);
                         aT.setFacturado(false);
                         aT.setFechahora(t.getFechahora());
                         aT.setIdCentroDeCosto(asiento.getIdCentroDeCosto());

@@ -7,8 +7,8 @@ package com.parah.mg.domain;
 
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -56,7 +56,7 @@ public class TblEventoDetalle implements Serializable {
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechahora;
-    @Size(max = 50)
+    @Size(max = 255)
     @Column(name = "OBSERVACION")
     private String observacion;
     @Basic(optional = false)
