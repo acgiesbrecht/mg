@@ -5,8 +5,8 @@
  */
 package com.parah.mg.utils;
 
-import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.domain.TblEventoCuotas;
+import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.models.CuotaModel;
 import java.awt.Component;
@@ -132,9 +132,12 @@ public class Utils extends Component {
 
             Map parameters = new HashMap();
             parameters.put("factura_id", factura.getNro());
-            parameters.put("fechahora", factura.getFechahora());
+            parameters.put("fechahora", new java.sql.Date(factura.getFechahora().getTime()));
             parameters.put("razon_social", factura.getRazonSocial());
             parameters.put("ruc", factura.getRuc());
+            parameters.put("domicilio", factura.getDomicilio());
+            parameters.put("box", factura.getCasillaDeCorreo().toString());
+            parameters.put("usuario", factura.getIdUser().getNombrecompleto());
             parameters.put("importe_aporte", factura.getImporteAporte());
             parameters.put("importe_donacion", factura.getImporteDonacion());
 

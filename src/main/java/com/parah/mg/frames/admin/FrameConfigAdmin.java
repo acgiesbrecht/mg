@@ -5,16 +5,27 @@
  */
 package com.parah.mg.frames.admin;
 
+import com.parah.mg.domain.TblAsientos;
+import com.parah.mg.domain.TblCuentasContablesPorDefecto;
+import com.parah.mg.domain.TblEventoDetalle;
 import com.parah.mg.domain.TblFacturas;
+import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.prefs.Preferences;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.apache.logging.log4j.LogManager;
@@ -103,6 +114,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
         cboSqlFiles = new javax.swing.JComboBox();
         jLabel7 = new javax.swing.JLabel();
         cboFormatoFactura = new javax.swing.JComboBox();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -232,6 +244,14 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
 
         cboFormatoFactura.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preimpreso con rejilla", "Preimpreso sin rejilla" }));
 
+        jButton3.setBackground(new java.awt.Color(255, 0, 153));
+        jButton3.setText("Actualizar Asientos");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -278,9 +298,11 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(cmdReset, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cmdReset, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39)
+                                .addComponent(jButton3))
                             .addComponent(jLabel7))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 197, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,7 +342,8 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                 .addGap(65, 65, 65)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
                 .addContainerGap())
         );
 
@@ -408,6 +431,9 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
             testF.setFechahora(new java.sql.Date((new Date()).getTime()));
             testF.setRazonSocial("Empresa SA");
             testF.setRuc("8888888");
+            testF.setDomicilio("Loma Plata");
+            testF.setCasillaDeCorreo(1158);
+            testF.setIdUser(CurrentUser.getInstance().getUser());
             testF.setImporteAporte(15000000);
             testF.setImporteDonacion(25000000);
 
@@ -458,6 +484,59 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_txtFacturaYKeyReleased
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            CurrentUser currentUser = CurrentUser.getInstance();
+            Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
+            EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
+
+            Query queryEventoDetalle = entityManager.createQuery("SELECT t FROM TblEventoDetalle t ORDER BY t.id");
+            List<TblEventoDetalle> listEventoDetalle = org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoDetalle.getResultList());
+            TblCuentasContablesPorDefecto cuentasContablesPorDefecto = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
+            for (TblEventoDetalle evd : listEventoDetalle) {
+                if (entityManager.contains(evd)) {
+                    if (evd.getTblAsientosCollection().size() == 2) {
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getMonto());
+                        entityManager.merge(evd);
+                    } else if (evd.getTblAsientosCollection().isEmpty()) {
+
+                        Collection<TblAsientos> ts = evd.getTblAsientosCollection();
+                        if (ts == null) {
+                            ts = new LinkedList<>();
+                            evd.setTblAsientosCollection((List) ts);
+                        }
+                        TblAsientos asientoAporte = new TblAsientos();
+                        asientoAporte.setFechahora(evd.getIdEvento().getFecha());
+                        asientoAporte.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
+                        asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
+                        asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
+                        asientoAporte.setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                        asientoAporte.setIdUser(currentUser.getUser());
+
+                        ts.add(asientoAporte);
+
+                        TblAsientos asientoDonacion = new TblAsientos();
+                        asientoDonacion.setFechahora(evd.getIdEvento().getFecha());
+                        asientoDonacion.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
+                        asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
+                        asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
+                        asientoDonacion.setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getMonto());
+                        asientoDonacion.setIdUser(currentUser.getUser());
+
+                        ts.add(asientoDonacion);
+
+                        entityManager.merge(evd);
+                    }
+                }
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -510,6 +589,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
     private javax.swing.JButton cmdReset;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
