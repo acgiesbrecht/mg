@@ -5,10 +5,12 @@
  */
 package com.parah.mg.frames.operaciones;
 
+import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.domain.TblRecibos;
 import com.parah.mg.domain.TblTransferencias;
+import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.models.PagosRealizados;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -19,7 +21,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Persistence;
@@ -322,25 +326,63 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
             List<PagosRealizados> pagosList = new ArrayList<>();
 
-            Query query = entityManager.createQuery("SELECT t FROM TblTransferencias t JOIN TblAsientosTemporales a WHERE t.fechahora <= :fecha AND a.facturado = false");
-            query.setParameter("fecha", dtpFecha.getDate());
-            List<TblTransferencias> listT = (List<TblTransferencias>) query.getResultList();
+            Query queryEntidades = entityManager.createQuery("SELECT e FROM TblEntidades e JOIN e.tblTransferenciasCollection t JOIN t.tblAsientosTemporalesCollection a WHERE t.fechahora <= :fecha AND a.facturado = false");
+            queryEntidades.setParameter("fecha", dtpFecha.getDate());
+            List<TblEntidades> listE = (List<TblEntidades>) query.getResultList();
 
-            for (TblTransferencias t : listT) {
+            for (TblEntidades e : listE) {
+                Query query = entityManager.createQuery("SELECT t FROM TblTransferencias t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
+                query.setParameter("fecha", dtpFecha.getDate());
+                query.setParameter("entidad", e);
+                List<TblTransferencias> listT = (List<TblTransferencias>) query.getResultList();
                 PagosRealizados p = new PagosRealizados();
-                p.setEntidad(t.getIdEntidad());
-                p.setAsientosTemporalesList(t.getTblAsientosTemporalesCollection());
+                p.setEntidad(e);
+                Integer montoAporte = 0;
+                Integer montoDonacion = 0;
+                for (TblTransferencias t : listT) {
+                    p.getAsientosTemporalesList().addAll(t.getTblAsientosTemporalesCollection());
+                    for (TblAsientosTemporales at : p.getAsientosTemporalesList()) {
+                        if (at.getEsAporte()) {
+                            montoAporte += at.getMonto();
+                        } else {
+                            montoDonacion += at.getMonto();
+                        }
+                        at.setFacturado(true);
+                        entityManager.merge(at);
+                    }
+                }
+                p.setMontoAporte(montoAporte);
+                p.setMontoDonacion(montoDonacion);
                 pagosList.add(p);
             }
 
-            query = entityManager.createQuery("SELECT t FROM TblRecibos t JOIN TblAsientosTemporales a WHERE t.fechahora <= :fecha AND a.facturado = false");
-            query.setParameter("fecha", dtpFecha.getDate());
-            List<TblRecibos> listR = (List<TblRecibos>) query.getResultList();
+            queryEntidades = entityManager.createQuery("SELECT e FROM TblEntidades e JOIN e.tblRecibosCollection t JOIN t.tblAsientosTemporalesCollection a WHERE t.fechahora <= :fecha AND a.facturado = false");
+            queryEntidades.setParameter("fecha", dtpFecha.getDate());
+            listE = (List<TblEntidades>) query.getResultList();
 
-            for (TblRecibos r : listR) {
+            for (TblEntidades e : listE) {
+                Query query = entityManager.createQuery("SELECT t FROM TblRecibos t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
+                query.setParameter("fecha", dtpFecha.getDate());
+                query.setParameter("entidad", e);
+                List<TblRecibos> listR = (List<TblRecibos>) query.getResultList();
                 PagosRealizados p = new PagosRealizados();
-                p.setEntidad(r.getIdEntidad());
-                p.setAsientosTemporalesList(r.getTblAsientosTemporalesCollection());
+                p.setEntidad(e);
+                Integer montoAporte = 0;
+                Integer montoDonacion = 0;
+                for (TblRecibos t : listR) {
+                    p.getAsientosTemporalesList().addAll(t.getTblAsientosTemporalesCollection());
+                    for (TblAsientosTemporales at : p.getAsientosTemporalesList()) {
+                        if (at.getEsAporte()) {
+                            montoAporte += at.getMonto();
+                        } else {
+                            montoDonacion += at.getMonto();
+                        }
+                        at.setFacturado(true);
+                        entityManager.merge(at);
+                    }
+                }
+                p.setMontoAporte(montoAporte);
+                p.setMontoDonacion(montoDonacion);
                 pagosList.add(p);
             }
 
@@ -371,18 +413,26 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     f.setDomicilio(pago.getEntidad().getDomicilio());
                     f.setCasillaDeCorreo(pago.getEntidad().getBox());
 
-                    Integer montoAporte = 0;
-                    Integer montoDonacion = 0;
-                    for (TblAsientosTemporales av : pago.getAsientosTemporalesList()) {
-                        if (av.getEsAporte()) {
-                            montoAporte += av.getMonto();
-                        } else {
-                            montoDonacion += av.getMonto();
-                        }
-                    }
-                    f.setImporteAporte(montoAporte);
-                    f.setImporteDonacion(montoDonacion);
+                    f.setImporteAporte(pago.getMontoAporte());
+                    f.setImporteDonacion(pago.getMontoDonacion());
                     f.setIdUser(currentUser.getUser());
+
+                    Collection<TblAsientos> ts = f.getTblAsientosCollection();
+                    if (ts == null) {
+                        ts = new LinkedList<>();
+                        f.setTblAsientosCollection((List) ts);
+                    }
+                    for (TblAsientosTemporales aT : pago.getAsientosTemporalesList()) {
+                        TblAsientos asiento = new TblAsientos();
+                        asiento.setFechahora(f.getFechahora());
+                        asiento.setIdCentroDeCosto(aT.getIdCentroDeCosto());
+                        asiento.setIdCuentaContableDebe(aT.getIdCuentaContableDebe());
+                        asiento.setIdCuentaContableHaber(aT.getIdCuentaContableHaber());
+                        asiento.setMonto(aT.getMonto());
+                        asiento.setIdUser(currentUser.getUser());
+
+                        ts.add(asiento);
+                    }
                     list.add(f);
                     int row = list.size() - 1;
 

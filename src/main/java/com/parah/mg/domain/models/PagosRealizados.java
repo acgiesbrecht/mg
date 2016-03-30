@@ -23,8 +23,9 @@ public class PagosRealizados implements Serializable {
 
     @Id
     private TblEntidades entidad;
-
     private Collection<TblAsientosTemporales> asientosTemporalesList;
+    private Integer montoAporte;
+    private Integer montoDonacion;
 
     /**
      * @return the entidad
@@ -52,6 +53,34 @@ public class PagosRealizados implements Serializable {
      */
     public void setAsientosTemporalesList(Collection<TblAsientosTemporales> asientosTemporalesList) {
         this.asientosTemporalesList = asientosTemporalesList;
+    }
+
+    /**
+     * @return the montoAporte
+     */
+    public Integer getMontoAporte() {
+        return montoAporte;
+    }
+
+    /**
+     * @param montoAporte the montoAporte to set
+     */
+    public void setMontoAporte(Integer montoAporte) {
+        this.montoAporte = montoAporte;
+    }
+
+    /**
+     * @return the montoDonacion
+     */
+    public Integer getMontoDonacion() {
+        return montoDonacion;
+    }
+
+    /**
+     * @param montoDonacion the montoDonacion to set
+     */
+    public void setMontoDonacion(Integer montoDonacion) {
+        this.montoDonacion = montoDonacion;
     }
 
 }

@@ -5,13 +5,15 @@
  */
 package com.parah.mg.frames.admin;
 
+import com.parah.mg.domain.TblAsientos;
+import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
 import java.beans.Beans;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,14 +21,8 @@ import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperPrintManager;
-import net.sf.jasperreports.engine.JasperReport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -105,6 +101,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
         numberCellRenderer1.setText("numberCellRenderer1");
 
         masterTable.setAutoCreateRowSorter(true);
+        masterTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nro}"));
@@ -133,6 +130,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${importeDonacion}"));
         columnBinding.setColumnName("Importe Donacion");
         columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${importeTotal}"));
         columnBinding.setColumnName("Importe Total");
         columnBinding.setColumnClass(Integer.class);
@@ -235,7 +233,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
 
     @SuppressWarnings("unchecked")
     private void imprimirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirButtonActionPerformed
-        if (masterTable.getSelectedRow() > -1) {
+        /* if (masterTable.getSelectedRow() > -1) {
             try {
                 //Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
                 Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
@@ -257,20 +255,46 @@ public class FrameFacturasAdmin extends JInternalFrame {
                 JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
                 LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             }
-        }
+        }*/
     }//GEN-LAST:event_imprimirButtonActionPerformed
 
     private void anularButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anularButtonActionPerformed
         try {
-            chkAnulado.setSelected(true);
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
-            for (Object entity : data) {
-                entityManager.refresh(entity);
+            if (masterTable.getSelectedRow() > -1) {
+                int[] selected = masterTable.getSelectedRows();
+
+                TblFacturas t = list.get(masterTable.convertRowIndexToModel(selected[0]));
+
+                t.setAnulado(true);
+                Calendar calendar = Calendar.getInstance();
+                for (TblAsientos asiento : t.getTblAsientosCollection()) {
+                    Calendar calendarAsiento = Calendar.getInstance();
+                    calendarAsiento.setTime(asiento.getFechahora());
+                    if (calendarAsiento.get(Calendar.MONTH) < calendar.get(Calendar.MONTH)) {
+                        TblAsientos asientoInverso = new TblAsientos();
+                        entityManager.persist(asientoInverso);
+                        asientoInverso.setFechahora(new Date());
+                        asientoInverso.setIdCentroDeCosto(asiento.getIdCentroDeCosto());
+                        asientoInverso.setIdCuentaContableDebe(asiento.getIdCuentaContableHaber());
+                        asientoInverso.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
+                        asientoInverso.setMonto(asiento.getMonto());
+                        asientoInverso.setIdUser(currentUser.getUser());
+                        asientoInverso.setObservacion("Anulacion");
+                    } else {
+                        entityManager.remove(asiento);
+                    }
+                }
+
+                //chkAnulado.setSelected(true);
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+                java.util.Collection data = query.getResultList();
+                for (Object entity : data) {
+                    entityManager.refresh(entity);
+                }
+                list.clear();
+                list.addAll(data);
             }
-            list.clear();
-            list.addAll(data);
         } catch (RollbackException ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
