@@ -389,7 +389,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -421,7 +421,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(montoLabel1)
                     .addComponent(montoDonacionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(7, 7, 7)
                 .addComponent(chkCobrado)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -584,19 +584,37 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
-            int[] selected = masterTable.getSelectedRows();
-            List<com.parah.mg.domain.TblTransferencias> toRemove = new ArrayList<>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
-                int index = masterTable.convertRowIndexToModel(selected[idx]);
-                TblTransferencias t = list.get(index);
-                toRemove.add(t);
-                entityManager.remove(t);
-                list.remove(index);
+            int reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar los registros seleccionados?", title, JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+                int[] selected = masterTable.getSelectedRows();
+                List<com.parah.mg.domain.TblTransferencias> toRemove = new ArrayList<>(selected.length);
+                for (int idx = 0; idx < selected.length; idx++) {
+                    int index = masterTable.convertRowIndexToModel(selected[idx]);
+                    TblTransferencias t = list.get(index);
+                    toRemove.add(t);
+                    entityManager.remove(t);
+                    //list.remove(index);
+                }
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+                java.util.Collection data = query.getResultList();
+                data.stream().forEach((entity) -> {
+                    entityManager.refresh(entity);
+                });
+                list.clear();
+                list.addAll(data);
             }
             //list.removeAll(toRemove);
-        } catch (Exception ex) {
+        } catch (RollbackException ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            entityManager.getTransaction().begin();
+            List<com.parah.mg.domain.TblTransferencias> merged = new ArrayList<>(list.size());
+            for (com.parah.mg.domain.TblTransferencias t : list) {
+                merged.add(entityManager.merge(t));
+            }
+            list.clear();
+            list.addAll(merged);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 

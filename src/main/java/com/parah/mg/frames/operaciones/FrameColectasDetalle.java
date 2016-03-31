@@ -775,7 +775,7 @@ public class FrameColectasDetalle extends JInternalFrame {
                         asientoDonacion.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
                         asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
-                        asientoDonacion.setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getMonto());
+                        asientoDonacion.setMonto(evd.getMonto() - asientoAporte.getMonto());
                         asientoDonacion.setIdUser(currentUser.getUser());
 
                         ts.add(asientoDonacion);

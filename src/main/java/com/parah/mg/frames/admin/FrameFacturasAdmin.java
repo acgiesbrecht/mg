@@ -21,6 +21,7 @@ import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 import org.apache.logging.log4j.LogManager;
@@ -115,9 +116,9 @@ public class FrameFacturasAdmin extends JInternalFrame {
         columnBinding.setColumnName("Fecha");
         columnBinding.setColumnClass(java.util.Date.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${porcentajeAporte}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${razonSocial}"));
         columnBinding.setColumnName("Razon Social");
-        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${ruc}"));
         columnBinding.setColumnName("RUC");
@@ -135,7 +136,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
         columnBinding.setColumnName("Importe Total");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idMiembro}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
         columnBinding.setColumnName("Miembro");
         columnBinding.setColumnClass(com.parah.mg.domain.miembros.TblEntidades.class);
         columnBinding.setEditable(false);
@@ -233,29 +234,15 @@ public class FrameFacturasAdmin extends JInternalFrame {
 
     @SuppressWarnings("unchecked")
     private void imprimirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirButtonActionPerformed
-        /* if (masterTable.getSelectedRow() > -1) {
-            try {
-                //Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
-                Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
-                Map parameters = new HashMap();
-                parameters.put("factura_id", txtNro.getValue());
-                //parameters.put("logo", getClass().getResource("/reports/cclogo200.png").getPath());
-                parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
-                parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
-                parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
-                //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
-                JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/factura.jrxml"));
-
-                JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
-                //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-                //jReportsViewer.setVisible(true);
-                JasperPrintManager.printReport(jasperPrint, false);
-
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-                LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        try {
+            if (masterTable.getSelectedRow() > -1) {
+                TblFacturas factura = list.get(masterTable.convertRowIndexToModel(masterTable.getSelectedRow()));
+                Utils.getInstance().printFactura(factura);
             }
-        }*/
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }//GEN-LAST:event_imprimirButtonActionPerformed
 
     private void anularButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anularButtonActionPerformed

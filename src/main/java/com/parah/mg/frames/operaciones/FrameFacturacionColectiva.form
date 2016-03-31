@@ -125,8 +125,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="dtpFecha" min="-2" pref="137" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="dtpFecha" min="-2" pref="205" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="cmdCalcular" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -145,7 +145,7 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="masterScrollPane" min="-2" pref="278" max="-2" attributes="0"/>
-              <EmptySpace pref="21" max="32767" attributes="0"/>
+              <EmptySpace pref="25" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cancelarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="imprimirButton" alignment="3" min="-2" max="-2" attributes="0"/>

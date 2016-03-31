@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
-<!-- 2016-03-21T19:38:54 -->
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2016-03-30T09:31:00 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="78c20e98-1bd9-416f-bdbe-337f3341ab83">
 	<parameter name="factura_id" class="java.lang.Integer"/>
 	<parameter name="fechahora" class="java.sql.Date"/>
@@ -8,6 +8,9 @@
 	<parameter name="ruc" class="java.lang.String"/>
 	<parameter name="importe_donacion" class="java.lang.Integer"/>
 	<parameter name="importe_aporte" class="java.lang.Integer"/>
+	<parameter name="domicilio" class="java.lang.String"/>
+	<parameter name="box" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -93,7 +96,7 @@
 				<textFieldExpression><![CDATA[$P{razon_social}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="50" y="123" width="175" height="20" uuid="1adc7f3a-3acb-430e-853c-4a1a6ce5afec"/>
+				<reportElement x="50" y="123" width="140" height="20" uuid="1adc7f3a-3acb-430e-853c-4a1a6ce5afec"/>
 				<box padding="0">
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -184,7 +187,7 @@
 				<text><![CDATA[Nombre o Razón Social:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="270" y="103" width="215" height="20" uuid="1f91024f-0a4d-4586-9dce-684b2bb63200"/>
+				<reportElement x="270" y="103" width="278" height="20" uuid="1f91024f-0a4d-4586-9dce-684b2bb63200"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -549,6 +552,60 @@
 				</textElement>
 				<text><![CDATA[Aporte]]></text>
 			</staticText>
+			<textField pattern="">
+				<reportElement x="328" y="540" width="218" height="20" uuid="b5399f2d-4303-455e-ba39-7f329069c947"/>
+				<box padding="0">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{domicilio} !=null ? $P{domicilio} + ($P{box} != null ? " - C.d.C.: " + $P{box} : "") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="270" y="540" width="58" height="20" uuid="a72e1750-50a2-4d3b-a6e8-1e93fcf3156d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Domicilio:]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="328" y="123" width="218" height="20" uuid="1c10a5a7-bf77-4213-9706-f62cce110692"/>
+				<box padding="0">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{domicilio} !=null ? $P{domicilio} + ($P{box} != null ? " - C.d.C.: " + $P{box} : "") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="270" y="123" width="58" height="20" uuid="699bf562-8b18-4571-b488-d0c7b7afe7cf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Domicilio:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="455" y="363" width="92" height="14" uuid="f18f786c-ac6a-47f4-8eb0-3a4750073683"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cajero: " + $P{usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="781" width="92" height="14" uuid="3425293e-645b-4c9f-babb-056e1c0c058b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cajero: " + $P{usuario}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>
