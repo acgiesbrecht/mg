@@ -5,6 +5,7 @@
  */
 package com.parah.mg.utils;
 
+import com.parah.mg.domain.TblAutofacturas;
 import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.domain.TblEventoCuotas;
 import com.parah.mg.domain.miembros.TblEntidades;
@@ -145,6 +146,41 @@ public class Utils extends Component {
             String reportFactura = Preferences.userRoot().node("MG").get("formateFactura", "Preimpreso sin rejilla").equals("Preimpreso sin rejilla")
                     ? "factura_con_rejilla"
                     : "factura";
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFactura + ".jrxml"));
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
+            jasperPrint.setLeftMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0")));
+            jasperPrint.setTopMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaTopMargin", "0")));
+
+            //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
+            //jReportsViewer.setVisible(true);
+            jasperPrint.setLeftMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0")));
+            jasperPrint.setTopMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaTopMargin", "0")));
+            JasperPrintManager.printReport(jasperPrint, false);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }
+
+    public void printAutofactura(TblAutofacturas factura) {
+        try {
+
+            Map parameters = new HashMap();
+            parameters.put("factura_id", factura.getNro());
+            parameters.put("fechahora", factura.getFechahora());
+            parameters.put("nombre", factura.getNombre());
+            parameters.put("ci", factura.getCi());
+            parameters.put("domicilio", factura.getDomicilio());
+            parameters.put("direccionDeTransaccion", factura.getDireccionDeTransaccion());
+            parameters.put("cantidad", factura.getCantidad());
+            parameters.put("concepto", factura.getConcepto());
+            parameters.put("precioUnitario", factura.getPrecioUnitario());
+            parameters.put("monto", factura.getMonto());
+
+            String reportFactura = Preferences.userRoot().node("MG").get("formateFactura", "Preimpreso sin rejilla").equals("Preimpreso sin rejilla")
+                    ? "autofactura_con_rejilla"
+                    : "autofactura";
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFactura + ".jrxml"));
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
