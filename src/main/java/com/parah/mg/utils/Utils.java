@@ -137,7 +137,7 @@ public class Utils extends Component {
             parameters.put("razon_social", factura.getRazonSocial());
             parameters.put("ruc", factura.getRuc());
             parameters.put("domicilio", factura.getDomicilio());
-            parameters.put("box", factura.getCasillaDeCorreo().toString());
+            parameters.put("box", factura.getCasillaDeCorreo() == null ? "" : factura.getCasillaDeCorreo().toString());
             parameters.put("usuario", factura.getIdUser().getNombrecompleto());
             parameters.put("importe_aporte", factura.getImporteAporte());
             parameters.put("importe_donacion", factura.getImporteDonacion());
