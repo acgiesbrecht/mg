@@ -6,7 +6,6 @@
 package com.parah.mg.utils;
 
 import com.parah.mg.domain.TblAutofacturas;
-import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.domain.TblEventoCuotas;
 import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.domain.miembros.TblEntidades;
@@ -171,8 +170,8 @@ public class Utils extends Component {
         try {
 
             Map parameters = new HashMap();
-            parameters.put("factura_id", factura.getNro());
-            parameters.put("fechahora", factura.getFechahora());
+            parameters.put("factura_nro", factura.getNro());
+            parameters.put("fechahora", new java.sql.Date(factura.getFechahora().getTime()));
             parameters.put("nombre", factura.getNombre());
             parameters.put("ci", factura.getCi());
             parameters.put("domicilio", factura.getDomicilio());
@@ -181,6 +180,7 @@ public class Utils extends Component {
             parameters.put("concepto", factura.getConcepto());
             parameters.put("precioUnitario", factura.getPrecioUnitario());
             parameters.put("monto", factura.getMonto());
+            parameters.put("usuario", factura.getIdUser().getNombrecompleto());
 
             String reportFactura = Preferences.userRoot().node("MG").get("formateFactura", "Preimpreso sin rejilla").equals("Preimpreso sin rejilla")
                     ? "autofactura_con_rejilla"

@@ -121,7 +121,8 @@ public class FrameAutofacturacion extends JInternalFrame {
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         queryTimbrados = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTimbradosAutofacturas t WHERE t.activo = true");
         listTimbrados = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTimbrados.getResultList());
-        listAsientos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
+        queryAsientos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblAsientos t WHERE t.id = null");
+        listAsientos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryAsientos.getResultList());
         queryCuentasContables = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCuentasContables t where t.imputable = true");
         listCuentasContables = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCuentasContables.getResultList());
         queryCentrosDeCosto = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t");
@@ -616,6 +617,7 @@ public class FrameAutofacturacion extends JInternalFrame {
     private javax.swing.JLabel montoLabel8;
     private com.parah.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query query;
+    private javax.persistence.Query queryAsientos;
     private javax.persistence.Query queryCentrosDeCosto;
     private javax.persistence.Query queryCuentasContables;
     private javax.persistence.Query queryTimbrados;
