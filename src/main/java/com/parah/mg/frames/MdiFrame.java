@@ -27,6 +27,7 @@ import com.parah.mg.frames.informes.FrameInformesCyA;
 import com.parah.mg.frames.informes.FrameInformesRemates;
 import com.parah.mg.frames.operaciones.FrameAportesDetalle;
 import com.parah.mg.frames.operaciones.FrameAsientosManuales;
+import com.parah.mg.frames.operaciones.FrameAutofacturacion;
 import com.parah.mg.frames.operaciones.FrameCobrarTransferencias;
 import com.parah.mg.frames.operaciones.FrameCobrarTransferenciasAyC;
 import com.parah.mg.frames.operaciones.FrameColectasDetalle;
@@ -416,6 +417,11 @@ public class MdiFrame extends javax.swing.JFrame {
 
         mnuEgAutofacturas.setText("AutoFacturas");
         mnuEgAutofacturas.setEnabled(false);
+        mnuEgAutofacturas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuEgAutofacturasActionPerformed(evt);
+            }
+        });
         jMenu5.add(mnuEgAutofacturas);
 
         mnuEgNotasDeCredito.setText("Notas de Credito");
@@ -1132,6 +1138,21 @@ public class MdiFrame extends javax.swing.JFrame {
     private void mnuAdAutofacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdAutofacturasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_mnuAdAutofacturasActionPerformed
+
+    private void mnuEgAutofacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuEgAutofacturasActionPerformed
+        try {
+            FrameAutofacturacion frame = new FrameAutofacturacion();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_mnuEgAutofacturasActionPerformed
 
     /**
      * @param args the command line arguments

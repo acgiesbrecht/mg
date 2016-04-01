@@ -168,7 +168,7 @@ public class TblCentrosDeCosto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.TblCentrosDeCosto[ id=" + id + " ]";
+        return descripcion;
     }
 
     @XmlTransient

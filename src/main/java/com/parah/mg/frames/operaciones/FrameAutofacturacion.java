@@ -5,12 +5,15 @@
  */
 package com.parah.mg.frames.operaciones;
 
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.matchers.TextMatcherEditor;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblAutofacturas;
-import com.parah.mg.domain.TblContribuyentes;
+import com.parah.mg.domain.TblCentrosDeCosto;
+import com.parah.mg.domain.TblCuentasContables;
+import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.domain.TblFacturas;
-import com.parah.mg.domain.TblFacturasCompra;
-import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.Color;
@@ -19,26 +22,19 @@ import java.awt.KeyboardFocusManager;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.zip.ZipInputStream;
 import javax.persistence.Persistence;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,11 +42,14 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Industria
  */
-public class FrameAutofacturacion extends JInternalFrame implements PropertyChangeListener {
+public class FrameAutofacturacion extends JInternalFrame {
 
     private static final Logger LOGGER = LogManager.getLogger(FrameAutofacturacion.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     Map<String, String> persistenceMap = new HashMap<>();
+    JComboBox<TblCentrosDeCosto> cboCentroDeCosto = new JComboBox();
+    JComboBox<TblCuentasContables> cboCuentaHaber = new JComboBox();
+    JComboBox<TblCuentasContables> cboCuentaDebe = new JComboBox();
 
     public FrameAutofacturacion() {
         super("Facturacion Unica",
@@ -65,6 +64,18 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
             }
+
+            AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            support2.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaDebe, GlazedLists.eventListOf(listCuentasContables.toArray()));
+            support3.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaHaber, GlazedLists.eventListOf(listCuentasContables.toArray()));
+            support4.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            txtTimbrado.setText(listTimbrados.get(0).getNro());
+            //txtNro.setValue((Integer) entityManager.createQuery("select max(t.nro) + 1 from TblAutofacturas t").getSingleResult());
 
             KeyboardFocusManager.getCurrentKeyboardFocusManager()
                     .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
@@ -111,12 +122,16 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
         queryTimbrados = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTimbradosAutofacturas t WHERE t.activo = true");
         listTimbrados = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTimbrados.getResultList());
         listAsientos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
+        queryCuentasContables = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCuentasContables t where t.imputable = true");
+        listCuentasContables = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCuentasContables.getResultList());
+        queryCentrosDeCosto = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t");
+        listCentrosDeCosto = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCentrosDeCosto.getResultList());
+        numberCellRenderer1 = new com.parah.mg.utils.NumberCellRenderer();
         cancelarButton = new javax.swing.JButton();
         imprimirButton = new javax.swing.JButton();
         montoLabel = new javax.swing.JLabel();
         txtTimbrado = new javax.swing.JFormattedTextField();
         montoLabel1 = new javax.swing.JLabel();
-        txtNro = new javax.swing.JFormattedTextField();
         fecha1Label = new javax.swing.JLabel();
         dtpFecha = new org.jdesktop.swingx.JXDatePicker();
         montoLabel2 = new javax.swing.JLabel();
@@ -133,13 +148,16 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
         txtDireccionTransaccion = new javax.swing.JTextField();
         montoLabel7 = new javax.swing.JLabel();
         montoLabel8 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        asientosTable = new javax.swing.JTable();
         cmdBorrarAsiento = new javax.swing.JButton();
         cmdAddAsiento = new javax.swing.JButton();
         montoLabel6 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        asientosTable = new javax.swing.JTable();
+        txtNro = new javax.swing.JFormattedTextField();
 
         FormListener formListener = new FormListener();
+
+        numberCellRenderer1.setText("numberCellRenderer1");
 
         cancelarButton.setText("Cancelar");
         cancelarButton.addActionListener(formListener);
@@ -159,12 +177,6 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
 
         montoLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel1.setText("Factura Nro::");
-
-        txtNro.setColumns(9);
-        txtNro.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        txtNro.addFocusListener(formListener);
-        txtNro.addMouseListener(formListener);
-        txtNro.addActionListener(formListener);
 
         fecha1Label.setText("Fecha:");
 
@@ -197,17 +209,6 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
         montoLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel8.setText("Precio Unitario");
 
-        asientosTable.setAutoCreateRowSorter(true);
-        asientosTable.setRowHeight(20);
-
-        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${}");
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listAsientos, eLProperty, asientosTable);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${}"));
-        columnBinding.setColumnName("");
-        bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
-        jScrollPane1.setViewportView(asientosTable);
-
         cmdBorrarAsiento.setText("-");
         cmdBorrarAsiento.addActionListener(formListener);
 
@@ -216,21 +217,68 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
 
         montoLabel6.setText("Asientos");
 
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listAsientos, asientosTable);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCentroDeCosto}"));
+        columnBinding.setColumnName("Centro de Costo");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCentrosDeCosto.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCuentaContableDebe}"));
+        columnBinding.setColumnName("Cuenta Debe");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCuentasContables.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ObjectProperty.create());
+        columnBinding.setColumnName("Cuenta Haber");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
+        columnBinding.setColumnName("Importe");
+        columnBinding.setColumnClass(Integer.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        jScrollPane2.setViewportView(asientosTable);
+
+        try {
+            txtNro.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###-###-#######")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(montoLabel7))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(montoLabel)
-                                    .addComponent(montoLabel1)
-                                    .addComponent(fecha1Label))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(montoLabel2)
+                                            .addComponent(ctacteLabel3)
+                                            .addComponent(montoLabel5)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(montoLabel)
+                                            .addComponent(montoLabel1)
+                                            .addComponent(fecha1Label))))
+                                .addGap(34, 34, 34)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtDomicilio, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
+                                        .addComponent(txtDireccionTransaccion)
+                                        .addComponent(txtRazonSocial))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(txtNro, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtTimbrado, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -246,41 +294,23 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(2, 2, 2)
                                         .addComponent(montoLabel8))
-                                    .addComponent(txtPrecioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(montoLabel7)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(txtPrecioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(imprimirButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cancelarButton)
+                                .addGap(19, 19, 19))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(montoLabel6)
-                                    .addGap(407, 407, 407))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(cmdAddAsiento)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(cmdBorrarAsiento)
-                                    .addGap(155, 155, 155)
-                                    .addComponent(imprimirButton)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(cancelarButton)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(montoLabel2)
-                            .addComponent(ctacteLabel3)
-                            .addComponent(montoLabel5))
-                        .addGap(34, 34, 34)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNro, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtDomicilio, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
-                                .addComponent(txtDireccionTransaccion)
-                                .addComponent(txtRazonSocial)))))
-                .addContainerGap(28, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(cmdAddAsiento)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cmdBorrarAsiento)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelarButton, imprimirButton});
@@ -294,8 +324,8 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
                     .addComponent(montoLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(montoLabel1))
+                    .addComponent(montoLabel1)
+                    .addComponent(txtNro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -309,43 +339,40 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
                     .addComponent(ctacteLabel3)
                     .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(montoLabel5))
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDireccionTransaccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(montoLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(montoLabel5))
-                        .addGap(8, 8, 8)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtDireccionTransaccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(montoLabel7))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(montoLabel3)
-                            .addComponent(montoLabel4))
+                        .addComponent(montoLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtConcepto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(montoLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtConcepto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(montoLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPrecioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(montoLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmdAddAsiento)
-                            .addComponent(cmdBorrarAsiento))
-                        .addGap(32, 32, 32))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cancelarButton)
-                            .addComponent(imprimirButton))
-                        .addContainerGap())))
+                .addGap(18, 18, 18)
+                .addComponent(montoLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmdAddAsiento)
+                    .addComponent(cmdBorrarAsiento))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelarButton)
+                    .addComponent(imprimirButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -365,9 +392,6 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
             else if (evt.getSource() == txtTimbrado) {
                 FrameAutofacturacion.this.txtTimbradoActionPerformed(evt);
             }
-            else if (evt.getSource() == txtNro) {
-                FrameAutofacturacion.this.txtNroActionPerformed(evt);
-            }
             else if (evt.getSource() == cmdBorrarAsiento) {
                 FrameAutofacturacion.this.cmdBorrarAsientoActionPerformed(evt);
             }
@@ -380,9 +404,6 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
             if (evt.getSource() == txtTimbrado) {
                 FrameAutofacturacion.this.txtTimbradoFocusGained(evt);
             }
-            else if (evt.getSource() == txtNro) {
-                FrameAutofacturacion.this.txtNroFocusGained(evt);
-            }
         }
 
         public void focusLost(java.awt.event.FocusEvent evt) {
@@ -391,9 +412,6 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             if (evt.getSource() == txtTimbrado) {
                 FrameAutofacturacion.this.txtTimbradoMouseClicked(evt);
-            }
-            else if (evt.getSource() == txtNro) {
-                FrameAutofacturacion.this.txtNroMouseClicked(evt);
             }
         }
 
@@ -411,10 +429,10 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
     }// </editor-fold>//GEN-END:initComponents
 
     Boolean validar() {
-        if ((int) txtNro.getValue() < 1) {
+        /*if ((int) txtNro.getValue() < 1) {
             txtNro.setBackground(Color.red);
             return false;
-        }
+        }*/
         if (txtRazonSocial.getText().equals("")) {
             txtRazonSocial.setBackground(Color.red);
             return false;
@@ -447,7 +465,7 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
             TblAutofacturas factura = new TblAutofacturas();
             entityManager.persist(factura);
 
-            factura.setNro(txtNro.getText());
+            factura.setNro(txtNro.getValue().toString());
             factura.setIdTimbrado(listTimbrados.get(0));
             factura.setFechahora(dtpFecha.getDate());
             factura.setNombre(txtRazonSocial.getText());
@@ -460,6 +478,8 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
             factura.setMonto(factura.getCantidad() * factura.getPrecioUnitario());
             factura.setAnulado(false);
             factura.setIdUser(currentUser.getUser());
+
+            factura.setTblAsientosCollection(listAsientos);
 
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
@@ -522,36 +542,15 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
 
     }//GEN-LAST:event_txtTimbradoActionPerformed
 
-    private void txtNroFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNroFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNroFocusGained
-
-    private void txtNroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNroMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNroMouseClicked
-
-    private void txtNroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNroActionPerformed
-
     private void cmdBorrarAsientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdBorrarAsientoActionPerformed
         try {
             int[] selected = asientosTable.getSelectedRows();
             List<TblAsientos> toRemove = new ArrayList<>(selected.length);
             for (int idx = 0; idx < selected.length; idx++) {
-                selected[idx] = asientosTable.convertRowIndexToModel(selected[idx]);
-                int count = 0;
-                Iterator<TblAsientos> iter = ts.iterator();
-                while (count++ < selected[idx]) {
-                    iter.next();
-                }
-                TblAsientos t = iter.next();
+                TblAsientos t = listAsientos.get(asientosTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
-                entityManager.remove(t);
             }
-            ts.removeAll(toRemove);
-            masterTable.clearSelection();
-            masterTable.setRowSelectionInterval(index, index);
+            listAsientos.removeAll(toRemove);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -561,6 +560,34 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
     private void cmdAddAsientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAddAsientoActionPerformed
         addAsiento();
     }//GEN-LAST:event_cmdAddAsientoActionPerformed
+
+    private void addAsiento() {
+        try {
+            TblAsientos t = new TblAsientos();
+            t.setFechahora(dtpFecha.getDate());
+            t.setIdUser(currentUser.getUser());
+
+            t.setIdCentroDeCosto((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
+            t.setIdCuentaContableDebe(((TblCuentasContablesPorDefecto) entityManager.createQuery("SELECT t FROM TblCuentasContablesPorDefecto t WHERE t.id = 1").getSingleResult()).getIdCuentaDebeCompras());
+
+            t.setIdCuentaContableHaber(t.getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
+            t.setMonto(0);
+            listAsientos.add(t);
+            int row = listAsientos.size() - 1;
+            asientosTable.setRowSelectionInterval(row, row);
+            asientosTable.scrollRectToVisible(asientosTable.getCellRect(row, 0, true));
+            if (asientosTable.getColumnModel().getColumnCount() > 0 && asientosTable.getRowCount() == 1) {
+                asientosTable.getColumn("Centro de Costo").setCellEditor(new DefaultCellEditor(cboCentroDeCosto));
+                asientosTable.getColumn("Cuenta Debe").setCellEditor(new DefaultCellEditor(cboCuentaDebe));
+                asientosTable.getColumn("Cuenta Haber").setCellEditor(new DefaultCellEditor(cboCuentaHaber));
+                asientosTable.getColumnModel().getColumn(3).setCellRenderer(numberCellRenderer1);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable asientosTable;
@@ -572,9 +599,11 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fecha1Label;
     private javax.swing.JButton imprimirButton;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private java.util.List<com.parah.mg.domain.TblAutofacturas> list;
     private java.util.List<com.parah.mg.domain.TblAsientos> listAsientos;
+    private java.util.List<com.parah.mg.domain.TblCentrosDeCosto> listCentrosDeCosto;
+    private java.util.List<com.parah.mg.domain.TblCuentasContables> listCuentasContables;
     private java.util.List<com.parah.mg.domain.TblTimbradosAutofacturas> listTimbrados;
     private javax.swing.JLabel montoLabel;
     private javax.swing.JLabel montoLabel1;
@@ -585,7 +614,10 @@ public class FrameAutofacturacion extends JInternalFrame implements PropertyChan
     private javax.swing.JLabel montoLabel6;
     private javax.swing.JLabel montoLabel7;
     private javax.swing.JLabel montoLabel8;
+    private com.parah.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query query;
+    private javax.persistence.Query queryCentrosDeCosto;
+    private javax.persistence.Query queryCuentasContables;
     private javax.persistence.Query queryTimbrados;
     private javax.swing.JTextField rucField;
     private javax.swing.JFormattedTextField txtCantidad;
