@@ -6,7 +6,8 @@
 package com.parah.mg.frames.admin;
 
 import com.parah.mg.domain.TblAsientos;
-import com.parah.mg.domain.TblFacturas;
+import com.parah.mg.domain.TblAutofacturas;
+import com.parah.mg.domain.TblAutofacturas;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
@@ -31,14 +32,14 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Industria
  */
-public class FrameFacturasAdmin extends JInternalFrame {
+public class FrameAutofacturasAdmin extends JInternalFrame {
 
-    private static final Logger LOGGER = LogManager.getLogger(FrameFacturasAdmin.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameAutofacturasAdmin.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
 
-    public FrameFacturasAdmin() {
+    public FrameAutofacturasAdmin() {
         super("Administrar Facturas",
                 true, //resizable
                 true, //closable
@@ -69,7 +70,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblFacturas t ORDER BY t.fechahora");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblAutofacturas t ORDER BY t.nro");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         dateToStringConverter1 = new com.parah.mg.utils.DateToStringConverter();
         dateTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
@@ -110,35 +111,23 @@ public class FrameFacturasAdmin extends JInternalFrame {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idTimbrado}"));
         columnBinding.setColumnName("Timbrado");
-        columnBinding.setColumnClass(com.parah.mg.domain.TblTimbrados.class);
+        columnBinding.setColumnClass(com.parah.mg.domain.TblTimbradosAutofacturas.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha");
         columnBinding.setColumnClass(java.util.Date.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${razonSocial}"));
-        columnBinding.setColumnName("Razon Social");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
+        columnBinding.setColumnName("Nombre");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${ruc}"));
-        columnBinding.setColumnName("RUC");
-        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${ci}"));
+        columnBinding.setColumnName("Ci N°");
+        columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${importeAporte}"));
-        columnBinding.setColumnName("Importe Aporte");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
+        columnBinding.setColumnName("Importe");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${importeDonacion}"));
-        columnBinding.setColumnName("Importe Donacion");
-        columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${importeTotal}"));
-        columnBinding.setColumnName("Importe Total");
-        columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
-        columnBinding.setColumnName("Miembro");
-        columnBinding.setColumnClass(com.parah.mg.domain.miembros.TblEntidades.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${anulado}"));
         columnBinding.setColumnName("Anulado");
@@ -148,14 +137,12 @@ public class FrameFacturasAdmin extends JInternalFrame {
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
-            masterTable.getColumnModel().getColumn(0).setCellRenderer(facturaNroTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(0).setCellRenderer(null);
             masterTable.getColumnModel().getColumn(2).setResizable(false);
             masterTable.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer1);
             masterTable.getColumnModel().getColumn(4).setResizable(false);
-            masterTable.getColumnModel().getColumn(4).setCellRenderer(rucTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(4).setCellRenderer(null);
             masterTable.getColumnModel().getColumn(5).setCellRenderer(numberCellRenderer1);
-            masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
-            masterTable.getColumnModel().getColumn(7).setCellRenderer(numberCellRenderer1);
         }
 
         anularButton.setText("Anular");
@@ -224,10 +211,10 @@ public class FrameFacturasAdmin extends JInternalFrame {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == anularButton) {
-                FrameFacturasAdmin.this.anularButtonActionPerformed(evt);
+                FrameAutofacturasAdmin.this.anularButtonActionPerformed(evt);
             }
             else if (evt.getSource() == imprimirButton) {
-                FrameFacturasAdmin.this.imprimirButtonActionPerformed(evt);
+                FrameAutofacturasAdmin.this.imprimirButtonActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -236,8 +223,8 @@ public class FrameFacturasAdmin extends JInternalFrame {
     private void imprimirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirButtonActionPerformed
         try {
             if (masterTable.getSelectedRow() > -1) {
-                TblFacturas factura = list.get(masterTable.convertRowIndexToModel(masterTable.getSelectedRow()));
-                Utils.getInstance().printFactura(factura);
+                TblAutofacturas factura = list.get(masterTable.convertRowIndexToModel(masterTable.getSelectedRow()));
+                Utils.getInstance().printAutofactura(factura);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -250,7 +237,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
             if (masterTable.getSelectedRow() > -1) {
                 int[] selected = masterTable.getSelectedRows();
 
-                TblFacturas t = list.get(masterTable.convertRowIndexToModel(selected[0]));
+                TblAutofacturas t = list.get(masterTable.convertRowIndexToModel(selected[0]));
 
                 t.setAnulado(true);
                 Calendar calendar = Calendar.getInstance();
@@ -285,8 +272,8 @@ public class FrameFacturasAdmin extends JInternalFrame {
         } catch (RollbackException ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
-            List<com.parah.mg.domain.TblFacturas> merged = new ArrayList<>(list.size());
-            for (com.parah.mg.domain.TblFacturas t : list) {
+            List<com.parah.mg.domain.TblAutofacturas> merged = new ArrayList<>(list.size());
+            for (com.parah.mg.domain.TblAutofacturas t : list) {
                 merged.add(entityManager.merge(t));
             }
             list.clear();
@@ -303,7 +290,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.FacturaNroTableCellRenderer facturaNroTableCellRenderer1;
     private javax.swing.JButton imprimirButton;
-    private java.util.List<com.parah.mg.domain.TblFacturas> list;
+    private java.util.List<com.parah.mg.domain.TblAutofacturas> list;
     private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
     private java.util.List<com.parah.mg.domain.TblGrupos> listGrupos;
     private javax.swing.JScrollPane masterScrollPane;
@@ -331,14 +318,22 @@ public class FrameFacturasAdmin extends JInternalFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameFacturasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameAutofacturasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameFacturasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameAutofacturasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameFacturasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameAutofacturasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameFacturasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameAutofacturasAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -352,7 +347,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new FrameFacturasAdmin());
+                frame.setContentPane(new FrameAutofacturasAdmin());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

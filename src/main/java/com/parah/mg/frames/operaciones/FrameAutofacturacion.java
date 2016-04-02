@@ -139,7 +139,6 @@ public class FrameAutofacturacion extends JInternalFrame {
         rucField = new javax.swing.JTextField();
         ctacteLabel3 = new javax.swing.JLabel();
         montoLabel3 = new javax.swing.JLabel();
-        txtConcepto = new javax.swing.JFormattedTextField();
         montoLabel4 = new javax.swing.JLabel();
         txtPrecioUnitario = new javax.swing.JFormattedTextField();
         txtRazonSocial = new javax.swing.JTextField();
@@ -155,6 +154,7 @@ public class FrameAutofacturacion extends JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         asientosTable = new javax.swing.JTable();
         txtNro = new javax.swing.JFormattedTextField();
+        txtConcepto = new javax.swing.JTextField();
 
         FormListener formListener = new FormListener();
 
@@ -189,9 +189,6 @@ public class FrameAutofacturacion extends JInternalFrame {
         montoLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel3.setText("Cantidad");
 
-        txtConcepto.setColumns(9);
-        txtConcepto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-
         montoLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel4.setText("Concepto");
 
@@ -225,8 +222,9 @@ public class FrameAutofacturacion extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCuentaContableDebe}"));
         columnBinding.setColumnName("Cuenta Debe");
         columnBinding.setColumnClass(com.parah.mg.domain.TblCuentasContables.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ObjectProperty.create());
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCuentaContableHaber}"));
         columnBinding.setColumnName("Cuenta Haber");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCuentasContables.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
         columnBinding.setColumnName("Importe");
         columnBinding.setColumnClass(Integer.class);
@@ -288,7 +286,7 @@ public class FrameAutofacturacion extends JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(montoLabel4)
-                                        .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGap(0, 235, Short.MAX_VALUE))
                                     .addComponent(txtConcepto))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -352,11 +350,12 @@ public class FrameAutofacturacion extends JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(montoLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtConcepto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(montoLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtConcepto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(montoLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -373,7 +372,7 @@ public class FrameAutofacturacion extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(imprimirButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -479,6 +478,11 @@ public class FrameAutofacturacion extends JInternalFrame {
             factura.setMonto(factura.getCantidad() * factura.getPrecioUnitario());
             factura.setAnulado(false);
             factura.setIdUser(currentUser.getUser());
+
+            for (TblAsientos a : listAsientos) {
+                a.setFechahora(factura.getFechahora());
+                a.setIdUser(factura.getIdUser());
+            }
 
             factura.setTblAsientosCollection(listAsientos);
 
@@ -623,7 +627,7 @@ public class FrameAutofacturacion extends JInternalFrame {
     private javax.persistence.Query queryTimbrados;
     private javax.swing.JTextField rucField;
     private javax.swing.JFormattedTextField txtCantidad;
-    private javax.swing.JFormattedTextField txtConcepto;
+    private javax.swing.JTextField txtConcepto;
     private javax.swing.JTextField txtDireccionTransaccion;
     private javax.swing.JTextField txtDomicilio;
     private javax.swing.JFormattedTextField txtNro;

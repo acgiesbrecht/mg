@@ -281,7 +281,7 @@
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font fontName="Arial" size="10" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$P{direccionTransaccion}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$P{direccionDeTransaccion}]]></textFieldExpression>
             </textField>
             <rectangle>
                 <reportElement mode="Transparent" x="7" y="175" width="50" height="170" uuid="724e5871-c956-429a-bb25-16c1bf657e7f"/>
@@ -546,7 +546,7 @@
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font fontName="Arial" size="10" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$P{direccionTransaccion}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$P{direccionDeTransaccion}]]></textFieldExpression>
             </textField>
         </band>
     </detail>

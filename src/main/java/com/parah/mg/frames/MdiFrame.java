@@ -7,6 +7,7 @@ package com.parah.mg.frames;
 
 import com.parah.mg.domain.TblDatabaseUpdates;
 import com.parah.mg.domain.TblUsers;
+import com.parah.mg.frames.admin.FrameAutofacturasAdmin;
 import com.parah.mg.frames.admin.FrameCategoriasArticulosAdmin;
 import com.parah.mg.frames.admin.FrameCentrosDeCostoAdmin;
 import com.parah.mg.frames.admin.FrameConfigAdmin;
@@ -1136,7 +1137,18 @@ public class MdiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuAdTimbradosAutofacturasActionPerformed
 
     private void mnuAdAutofacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdAutofacturasActionPerformed
-        // TODO add your handling code here:
+        try {
+            FrameAutofacturasAdmin frame = new FrameAutofacturasAdmin();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }//GEN-LAST:event_mnuAdAutofacturasActionPerformed
 
     private void mnuEgAutofacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuEgAutofacturasActionPerformed
