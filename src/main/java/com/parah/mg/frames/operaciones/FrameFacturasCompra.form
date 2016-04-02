@@ -148,6 +148,8 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
+    <Component class="com.parah.mg.utils.InverseBooleanConverter" name="inverseBooleanConverter1">
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -850,9 +852,7 @@
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
-                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="null"/>
-                  </Renderer>
+                  <Renderer/>
                 </Column>
               </TableColumnModel>
             </Property>
@@ -862,7 +862,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="masterTable" sourcePath="${selectedElement.tblAsientosCollection}" target="asientosTable" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="masterTable" sourcePath="${selectedElement.tblAsientosList}" target="asientosTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${idCentroDeCosto}">
                 <BindingParameter name="NAME" value="Centro de Costo"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblCentrosDeCosto.class"/>
@@ -923,6 +923,7 @@
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="buttonGroup1"/>
         </Property>
+        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Contado"/>
       </Properties>
       <BindingProperties>
@@ -938,9 +939,15 @@
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="buttonGroup1"/>
         </Property>
+        <Property name="selected" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" value="Credito"/>
       </Properties>
       <BindingProperties>
+        <BindingProperty name="selected" source="masterTable" sourcePath="${selectedElement.condicionContado}" target="rbCredito" targetPath="selected" updateStrategy="0" immediately="false">
+          <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.ComponentChooserEditor">
+            <ComponentRef name="inverseBooleanConverter1"/>
+          </Property>
+        </BindingProperty>
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="rbCredito" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>

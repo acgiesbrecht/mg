@@ -189,7 +189,7 @@ public class TblTimbradosAutofacturas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.parah.mg.domain.TblTimbradosAutofacturas[ id=" + id + " ]";
+        return nro;
     }
 
     @XmlTransient
