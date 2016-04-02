@@ -851,7 +851,7 @@
                   <Title/>
                   <Editor/>
                   <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="numberCellRenderer1"/>
+                    <ComponentRef name="null"/>
                   </Renderer>
                 </Column>
               </TableColumnModel>
@@ -862,7 +862,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="masterTable" sourcePath="${selectedElement.tblAsientosList}" target="asientosTable" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="masterTable" sourcePath="${selectedElement.tblAsientosCollection}" target="asientosTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${idCentroDeCosto}">
                 <BindingParameter name="NAME" value="Centro de Costo"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblCentrosDeCosto.class"/>

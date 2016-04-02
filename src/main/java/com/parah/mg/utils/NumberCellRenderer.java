@@ -5,7 +5,10 @@
  */
 package com.parah.mg.utils;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -13,10 +16,17 @@ import javax.swing.SwingConstants;
  */
 public class NumberCellRenderer extends NormalTableCellRenderer {
 
+    private static final Logger LOGGER = LogManager.getLogger(NumberCellRenderer.class);
+
     @Override
     public void setValue(Object value) {
-        setText((value == null) ? "" : String.format("%,d", value));
-        setHorizontalAlignment(SwingConstants.RIGHT);
+        try {
+            setText((value == null) ? "" : String.format("%,d", value));
+            setHorizontalAlignment(SwingConstants.RIGHT);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }
     /*
      @Override
