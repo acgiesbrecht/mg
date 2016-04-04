@@ -35,7 +35,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
     private static final Logger LOGGER = LogManager.getLogger(FrameCuentasContablesAdmin.class);
     Map<String, String> persistenceMap = new HashMap<>();
     EventList<TblCuentasContables> eventListCuentasContables = new BasicEventList<>();
-    TblCuentasContablesPorDefecto cuentas;
+    TblCuentasContablesPorDefecto cuentasPorDefecto;
 
     public FrameCuentasContablesAdmin() {
         super("Administrar Categorias",
@@ -73,6 +73,11 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
             AutoCompleteSupport support7 = AutoCompleteSupport.install(cboCuentaDonaciones, eventListCuentasContables);
             support7.setFilterMode(TextMatcherEditor.CONTAINS);
 
+            AutoCompleteSupport support8 = AutoCompleteSupport.install(cboCuentaEfectivo, eventListCuentasContables);
+            support8.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support9 = AutoCompleteSupport.install(cboCuentaCtaCte, eventListCuentasContables);
+            support9.setFilterMode(TextMatcherEditor.CONTAINS);
             readCuentasPorDefecto();
 
         } catch (Exception ex) {
@@ -452,7 +457,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
             saveCuentasPorDefecto();
-            entityManager.merge(cuentas);
+            entityManager.merge(cuentasPorDefecto);
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
             java.util.Collection data = query.getResultList();
@@ -478,15 +483,15 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
 
     private void readCuentasPorDefecto() {
         try {
-            cuentas = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
-            cboCuentaContado.setSelectedItem(cuentas.getIdCuentaHaberComprasFacturaContado());
-            cboCuentaCredito.setSelectedItem(cuentas.getIdCuentaHaberComprasFacturaCredito());
-            cboCuentaACobrar.setSelectedItem(cuentas.getIdCuentaACobrar());
-            cboCuentaCompras.setSelectedItem(cuentas.getIdCuentaDebeCompras());
-            cboCuentaAportes.setSelectedItem(cuentas.getIdCuentaAportes());
-            cboCuentaDonaciones.setSelectedItem(cuentas.getIdCuentaDonaciones());
-            cboCuentaEfectivo.setSelectedItem(cuentas.getIdCuentaCaja());
-            cboCuentaCtaCte.setSelectedItem(cuentas.getIdCuentaCtaCte());
+            cuentasPorDefecto = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
+            cboCuentaContado.setSelectedItem(cuentasPorDefecto.getIdCuentaHaberComprasFacturaContado());
+            cboCuentaCredito.setSelectedItem(cuentasPorDefecto.getIdCuentaHaberComprasFacturaCredito());
+            cboCuentaACobrar.setSelectedItem(cuentasPorDefecto.getIdCuentaACobrar());
+            cboCuentaCompras.setSelectedItem(cuentasPorDefecto.getIdCuentaDebeCompras());
+            cboCuentaAportes.setSelectedItem(cuentasPorDefecto.getIdCuentaAportes());
+            cboCuentaDonaciones.setSelectedItem(cuentasPorDefecto.getIdCuentaDonaciones());
+            cboCuentaEfectivo.setSelectedItem(cuentasPorDefecto.getIdCuentaCaja());
+            cboCuentaCtaCte.setSelectedItem(cuentasPorDefecto.getIdCuentaCtaCte());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -495,14 +500,14 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
 
     private void saveCuentasPorDefecto() {
         try {
-            cuentas.setIdCuentaHaberComprasFacturaContado((TblCuentasContables) cboCuentaContado.getSelectedItem());
-            cuentas.setIdCuentaHaberComprasFacturaCredito((TblCuentasContables) cboCuentaCredito.getSelectedItem());
-            cuentas.setIdCuentaACobrar((TblCuentasContables) cboCuentaACobrar.getSelectedItem());
-            cuentas.setIdCuentaDebeCompras((TblCuentasContables) cboCuentaCompras.getSelectedItem());
-            cuentas.setIdCuentaAportes((TblCuentasContables) cboCuentaAportes.getSelectedItem());
-            cuentas.setIdCuentaDonaciones((TblCuentasContables) cboCuentaDonaciones.getSelectedItem());
-            cuentas.setIdCuentaCaja((TblCuentasContables) cboCuentaEfectivo.getSelectedItem());
-            cuentas.setIdCuentaCtaCte((TblCuentasContables) cboCuentaCtaCte.getSelectedItem());
+            cuentasPorDefecto.setIdCuentaHaberComprasFacturaContado((TblCuentasContables) cboCuentaContado.getSelectedItem());
+            cuentasPorDefecto.setIdCuentaHaberComprasFacturaCredito((TblCuentasContables) cboCuentaCredito.getSelectedItem());
+            cuentasPorDefecto.setIdCuentaACobrar((TblCuentasContables) cboCuentaACobrar.getSelectedItem());
+            cuentasPorDefecto.setIdCuentaDebeCompras((TblCuentasContables) cboCuentaCompras.getSelectedItem());
+            cuentasPorDefecto.setIdCuentaAportes((TblCuentasContables) cboCuentaAportes.getSelectedItem());
+            cuentasPorDefecto.setIdCuentaDonaciones((TblCuentasContables) cboCuentaDonaciones.getSelectedItem());
+            cuentasPorDefecto.setIdCuentaCaja((TblCuentasContables) cboCuentaEfectivo.getSelectedItem());
+            cuentasPorDefecto.setIdCuentaCtaCte((TblCuentasContables) cboCuentaCtaCte.getSelectedItem());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
