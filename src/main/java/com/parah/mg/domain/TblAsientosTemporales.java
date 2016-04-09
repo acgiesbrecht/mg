@@ -38,7 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblAsientosTemporales.findById", query = "SELECT t FROM TblAsientosTemporales t WHERE t.id = :id"),
     @NamedQuery(name = "TblAsientosTemporales.findByFechahora", query = "SELECT t FROM TblAsientosTemporales t WHERE t.fechahora = :fechahora"),
     @NamedQuery(name = "TblAsientosTemporales.findByMonto", query = "SELECT t FROM TblAsientosTemporales t WHERE t.monto = :monto"),
-    @NamedQuery(name = "TblAsientosTemporales.findByFacturado", query = "SELECT t FROM TblAsientosTemporales t WHERE t.facturado = :facturado")})
+    @NamedQuery(name = "TblAsientosTemporales.findByFacturado", query = "SELECT t FROM TblAsientosTemporales t WHERE t.facturado = :facturado"),
+    @NamedQuery(name = "TblAsientosTemporales.findByEsAporte", query = "SELECT t FROM TblAsientosTemporales t WHERE t.esAporte = :esAporte")})
 public class TblAsientosTemporales implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,9 +64,7 @@ public class TblAsientosTemporales implements Serializable {
     @Column(name = "ES_APORTE")
     private Boolean esAporte;
     @ManyToMany(mappedBy = "tblAsientosTemporalesCollection")
-    private Collection<TblRecibos> tblRecibosCollection;
-    @ManyToMany(mappedBy = "tblAsientosTemporalesCollection")
-    private Collection<TblTransferencias> tblTransferenciasCollection;
+    private Collection<TblAsientos> tblAsientosCollection;
     @JoinColumn(name = "ID_CENTRO_DE_COSTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCentrosDeCosto idCentroDeCosto;
@@ -122,22 +121,21 @@ public class TblAsientosTemporales implements Serializable {
         this.facturado = facturado;
     }
 
+    public Boolean getEsAporte() {
+        return esAporte;
+    }
+
+    public void setEsAporte(Boolean esAporte) {
+        this.esAporte = esAporte;
+    }
+
     @XmlTransient
-    public Collection<TblRecibos> getTblRecibosCollection() {
-        return tblRecibosCollection;
+    public Collection<TblAsientos> getTblAsientosCollection() {
+        return tblAsientosCollection;
     }
 
-    public void setTblRecibosCollection(Collection<TblRecibos> tblRecibosCollection) {
-        this.tblRecibosCollection = tblRecibosCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblTransferencias> getTblTransferenciasCollection() {
-        return tblTransferenciasCollection;
-    }
-
-    public void setTblTransferenciasCollection(Collection<TblTransferencias> tblTransferenciasCollection) {
-        this.tblTransferenciasCollection = tblTransferenciasCollection;
+    public void setTblAsientosCollection(Collection<TblAsientos> tblAsientosCollection) {
+        this.tblAsientosCollection = tblAsientosCollection;
     }
 
     public TblCentrosDeCosto getIdCentroDeCosto() {
@@ -187,20 +185,6 @@ public class TblAsientosTemporales implements Serializable {
     @Override
     public String toString() {
         return "com.parah.mg.domain.TblAsientosTemporales[ id=" + id + " ]";
-    }
-
-    /**
-     * @return the esAporte
-     */
-    public Boolean getEsAporte() {
-        return esAporte;
-    }
-
-    /**
-     * @param esAporte the esAporte to set
-     */
-    public void setEsAporte(Boolean esAporte) {
-        this.esAporte = esAporte;
     }
 
 }

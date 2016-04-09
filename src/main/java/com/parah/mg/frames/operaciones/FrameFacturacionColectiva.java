@@ -420,6 +420,13 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                         asiento.setMonto(aT.getMonto());
                         asiento.setIdUser(currentUser.getUser());
 
+                        Collection<TblAsientosTemporales> asientosT = asiento.getTblAsientosTemporalesCollection();
+                        if (asientosT == null) {
+                            asientosT = new LinkedList<>();
+                            asiento.setTblAsientosTemporalesCollection((List) asientosT);
+                        }
+                        asientosT.add(aT);
+
                         ts.add(asiento);
                     }
                     list.add(f);

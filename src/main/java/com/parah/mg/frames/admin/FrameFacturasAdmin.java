@@ -6,6 +6,7 @@
 package com.parah.mg.frames.admin;
 
 import com.parah.mg.domain.TblAsientos;
+import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -257,19 +258,22 @@ public class FrameFacturasAdmin extends JInternalFrame {
                 for (TblAsientos asiento : t.getTblAsientosCollection()) {
                     Calendar calendarAsiento = Calendar.getInstance();
                     calendarAsiento.setTime(asiento.getFechahora());
-                    if (calendarAsiento.get(Calendar.MONTH) < calendar.get(Calendar.MONTH)) {
-                        TblAsientos asientoInverso = new TblAsientos();
-                        entityManager.persist(asientoInverso);
-                        asientoInverso.setFechahora(new Date());
-                        asientoInverso.setIdCentroDeCosto(asiento.getIdCentroDeCosto());
-                        asientoInverso.setIdCuentaContableDebe(asiento.getIdCuentaContableHaber());
-                        asientoInverso.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
-                        asientoInverso.setMonto(asiento.getMonto());
-                        asientoInverso.setIdUser(currentUser.getUser());
-                        asientoInverso.setObservacion("Anulacion");
-                    } else {
-                        entityManager.remove(asiento);
+
+                    for (TblAsientosTemporales at : asiento.getTblAsientosTemporalesCollection()) {
+                        at.setFacturado(false);
+                        entityManager.merge(at);
                     }
+
+                    TblAsientos asientoInverso = new TblAsientos();
+                    entityManager.persist(asientoInverso);
+                    asientoInverso.setFechahora(new Date());
+                    asientoInverso.setIdCentroDeCosto(asiento.getIdCentroDeCosto());
+                    asientoInverso.setIdCuentaContableDebe(asiento.getIdCuentaContableHaber());
+                    asientoInverso.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
+                    asientoInverso.setMonto(asiento.getMonto());
+                    asientoInverso.setIdUser(currentUser.getUser());
+                    asientoInverso.setObservacion("Anulacion");
+
                 }
                 entityManager.merge(t);
                 //chkAnulado.setSelected(true);

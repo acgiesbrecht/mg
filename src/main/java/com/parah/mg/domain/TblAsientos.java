@@ -6,8 +6,8 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -42,12 +43,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblAsientos.findByMonto", query = "SELECT t FROM TblAsientos t WHERE t.monto = :monto")})
 public class TblAsientos implements Serializable {
 
-    @ManyToMany(mappedBy = "tblAsientosCollection")
-    private Collection<TblFacturas> tblFacturasCollection;
-
-    @ManyToMany(mappedBy = "tblAsientosCollection")
-    private Collection<TblAutofacturas> tblAutofacturasCollection;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,6 +61,11 @@ public class TblAsientos implements Serializable {
     @NotNull
     @Column(name = "MONTO")
     private int monto;
+    @JoinTable(name = "TBL_ASIENTOS_ASIENTOS_TEMPORALES", joinColumns = {
+        @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "ID_ASIENTO_TEMPORAL", referencedColumnName = "ID")})
+    @ManyToMany
+    private Collection<TblAsientosTemporales> tblAsientosTemporalesCollection;
     @JoinColumn(name = "ID_CENTRO_DE_COSTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCentrosDeCosto idCentroDeCosto;
@@ -124,6 +124,15 @@ public class TblAsientos implements Serializable {
         this.monto = monto;
     }
 
+    @XmlTransient
+    public Collection<TblAsientosTemporales> getTblAsientosTemporalesCollection() {
+        return tblAsientosTemporalesCollection;
+    }
+
+    public void setTblAsientosTemporalesCollection(Collection<TblAsientosTemporales> tblAsientosTemporalesCollection) {
+        this.tblAsientosTemporalesCollection = tblAsientosTemporalesCollection;
+    }
+
     public TblCentrosDeCosto getIdCentroDeCosto() {
         return idCentroDeCosto;
     }
@@ -179,24 +188,6 @@ public class TblAsientos implements Serializable {
     @Override
     public String toString() {
         return "com.parah.mg.domain.TblAsientos[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<TblAutofacturas> getTblAutofacturasCollection() {
-        return tblAutofacturasCollection;
-    }
-
-    public void setTblAutofacturasCollection(Collection<TblAutofacturas> tblAutofacturasCollection) {
-        this.tblAutofacturasCollection = tblAutofacturasCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblFacturas> getTblFacturasCollection() {
-        return tblFacturasCollection;
-    }
-
-    public void setTblFacturasCollection(Collection<TblFacturas> tblFacturasCollection) {
-        this.tblFacturasCollection = tblFacturasCollection;
     }
 
 }
