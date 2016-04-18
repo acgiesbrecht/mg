@@ -348,7 +348,7 @@
     </Component>
     <Component class="javax.swing.JComboBox" name="cboCuentaEfectivo">
       <BindingProperties>
-        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idCuentaHaberFacturaContadoPorDefecto}" target="cboCuentaEfectivo" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idCuentaContableEfectivoPorDefecto}" target="cboCuentaEfectivo" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboCuentaEfectivoActionPerformed"/>
@@ -361,7 +361,7 @@
     </Component>
     <Component class="javax.swing.JComboBox" name="cboCuentaCtaCte">
       <BindingProperties>
-        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idCuentaHaberFacturaCreditoPorDefecto}" target="cboCuentaCtaCte" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idCuentaContableCtaCtePorDefecto}" target="cboCuentaCtaCte" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboCuentaCtaCteActionPerformed"/>

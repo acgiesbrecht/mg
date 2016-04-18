@@ -169,14 +169,14 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
 
         conceptoLabel2.setText("Cuenta por defecto para Cobros en Efectivo:");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCuentaHaberFacturaContadoPorDefecto}"), cboCuentaEfectivo, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCuentaContableEfectivoPorDefecto}"), cboCuentaEfectivo, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         cboCuentaEfectivo.addActionListener(formListener);
 
         conceptoLabel3.setText("Cuenta por defecto para Cobros por Cta.Cte.:");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCuentaHaberFacturaCreditoPorDefecto}"), cboCuentaCtaCte, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCuentaContableCtaCtePorDefecto}"), cboCuentaCtaCte, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         cboCuentaCtaCte.addActionListener(formListener);

@@ -6,37 +6,46 @@
 package com.parah.mg.frames.admin;
 
 import com.parah.mg.domain.TblAsientos;
+import com.parah.mg.domain.TblContribuyentes;
 import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.domain.TblEventoDetalle;
 import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.prefs.Preferences;
+import java.util.zip.ZipInputStream;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 
 /**
  *
  * @author Industria
  */
-public class FrameConfigAdmin extends javax.swing.JInternalFrame {
+public class FrameConfigAdmin extends javax.swing.JInternalFrame implements PropertyChangeListener {
 
     private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(FrameConfigAdmin.class);
+    TaskUpdate taskUpdate;
 
     public FrameConfigAdmin() {
         super("Configuracion",
@@ -115,6 +124,8 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
         jLabel7 = new javax.swing.JLabel();
         cboFormatoFactura = new javax.swing.JComboBox();
         jButton3 = new javax.swing.JButton();
+        updateSETbutton = new javax.swing.JButton();
+        lblStatusSET = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -209,6 +220,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
 
         cmdReset.setBackground(new java.awt.Color(255, 102, 102));
         cmdReset.setText("Actualizar Base");
+        cmdReset.setEnabled(false);
         cmdReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdResetActionPerformed(evt);
@@ -246,11 +258,21 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
 
         jButton3.setBackground(new java.awt.Color(255, 0, 153));
         jButton3.setText("Actualizar Asientos");
+        jButton3.setEnabled(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
+
+        updateSETbutton.setText("Actualizar Base de Datos SET");
+        updateSETbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateSETbuttonActionPerformed(evt);
+            }
+        });
+
+        lblStatusSET.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -272,15 +294,10 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel6)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(txtFacturaY, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jButton2)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jButton1))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel5)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txtFacturaX, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel5)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(txtFacturaX, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addComponent(panelDatadir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(rbServidor)
@@ -302,7 +319,17 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                                 .addGap(39, 39, 39)
                                 .addComponent(jButton3))
                             .addComponent(jLabel7))
-                        .addGap(0, 197, Short.MAX_VALUE))))
+                        .addGap(0, 197, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(updateSETbutton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblStatusSET, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -335,11 +362,15 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cmdFacturaPrintTest)
-                .addGap(81, 81, 81)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(updateSETbutton)
+                    .addComponent(lblStatusSET, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(58, 58, 58)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addGap(65, 65, 65)
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -579,6 +610,88 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void updateSETbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSETbuttonActionPerformed
+        try {
+            taskUpdate = new TaskUpdate();
+            taskUpdate.addPropertyChangeListener(this);
+            taskUpdate.execute();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_updateSETbuttonActionPerformed
+
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("statusUpdate".equals(evt.getPropertyName())) {
+            lblStatusSET.setText(taskUpdate.getStatus());
+        }
+    }
+
+    class TaskUpdate extends SwingWorker<Void, Void> {
+
+        @Override
+        public Void doInBackground() {
+            try {
+                Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
+                EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
+                entityManager.getTransaction().begin();
+                String temp = "";
+                Integer count = 0;
+                entityManager.createQuery("delete from TblContribuyentes t").executeUpdate();
+                for (int i = 0; i <= 9; i++) {
+                    URL url = new URL("http://www.set.gov.py/rest/contents/download/collaboration/sites/PARAGUAY-SET/documents/informes-periodicos/ruc/ruc" + String.valueOf(i) + ".zip");
+                    ZipInputStream zipStream = new ZipInputStream(url.openStream(), StandardCharsets.UTF_8);
+                    zipStream.getNextEntry();
+
+                    Scanner sc = new Scanner(zipStream, "UTF-8");
+
+                    while (sc.hasNextLine()) {
+                        String[] ruc = sc.nextLine().split("\\|");
+                        temp = ruc[0] + " - " + ruc[1] + " - " + ruc[2];
+
+                        //System.out.println(ruc[1]);
+                        //System.out.println(StringEscapeUtils.escapeJava(ruc[1]));
+                        if (ruc[0].length() > 0 && ruc[1].length() > 0 && ruc[2].length() == 1) {
+                            TblContribuyentes c = new TblContribuyentes();
+                            c.setRucSinDv(ruc[0]);
+                            c.setRazonSocial(StringEscapeUtils.escapeSql(ruc[1]));
+                            c.setDv(ruc[2]);
+                            entityManager.persist(c);
+                            setStatus("Descargando listado de RUC con terminacion " + String.valueOf(i) + " - Cantidad de contribuyentes procesada: " + String.format("%,d", count) + " de aprox. 850.000.");
+                            count++;
+                        } else {
+                            System.out.println(temp);
+                        }
+
+                    }
+                    //setStatus("Procesando datos...");
+                    entityManager.getTransaction().commit();
+                    entityManager.getTransaction().begin();
+                }
+
+                setStatus("Lista de RUC actualizada...");
+                return null;
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+                LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+                return null;
+            }
+        }
+
+        private String status;
+
+        public final void setStatus(String set) {
+            String oldStatus = status;
+            status = set;
+            firePropertyChange("statusUpdate", oldStatus, status);
+        }
+
+        public final String getStatus() {
+            return status;
+        }
+
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -637,6 +750,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel lblStatusSET;
     private java.awt.Panel panelDatadir;
     private javax.swing.JRadioButton rbRemoto;
     private javax.swing.JRadioButton rbServidor;
@@ -644,5 +758,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtFacturaX;
     private javax.swing.JTextField txtFacturaY;
     private javax.swing.JTextField txtIP;
+    private javax.swing.JButton updateSETbutton;
     // End of variables declaration//GEN-END:variables
 }

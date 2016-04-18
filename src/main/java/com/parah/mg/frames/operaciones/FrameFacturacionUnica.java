@@ -21,15 +21,11 @@ import java.awt.KeyboardFocusManager;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Scanner;
-import java.util.zip.ZipInputStream;
 import javax.persistence.Persistence;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -37,10 +33,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,13 +42,12 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Industria
  */
-public class FrameFacturacionUnica extends JInternalFrame implements PropertyChangeListener {
+public class FrameFacturacionUnica extends JInternalFrame {
 
     private static final Logger LOGGER = LogManager.getLogger(FrameFacturacionUnica.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     Map<String, String> persistenceMap = new HashMap<>();
     EventList<TblEntidades> eventListMiembros = new BasicEventList<>();
-    TaskUpdate taskUpdate;
 
     public FrameFacturacionUnica() {
         super("Facturacion Unica",
@@ -176,8 +169,6 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
         txtDonacion = new javax.swing.JFormattedTextField();
         montoLabel4 = new javax.swing.JLabel();
         txtAporte = new javax.swing.JFormattedTextField();
-        updateSETbutton = new javax.swing.JButton();
-        lblStatusSET = new javax.swing.JLabel();
         txtRazonSocial = new javax.swing.JTextField();
         montoLabel5 = new javax.swing.JLabel();
         txtDomicilio = new javax.swing.JTextField();
@@ -248,11 +239,6 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
         txtAporte.setColumns(9);
         txtAporte.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
 
-        updateSETbutton.setText("Actualizar Base de Datos SET");
-        updateSETbutton.addActionListener(formListener);
-
-        lblStatusSET.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
         montoLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel5.setText("Domicilio:");
 
@@ -270,10 +256,7 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(updateSETbutton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblStatusSET, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(imprimirButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelarButton))
@@ -377,13 +360,10 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
                         .addComponent(txtDonacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtAporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cancelarButton)
-                        .addComponent(imprimirButton)
-                        .addComponent(updateSETbutton))
-                    .addComponent(lblStatusSET, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelarButton)
+                    .addComponent(imprimirButton))
                 .addContainerGap())
         );
     }
@@ -410,9 +390,6 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
             }
             else if (evt.getSource() == cboEntidad) {
                 FrameFacturacionUnica.this.cboEntidadActionPerformed(evt);
-            }
-            else if (evt.getSource() == updateSETbutton) {
-                FrameFacturacionUnica.this.updateSETbuttonActionPerformed(evt);
             }
         }
 
@@ -679,85 +656,6 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCtaCteInputMethodTextChanged
 
-    public void propertyChange(PropertyChangeEvent evt) {
-        if ("statusUpdate".equals(evt.getPropertyName())) {
-            lblStatusSET.setText(taskUpdate.getStatus());
-        }
-    }
-
-    class TaskUpdate extends SwingWorker<Void, Void> {
-
-        @Override
-        public Void doInBackground() {
-            try {
-                String temp = "";
-                Integer count = 0;
-                entityManager.createQuery("delete from TblContribuyentes t").executeUpdate();
-                for (int i = 0; i <= 9; i++) {
-                    URL url = new URL("http://www.set.gov.py/rest/contents/download/collaboration/sites/PARAGUAY-SET/documents/informes-periodicos/ruc/ruc" + String.valueOf(i) + ".zip");
-                    ZipInputStream zipStream = new ZipInputStream(url.openStream(), StandardCharsets.UTF_8);
-                    zipStream.getNextEntry();
-
-                    Scanner sc = new Scanner(zipStream, "UTF-8");
-
-                    while (sc.hasNextLine()) {
-                        String[] ruc = sc.nextLine().split("\\|");
-                        temp = ruc[0] + " - " + ruc[1] + " - " + ruc[2];
-
-                        //System.out.println(ruc[1]);
-                        //System.out.println(StringEscapeUtils.escapeJava(ruc[1]));
-                        if (ruc[0].length() > 0 && ruc[1].length() > 0 && ruc[2].length() == 1) {
-                            TblContribuyentes c = new TblContribuyentes();
-                            c.setRucSinDv(ruc[0]);
-                            c.setRazonSocial(StringEscapeUtils.escapeSql(ruc[1]));
-                            c.setDv(ruc[2]);
-                            entityManager.persist(c);
-                            setStatus("Descargando listado de RUC con terminacion " + String.valueOf(i) + " - Cantidad de contribuyentes procesada: " + String.format("%,d", count) + " de aprox. 850.000.");
-                            count++;
-                        } else {
-                            System.out.println(temp);
-                        }
-
-                    }
-                    //setStatus("Procesando datos...");
-                    entityManager.getTransaction().commit();
-                    entityManager.getTransaction().begin();
-                }
-
-                setStatus("Lista de RUC actualizada...");
-                return null;
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-                LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-                return null;
-            }
-        }
-
-        private String status;
-
-        public final void setStatus(String set) {
-            String oldStatus = status;
-            status = set;
-            firePropertyChange("statusUpdate", oldStatus, status);
-        }
-
-        public final String getStatus() {
-            return status;
-        }
-
-    }
-
-    private void updateSETbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSETbuttonActionPerformed
-        try {
-            taskUpdate = new TaskUpdate();
-            taskUpdate.addPropertyChangeListener(this);
-            taskUpdate.execute();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_updateSETbuttonActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelarButton;
     private javax.swing.JComboBox cboEntidad;
@@ -770,7 +668,6 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
     private javax.swing.JLabel idMiembroLabel1;
     private javax.swing.JLabel idMiembroLabel2;
     private javax.swing.JButton imprimirButton;
-    private javax.swing.JLabel lblStatusSET;
     private java.util.List<com.parah.mg.domain.TblFacturas> list;
     private java.util.List listEntidades;
     private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
@@ -797,7 +694,6 @@ public class FrameFacturacionUnica extends JInternalFrame implements PropertyCha
     private javax.swing.JFormattedTextField txtNro;
     private javax.swing.JTextField txtRazonSocial;
     private javax.swing.JFormattedTextField txtTimbrado;
-    private javax.swing.JButton updateSETbutton;
     // End of variables declaration//GEN-END:variables
 
     public static void main(String[] args) {

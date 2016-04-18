@@ -1194,10 +1194,13 @@ public class FrameFacturasCompra extends JInternalFrame {
     private void rbCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCreditoActionPerformed
         try {
             if (rbCredito.isSelected()) {
-                Calendar c = Calendar.getInstance();
-                c.setTime(dtpFecha.getDate());
-                c.set(Calendar.DATE, c.getActualMaximum(Calendar.DAY_OF_MONTH));
-                dtpVencimientoFactura.setDate(c.getTime());
+
+                if (dtpFecha.getDate() != null) {
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(dtpFecha.getDate());
+                    c.set(Calendar.DATE, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+                    dtpVencimientoFactura.setDate(c.getTime());
+                }
                 txtCuotas.setValue(1L);
             }
         } catch (Exception ex) {
