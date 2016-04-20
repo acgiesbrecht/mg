@@ -218,7 +218,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Component id="montoLabel4" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="235" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="txtConcepto" alignment="0" max="32767" attributes="0"/>
                               </Group>
@@ -232,13 +232,12 @@
                               </Group>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="imprimirButton" linkSize="1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="cancelarButton" linkSize="1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                              <Component id="conceptoLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                              <Component id="txtObservacion" min="-2" pref="527" max="-2" attributes="0"/>
+                              <EmptySpace min="615" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jScrollPane2" alignment="1" pref="491" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" alignment="1" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="montoLabel6" min="-2" max="-2" attributes="0"/>
@@ -254,6 +253,13 @@
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="imprimirButton" linkSize="1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="cancelarButton" linkSize="1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -324,12 +330,17 @@
                   <Component id="cmdAddAsiento" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmdBorrarAsiento" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="conceptoLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtObservacion" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cancelarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="imprimirButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -562,6 +573,13 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtConcepto">
+    </Component>
+    <Component class="javax.swing.JLabel" name="conceptoLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Observacion:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtObservacion">
     </Component>
   </SubComponents>
 </Form>

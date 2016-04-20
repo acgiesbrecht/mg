@@ -155,6 +155,8 @@ public class FrameAutofacturacion extends JInternalFrame {
         asientosTable = new javax.swing.JTable();
         txtNro = new javax.swing.JFormattedTextField();
         txtConcepto = new javax.swing.JTextField();
+        conceptoLabel = new javax.swing.JLabel();
+        txtObservacion = new javax.swing.JTextField();
 
         FormListener formListener = new FormListener();
 
@@ -238,6 +240,8 @@ public class FrameAutofacturacion extends JInternalFrame {
             ex.printStackTrace();
         }
 
+        conceptoLabel.setText("Observacion:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -286,7 +290,7 @@ public class FrameAutofacturacion extends JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(montoLabel4)
-                                        .addGap(0, 235, Short.MAX_VALUE))
+                                        .addGap(0, 0, Short.MAX_VALUE))
                                     .addComponent(txtConcepto))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,12 +299,11 @@ public class FrameAutofacturacion extends JInternalFrame {
                                         .addComponent(montoLabel8))
                                     .addComponent(txtPrecioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(imprimirButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cancelarButton)
-                                .addGap(19, 19, 19))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+                                .addComponent(conceptoLabel)
+                                .addGap(8, 8, 8)
+                                .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(montoLabel6)
@@ -310,6 +313,12 @@ public class FrameAutofacturacion extends JInternalFrame {
                                         .addComponent(cmdBorrarAsiento)))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(imprimirButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cancelarButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelarButton, imprimirButton});
@@ -368,11 +377,15 @@ public class FrameAutofacturacion extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdAddAsiento)
                     .addComponent(cmdBorrarAsiento))
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(conceptoLabel)
+                    .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(imprimirButton))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -477,6 +490,7 @@ public class FrameAutofacturacion extends JInternalFrame {
             factura.setPrecioUnitario(((Number) txtPrecioUnitario.getValue()).intValue());
             factura.setMonto(factura.getCantidad() * factura.getPrecioUnitario());
             factura.setAnulado(false);
+            factura.setObservacion(txtObservacion.getText());
             factura.setIdUser(currentUser.getUser());
 
             for (TblAsientos a : listAsientos) {
@@ -599,6 +613,7 @@ public class FrameAutofacturacion extends JInternalFrame {
     private javax.swing.JButton cancelarButton;
     private javax.swing.JButton cmdAddAsiento;
     private javax.swing.JButton cmdBorrarAsiento;
+    private javax.swing.JLabel conceptoLabel;
     private javax.swing.JLabel ctacteLabel3;
     private org.jdesktop.swingx.JXDatePicker dtpFecha;
     private javax.persistence.EntityManager entityManager;
@@ -631,6 +646,7 @@ public class FrameAutofacturacion extends JInternalFrame {
     private javax.swing.JTextField txtDireccionTransaccion;
     private javax.swing.JTextField txtDomicilio;
     private javax.swing.JFormattedTextField txtNro;
+    private javax.swing.JTextField txtObservacion;
     private javax.swing.JFormattedTextField txtPrecioUnitario;
     private javax.swing.JTextField txtRazonSocial;
     private javax.swing.JFormattedTextField txtTimbrado;

@@ -7,7 +7,6 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -65,7 +64,7 @@ public class TblCentrosDeCosto implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "PREFERIDO")
-    private Boolean preferido;
+    private Boolean preferido = false;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCosto")
     private Collection<TblAsientosTemporales> tblAsientosTemporalesCollection;
     @JoinColumn(name = "ID_CUENTA_CONTABLE_CTA_CTE_POR_DEFECTO", referencedColumnName = "ID")

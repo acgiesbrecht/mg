@@ -400,7 +400,7 @@ public class FrameFacturasCompra extends JInternalFrame {
 
         idMiembroLabel.setText("Proveedor:");
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.concepto}"), conceptoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.observacion}"), conceptoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), conceptoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
@@ -607,7 +607,6 @@ public class FrameFacturasCompra extends JInternalFrame {
         bindingGroup.addBinding(binding);
 
         buttonGroup1.add(rbContado);
-        rbContado.setSelected(true);
         rbContado.setText("Contado");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.condicionContado}"), rbContado, org.jdesktop.beansbinding.BeanProperty.create("selected"));
@@ -618,7 +617,6 @@ public class FrameFacturasCompra extends JInternalFrame {
         bindingGroup.addBinding(binding);
 
         buttonGroup1.add(rbCredito);
-        rbCredito.setSelected(false);
         rbCredito.setText("Credito");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.condicionContado}"), rbCredito, org.jdesktop.beansbinding.BeanProperty.create("selected"));

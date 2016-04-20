@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -336,8 +337,8 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         jButton3.setText("Cargar EXCEL de Miembros");
         jButton3.addActionListener(formListener);
 
-        ctacteLabel2.setForeground(new java.awt.Color(153, 153, 153));
-        ctacteLabel2.setText("Formato XLS: Nombres, Apellidos, Cta.Cte, Cedula, Domicilio, Box");
+        ctacteLabel2.setForeground(new java.awt.Color(51, 51, 51));
+        ctacteLabel2.setText("Formato XLS: Nombres, Apellidos, Cta.Cte, Cedula, Domicilio, Box, Fecha Nacimiento, Fecha Bautismo, Fecha Entrada a Congregacion");
 
         ctacteLabel3.setText("Cedula / RUC sin DV:");
 
@@ -514,7 +515,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(ctacteLabel2)))
-                        .addGap(0, 491, Short.MAX_VALUE))
+                        .addGap(0, 101, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(masterScrollPane)
@@ -1029,10 +1030,22 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                             if (row.getCell(5) != null) {
                                 miembro.setBox((int) row.getCell(5).getNumericCellValue());
                             }
+                            if (row.getCell(6) != null) {
+                                miembro.setFechaNacimiento((Date) row.getCell(6).getDateCellValue());
+                            }
+                            if (row.getCell(7) != null) {
+                                miembro.setFechaBautismo((Date) row.getCell(7).getDateCellValue());
+                                miembro.setIsMiembroActivo(true);
+                            } else {
+                                miembro.setIsMiembroActivo(false);
+                            }
+                            if (row.getCell(8) != null) {
+                                miembro.setFechaEntradaCongregacion((Date) row.getCell(8).getDateCellValue());
+                            }
                             miembro.setAporteMensual(0);
                             miembro.setIdFormaDePagoPreferida(listFormasDePago.get(0));
                             miembro.setIdUser(currentUser.getUser());
-                            miembro.setIsMiembroActivo(false);
+
                             entityManager.persist(miembro);
                             list.add(miembro);
                         }
