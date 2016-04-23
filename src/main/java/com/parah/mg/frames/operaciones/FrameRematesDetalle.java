@@ -10,7 +10,9 @@ import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblCategoriasArticulos;
+import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.domain.TblEventoCuotas;
 import com.parah.mg.domain.TblEventoDetalle;
 import com.parah.mg.domain.TblEventos;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -61,6 +64,7 @@ public class FrameRematesDetalle extends JInternalFrame {
     Map<String, String> persistenceMap = new HashMap<>();
     EventList<TblEntidades> eventListEntidades = new BasicEventList<>();
     EventList<TblCategoriasArticulos> eventListTblCategoriasArticulos = new BasicEventList<>();
+    TblCuentasContablesPorDefecto cuentasContablesPorDefecto;
 
     public FrameRematesDetalle() {
         super("Remates",
@@ -80,6 +84,8 @@ public class FrameRematesDetalle extends JInternalFrame {
                 entityManager.getTransaction().begin();
                 entityManager1.getTransaction().begin();
             }
+
+            cuentasContablesPorDefecto = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
 
             //AutoCompleteDecorator.decorate(cboFechaRemate);
             //AutoCompleteDecorator.decorate(cboCategoria);
@@ -734,6 +740,44 @@ public class FrameRematesDetalle extends JInternalFrame {
                 JOptionPane.showMessageDialog(null, "El monto no puede ser 0.");
                 montoField.requestFocusInWindow();
                 return;
+            }
+
+            for (TblEventoDetalle evd : listEventosDetalle) {
+                if (entityManager.contains(evd)) {
+                    if (evd.getTblAsientosCollection().size() == 2) {
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getMonto());
+                        entityManager.merge(evd);
+                    } else if (evd.getTblAsientosCollection().isEmpty()) {
+
+                        Collection<TblAsientos> ts = evd.getTblAsientosCollection();
+                        if (ts == null) {
+                            ts = new LinkedList<>();
+                            evd.setTblAsientosCollection((List) ts);
+                        }
+                        TblAsientos asientoAporte = new TblAsientos();
+                        asientoAporte.setFechahora(evd.getIdEvento().getFecha());
+                        asientoAporte.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
+                        asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
+                        asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
+                        asientoAporte.setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                        asientoAporte.setIdUser(currentUser.getUser());
+
+                        ts.add(asientoAporte);
+
+                        TblAsientos asientoDonacion = new TblAsientos();
+                        asientoDonacion.setFechahora(evd.getIdEvento().getFecha());
+                        asientoDonacion.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
+                        asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
+                        asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
+                        asientoDonacion.setMonto(evd.getMonto() - asientoAporte.getMonto());
+                        asientoDonacion.setIdUser(currentUser.getUser());
+
+                        ts.add(asientoDonacion);
+
+                        entityManager.merge(evd);
+                    }
+                }
             }
 
             entityManager.getTransaction().commit();

@@ -81,6 +81,15 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                     }
                 }
             }
+            CurrentUser currentUser = CurrentUser.getInstance();
+            if (currentUser.getUser().getId() == 9999) {
+                cmdReset.setEnabled(true);
+                jButton3.setEnabled(true);
+            } else {
+                cmdReset.setEnabled(false);
+                jButton3.setEnabled(false);
+            }
+
             /*
             File[] files = (new File(getClass().getResource("/sql").toURI())).listFiles();
             for (File f : files) {

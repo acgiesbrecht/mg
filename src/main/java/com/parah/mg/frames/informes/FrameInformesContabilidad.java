@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
 
-    private static final Logger LOGGER = LogManager.getLogger(FrameInformesContabilidad.class);
+    private final Logger LOGGER = LogManager.getLogger(this.getClass());
     Map<String, String> persistenceMap = new HashMap<>();
     List<TblEntidades> listMiembrosFiltered;
     TblEntidades selectedMiembro;
