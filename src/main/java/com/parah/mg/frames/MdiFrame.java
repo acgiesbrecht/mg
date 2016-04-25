@@ -127,8 +127,8 @@ public class MdiFrame extends javax.swing.JFrame {
             currentUser.addPropertyChangeListener(
                     (PropertyChangeEvent event) -> {
                         if ("user".equals(event.getPropertyName())) {
-                            //mnuOpRemates.setEnabled(currentUser.hasRole(1));
-                            //mnuOpPagos.setEnabled(currentUser.hasRole(1));
+                            mnuOpRemates.setEnabled(currentUser.hasRole(1));
+                            mnuOpPagos.setEnabled(currentUser.hasRole(1));
                             mnuOpColectas.setEnabled(currentUser.hasRole(1));
                             mnuOpAportes.setEnabled(currentUser.hasRole(1));
 
