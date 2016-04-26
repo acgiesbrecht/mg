@@ -340,7 +340,9 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", (Date) txtFechaInicioMayor.getValue());
             parameters.put("fechaHasta", (Date) txtFechaFinMayor.getValue());
-            Utils.getInstance().showReport("libro_mayor", "libro_mayor_subreport", parameters);
+            parameters.put("ctaContable", 101020100);
+            //Utils.getInstance().showReport("libro_mayor", "libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters);
+            Utils.getInstance().showReport("libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());

@@ -112,6 +112,7 @@ public class Utils extends Component {
             Properties p = System.getProperties();
             p.setProperty("derby.system.home", Preferences.userRoot().node("MG").get("Datadir", (new JFileChooser()).getFileSystemView().getDefaultDirectory().toString() + "\\javadb"));
             p.setProperty("derby.drda.host", "0.0.0.0");
+            p.setProperty("derby.language.sequence.preallocator", "1");
             String databaseIP;
             databaseIP = Preferences.userRoot().node("MG").get("DatabaseIP", "127.0.0.1");
             Map<String, String> persistenceMap = new HashMap<>();
@@ -304,6 +305,17 @@ public class Utils extends Component {
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + subReportFile + ".jrxml"));
             parameters.put("subreportObject", report);
             showReport(reportFile, parameters);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }
+
+    public void showReport(String reportFile, String subReportFile, String subSubReportFile, Map parameters) {
+        try {
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + subSubReportFile + ".jrxml"));
+            parameters.put("subSubreportObject", report);
+            showReport(reportFile, subReportFile, parameters);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
