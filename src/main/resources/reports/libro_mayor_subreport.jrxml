@@ -74,7 +74,10 @@ ORDER BY FECHAHORA, NRO]]>
     <field name="IMPORTE" class="java.lang.Integer"/>
     <variable name="SALDO_ANTERIOR" class="java.lang.Integer" calculation="System"/>
     <variable name="SUM_ACUMULADO" class="java.lang.Integer" calculation="Sum">
-        <variableExpression><![CDATA[$F{IMPORTE}+$V{SALDO_ANTERIOR}]]></variableExpression>
+        <variableExpression><![CDATA[$F{IMPORTE}]]></variableExpression>
+    </variable>
+    <variable name="SALDO_ACUMULADO" class="java.lang.Integer">
+        <variableExpression><![CDATA[$V{SUM_ACUMULADO}+$V{SALDO_ANTERIOR}]]></variableExpression>
     </variable>
     <variable name="SUM_DEBE" class="java.lang.Integer" calculation="Sum">
         <variableExpression><![CDATA[$F{IMPORTE}>0?$F{IMPORTE}:0]]></variableExpression>
@@ -167,7 +170,7 @@ ORDER BY FECHAHORA, NRO]]>
                 <textElement textAlignment="Right" verticalAlignment="Middle">
                     <font size="8"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$V{SUM_ACUMULADO}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$V{SALDO_ACUMULADO}]]></textFieldExpression>
             </textField>
         </band>
     </detail>
@@ -217,7 +220,7 @@ ORDER BY FECHAHORA, NRO]]>
                 <textElement textAlignment="Right" verticalAlignment="Middle">
                     <font size="8" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$V{SUM_ACUMULADO}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$V{SALDO_ACUMULADO}]]></textFieldExpression>
             </textField>
         </band>
     </columnFooter>
