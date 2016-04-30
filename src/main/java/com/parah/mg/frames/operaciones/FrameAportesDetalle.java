@@ -676,7 +676,7 @@ public class FrameAportesDetalle extends JInternalFrame {
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
 
-            cboEntidad.requestFocusInWindow();
+            txtCtaCte.requestFocusInWindow();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);

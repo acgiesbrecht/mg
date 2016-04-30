@@ -328,6 +328,10 @@ public class Utils extends Component {
             String user = getPersistenceMap().get("javax.persistence.jdbc.user");
             String pass = getPersistenceMap().get("javax.persistence.jdbc.password");
             parameters.put("user", currentUser.getUser().getNombrecompleto());
+
+            JasperReport reportHeader = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/header.jrxml"));
+            parameters.put("subreportHeader", reportHeader);
+
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFile + ".jrxml"));
             report.setWhenNoDataType(WhenNoDataTypeEnum.NO_DATA_SECTION);
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, DriverManager.getConnection(url, user, pass));

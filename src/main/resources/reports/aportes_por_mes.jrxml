@@ -5,6 +5,7 @@
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="MGCB"/>
     <parameter name="pMes" class="java.lang.Integer"/>
     <parameter name="pAno" class="java.lang.Integer"/>
+    <parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
     <queryString language="SQL">
 		<![CDATA[SELECT m.id, m.ctacte, m.nombres, m.apellidos, SUM(rd.monto) AS monto
                                   FROM TBL_ENTIDADES m
@@ -36,6 +37,14 @@
                 </textElement>
                 <textFieldExpression><![CDATA["Detalle de Aportes de " + com.parah.mg.utils.Utils.getMesUpperCase($P{pMes}) + " / " + $P{pAno}]]></textFieldExpression>
             </textField>
+            <subreport>
+                <reportElement x="0" y="0" width="555" height="20" uuid="e3d4dc27-5db1-48be-ab9f-5dbed0fab1d6">
+                    <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                </reportElement>
+                <connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+                <subreportExpression><![CDATA[$P{subreportHeader}]]></subreportExpression>
+            </subreport>
         </band>
     </title>
     <pageHeader>

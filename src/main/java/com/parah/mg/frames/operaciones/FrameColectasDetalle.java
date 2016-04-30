@@ -110,7 +110,6 @@ public class FrameColectasDetalle extends JInternalFrame {
             //AutoCompleteDecorator.decorate(cboFechaRemate);
             //AutoCompleteDecorator.decorate(cboCategoria);
             AutoCompleteSupport support = AutoCompleteSupport.install(cboFechaColecta, GlazedLists.eventListOf(listEventos.toArray()));
-
             support.setFilterMode(TextMatcherEditor.CONTAINS);
 
             eventListMiembros.clear();

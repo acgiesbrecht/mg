@@ -6,8 +6,9 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -177,7 +178,8 @@ public class TblEventos implements Serializable {
 
     @Override
     public String toString() {
-        return descripcion;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(fecha) + " - " + descripcion;
     }
 
     @XmlTransient
