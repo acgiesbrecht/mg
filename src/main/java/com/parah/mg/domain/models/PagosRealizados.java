@@ -9,6 +9,7 @@ import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -23,9 +24,11 @@ public class PagosRealizados implements Serializable {
 
     @Id
     private TblEntidades entidad;
+    private Date fechahora;
     private Collection<TblAsientosTemporales> asientosTemporalesList;
     private Integer montoAporte;
     private Integer montoDonacion;
+    private Boolean facturado = false;
 
     /**
      * @return the entidad
@@ -81,6 +84,34 @@ public class PagosRealizados implements Serializable {
      */
     public void setMontoDonacion(Integer montoDonacion) {
         this.montoDonacion = montoDonacion;
+    }
+
+    /**
+     * @return the fechahora
+     */
+    public Date getFechahora() {
+        return fechahora;
+    }
+
+    /**
+     * @param fechahora the fechahora to set
+     */
+    public void setFechahora(Date fechahora) {
+        this.fechahora = fechahora;
+    }
+
+    /**
+     * @return the facturado
+     */
+    public Boolean getFacturado() {
+        return facturado;
+    }
+
+    /**
+     * @param facturado the facturado to set
+     */
+    public void setFacturado(Boolean facturado) {
+        this.facturado = facturado;
     }
 
 }
