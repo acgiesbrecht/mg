@@ -9,9 +9,14 @@ import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.parah.mg.domain.TblAsientos;
+import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblContribuyentes;
 import com.parah.mg.domain.TblFacturas;
+import com.parah.mg.domain.TblRecibos;
+import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.miembros.TblEntidades;
+import com.parah.mg.domain.models.PagosRealizados;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import com.parah.utils.CalcDV;
@@ -21,12 +26,16 @@ import java.awt.KeyboardFocusManager;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -136,14 +145,15 @@ public class FrameFacturacionUnica extends JInternalFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblFacturas t ORDER BY t.nro");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         queryGrupos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblGrupos t");
         listGrupos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryGrupos.getResultList());
-        queryEventoTipos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoTipos t");
-        listEventoTipos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoTipos.getResultList());
+        queryPagos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t WHERE t.id = null");
+        listPagos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryPagos.getResultList());
         entityManager1 = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
         queryEntidades = java.beans.Beans.isDesignTime() ? null : entityManager1.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
         listEntidades = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEntidades.getResultList());
@@ -165,15 +175,13 @@ public class FrameFacturacionUnica extends JInternalFrame {
         idMiembroLabel = new javax.swing.JLabel();
         rucField = new javax.swing.JTextField();
         ctacteLabel3 = new javax.swing.JLabel();
-        montoLabel3 = new javax.swing.JLabel();
-        txtDonacion = new javax.swing.JFormattedTextField();
-        montoLabel4 = new javax.swing.JLabel();
-        txtAporte = new javax.swing.JFormattedTextField();
         txtRazonSocial = new javax.swing.JTextField();
         montoLabel5 = new javax.swing.JLabel();
         txtDomicilio = new javax.swing.JTextField();
         montoLabel6 = new javax.swing.JLabel();
         txtCdC = new javax.swing.JFormattedTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         FormListener formListener = new FormListener();
 
@@ -227,18 +235,6 @@ public class FrameFacturacionUnica extends JInternalFrame {
 
         ctacteLabel3.setText("RUC:");
 
-        montoLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        montoLabel3.setText("Importe Donación:");
-
-        txtDonacion.setColumns(9);
-        txtDonacion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-
-        montoLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        montoLabel4.setText("Importe Aporte:");
-
-        txtAporte.setColumns(9);
-        txtAporte.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-
         montoLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel5.setText("Domicilio:");
 
@@ -248,6 +244,23 @@ public class FrameFacturacionUnica extends JInternalFrame {
         txtCdC.setColumns(9);
         txtCdC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
 
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listPagos, jTable1);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
+        columnBinding.setColumnName("Fecha");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoDonacion}"));
+        columnBinding.setColumnName("Monto Donacion");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoAporte}"));
+        columnBinding.setColumnName("Monto Aporte");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${facturado}"));
+        columnBinding.setColumnName("Facturar");
+        columnBinding.setColumnClass(Boolean.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        jScrollPane1.setViewportView(jTable1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -255,58 +268,51 @@ public class FrameFacturacionUnica extends JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(montoLabel)
+                                .addComponent(montoLabel1)
+                                .addComponent(fecha1Label))
+                            .addGap(46, 46, 46)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNro, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(idMiembroLabel)
+                            .addGap(67, 67, 67)
+                            .addComponent(idMiembroLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(12, 12, 12)
+                            .addComponent(idMiembroLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(montoLabel2)
+                                .addComponent(ctacteLabel3))
+                            .addGap(44, 44, 44)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtRazonSocial)
+                                .addComponent(txtDomicilio)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(0, 499, Short.MAX_VALUE)))))
+                    .addComponent(montoLabel5)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(imprimirButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cancelarButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(montoLabel)
-                                        .addComponent(montoLabel1)
-                                        .addComponent(fecha1Label))
-                                    .addGap(46, 46, 46)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtNro, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(idMiembroLabel)
-                                    .addGap(67, 67, 67)
-                                    .addComponent(idMiembroLabel1)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(12, 12, 12)
-                                    .addComponent(idMiembroLabel2)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(montoLabel2)
-                                        .addComponent(ctacteLabel3))
-                                    .addGap(44, 44, 44)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtRazonSocial)
-                                        .addComponent(txtDomicilio)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(0, 499, Short.MAX_VALUE)))))
-                            .addComponent(montoLabel5)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(montoLabel3)
-                                    .addComponent(montoLabel4)
-                                    .addComponent(montoLabel6))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtCdC, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtAporte, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtDonacion, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(montoLabel6)
+                        .addGap(20, 20, 20)
+                        .addComponent(txtCdC, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(458, 458, 458)
+                            .addComponent(imprimirButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cancelarButton))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelarButton, imprimirButton});
@@ -347,25 +353,18 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     .addComponent(txtDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(montoLabel3))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(montoLabel6)
-                        .addGap(37, 37, 37)
-                        .addComponent(montoLabel4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtCdC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDonacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtAporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
+                    .addComponent(montoLabel6)
+                    .addComponent(txtCdC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(imprimirButton))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        bindingGroup.bind();
     }
 
     // Code for dispatching events from components to event handlers.
@@ -474,9 +473,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
         cboEntidad.setSelectedItem(null);
         txtRazonSocial.setText("");
         rucField.setText("");
-
-        txtDonacion.setValue(0);
-        txtAporte.setValue(0);
+        txtDomicilio.setText("");
+        txtCdC.setValue(null);
         txtCtaCte.requestFocus();
 
     }
@@ -524,9 +522,48 @@ public class FrameFacturacionUnica extends JInternalFrame {
             factura.setRazonSocial(txtRazonSocial.getText());
             factura.setRuc(rucField.getText());
             factura.setDomicilio(txtDomicilio.getText());
-            factura.setCasillaDeCorreo(((Number) txtCdC.getValue()).intValue());
-            factura.setImporteDonacion(((Number) txtDonacion.getValue()).intValue());
-            factura.setImporteAporte(((Number) txtAporte.getValue()).intValue());
+            if (txtCdC.getValue() != null) {
+                factura.setCasillaDeCorreo(((Number) txtCdC.getValue()).intValue());
+            }
+            Collection<TblAsientos> ts = factura.getTblAsientosCollection();
+            if (ts == null) {
+                ts = new LinkedList<>();
+                factura.setTblAsientosCollection((List) ts);
+            }
+            int montoAporte = 0;
+            int montoDonacion = 0;
+            for (PagosRealizados pago : listPagos) {
+                if (pago.getFacturado()) {
+                    montoAporte += pago.getMontoAporte();
+                    montoDonacion += pago.getMontoDonacion();
+                    for (TblAsientosTemporales at : pago.getAsientosTemporalesList()) {
+                        at.setFacturado(true);
+
+                        TblAsientos asiento = new TblAsientos();
+                        asiento.setFechahora(factura.getFechahora());
+                        asiento.setIdCentroDeCosto(at.getIdCentroDeCosto());
+                        asiento.setIdCuentaContableDebe(at.getIdCuentaContableDebe());
+                        asiento.setIdCuentaContableHaber(at.getIdCuentaContableHaber());
+                        asiento.setMonto(at.getMonto());
+                        asiento.setIdUser(currentUser.getUser());
+
+                        Collection<TblAsientosTemporales> asientosT = asiento.getTblAsientosTemporalesCollection();
+                        if (asientosT == null) {
+                            asientosT = new LinkedList<>();
+                            asiento.setTblAsientosTemporalesCollection((List) asientosT);
+                        }
+                        asientosT.add(at);
+
+                        ts.add(asiento);
+
+                        entityManager.merge(at);
+                    }
+
+                }
+            }
+
+            factura.setImporteDonacion(montoAporte);
+            factura.setImporteAporte(montoDonacion);
             factura.setAnulado(false);
             factura.setIdUser(currentUser.getUser());
 
@@ -630,7 +667,6 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     cboEntidad.setSelectedItem(value.get());
                     txtCtaCte.setBackground(Color.green);
                     rucField.requestFocus();
-                    txtDonacion.requestFocus();
                 }
 
             }
@@ -647,10 +683,70 @@ public class FrameFacturacionUnica extends JInternalFrame {
             txtCtaCte.setText(((TblEntidades) cboEntidad.getSelectedItem()).getCtacte().toString());
             rucField.setText(((TblEntidades) cboEntidad.getSelectedItem()).getRucSinDv() + "-" + CalcDV.Pa_Calcular_Dv_11_A(((TblEntidades) cboEntidad.getSelectedItem()).getRucSinDv(), 11)
             );
+            loadPagos();
         } else {
             txtCtaCte.setText("");
         }
     }//GEN-LAST:event_cboEntidadActionPerformed
+
+    private void loadPagos() {
+        try {
+            imprimirButton.setEnabled(false);
+            listPagos.clear();
+            TblEntidades selectedEntidad = (TblEntidades) cboEntidad.getSelectedItem();
+            Calendar c = Calendar.getInstance();
+            c.setTime(dtpFecha.getDate());
+            c.set(Calendar.HOUR, 23);
+            c.set(Calendar.MINUTE, 59);
+            c.set(Calendar.SECOND, 59);
+
+            Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
+            queryT.setParameter("fecha", c.getTime());
+            queryT.setParameter("entidad", selectedEntidad);
+            List<TblTransferencias> listT = (List<TblTransferencias>) queryT.getResultList();
+            if (listT.size() > 0) {
+                imprimirButton.setEnabled(true);
+                for (TblTransferencias t : listT) {
+                    PagosRealizados p = new PagosRealizados();
+                    Collection<TblAsientosTemporales> pagosATList = p.getAsientosTemporalesList();
+                    if (pagosATList == null) {
+                        pagosATList = new LinkedList<>();
+                        p.setAsientosTemporalesList((List) pagosATList);
+                    }
+                    p.getAsientosTemporalesList().addAll(t.getTblAsientosTemporalesCollection());
+                    p.setEntidad(t.getIdEntidad());
+                    p.setFechahora(t.getFechahora());
+                    p.setMontoAporte(t.getMontoAporte());
+                    p.setMontoDonacion(t.getMontoDonacion());
+                    listPagos.add(p);
+                }
+            }
+            Query queryR = entityManager.createQuery("SELECT distinct t FROM TblRecibos t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
+            queryR.setParameter("fecha", c.getTime());
+            queryR.setParameter("entidad", selectedEntidad);
+            List<TblRecibos> listR = (List<TblRecibos>) queryR.getResultList();
+            if (listR.size() > 0) {
+                imprimirButton.setEnabled(true);
+                for (TblRecibos r : listR) {
+                    PagosRealizados p = new PagosRealizados();
+                    Collection<TblAsientosTemporales> pagosATList = p.getAsientosTemporalesList();
+                    if (pagosATList == null) {
+                        pagosATList = new LinkedList<>();
+                        p.setAsientosTemporalesList((List) pagosATList);
+                    }
+                    p.getAsientosTemporalesList().addAll(r.getTblAsientosTemporalesCollection());
+                    p.setEntidad(r.getIdEntidad());
+                    p.setFechahora(r.getFechahora());
+                    p.setMontoAporte(r.getMontoAporte());
+                    p.setMontoDonacion(r.getMontoDonacion());
+                    listPagos.add(p);
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }
 
     private void txtCtaCteInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtCtaCteInputMethodTextChanged
         // TODO add your handling code here:
@@ -668,32 +764,31 @@ public class FrameFacturacionUnica extends JInternalFrame {
     private javax.swing.JLabel idMiembroLabel1;
     private javax.swing.JLabel idMiembroLabel2;
     private javax.swing.JButton imprimirButton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private java.util.List<com.parah.mg.domain.TblFacturas> list;
     private java.util.List listEntidades;
-    private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
     private java.util.List<com.parah.mg.domain.TblGrupos> listGrupos;
+    private java.util.List<com.parah.mg.domain.models.PagosRealizados> listPagos;
     private java.util.List<com.parah.mg.domain.TblTimbrados> listTimbrados;
     private javax.swing.JLabel montoLabel;
     private javax.swing.JLabel montoLabel1;
     private javax.swing.JLabel montoLabel2;
-    private javax.swing.JLabel montoLabel3;
-    private javax.swing.JLabel montoLabel4;
     private javax.swing.JLabel montoLabel5;
     private javax.swing.JLabel montoLabel6;
     private javax.persistence.Query query;
     private javax.persistence.Query queryEntidades;
-    private javax.persistence.Query queryEventoTipos;
     private javax.persistence.Query queryGrupos;
+    private javax.persistence.Query queryPagos;
     private javax.persistence.Query queryTimbrados;
     private javax.swing.JTextField rucField;
-    private javax.swing.JFormattedTextField txtAporte;
     private javax.swing.JFormattedTextField txtCdC;
     private javax.swing.JTextField txtCtaCte;
     private javax.swing.JTextField txtDomicilio;
-    private javax.swing.JFormattedTextField txtDonacion;
     private javax.swing.JFormattedTextField txtNro;
     private javax.swing.JTextField txtRazonSocial;
     private javax.swing.JFormattedTextField txtTimbrado;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
     public static void main(String[] args) {

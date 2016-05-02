@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,6 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblEventos.findByDescripcion", query = "SELECT t FROM TblEventos t WHERE t.descripcion = :descripcion"),
     @NamedQuery(name = "TblEventos.findByPorcentajeAporte", query = "SELECT t FROM TblEventos t WHERE t.porcentajeAporte = :porcentajeAporte")})
 public class TblEventos implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
+    private Collection<TblEventoDetalle> tblEventoDetalleCollection;
 
     @OneToMany(mappedBy = "idEvento")
     private Collection<TblRecibos> tblRecibosCollection;
@@ -198,6 +202,15 @@ public class TblEventos implements Serializable {
 
     public void setTblTransferenciasCollection(Collection<TblTransferencias> tblTransferenciasCollection) {
         this.tblTransferenciasCollection = tblTransferenciasCollection;
+    }
+
+    @XmlTransient
+    public Collection<TblEventoDetalle> getTblEventoDetalleCollection() {
+        return tblEventoDetalleCollection;
+    }
+
+    public void setTblEventoDetalleCollection(Collection<TblEventoDetalle> tblEventoDetalleCollection) {
+        this.tblEventoDetalleCollection = tblEventoDetalleCollection;
     }
 
 }
