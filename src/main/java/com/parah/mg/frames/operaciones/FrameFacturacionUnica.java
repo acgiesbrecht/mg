@@ -473,7 +473,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
         cboEntidad.setSelectedItem(null);
         txtRazonSocial.setText("");
         rucField.setText("");
-
+        txtDomicilio.setText("");
+        txtCdC.setValue(null);
         txtCtaCte.requestFocus();
 
     }
@@ -521,7 +522,9 @@ public class FrameFacturacionUnica extends JInternalFrame {
             factura.setRazonSocial(txtRazonSocial.getText());
             factura.setRuc(rucField.getText());
             factura.setDomicilio(txtDomicilio.getText());
-            factura.setCasillaDeCorreo(((Number) txtCdC.getValue()).intValue());
+            if (txtCdC.getValue() != null) {
+                factura.setCasillaDeCorreo(((Number) txtCdC.getValue()).intValue());
+            }
             Collection<TblAsientos> ts = factura.getTblAsientosCollection();
             if (ts == null) {
                 ts = new LinkedList<>();
