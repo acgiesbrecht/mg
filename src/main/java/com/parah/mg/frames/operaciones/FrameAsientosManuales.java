@@ -5,10 +5,10 @@
  */
 package com.parah.mg.frames.operaciones;
 
-import com.parah.mg.frames.admin.*;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.parah.mg.frames.admin.*;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
@@ -102,7 +102,7 @@ public class FrameAsientosManuales extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblAsientos t WHERE size(t.tblFacturasCompraList) = 0");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblAsientos t WHERE t.observacion != null");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         dateToStringConverter1 = new com.parah.mg.utils.DateToStringConverter();
         dateTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
