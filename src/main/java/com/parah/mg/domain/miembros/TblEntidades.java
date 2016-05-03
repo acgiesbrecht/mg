@@ -5,15 +5,15 @@
  */
 package com.parah.mg.domain.miembros;
 
+import com.parah.mg.domain.TblEventoDetalle;
 import com.parah.mg.domain.TblFacturas;
 import com.parah.mg.domain.TblFormasDePago;
 import com.parah.mg.domain.TblRecibos;
 import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.TblUsers;
-import com.parah.mg.domain.TblEventoDetalle;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

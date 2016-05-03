@@ -123,7 +123,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${ruc}"));
         columnBinding.setColumnName("RUC");
-        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${importeAporte}"));
         columnBinding.setColumnName("Importe Aporte");
@@ -153,7 +153,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
             masterTable.getColumnModel().getColumn(2).setResizable(false);
             masterTable.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer1);
             masterTable.getColumnModel().getColumn(4).setResizable(false);
-            masterTable.getColumnModel().getColumn(4).setCellRenderer(rucTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(4).setCellRenderer(null);
             masterTable.getColumnModel().getColumn(5).setCellRenderer(numberCellRenderer1);
             masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
             masterTable.getColumnModel().getColumn(7).setCellRenderer(numberCellRenderer1);

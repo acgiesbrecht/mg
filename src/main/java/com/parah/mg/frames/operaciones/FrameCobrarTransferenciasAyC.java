@@ -100,7 +100,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoDetalle t WHERE t.id = null");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
-        queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
+        queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.apellidos, t.nombres");
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
         dateToStringConverter1 = new com.parah.mg.utils.DateToStringConverter();
         dateTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
@@ -120,6 +120,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         cboEventoTipo = new javax.swing.JComboBox();
         descripcionLabel3 = new javax.swing.JLabel();
         cboMarcarSeleccionados = new javax.swing.JButton();
+        descripcionLabel4 = new javax.swing.JLabel();
+        dtpFechaCobro = new org.jdesktop.swingx.JXDatePicker();
 
         FormListener formListener = new FormListener();
 
@@ -191,6 +193,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         cboMarcarSeleccionados.setText("Marcar como cobrado a las filas seleccionadas");
         cboMarcarSeleccionados.addActionListener(formListener);
 
+        descripcionLabel4.setText("Fecha de Cobro:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -198,18 +202,23 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(cboMarcarSeleccionados)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(saveButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(refreshButton))
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
+                    .addComponent(masterScrollPane)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(descripcionLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cboEventoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(cboMarcarSeleccionados)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                        .addComponent(saveButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(refreshButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(descripcionLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dtpFechaCobro, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -223,8 +232,12 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                     .addComponent(descripcionLabel3)
                     .addComponent(cboEventoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 585, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(descripcionLabel4)
+                    .addComponent(dtpFechaCobro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
@@ -296,13 +309,14 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                     t.setMontoAporte(pago.getMontoAporte());
                     t.setMontoDonacion(pago.getMontoDonacion());
                     t.setCobrado(true);
-                    Calendar c = Calendar.getInstance();
+                    /*Calendar c = Calendar.getInstance();
                     c.set(Calendar.MONTH, pago.getMes());
                     c.set(Calendar.YEAR, pago.getAno());
                     c.set(Calendar.DAY_OF_MONTH, 1);
                     c.add(Calendar.DATE, -1);
                     Date date = c.getTime();
-                    t.setFechahora(date);
+                    t.setFechahora(date);*/
+                    t.setFechahora(dtpFechaCobro.getDate());
                     t.setIdEventoTipo((TblEventoTipos) cboEventoTipo.getSelectedItem());
                     t.setIdUser(currentUser.getUser());
 
@@ -570,6 +584,15 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                     p.setCobrado(false);
                     list.add(p);
                 }
+                if (list.size() > 0) {
+                    Calendar c = Calendar.getInstance();
+                    c.set(Calendar.MONTH, list.get(0).getMes());
+                    c.set(Calendar.YEAR, list.get(0).getAno());
+                    c.set(Calendar.DAY_OF_MONTH, 1);
+                    c.add(Calendar.DATE, -1);
+                    Date date = c.getTime();
+                    dtpFechaCobro.setDate(date);
+                }
 
             }
         } catch (Exception ex) {
@@ -584,6 +607,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.swing.JLabel descripcionLabel3;
+    private javax.swing.JLabel descripcionLabel4;
+    private org.jdesktop.swingx.JXDatePicker dtpFechaCobro;
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private java.util.List<com.parah.mg.domain.models.PagosMensualesPendientes> list;

@@ -42,6 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblUsers.findByNombrecompleto", query = "SELECT t FROM TblUsers t WHERE t.nombrecompleto = :nombrecompleto")})
 public class TblUsers implements Serializable {
 
+    @OneToMany(mappedBy = "idUser")
+    private Collection<TblEventoDetalle> tblEventoDetalleCollection;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
     private Collection<TblRecibos> tblRecibosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
@@ -276,6 +279,15 @@ public class TblUsers implements Serializable {
 
     public void setTblTransferenciasCollection(Collection<TblTransferencias> tblTransferenciasCollection) {
         this.tblTransferenciasCollection = tblTransferenciasCollection;
+    }
+
+    @XmlTransient
+    public Collection<TblEventoDetalle> getTblEventoDetalleCollection() {
+        return tblEventoDetalleCollection;
+    }
+
+    public void setTblEventoDetalleCollection(Collection<TblEventoDetalle> tblEventoDetalleCollection) {
+        this.tblEventoDetalleCollection = tblEventoDetalleCollection;
     }
 
 }
