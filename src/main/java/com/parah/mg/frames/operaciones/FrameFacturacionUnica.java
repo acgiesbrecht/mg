@@ -466,7 +466,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
         if (list.size() > 0) {
             txtNro.setValue(list.get(list.size() - 1).getNro() + 1);
         } else {
-            txtNro.setValue(1);
+            txtNro.setValue(listTimbrados.get(0).getNroFacturaIncio());
         }
         dtpFecha.setDate(new Date());
         txtCtaCte.setText("");
@@ -496,13 +496,14 @@ public class FrameFacturacionUnica extends JInternalFrame {
             return false;
         }
 
-        if (list.size() > 0) {
+        /*if (list.size() > 0) {
             TblFacturas ultimaFactura = list.get(list.size() - 1);
-            if ((int) txtNro.getValue() <= ultimaFactura.getNro()) {
+            if (((Number) txtNro.getValue()).intValue() <= ultimaFactura.getNro()) {
+                JOptionPane.showMessageDialog(null, "Numero de Factura menor a la ultima factura!");
                 return false;
             }
 
-        }
+        }*/
         return true;
     }
 
