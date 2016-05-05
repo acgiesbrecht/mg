@@ -114,8 +114,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 cboFechaRemate.setSelectedIndex(cboFechaRemate.getItemCount() - 1);
             }
 
-            loadPendientes();
-
+            //loadPendientes();
             cboEntidad.setSelectedIndex(-1);
             KeyboardFocusManager.getCurrentKeyboardFocusManager()
                     .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
