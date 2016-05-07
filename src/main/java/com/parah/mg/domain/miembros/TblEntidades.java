@@ -18,6 +18,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -116,37 +117,37 @@ public class TblEntidades implements Serializable {
     @Column(name = "FECHA_DEFUNCION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDefuncion;
-    @OneToMany(mappedBy = "idEntidad2")
+    @OneToMany(mappedBy = "idEntidad2", fetch = FetchType.LAZY)
     private Collection<TblMiembrosRelaciones> tblMiembrosRelacionesCollection;
-    @OneToMany(mappedBy = "idEntidad1")
+    @OneToMany(mappedBy = "idEntidad1", fetch = FetchType.LAZY)
     private Collection<TblMiembrosRelaciones> tblMiembrosRelacionesCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad", fetch = FetchType.LAZY)
     private Collection<TblEventoDetalle> tblEventoDetalleCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad", fetch = FetchType.LAZY)
     private Collection<TblRecibos> tblRecibosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad", fetch = FetchType.LAZY)
     private Collection<TblTransferencias> tblTransferenciasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad", fetch = FetchType.LAZY)
     private Collection<TblFacturas> tblFacturasCollection;
     @JoinColumn(name = "ID_AREA_SERVICIO_EN_IGLESIA", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblAreasServicioEnIglesia idAreaServicioEnIglesia;
-    @OneToMany(mappedBy = "idEntidadPaganteAportes")
+    @OneToMany(mappedBy = "idEntidadPaganteAportes", fetch = FetchType.LAZY)
     private Collection<TblEntidades> tblEntidadesCollection;
     @JoinColumn(name = "ID_ENTIDAD_PAGANTE_APORTES", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblEntidades idEntidadPaganteAportes;
     @JoinColumn(name = "ID_FORMA_DE_PAGO_PREFERIDA", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblFormasDePago idFormaDePagoPreferida;
     @JoinColumn(name = "ID_MIEMBROS_ALERGIA", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblMiembrosAlergias idMiembrosAlergia;
     @JoinColumn(name = "ID_MIEMBROS_CATEGORIA_DE_PAGO", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblMiembrosCategoriasDePago idMiembrosCategoriaDePago;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblUsers idUser;
 
     public TblEntidades() {
