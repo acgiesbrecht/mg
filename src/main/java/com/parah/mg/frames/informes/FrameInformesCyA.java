@@ -98,6 +98,10 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         jLabel12 = new javax.swing.JLabel();
         jspAnoDebitoManual = new javax.swing.JSpinner();
         cmdAportesDebitoManual = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jspAnoAportesResumen = new javax.swing.JSpinner();
+        cmdAportesResumen = new javax.swing.JButton();
 
         dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
 
@@ -172,7 +176,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
 
         jLabel9.setText("Resumen de Aportes por Mes:");
 
-        jLabel10.setText("Listado de Aportes con Debito Manual:");
+        jLabel10.setText("Resumen de Aportes con Debito Manual:");
 
         jLabel12.setText("Año:");
 
@@ -180,6 +184,17 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         cmdAportesDebitoManual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdAportesDebitoManualActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setText("Resumen Anual de Aportes:");
+
+        jLabel13.setText("Año:");
+
+        cmdAportesResumen.setText("Ver");
+        cmdAportesResumen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdAportesResumenActionPerformed(evt);
             }
         });
 
@@ -208,6 +223,14 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(cmdResumenPorMes)))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel11)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel13)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jspAnoAportesResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cmdAportesResumen))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(jLabel10)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -267,7 +290,13 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                     .addComponent(jLabel12)
                     .addComponent(jspAnoDebitoManual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmdAportesDebitoManual))
-                .addContainerGap(447, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel13)
+                    .addComponent(jspAnoAportesResumen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdAportesResumen))
+                .addContainerGap(422, Short.MAX_VALUE))
         );
 
         pack();
@@ -343,12 +372,23 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("ano", Integer.parseInt(jspAnoDebitoManual.getValue().toString()));
-            Utils.getInstance().showReport("aportes_miembros_manual", "aportes_miembros_manual_subreport", parameters);
+            Utils.getInstance().showReport("aportes_resumen_miembros_manual", "aportes_resumen_miembros_manual_subreport", parameters);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }//GEN-LAST:event_cmdAportesDebitoManualActionPerformed
+
+    private void cmdAportesResumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAportesResumenActionPerformed
+        try {
+            Map parameters = new HashMap();
+            parameters.put("ano", Integer.parseInt(jspAnoAportesResumen.getValue().toString()));
+            Utils.getInstance().showReport("aportes_resumen", "aportes_resumen_subreport", parameters);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdAportesResumenActionPerformed
 
     /**
      * @param args the command line arguments
@@ -401,6 +441,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cboMes;
     private javax.swing.JComboBox<String> cboMesA;
     private javax.swing.JButton cmdAportesDebitoManual;
+    private javax.swing.JButton cmdAportesResumen;
     private javax.swing.JButton cmdPendientesPorMes;
     private javax.swing.JButton cmdPendientesPorMesA;
     private javax.swing.JButton cmdResumenPorMes;
@@ -409,7 +450,9 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -420,6 +463,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JSpinner jspAno;
     private javax.swing.JSpinner jspAnoA;
+    private javax.swing.JSpinner jspAnoAportesResumen;
     private javax.swing.JSpinner jspAnoDebitoManual;
     private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
     private java.util.List<com.parah.mg.domain.miembros.TblEntidades> listMiembros;

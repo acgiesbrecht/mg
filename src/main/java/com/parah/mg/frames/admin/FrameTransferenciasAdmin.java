@@ -5,15 +5,9 @@
  */
 package com.parah.mg.frames.admin;
 
-import ca.odell.glazedlists.GlazedLists;
-import ca.odell.glazedlists.matchers.TextMatcherEditor;
-import ca.odell.glazedlists.swing.AutoCompleteSupport;
-import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblTransferencias;
-import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -25,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.prefs.Preferences;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
@@ -73,13 +66,13 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         filterHeader.setAdaptiveChoices(false);
         filterHeader.getParserModel().setIgnoreCase(true);
 
-        AutoCompleteSupport support2 = AutoCompleteSupport.install(cboEvento, GlazedLists.eventListOf(listEventos.toArray()));
+        /*AutoCompleteSupport support2 = AutoCompleteSupport.install(cboEvento, GlazedLists.eventListOf(listEventos.toArray()));
         support2.setFilterMode(TextMatcherEditor.CONTAINS);
 
         //AutoCompleteDecorator.decorate(cboMiembro);
         AutoCompleteSupport support1 = AutoCompleteSupport.install(cboMiembro, GlazedLists.eventListOf(listMiembros.toArray()));
         support1.setFilterMode(TextMatcherEditor.CONTAINS);
-
+         */
         Action marcarCobrado = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -119,30 +112,11 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
-        fechahoraLabel = new javax.swing.JLabel();
-        conceptoLabel = new javax.swing.JLabel();
-        montoLabel = new javax.swing.JLabel();
-        idLabel = new javax.swing.JLabel();
-        idMiembroLabel = new javax.swing.JLabel();
-        conceptoField = new javax.swing.JTextField();
-        idField = new javax.swing.JTextField();
         saveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
-        newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
-        newButton1 = new javax.swing.JButton();
-        idMiembroLabel1 = new javax.swing.JLabel();
-        txtCtaCte = new javax.swing.JTextField();
-        idMiembroLabel2 = new javax.swing.JLabel();
-        cboMiembro = new javax.swing.JComboBox();
+        printButton = new javax.swing.JButton();
         chkCobrado = new javax.swing.JCheckBox();
-        dtpFecha = new org.jdesktop.swingx.JXDatePicker();
-        cboEvento = new javax.swing.JComboBox();
-        conceptoLabel1 = new javax.swing.JLabel();
-        montoField = new javax.swing.JFormattedTextField();
-        montoDonacionField = new javax.swing.JFormattedTextField();
-        montoLabel1 = new javax.swing.JLabel();
-        newButton2 = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -197,75 +171,21 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
         }
 
-        fechahoraLabel.setText("Fecha/Hora:");
-
-        conceptoLabel.setText("Concepto:");
-
-        montoLabel.setText("Monto Aporte:");
-
-        idLabel.setDisplayedMnemonic('N');
-        idLabel.setLabelFor(idField);
-        idLabel.setText("Nro:");
-
-        idMiembroLabel.setText("Cliente:");
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.concepto}"), conceptoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue("null");
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), conceptoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        idField.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.id}"), idField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue("null");
-        bindingGroup.addBinding(binding);
-
         saveButton.setText("Guardar");
         saveButton.addActionListener(formListener);
 
         refreshButton.setText("Cancelar");
         refreshButton.addActionListener(formListener);
 
-        newButton.setMnemonic('u');
-        newButton.setText("Nuevo");
-        newButton.addActionListener(formListener);
-
         deleteButton.setText("Eliminar");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         deleteButton.addActionListener(formListener);
 
-        newButton1.setText("Imprimir");
-        newButton1.addActionListener(formListener);
-
-        idMiembroLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        idMiembroLabel1.setText("Cta. Cte.:");
-
-        txtCtaCte.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtCtaCte, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        txtCtaCte.addFocusListener(formListener);
-        txtCtaCte.addActionListener(formListener);
-        txtCtaCte.addKeyListener(formListener);
-
-        idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        idMiembroLabel2.setText("Nombre:");
-
-        cboMiembro.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
-        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listMiembros, cboMiembro);
-        bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idEntidad}"), cboMiembro, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboMiembro, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        cboMiembro.addActionListener(formListener);
+        printButton.setText("Imprimir");
+        printButton.addActionListener(formListener);
 
         chkCobrado.setLabel("Cobrado");
         chkCobrado.setName(""); // NOI18N
@@ -277,169 +197,43 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), chkCobrado, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("date"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventos, cboEvento);
-        bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idEvento}"), cboEvento, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboEvento, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        cboEvento.addActionListener(formListener);
-
-        conceptoLabel1.setText("Evento:");
-
-        montoField.setColumns(9);
-        montoField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        montoField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        montoField.setText("0");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoAporte}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        binding.setConverter(integerLongConverter1);
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        montoField.addFocusListener(formListener);
-        montoField.addMouseListener(formListener);
-        montoField.addActionListener(formListener);
-
-        montoDonacionField.setColumns(9);
-        montoDonacionField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        montoDonacionField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        montoDonacionField.setText("0");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoDonacion}"), montoDonacionField, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoDonacionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        montoDonacionField.addFocusListener(formListener);
-        montoDonacionField.addMouseListener(formListener);
-        montoDonacionField.addActionListener(formListener);
-
-        montoLabel1.setText("Monto Donacion:");
-
-        newButton2.setMnemonic('u');
-        newButton2.setText("Marcar como no facturado");
-        newButton2.addActionListener(formListener);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(masterScrollPane)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(idMiembroLabel)
-                                .addGap(24, 24, 24)
-                                .addComponent(idMiembroLabel1)
-                                .addGap(12, 12, 12)
-                                .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(idMiembroLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cboMiembro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(montoLabel)
-                                    .addComponent(conceptoLabel))
-                                .addGap(30, 30, 30)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cboEvento, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(conceptoField)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(chkCobrado, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 0, Short.MAX_VALUE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(conceptoLabel1)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(montoLabel1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(montoDonacionField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(fechahoraLabel)
-                                            .addComponent(idLabel))
-                                        .addGap(44, 44, 44)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 813, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(newButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
-                        .addComponent(newButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(newButton)
+                        .addComponent(chkCobrado, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(printButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(refreshButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveButton)))
-                .addContainerGap())
+                        .addComponent(saveButton)
+                        .addGap(22, 22, 22))))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, newButton, refreshButton, saveButton});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, refreshButton, saveButton});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fechahoraLabel)
-                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idMiembroLabel)
-                    .addComponent(idMiembroLabel1)
-                    .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idMiembroLabel2)
-                    .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(conceptoLabel1)
-                    .addComponent(cboEvento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(conceptoLabel)
-                    .addComponent(conceptoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(montoLabel)
-                    .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(montoLabel1)
-                    .addComponent(montoDonacionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7)
-                .addComponent(chkCobrado)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
                     .addComponent(deleteButton)
-                    .addComponent(newButton)
-                    .addComponent(newButton1)
-                    .addComponent(newButton2))
+                    .addComponent(printButton)
+                    .addComponent(chkCobrado))
                 .addContainerGap())
         );
 
@@ -448,7 +242,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener, java.awt.event.MouseListener, javax.swing.event.InternalFrameListener {
+    private class FormListener implements java.awt.event.ActionListener, javax.swing.event.InternalFrameListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -457,87 +251,12 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             else if (evt.getSource() == refreshButton) {
                 FrameTransferenciasAdmin.this.refreshButtonActionPerformed(evt);
             }
-            else if (evt.getSource() == newButton) {
-                FrameTransferenciasAdmin.this.newButtonActionPerformed(evt);
-            }
             else if (evt.getSource() == deleteButton) {
                 FrameTransferenciasAdmin.this.deleteButtonActionPerformed(evt);
             }
-            else if (evt.getSource() == newButton1) {
-                FrameTransferenciasAdmin.this.newButton1ActionPerformed(evt);
+            else if (evt.getSource() == printButton) {
+                FrameTransferenciasAdmin.this.printButtonActionPerformed(evt);
             }
-            else if (evt.getSource() == txtCtaCte) {
-                FrameTransferenciasAdmin.this.txtCtaCteActionPerformed(evt);
-            }
-            else if (evt.getSource() == cboMiembro) {
-                FrameTransferenciasAdmin.this.cboMiembroActionPerformed(evt);
-            }
-            else if (evt.getSource() == cboEvento) {
-                FrameTransferenciasAdmin.this.cboEventoActionPerformed(evt);
-            }
-            else if (evt.getSource() == montoField) {
-                FrameTransferenciasAdmin.this.montoFieldActionPerformed(evt);
-            }
-            else if (evt.getSource() == montoDonacionField) {
-                FrameTransferenciasAdmin.this.montoDonacionFieldActionPerformed(evt);
-            }
-            else if (evt.getSource() == newButton2) {
-                FrameTransferenciasAdmin.this.newButton2ActionPerformed(evt);
-            }
-        }
-
-        public void focusGained(java.awt.event.FocusEvent evt) {
-            if (evt.getSource() == txtCtaCte) {
-                FrameTransferenciasAdmin.this.txtCtaCteFocusGained(evt);
-            }
-            else if (evt.getSource() == montoField) {
-                FrameTransferenciasAdmin.this.montoFieldFocusGained(evt);
-            }
-            else if (evt.getSource() == montoDonacionField) {
-                FrameTransferenciasAdmin.this.montoDonacionFieldFocusGained(evt);
-            }
-        }
-
-        public void focusLost(java.awt.event.FocusEvent evt) {
-        }
-
-        public void keyPressed(java.awt.event.KeyEvent evt) {
-            if (evt.getSource() == txtCtaCte) {
-                FrameTransferenciasAdmin.this.txtCtaCteKeyPressed(evt);
-            }
-        }
-
-        public void keyReleased(java.awt.event.KeyEvent evt) {
-            if (evt.getSource() == txtCtaCte) {
-                FrameTransferenciasAdmin.this.txtCtaCteKeyReleased(evt);
-            }
-        }
-
-        public void keyTyped(java.awt.event.KeyEvent evt) {
-            if (evt.getSource() == txtCtaCte) {
-                FrameTransferenciasAdmin.this.txtCtaCteKeyTyped(evt);
-            }
-        }
-
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            if (evt.getSource() == montoField) {
-                FrameTransferenciasAdmin.this.montoFieldMouseClicked(evt);
-            }
-            else if (evt.getSource() == montoDonacionField) {
-                FrameTransferenciasAdmin.this.montoDonacionFieldMouseClicked(evt);
-            }
-        }
-
-        public void mouseEntered(java.awt.event.MouseEvent evt) {
-        }
-
-        public void mouseExited(java.awt.event.MouseEvent evt) {
-        }
-
-        public void mousePressed(java.awt.event.MouseEvent evt) {
-        }
-
-        public void mouseReleased(java.awt.event.MouseEvent evt) {
         }
 
         public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -631,21 +350,6 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        try {
-            com.parah.mg.domain.TblTransferencias t = new com.parah.mg.domain.TblTransferencias();
-            entityManager.persist(t);
-            t.setIdUser(currentUser.getUser());
-            list.add(t);
-            int row = list.size() - 1;
-            masterTable.setRowSelectionInterval(row, row);
-            masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_newButtonActionPerformed
-
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
             entityManager.getTransaction().commit();
@@ -669,13 +373,13 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    private void newButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButton1ActionPerformed
+    private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
         if (masterTable.getSelectedRow() > -1) {
             try {
                 //Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
                 Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
                 Map parameters = new HashMap();
-                parameters.put("transferencia_id", Integer.valueOf(idField.getText()));
+                parameters.put("transferencia_id", list.get(masterTable.convertRowIndexToModel(masterTable.getSelectedRow())).getId());
                 //parameters.put("logo", getClass().getResource("/reports/cclogo200.png").getPath());
                 parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
                 parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
@@ -706,150 +410,31 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
                 LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             }
         }
-    }//GEN-LAST:event_newButton1ActionPerformed
+    }//GEN-LAST:event_printButtonActionPerformed
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
 
     }//GEN-LAST:event_formInternalFrameActivated
 
-    private void txtCtaCteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCtaCteFocusGained
-        try {
-            txtCtaCte.selectAll();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCtaCteFocusGained
-
-    private void txtCtaCteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCtaCteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCtaCteActionPerformed
-
-    private void txtCtaCteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCtaCteKeyPressed
-
-    private void txtCtaCteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyReleased
-        try {
-            txtCtaCte.setBackground(Color.white);
-            if (txtCtaCte.getText().length() > 4) {
-                List<TblEntidades> list = listMiembros;
-                Optional<TblEntidades> value = list.stream().filter(a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
-                        .findFirst();
-                if (value.isPresent()) {
-                    cboMiembro.setSelectedItem(value.get());
-                    txtCtaCte.setBackground(Color.green);
-                    cboMiembro.requestFocusInWindow();
-                }
-
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCtaCteKeyReleased
-
-    private void txtCtaCteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyTyped
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCtaCteKeyTyped
-
-    private void cboMiembroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMiembroActionPerformed
-        if (cboMiembro.getSelectedItem() != null) {
-            txtCtaCte.setText(((TblEntidades) cboMiembro.getSelectedItem()).getCtacte().toString());
-        } else {
-            txtCtaCte.setText("");
-        }
-    }//GEN-LAST:event_cboMiembroActionPerformed
-
-    private void cboEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEventoActionPerformed
-
-    }//GEN-LAST:event_cboEventoActionPerformed
-
-    private void montoFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_montoFieldFocusGained
-        montoField.selectAll();
-    }//GEN-LAST:event_montoFieldFocusGained
-
-    private void montoFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_montoFieldMouseClicked
-
-    }//GEN-LAST:event_montoFieldMouseClicked
-
-    private void montoFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_montoFieldActionPerformed
-
-    }//GEN-LAST:event_montoFieldActionPerformed
-
-    private void montoDonacionFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_montoDonacionFieldFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_montoDonacionFieldFocusGained
-
-    private void montoDonacionFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_montoDonacionFieldMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_montoDonacionFieldMouseClicked
-
-    private void montoDonacionFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_montoDonacionFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_montoDonacionFieldActionPerformed
-
-    private void newButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButton2ActionPerformed
-        try {
-            if (masterTable.getSelectedRow() > -1) {
-                int[] selected = masterTable.getSelectedRows();
-
-                TblTransferencias t = list.get(masterTable.convertRowIndexToModel(selected[0]));
-                for (TblAsientosTemporales at : t.getTblAsientosTemporalesCollection()) {
-                    at.setFacturado(false);
-                    entityManager.merge(at);
-                }
-                entityManager.getTransaction().commit();
-                entityManager.getTransaction().begin();
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_newButton2ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox cboEvento;
-    private javax.swing.JComboBox cboMiembro;
     private javax.swing.JCheckBox chkCobrado;
-    private javax.swing.JTextField conceptoField;
-    private javax.swing.JLabel conceptoLabel;
-    private javax.swing.JLabel conceptoLabel1;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.swing.JButton deleteButton;
-    private org.jdesktop.swingx.JXDatePicker dtpFecha;
     private javax.persistence.EntityManager entityManager;
-    private javax.swing.JLabel fechahoraLabel;
-    private javax.swing.JTextField idField;
-    private javax.swing.JLabel idLabel;
-    private javax.swing.JLabel idMiembroLabel;
-    private javax.swing.JLabel idMiembroLabel1;
-    private javax.swing.JLabel idMiembroLabel2;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private java.util.List<com.parah.mg.domain.TblTransferencias> list;
     private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
     private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
-    private javax.swing.JFormattedTextField montoDonacionField;
-    private javax.swing.JFormattedTextField montoField;
-    private javax.swing.JLabel montoLabel;
-    private javax.swing.JLabel montoLabel1;
-    private javax.swing.JButton newButton;
-    private javax.swing.JButton newButton1;
-    private javax.swing.JButton newButton2;
     private com.parah.mg.utils.NumberCellRenderer numberCellRenderer1;
+    private javax.swing.JButton printButton;
     private javax.persistence.Query query;
     private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryMiembros;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;
-    private javax.swing.JTextField txtCtaCte;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
