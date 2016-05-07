@@ -6,6 +6,7 @@
 package com.parah.mg.frames;
 
 import com.parah.mg.domain.TblDatabaseUpdates;
+import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.TblUsers;
 import com.parah.mg.frames.admin.FrameAutofacturasAdmin;
 import com.parah.mg.frames.admin.FrameCategoriasArticulosAdmin;
@@ -29,8 +30,8 @@ import com.parah.mg.frames.informes.FrameInformesRemates;
 import com.parah.mg.frames.operaciones.FrameAportesDetalle;
 import com.parah.mg.frames.operaciones.FrameAsientosManuales;
 import com.parah.mg.frames.operaciones.FrameAutofacturacion;
-import com.parah.mg.frames.operaciones.FrameCobrarTransferencias;
 import com.parah.mg.frames.operaciones.FrameCobrarTransferenciasAyC;
+import com.parah.mg.frames.operaciones.FrameCobrarTransferenciasRemates;
 import com.parah.mg.frames.operaciones.FrameColectasDetalle;
 import com.parah.mg.frames.operaciones.FrameFacturacionColectiva;
 import com.parah.mg.frames.operaciones.FrameFacturacionUnica;
@@ -134,7 +135,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
                             mnuOpFacturaUnica.setEnabled(currentUser.hasRole(2));
                             mnuOpFacturaPendientes.setEnabled(currentUser.hasRole(2));
-                            //mnuOpCobrarTransferencias.setEnabled(currentUser.hasRole(2));
+                            mnuOpCobrarTransferencias.setEnabled(currentUser.hasRole(2));
                             mnuOpCobrarTransferenciasAyC.setEnabled(currentUser.hasRole(2));
 
                             mnuEgFacturas.setEnabled(currentUser.hasRole(2));
@@ -178,6 +179,7 @@ public class MdiFrame extends javax.swing.JFrame {
             currentUser.setUser(null);
 
             EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
+            entityManager.getTransaction().begin();
 
             try {
                 Object o = entityManager.createNativeQuery("select count(*) from tbl_users where 1=2").getSingleResult();
@@ -215,6 +217,18 @@ public class MdiFrame extends javax.swing.JFrame {
             }
             if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20160429.sql") == null) {
                 hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20160429.sql", hasBackedUp);
+            }
+            if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20160507.sql") == null) {
+                hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20160507.sql", hasBackedUp);
+                List<TblTransferencias> listT = entityManager.createQuery("SELECT t FROM TblTransferencias t").getResultList();
+                for (TblTransferencias t : listT) {
+                    if (t.getFechahoraCompromiso() == null) {
+                        t.setFechahoraCompromiso(t.getFechahora());
+                        entityManager.merge(t);
+                    }
+                }
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
             }
 
             List<TblUsers> list = entityManager.createQuery("SELECT t FROM TblUsers t").getResultList();
@@ -1022,7 +1036,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuOpCobrarTransferenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpCobrarTransferenciasActionPerformed
         try {
-            FrameCobrarTransferencias frame = new FrameCobrarTransferencias();
+            FrameCobrarTransferenciasRemates frame = new FrameCobrarTransferenciasRemates();
             frame.setVisible(true);
 
             desktop.add(frame);

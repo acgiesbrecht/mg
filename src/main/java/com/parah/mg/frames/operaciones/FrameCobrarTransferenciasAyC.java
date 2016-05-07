@@ -309,13 +309,13 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                     t.setMontoAporte(pago.getMontoAporte());
                     t.setMontoDonacion(pago.getMontoDonacion());
                     t.setCobrado(true);
-                    /*Calendar c = Calendar.getInstance();
+                    Calendar c = Calendar.getInstance();
                     c.set(Calendar.MONTH, pago.getMes());
                     c.set(Calendar.YEAR, pago.getAno());
                     c.set(Calendar.DAY_OF_MONTH, 1);
                     c.add(Calendar.DATE, -1);
                     Date date = c.getTime();
-                    t.setFechahora(date);*/
+                    t.setFechahoraCompromiso(date);
                     t.setFechahora(dtpFechaCobro.getDate());
                     t.setIdEventoTipo((TblEventoTipos) cboEventoTipo.getSelectedItem());
                     t.setIdUser(currentUser.getUser());
@@ -549,16 +549,16 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                         + "                group by MONTH(ev.FECHA), YEAR(ev.FECHA), ed.id_entidad"
                         + " UNION ALL  "
                         + " SELECT p.id_entidad,"
-                        + "                 MONTH(p.fechahora) AS mes,"
-                        + "                 YEAR(p.fechahora) AS ano,"
+                        + "                 MONTH(p.fechahora_compromiso) AS mes,"
+                        + "                 YEAR(p.fechahora_compromiso) AS ano,"
                         + "                 -SUM(p.MONTO_APORTE) AS montoAporte,"
                         + "                 -SUM(p.MONTO_DONACION) AS montoDonacion"
                         + "                 FROM MG.TBL_TRANSFERENCIAS p WHERE p.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString()
                         + "                 group by YEAR(p.FECHAHORA), MONTH(p.FECHAHORA), p.id_entidad"
                         + " UNION ALL "
                         + " SELECT p.id_entidad,"
-                        + "        MONTH(p.fechahora) AS mes,"
-                        + "        YEAR(p.fechahora) AS ano,"
+                        + "        MONTH(p.fechahora_compromiso) AS mes,"
+                        + "        YEAR(p.fechahora_compromiso) AS ano,"
                         + "        -SUM(p.MONTO_APORTE) AS montoAporte,"
                         + "        -SUM(p.MONTO_DONACION) AS montoDonacion"
                         + "        FROM MG.TBL_RECIBOS p WHERE p.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString()

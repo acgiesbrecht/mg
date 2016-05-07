@@ -861,6 +861,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 for (CuotaModel cuota : cuotasList) {
                     TblTransferencias transferencia = new TblTransferencias();
                     transferencia.setFechahora(cuota.getFecha());
+                    transferencia.setFechahoraCompromiso(cuota.getFecha());
                     transferencia.setIdEntidad(selectedEntidad);
                     transferencia.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
                     transferencia.setMontoAporte(cuota.getMonto() * ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte() / 100);
@@ -934,6 +935,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             if (reciboMonto > 0) {
                 TblRecibos recibo = new TblRecibos();
                 recibo.setFechahora(fecha);
+                recibo.setFechahoraCompromiso(fecha);
                 recibo.setIdEntidad(selectedEntidad);
                 recibo.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
                 recibo.setMontoAporte(reciboMonto * ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte() / 100);

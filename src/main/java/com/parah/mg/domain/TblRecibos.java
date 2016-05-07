@@ -57,6 +57,9 @@ public class TblRecibos implements Serializable {
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechahora;
+    @Column(name = "FECHAHORA_COMPROMISO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechahoraCompromiso;
     @Size(max = 50)
     @Column(name = "CONCEPTO")
     private String concepto;
@@ -114,6 +117,14 @@ public class TblRecibos implements Serializable {
 
     public void setFechahora(Date fechahora) {
         this.fechahora = fechahora;
+    }
+
+    public Date getFechahoraCompromiso() {
+        return fechahoraCompromiso;
+    }
+
+    public void setFechahoraCompromiso(Date fechahoraCompromiso) {
+        this.fechahoraCompromiso = fechahoraCompromiso;
     }
 
     public String getConcepto() {
