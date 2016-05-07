@@ -267,7 +267,7 @@ public class Utils extends Component {
             if (error) {
                 JOptionPane.showMessageDialog(null, "Error. Por favor pruebe otra vez.");
             } else {
-                JOptionPane.showMessageDialog(null, "Base de Datos restablecida!");
+                JOptionPane.showMessageDialog(null, "Base de Datos actualizada con exito!");
 
             }
 

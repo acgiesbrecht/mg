@@ -9,9 +9,6 @@ import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.beans.Beans;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,12 +19,9 @@ import java.util.Map;
 import java.util.prefs.Preferences;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -72,7 +66,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         //AutoCompleteDecorator.decorate(cboMiembro);
         AutoCompleteSupport support1 = AutoCompleteSupport.install(cboMiembro, GlazedLists.eventListOf(listMiembros.toArray()));
         support1.setFilterMode(TextMatcherEditor.CONTAINS);
-         */
+
         Action marcarCobrado = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -86,6 +80,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
                 "marcarCobrado");
         masterTable.getActionMap().put("marcarCobrado",
                 marcarCobrado);
+         */
     }
 
     /**
@@ -112,11 +107,8 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
-        saveButton = new javax.swing.JButton();
-        refreshButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         printButton = new javax.swing.JButton();
-        chkCobrado = new javax.swing.JCheckBox();
 
         FormListener formListener = new FormListener();
 
@@ -134,8 +126,12 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         columnBinding.setColumnName("Nro");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahoraCompromiso}"));
+        columnBinding.setColumnName("Fecha/Hora Compromiso");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
-        columnBinding.setColumnName("Fecha/Hora");
+        columnBinding.setColumnName("Fecha/Hora Cobro");
         columnBinding.setColumnClass(java.util.Date.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
@@ -166,16 +162,11 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(1).setCellRenderer(dateTableCellRenderer1);
-            masterTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer1);
             masterTable.getColumnModel().getColumn(5).setCellRenderer(numberCellRenderer1);
             masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(7).setCellRenderer(numberCellRenderer1);
         }
-
-        saveButton.setText("Guardar");
-        saveButton.addActionListener(formListener);
-
-        refreshButton.setText("Cancelar");
-        refreshButton.addActionListener(formListener);
 
         deleteButton.setText("Eliminar");
 
@@ -187,16 +178,6 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         printButton.setText("Imprimir");
         printButton.addActionListener(formListener);
 
-        chkCobrado.setLabel("Cobrado");
-        chkCobrado.setName(""); // NOI18N
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.cobrado}"), chkCobrado, org.jdesktop.beansbinding.BeanProperty.create("selected"));
-        binding.setSourceNullValue(false);
-        binding.setSourceUnreadableValue(false);
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), chkCobrado, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -204,36 +185,23 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 813, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 813, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(chkCobrado, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(printButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(refreshButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveButton)
-                        .addGap(22, 22, 22))))
+                        .addComponent(deleteButton)))
+                .addContainerGap())
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, refreshButton, saveButton});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(saveButton)
-                    .addComponent(refreshButton)
                     .addComponent(deleteButton)
-                    .addComponent(printButton)
-                    .addComponent(chkCobrado))
+                    .addComponent(printButton))
                 .addContainerGap())
         );
 
@@ -245,13 +213,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
     private class FormListener implements java.awt.event.ActionListener, javax.swing.event.InternalFrameListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            if (evt.getSource() == saveButton) {
-                FrameTransferenciasAdmin.this.saveButtonActionPerformed(evt);
-            }
-            else if (evt.getSource() == refreshButton) {
-                FrameTransferenciasAdmin.this.refreshButtonActionPerformed(evt);
-            }
-            else if (evt.getSource() == deleteButton) {
+            if (evt.getSource() == deleteButton) {
                 FrameTransferenciasAdmin.this.deleteButtonActionPerformed(evt);
             }
             else if (evt.getSource() == printButton) {
@@ -309,11 +271,6 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        refresh();
-    }//GEN-LAST:event_refreshButtonActionPerformed
-
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             int reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar los registros seleccionados?", title, JOptionPane.YES_NO_OPTION);
@@ -349,29 +306,6 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             list.addAll(merged);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
-
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        try {
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
-            data.stream().forEach((entity) -> {
-                entityManager.refresh(entity);
-            });
-            list.clear();
-            list.addAll(data);
-        } catch (RollbackException ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-            entityManager.getTransaction().begin();
-            List<com.parah.mg.domain.TblTransferencias> merged = new ArrayList<>(list.size());
-            for (com.parah.mg.domain.TblTransferencias t : list) {
-                merged.add(entityManager.merge(t));
-            }
-            list.clear();
-            list.addAll(merged);
-        }
-    }//GEN-LAST:event_saveButtonActionPerformed
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
         if (masterTable.getSelectedRow() > -1) {
@@ -417,7 +351,6 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
     }//GEN-LAST:event_formInternalFrameActivated
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox chkCobrado;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.swing.JButton deleteButton;
@@ -433,8 +366,6 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
     private javax.persistence.Query query;
     private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryMiembros;
-    private javax.swing.JButton refreshButton;
-    private javax.swing.JButton saveButton;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
