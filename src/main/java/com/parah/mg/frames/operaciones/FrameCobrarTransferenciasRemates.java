@@ -12,6 +12,7 @@ import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.domain.TblEventoDetalle;
+import com.parah.mg.domain.TblEventos;
 import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -138,11 +139,11 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
         masterTable.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${entidad.ctacte}"));
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad.ctacte}"));
         columnBinding.setColumnName("Cta Cte");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${entidad.nombreCompleto}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad.nombreCompleto}"));
         columnBinding.setColumnName("Nombre");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
@@ -215,8 +216,8 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
                     .addComponent(jLabel2)
                     .addComponent(cboFechaRemate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(descripcionLabel4)
                     .addComponent(dtpFechaCobro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -282,6 +283,10 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
+            if (dtpFechaCobro.getDate() == null) {
+                JOptionPane.showMessageDialog(null, "Fecha de cobro invalida o no especificada.");
+                return;
+            }
             for (TblTransferencias t : list) {
                 if (t.getCobrado()) {
                     t.setCobrado(true);
@@ -359,6 +364,7 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
             if (cboFechaRemate.getSelectedItem() != null && entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
                 entityManager.getTransaction().begin();
+                query.setParameter("eventoId", (TblEventos) cboFechaRemate.getSelectedItem());
                 java.util.Collection data = query.getResultList();
                 for (Object entity : data) {
                     entityManager.refresh(entity);
