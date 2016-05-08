@@ -195,6 +195,13 @@
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
+                    <ComponentRef name="dateTableCellRenderer1"/>
+                  </Renderer>
+                </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
                   <Title/>
                   <Editor/>
@@ -227,6 +234,10 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="elements" source="list" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
+              <Subbinding sourcePath="${fechahoraCompromiso}">
+                <BindingParameter name="NAME" value="Fecha"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+              </Subbinding>
               <Subbinding sourcePath="${idEntidad.ctacte}">
                 <BindingParameter name="NAME" value="Cta Cte"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>

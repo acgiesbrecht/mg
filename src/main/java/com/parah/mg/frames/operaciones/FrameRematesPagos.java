@@ -871,6 +871,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                     transferencia.setCobrado(false);
                     transferencia.setIdUser(currentUser.getUser());
 
+                    /*--------ASIENTOS TEMPROALES RECIEN SE GENERAN AL COBRAR LA TRANSFERENCIA-----------
                     List<TblAsientos> listAsientos = new ArrayList<>();
                     for (TblEventoDetalle evd : listEventoDetalle) {
                         listAsientos.addAll(evd.getTblAsientosCollection());
@@ -903,7 +904,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                     aT.setEsAporte(false);
                     aT.setMonto(transferencia.getMontoDonacion());
                     listAsientosTemporales.add(aT);
-
+                     */
                     entityManager.getTransaction().begin();
                     entityManager.persist(transferencia);
                     entityManager.flush();

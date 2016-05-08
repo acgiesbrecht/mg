@@ -139,7 +139,10 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
         masterTable.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad.ctacte}"));
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahoraCompromiso}"));
+        columnBinding.setColumnName("Fecha");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad.ctacte}"));
         columnBinding.setColumnName("Cta Cte");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
@@ -158,10 +161,11 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
-            masterTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-            masterTable.getColumnModel().getColumn(0).setCellRenderer(ctaCteTableCellRenderer1);
-            masterTable.getColumnModel().getColumn(1).setPreferredWidth(200);
-            masterTable.getColumnModel().getColumn(2).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(0).setCellRenderer(dateTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(1).setPreferredWidth(50);
+            masterTable.getColumnModel().getColumn(1).setCellRenderer(ctaCteTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(2).setPreferredWidth(200);
+            masterTable.getColumnModel().getColumn(3).setCellRenderer(numberCellRenderer1);
         }
 
         saveButton.setText("Guardar");
@@ -294,10 +298,10 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
 
                     Query queryEvd = entityManager.createQuery("SELECT t FROM TblEventoDetalle t "
                             + "WHERE t.idEntidad = :entidad"
-                            + " AND t.idEvento. = :eventoId");
+                            + " AND t.idEvento = :eventoId");
 
                     queryEvd.setParameter("entidad", t.getIdEntidad());
-                    queryEvd.setParameter("evento", t.getIdEvento());
+                    queryEvd.setParameter("eventoId", t.getIdEvento());
                     List<TblEventoDetalle> listEvd = (List<TblEventoDetalle>) queryEvd.getResultList();
                     List<TblAsientos> listAsientos = new ArrayList<>();
                     for (TblEventoDetalle evd : listEvd) {
