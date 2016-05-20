@@ -554,7 +554,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                         + "                 -SUM(p.MONTO_APORTE) AS montoAporte,"
                         + "                 -SUM(p.MONTO_DONACION) AS montoDonacion"
                         + "                 FROM MG.TBL_TRANSFERENCIAS p WHERE p.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString()
-                        + "                 group by YEAR(p.FECHAHORA), MONTH(p.FECHAHORA), p.id_entidad"
+                        + "                 group by YEAR(p.FECHAHORA_COMPROMISO), MONTH(p.FECHAHORA_COMPROMISO), p.id_entidad"
                         + " UNION ALL "
                         + " SELECT p.id_entidad,"
                         + "        MONTH(p.fechahora_compromiso) AS mes,"
@@ -562,7 +562,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                         + "        -SUM(p.MONTO_APORTE) AS montoAporte,"
                         + "        -SUM(p.MONTO_DONACION) AS montoDonacion"
                         + "        FROM MG.TBL_RECIBOS p WHERE p.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString()
-                        + "        group by YEAR(p.FECHAHORA), MONTH(p.FECHAHORA), p.id_entidad) DETALLE LEFT JOIN MG.TBL_ENTIDADES e ON DETALLE.ID_ENTIDAD = e.ID"
+                        + "        group by YEAR(p.FECHAHORA_COMPROMISO), MONTH(p.FECHAHORA_COMPROMISO), p.id_entidad) DETALLE LEFT JOIN MG.TBL_ENTIDADES e ON DETALLE.ID_ENTIDAD = e.ID"
                         + " GROUP BY e.ID, e.CTACTE, e.APELLIDOS, e.NOMBRES, DETALLE.ano, DETALLE.mes) d"
                         + " WHERE MONTODONACION + MONTOAPORTE > 0"
                         + " ORDER BY CTACTE");
