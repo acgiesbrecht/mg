@@ -548,6 +548,9 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 if (value.isPresent()) {
                     cboEntidad.setSelectedItem(value.get());
                     txtCtaCte.setBackground(Color.green);
+                    if (cboEntidad.getSelectedItem() != null) {
+                        loadEntidad();
+                    }
                 }
 
 
@@ -1040,7 +1043,9 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtTransferenciaActionPerformed
 
     private void cboFechaRemateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFechaRemateActionPerformed
-
+        if (cboFechaRemate.getSelectedIndex() > -1) {
+            loadPendientes();
+        }
     }//GEN-LAST:event_cboFechaRemateActionPerformed
 
     /**
