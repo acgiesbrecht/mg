@@ -46,11 +46,12 @@ public class TblFormasDePago implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFormaDePagoPreferida")
+
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "idFormaDePagoPreferida")
     private Collection<TblEventoDetalle> tblEventoDetalleCollection;
     @OneToMany(mappedBy = "idFormaDePagoPreferida")
     private Collection<TblEntidades> tblEntidadesCollection;
-
+     */
     public TblFormasDePago() {
     }
 
@@ -79,7 +80,7 @@ public class TblFormasDePago implements Serializable {
         this.descripcion = descripcion;
     }
 
-    @XmlTransient
+    /*@XmlTransient
     public Collection<TblEventoDetalle> getTblEventoDetalleCollection() {
         return tblEventoDetalleCollection;
     }
@@ -95,8 +96,7 @@ public class TblFormasDePago implements Serializable {
 
     public void setTblEntidadesCollection(Collection<TblEntidades> tblEntidadesCollection) {
         this.tblEntidadesCollection = tblEntidadesCollection;
-    }
-
+    }*/
     @Override
     public int hashCode() {
         int hash = 0;

@@ -44,8 +44,8 @@ public class TblCategoriasArticulos implements Serializable {
     @Size(max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCategoriaArticulo")
-    private Collection<TblEventoDetalle> tblEventoDetalleCollection;
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "idCategoriaArticulo")
+    //private Collection<TblEventoDetalle> tblEventoDetalleCollection;
 
     public TblCategoriasArticulos() {
     }
@@ -70,15 +70,14 @@ public class TblCategoriasArticulos implements Serializable {
         this.descripcion = descripcion;
     }
 
-    @XmlTransient
+    /*@XmlTransient
     public Collection<TblEventoDetalle> getTblEventoDetalleCollection() {
         return tblEventoDetalleCollection;
     }
 
     public void setTblEventoDetalleCollection(Collection<TblEventoDetalle> tblEventoDetalleCollection) {
         this.tblEventoDetalleCollection = tblEventoDetalleCollection;
-    }
-
+    }*/
     @Override
     public int hashCode() {
         int hash = 0;

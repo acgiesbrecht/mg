@@ -910,7 +910,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                      */
                     entityManager.getTransaction().begin();
                     entityManager.persist(transferencia);
-                    entityManager.flush();
+                    //entityManager.flush();
                     entityManager.getTransaction().commit();
                     t_id = transferencia.getId();
                     if (t_id > 0) {
@@ -938,6 +938,10 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             Integer reciboMonto = ((Number) txtRecibo.getValue()).intValue();
             if (reciboMonto > 0) {
                 TblRecibos recibo = new TblRecibos();
+
+                entityManager.getTransaction().begin();
+                entityManager.persist(recibo);
+
                 recibo.setFechahora(fecha);
                 recibo.setFechahoraCompromiso(fecha);
                 recibo.setIdEntidad(selectedEntidad);
@@ -980,9 +984,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 aT.setMonto(recibo.getMontoDonacion());
                 listAsientosTemporales.add(aT);
 
-                entityManager.getTransaction().begin();
-                entityManager.persist(recibo);
-                entityManager.flush();
+                //entityManager.flush();
                 entityManager.getTransaction().commit();
 
                 r_id = recibo.getId();
