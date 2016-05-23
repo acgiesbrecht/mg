@@ -114,8 +114,6 @@ public class FrameRecibosAdmin extends JInternalFrame {
         integerLongConverter1 = new com.parah.mg.utils.IntegerLongConverter();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
-        saveButton = new javax.swing.JButton();
-        refreshButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         printButton = new javax.swing.JButton();
 
@@ -156,12 +154,6 @@ public class FrameRecibosAdmin extends JInternalFrame {
             masterTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
         }
 
-        saveButton.setText("Guardar");
-        saveButton.addActionListener(formListener);
-
-        refreshButton.setText("Cancelar");
-        refreshButton.addActionListener(formListener);
-
         deleteButton.setText("Eliminar");
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
@@ -184,25 +176,16 @@ public class FrameRecibosAdmin extends JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(printButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(refreshButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveButton)))
+                        .addComponent(deleteButton)))
                 .addContainerGap())
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, refreshButton, saveButton});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(saveButton)
-                    .addComponent(refreshButton)
                     .addComponent(deleteButton)
                     .addComponent(printButton))
                 .addGap(10, 10, 10))
@@ -221,12 +204,6 @@ public class FrameRecibosAdmin extends JInternalFrame {
             }
             else if (evt.getSource() == printButton) {
                 FrameRecibosAdmin.this.printButtonActionPerformed(evt);
-            }
-            else if (evt.getSource() == refreshButton) {
-                FrameRecibosAdmin.this.refreshButtonActionPerformed(evt);
-            }
-            else if (evt.getSource() == saveButton) {
-                FrameRecibosAdmin.this.saveButtonActionPerformed(evt);
             }
         }
 
@@ -257,14 +234,27 @@ public class FrameRecibosAdmin extends JInternalFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
-            int[] selected = masterTable.getSelectedRows();
-            List<com.parah.mg.domain.TblRecibos> toRemove = new ArrayList<>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
-                com.parah.mg.domain.TblRecibos t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-                toRemove.add(t);
-                entityManager.remove(t);
+            int reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar los registros seleccionados?", title, JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+
+                int[] selected = masterTable.getSelectedRows();
+                List<com.parah.mg.domain.TblRecibos> toRemove = new ArrayList<>(selected.length);
+                for (int idx = 0; idx < selected.length; idx++) {
+                    com.parah.mg.domain.TblRecibos t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                    toRemove.add(t);
+                    entityManager.remove(t);
+                }
+                //list.removeAll(toRemove);
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+                java.util.Collection data = query.getResultList();
+                data.stream().forEach((entity) -> {
+                    entityManager.refresh(entity);
+                });
+                list.clear();
+                list.addAll(data);
+
             }
-            list.removeAll(toRemove);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -276,7 +266,7 @@ public class FrameRecibosAdmin extends JInternalFrame {
     }//GEN-LAST:event_formInternalFrameActivated
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
-        if (masterTable.getSelectedRow() > 0) {
+        if (masterTable.getSelectedRow() > -1) {
             try {
                 //Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
                 Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
@@ -284,59 +274,14 @@ public class FrameRecibosAdmin extends JInternalFrame {
                 parameters.put("recibo_id", list.get(masterTable.convertRowIndexToModel(masterTable.getSelectedRow())).getId());
 
                 JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/recibo.jrxml"));
-
                 JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
-                //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-                //jReportsViewer.setVisible(true);
                 JasperPrintManager.printReport(jasperPrint, false);
-
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
                 LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             }
         }
     }//GEN-LAST:event_printButtonActionPerformed
-
-    @SuppressWarnings("unchecked")
-    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        try {
-            entityManager.getTransaction().rollback();
-            entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
-            for (Object entity : data) {
-                entityManager.refresh(entity);
-            }
-            list.clear();
-            list.addAll(data);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_refreshButtonActionPerformed
-
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        try {
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
-            for (Object entity : data) {
-                entityManager.refresh(entity);
-            }
-            list.clear();
-            list.addAll(data);
-        } catch (RollbackException ex) {
-
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-
-            entityManager.getTransaction().begin();
-            List<com.parah.mg.domain.TblRecibos> merged = new ArrayList<>(list.size());
-            for (com.parah.mg.domain.TblRecibos t : list) {
-                merged.add(entityManager.merge(t));
-            }
-            list.clear();
-            list.addAll(merged);
-        }
-    }//GEN-LAST:event_saveButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
@@ -354,8 +299,6 @@ public class FrameRecibosAdmin extends JInternalFrame {
     private javax.persistence.Query query;
     private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryMiembros;
-    private javax.swing.JButton refreshButton;
-    private javax.swing.JButton saveButton;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
