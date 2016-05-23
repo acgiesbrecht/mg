@@ -55,7 +55,9 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             entityManager.getTransaction().begin();
         }
 
-        TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
+        //MUY LENTO--------------------------------------------------
+        //TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
+        TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.DISABLED);
         filterHeader.setPosition(TableFilterHeader.Position.TOP);
         filterHeader.setAdaptiveChoices(false);
         filterHeader.getParserModel().setIgnoreCase(true);
@@ -94,17 +96,13 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t JOIN FETCH t.idEntidad");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
-        queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
-        listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
         dateToStringConverter1 = new com.parah.mg.utils.DateToStringConverter();
         dateTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
         numberCellRenderer1 = new com.parah.mg.utils.NumberCellRenderer();
         integerLongConverter1 = new com.parah.mg.utils.IntegerLongConverter();
-        queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idGrupo IN :grupos ORDER BY t.fecha");
-        queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
-        listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
+        ctaCteTableCellRenderer1 = new com.parah.mg.utils.CtaCteTableCellRenderer();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         deleteButton = new javax.swing.JButton();
@@ -116,6 +114,8 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
 
         numberCellRenderer1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         numberCellRenderer1.setText("numberCellRenderer1");
+
+        ctaCteTableCellRenderer1.setText("ctaCteTableCellRenderer1");
 
         addInternalFrameListener(formListener);
 
@@ -134,24 +134,21 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         columnBinding.setColumnName("Fecha/Hora Cobro");
         columnBinding.setColumnClass(java.util.Date.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad.ctacte}"));
+        columnBinding.setColumnName("Cta Cte");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad.nombreCompleto}"));
         columnBinding.setColumnName("Razon Social");
-        columnBinding.setColumnClass(com.parah.mg.domain.miembros.TblEntidades.class);
+        columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${concepto}"));
         columnBinding.setColumnName("Concepto");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoAporte}"));
-        columnBinding.setColumnName("Monto Aporte");
-        columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoDonacion}"));
-        columnBinding.setColumnName("Monto Donacion");
-        columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoTotal}"));
         columnBinding.setColumnName("Monto");
+        columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cobrado}"));
         columnBinding.setColumnName("Cobrado");
@@ -163,9 +160,9 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(1).setCellRenderer(dateTableCellRenderer1);
             masterTable.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer1);
-            masterTable.getColumnModel().getColumn(5).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(3).setResizable(false);
+            masterTable.getColumnModel().getColumn(3).setCellRenderer(ctaCteTableCellRenderer1);
             masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
-            masterTable.getColumnModel().getColumn(7).setCellRenderer(numberCellRenderer1);
         }
 
         deleteButton.setText("Eliminar");
@@ -185,7 +182,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 813, Short.MAX_VALUE)
+                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1003, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(printButton)
@@ -256,13 +253,6 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             });
             list.clear();
             list.addAll(data);
-
-            data = queryMiembros.getResultList();
-            data.stream().forEach((entity) -> {
-                entityManager.refresh(entity);
-            });
-            listMiembros.clear();
-            listMiembros.addAll(data);
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -351,21 +341,18 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
     }//GEN-LAST:event_formInternalFrameActivated
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.parah.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.swing.JButton deleteButton;
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private java.util.List<com.parah.mg.domain.TblTransferencias> list;
-    private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
-    private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private com.parah.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.swing.JButton printButton;
     private javax.persistence.Query query;
-    private javax.persistence.Query queryEventos;
-    private javax.persistence.Query queryMiembros;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 

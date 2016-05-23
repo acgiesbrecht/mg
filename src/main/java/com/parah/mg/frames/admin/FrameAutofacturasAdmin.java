@@ -7,7 +7,6 @@ package com.parah.mg.frames.admin;
 
 import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblAutofacturas;
-import com.parah.mg.domain.TblAutofacturas;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
@@ -53,7 +52,7 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
         chkAnulado.setVisible(false);
         txtNro.setVisible(false);
 
-        TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
+        TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.DISABLED);
         filterHeader.setAdaptiveChoices(false);
         filterHeader.getParserModel().setIgnoreCase(true);
         filterHeader.setPosition(TableFilterHeader.Position.TOP);

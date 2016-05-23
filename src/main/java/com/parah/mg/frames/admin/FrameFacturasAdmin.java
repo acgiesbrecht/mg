@@ -53,10 +53,11 @@ public class FrameFacturasAdmin extends JInternalFrame {
         chkAnulado.setVisible(false);
         txtNro.setVisible(false);
 
-        TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
+        //MUY LENTO---------
+        TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.DISABLED);
         filterHeader.setAdaptiveChoices(false);
-        filterHeader.getParserModel().setIgnoreCase(true);
         filterHeader.setPosition(TableFilterHeader.Position.TOP);
+        filterHeader.getParserModel().setIgnoreCase(true);
     }
 
     /**

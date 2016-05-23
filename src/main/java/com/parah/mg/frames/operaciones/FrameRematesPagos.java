@@ -949,6 +949,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 recibo.setMontoAporte(reciboMonto * ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte() / 100);
                 recibo.setMontoDonacion(reciboMonto - recibo.getMontoAporte());
                 recibo.setIdEventoTipo(((TblEventos) cboFechaRemate.getSelectedItem()).getIdEventoTipo());
+                recibo.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
                 recibo.setIdUser(currentUser.getUser());
 
                 List<TblAsientos> listAsientos = new ArrayList<>();

@@ -13,6 +13,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -82,16 +83,16 @@ public class TblTransferencias implements Serializable {
     @ManyToMany(cascade = CascadeType.ALL)
     private Collection<TblAsientosTemporales> tblAsientosTemporalesCollection;
     @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblEntidades idEntidad;
     @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TblEventos idEvento;
     @JoinColumn(name = "ID_EVENTO_TIPO", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblEventoTipos idEventoTipo;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblUsers idUser;
 
     public TblTransferencias() {
