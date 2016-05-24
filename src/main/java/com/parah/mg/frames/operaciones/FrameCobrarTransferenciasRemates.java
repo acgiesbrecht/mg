@@ -68,7 +68,7 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
         AutoCompleteSupport support = AutoCompleteSupport.install(cboFechaRemate, GlazedLists.eventListOf(listEventos.toArray()));
         support.setFilterMode(TextMatcherEditor.CONTAINS);
 
-        TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
+        TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.DISABLED);
         filterHeader.setAdaptiveChoices(false);
         filterHeader.getParserModel().setIgnoreCase(true);
         filterHeader.setPosition(TableFilterHeader.Position.TOP);

@@ -76,9 +76,13 @@ public class FrameFacturasCompra extends JInternalFrame {
                 entityManager.getTransaction().begin();
             }
 
+            dtpVencimientoTimbrado.setFormats("dd/MM/yyyy");
+            dtpFecha.setFormats("dd/MM/yyyy");
+            dtpVencimientoFactura.setFormats("dd/MM/yyyy");
+
             centroDeCostoPreferido = (TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult();
 
-            TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
+            TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.DISABLED);
             filterHeader.setPosition(TableFilterHeader.Position.TOP);
             filterHeader.setAdaptiveChoices(false);
             filterHeader.getParserModel().setIgnoreCase(true);

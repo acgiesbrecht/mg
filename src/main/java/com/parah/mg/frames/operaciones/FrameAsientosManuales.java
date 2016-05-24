@@ -66,7 +66,7 @@ public class FrameAsientosManuales extends JInternalFrame {
             AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaHaber, GlazedLists.eventListOf(listCuentasContables.toArray()));
             support3.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
+            TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.DISABLED);
             filterHeader.setAdaptiveChoices(false);
             filterHeader.getParserModel().setIgnoreCase(true);
             filterHeader.setPosition(Position.TOP);

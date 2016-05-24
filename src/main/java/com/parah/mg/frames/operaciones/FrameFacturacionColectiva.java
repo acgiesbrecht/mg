@@ -87,7 +87,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             }
             list.clear();
 
-            TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.ENABLED);
+            TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.DISABLED);
             filterHeader.setAdaptiveChoices(false);
             filterHeader.getParserModel().setIgnoreCase(true);
             filterHeader.setPosition(TableFilterHeader.Position.TOP);
