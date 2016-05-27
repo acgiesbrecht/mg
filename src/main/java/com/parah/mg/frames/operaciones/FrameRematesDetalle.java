@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.prefs.Preferences;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
 import javax.swing.JFormattedTextField;
@@ -926,29 +927,41 @@ public class FrameRematesDetalle extends JInternalFrame {
                 for (CuotaModel cuota : cuotasList) {
                     TblTransferencias transferencia = new TblTransferencias();
                     transferencia.setFechahora(cuota.getFecha());
+                    transferencia.setFechahoraCompromiso(cuota.getFecha());
                     transferencia.setIdEntidad((TblEntidades) cboEntidad.getSelectedItem());
                     transferencia.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
-                    transferencia.setMontoAporte(cuota.getMonto() * ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte());
-                    transferencia.setMontoDonacion(cuota.getMonto() * (100 - ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte()));
+                    transferencia.setMontoAporte(cuota.getMonto() * ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte() / 100);
+                    transferencia.setMontoDonacion(cuota.getMonto() - transferencia.getMontoAporte());
                     transferencia.setIdEventoTipo(((TblEventos) cboFechaRemate.getSelectedItem()).getIdEventoTipo());
+                    transferencia.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
+                    transferencia.setCobrado(false);
+                    transferencia.setIdUser(currentUser.getUser());
                     entityManager.getTransaction().begin();
                     entityManager.persist(transferencia);
                     entityManager.flush();
                     entityManager.getTransaction().commit();
 
-                    if (transferencia.getId() > 0) {
+                    Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
+                    Integer t_id = 0;
+                    t_id = transferencia.getId();
+                    if (t_id > 0) {
                         Map parameters = new HashMap();
-                        parameters.put("transferencia_id", transferencia.getId());
+                        parameters.put("transferencia_id", t_id);
                         parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
                         parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
                         parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
 
-                        JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia.jrxml"));
-                        Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
-                        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
-                        //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-                        //jReportsViewer.setVisible(true);
-                        JasperPrintManager.printReport(jasperPrint, false);
+                        if (Preferences.userRoot().node("MG").get("modoImpresion", "Normal").equals("Normal")) {
+                            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia.jrxml"));
+                            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
+                            JasperPrintManager.printReport(jasperPrint, false);
+                        } else {
+                            for (int x = 1; x == 3; x++) {
+                                JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia_simple.jrxml"));
+                                JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
+                                JasperPrintManager.printReport(jasperPrint, false);
+                            }
+                        }
                     }
                 }
 

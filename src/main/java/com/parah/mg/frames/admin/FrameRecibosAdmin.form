@@ -214,9 +214,8 @@
                 <BindingParameter name="NAME" value="Concepto"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
-              <Subbinding sourcePath="${monto}">
+              <Subbinding sourcePath="${montoAporte+montoDonacion}">
                 <BindingParameter name="NAME" value="Monto"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
               </Subbinding>
             </BindingProperty>
           </BindingProperties>

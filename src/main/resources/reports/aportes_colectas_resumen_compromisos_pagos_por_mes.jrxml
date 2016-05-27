@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2016-05-27T11:29:46 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="mgdb"/>
+    <property name="com.jaspersoft.studio.unit." value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+    <parameter name="pMes" class="java.lang.Integer"/>
+    <parameter name="pAno" class="java.lang.Integer"/>
+    <parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
+    <queryString language="SQL">
+		<![CDATA[SELECT m.APELLIDOS, m.NOMBRES, m.CTACTE, c.MES, c.ANO, c.monto_compra, d.monto_pago FROM
+ (SELECT ed.id_entidad,
+        MONTH(ev.FECHA) AS mes,
+        YEAR(ev.FECHA) AS ano,
+        COALESCE(SUM(ed.monto),0) as monto_compra
+      FROM MG.TBL_EVENTO_DETALLE ed
+            LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE (ev.ID_EVENTO_TIPO = 2 OR ev.ID_EVENTO_TIPO = 3)
+            AND YEAR(ev.FECHA) = $P{pAno} AND MONTH(ev.FECHA) = $P{pMes}
+        group by MONTH(ev.FECHA), YEAR(ev.FECHA), ed.id_entidad) c,
+    (SELECT p.id_entidad,
+        MONTH(p.fechahora_compromiso) AS mes,
+        YEAR(p.fechahora_compromiso) AS ano,
+        SUM(p.MONTO_APORTE + p.MONTO_DONACION) AS monto_pago
+        FROM MG.TBL_TRANSFERENCIAS p WHERE (p.ID_EVENTO_TIPO = 2 OR p.ID_EVENTO_TIPO = 3)
+        AND YEAR(p.fechahora_compromiso) = $P{pAno} AND MONTH(p.fechahora_compromiso) = $P{pMes}
+        group by YEAR(p.fechahora_compromiso), MONTH(p.fechahora_compromiso), p.id_entidad
+    UNION ALL
+    SELECT p.id_entidad,
+        MONTH(p.fechahora) AS mes,
+        YEAR(p.fechahora) AS ano,
+        -SUM(p.MONTO_APORTE + p.MONTO_DONACION) AS monto_pago
+        FROM MG.TBL_RECIBOS p WHERE (p.ID_EVENTO_TIPO = 2 OR p.ID_EVENTO_TIPO = 3)
+        AND YEAR(p.fechahora) = $P{pAno} AND MONTH(p.fechahora) = $P{pMes}
+        group by YEAR(p.FECHAHORA), MONTH(p.FECHAHORA), p.id_entidad) d,
+        MG.TBL_ENTIDADES m
+where c.id_entidad = d.id_entidad AND (c.id_entidad = m.id OR c.id_entidad = m.ID_ENTIDAD_PAGANTE_APORTES)
+AND c.ano = d.ano AND c.mes = d.mes
+ORDER BY c.ano, c.mes, m.ctacte]]>
+    </queryString>
+    <field name="APELLIDOS" class="java.lang.String"/>
+    <field name="NOMBRES" class="java.lang.String"/>
+    <field name="CTACTE" class="java.lang.Integer"/>
+    <field name="MES" class="java.lang.Integer"/>
+    <field name="ANO" class="java.lang.Integer"/>
+    <field name="MONTO_COMPRA" class="java.lang.Integer"/>
+    <field name="MONTO_PAGO" class="java.lang.Integer"/>
+    <variable name="sum_monto_compra" class="java.lang.Integer" calculation="Sum">
+        <variableExpression><![CDATA[$F{MONTO_COMPRA}]]></variableExpression>
+    </variable>
+    <variable name="sum_monto_pago" class="java.lang.Integer" calculation="Sum">
+        <variableExpression><![CDATA[$F{MONTO_PAGO}]]></variableExpression>
+    </variable>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="80" splitType="Stretch">
+            <staticText>
+                <reportElement x="0" y="30" width="800" height="30" uuid="a63323e5-1d25-45b0-bc23-c36c39a4393e"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="22" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Resumen de Compromisos y Pagos de Aportes y Colectas]]></text>
+            </staticText>
+            <subreport>
+                <reportElement x="0" y="0" width="800" height="20" uuid="e3d4dc27-5db1-48be-ab9f-5dbed0fab1d6">
+                    <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                </reportElement>
+                <connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+                <subreportExpression><![CDATA[$P{subreportHeader}]]></subreportExpression>
+            </subreport>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="35" splitType="Stretch"/>
+    </pageHeader>
+    <columnHeader>
+        <band height="20" splitType="Stretch">
+            <staticText>
+                <reportElement x="40" y="0" width="70" height="20" uuid="dc294cd0-3033-459e-9c9c-0a0afb9a3335"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Mes / Año]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="110" y="0" width="70" height="20" uuid="ed4cd09c-617b-431c-b687-398986e1d8df"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Cta. Cte.N°]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="180" y="0" width="240" height="20" uuid="ab27f696-a8ca-4ccc-988b-f118306c527a"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Miembro]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="420" y="0" width="160" height="20" uuid="3700a0a7-58cf-4ca1-a6ff-06b2028578f9"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Importe Compromiso]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="20" splitType="Stretch">
+            <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+            <textField>
+                <reportElement x="180" y="0" width="240" height="20" uuid="97cad6e3-efc3-4cbc-95f0-fe04f55ad5c2"/>
+                <box leftPadding="3" rightPadding="3">
+                    <topPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{APELLIDOS} + " " + $F{NOMBRES}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="110" y="0" width="70" height="20" uuid="38526967-f7ac-4e30-a805-ad9fdaac2432"/>
+                <box padding="3">
+                    <topPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[com.parah.utils.FormatCtaCte.format($F{CTACTE})]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0">
+                <reportElement x="420" y="0" width="160" height="20" uuid="920b3bb4-9c54-4815-b16a-8c493ad8c299"/>
+                <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
+                    <topPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{MONTO_COMPRA}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="40" y="0" width="70" height="20" uuid="465b7a77-8b4c-46af-b098-038a15a17c78"/>
+                <box padding="3">
+                    <topPen lineWidth="0.4"/>
+                    <leftPen lineWidth="0.4"/>
+                    <bottomPen lineWidth="0.4"/>
+                    <rightPen lineWidth="0.4"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{MES} + " / " + $F{ANO}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0">
+                <reportElement x="580" y="0" width="160" height="20" uuid="e318ae80-ad17-42f9-9603-a92ea39b9019"/>
+                <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
+                    <topPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{MONTO_PAGO}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band height="53" splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band height="54" splitType="Stretch"/>
+    </pageFooter>
+    <summary>
+        <band height="42" splitType="Stretch">
+            <textField pattern="#,##0">
+                <reportElement x="420" y="0" width="160" height="30" uuid="42e527ad-ea36-4acc-9ccc-bc9199249333"/>
+                <box leftPadding="3" rightPadding="3"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{sum_monto_compra}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="40" y="0" width="100" height="30" uuid="dc3e343e-00e9-4615-a102-5e3177ac4843"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <text><![CDATA[TOTAL:]]></text>
+            </staticText>
+            <textField pattern="#,##0">
+                <reportElement x="580" y="0" width="160" height="30" uuid="adf9400c-ddfe-4ab3-963b-124f29a0c3e9"/>
+                <box leftPadding="3" rightPadding="3"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{sum_monto_pago}]]></textFieldExpression>
+            </textField>
+        </band>
+    </summary>
+</jasperReport>

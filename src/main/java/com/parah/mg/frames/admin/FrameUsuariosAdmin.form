@@ -285,14 +285,22 @@
               <Subbinding sourcePath="${id}">
                 <BindingParameter name="NAME" value="Id"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${nombre}">
+              <Subbinding sourcePath="${nombrecompleto}">
                 <BindingParameter name="NAME" value="Nombre"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+              </Subbinding>
+              <Subbinding sourcePath="${nombre}">
+                <BindingParameter name="NAME" value="Usuario"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${password}">
                 <BindingParameter name="NAME" value="Password"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${tblRolesList}">
                 <BindingParameter name="NAME" value="Roles"/>
@@ -302,9 +310,6 @@
               <Subbinding sourcePath="${tblGruposList}">
                 <BindingParameter name="NAME" value="Grupos"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.List.class"/>
-              </Subbinding>
-              <Subbinding sourcePath="null">
-                <BindingParameter name="NAME" value="Usuario"/>
               </Subbinding>
             </BindingProperty>
           </BindingProperties>

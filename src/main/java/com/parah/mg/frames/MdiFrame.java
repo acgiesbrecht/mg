@@ -221,14 +221,16 @@ public class MdiFrame extends javax.swing.JFrame {
             if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20160507.sql") == null) {
                 hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20160507.sql", hasBackedUp);
                 List<TblTransferencias> listT = entityManager.createQuery("SELECT t FROM TblTransferencias t").getResultList();
-                for (TblTransferencias t : listT) {
-                    if (t.getFechahoraCompromiso() == null) {
-                        t.setFechahoraCompromiso(t.getFechahora());
-                        entityManager.merge(t);
+                if (listT != null) {
+                    for (TblTransferencias t : listT) {
+                        if (t.getFechahoraCompromiso() == null) {
+                            t.setFechahoraCompromiso(t.getFechahora());
+                            entityManager.merge(t);
+                        }
                     }
+                    entityManager.getTransaction().commit();
+                    entityManager.getTransaction().begin();
                 }
-                entityManager.getTransaction().commit();
-                entityManager.getTransaction().begin();
             }
 
             List<TblUsers> list = entityManager.createQuery("SELECT t FROM TblUsers t").getResultList();
