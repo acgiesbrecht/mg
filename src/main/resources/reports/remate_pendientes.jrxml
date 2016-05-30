@@ -6,17 +6,26 @@
     <parameter name="id_evento" class="java.lang.Integer"/>
     <queryString language="SQL">
 		<![CDATA[SELECT * FROM
-(select COALESCE(SUM(rd.monto),0) as monto_compra, m.id, m.apellidos, m.nombres, m.ctacte, r.descripcion
-    from tbl_eventos r, tbl_evento_detalle rd LEFT JOIN tbl_entidades m ON rd.id_entidad = m.id
-    where rd.id_evento = r.id AND r.id =  $P{id_evento}
-    GROUP BY m.id, m.apellidos, m.nombres, m.ctacte, r.descripcion) c,
-(select id_entidad, SUM(monto_aporte + monto_donacion) as monto_pago FROM tbl_eventos r, (SELECT id as nro, fechahora, id_entidad, id_evento, monto_aporte, monto_donacion, 'Transferencia' AS tipo FROM tbl_transferencias
-	UNION ALL
-	SELECT id as nro, fechahora, id_entidad, id_evento, monto_aporte, monto_donacion, 'Efectivo' AS tipo  FROM tbl_recibos r
-) as pagos LEFT JOIN  tbl_entidades m ON pagos.id_entidad = m.id
-where pagos.id_evento = r.id AND r.id =  $P{id_evento}
-GROUP BY pagos.id_entidad) p
-where c.id = p.id_entidad AND c.monto_compra <> p.monto_pago]]>
+(select COALESCE(SUM(rd.monto),0) as monto_compra, rd.id_entidad, m.apellidos, m.nombres, m.ctacte
+    from tbl_evento_detalle rd LEFT JOIN tbl_entidades m ON rd.id_entidad = m.id
+    where rd.id_evento = $P{id_evento}
+    GROUP BY rd.id_entidad, m.apellidos, m.nombres, m.ctacte) c
+LEFT JOIN
+    (SELECT entidad, SUM(monto_p) as monto_pago FROM
+(SELECT m.id as entidad, SUM(COALESCE(t.monto_aporte,0)+COALESCE(t.monto_donacion,0)) as monto_p FROM tbl_entidades m
+        LEFT JOIN (SELECT * FROM tbl_transferencias WHERE id_evento = $P{id_evento}) t
+        ON m.id = t.ID_ENTIDAD
+    GROUP BY m.id
+    UNION ALL
+    SELECT m.id as entidad, SUM(COALESCE(monto_aporte,0)+COALESCE(monto_donacion,0)) as monto_p FROM tbl_entidades m
+        LEFT JOIN (SELECT * FROM tbl_recibos WHERE id_evento = $P{id_evento}) r
+        ON m.id = r.ID_ENTIDAD
+GROUP BY m.id
+ORDER BY entidad) pago
+GROUP BY pago.entidad) p
+ON c.id_entidad = p.entidad,
+TBL_EVENTOS ev where ev.id = $P{id_evento}
+AND c.monto_compra - p.monto_pago <> 0]]>
     </queryString>
     <field name="MONTO_COMPRA" class="java.lang.Integer"/>
     <field name="APELLIDOS" class="java.lang.String"/>

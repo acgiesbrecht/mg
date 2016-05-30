@@ -373,7 +373,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                 Map parameters = new HashMap();
                 parameters.put("mes", Integer.parseInt(cboMes.getSelectedItem().toString()));
                 parameters.put("ano", Integer.parseInt(jspAno.getValue().toString()));
-                Utils.getInstance().showReport("colectas_por_mes", parameters);
+                Utils.getInstance().showReport("colectas_por_mes", parameters, true);
             }
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -385,7 +385,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
 
         try {
             Map parameters = new HashMap();
-            Utils.getInstance().showReport("colectas_pendientes_por_mes", parameters);
+            Utils.getInstance().showReport("colectas_pendientes_por_mes", parameters, false);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -398,7 +398,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                 Map parameters = new HashMap();
                 parameters.put("pMes", Integer.parseInt(cboMesA.getSelectedItem().toString()));
                 parameters.put("pAno", Integer.parseInt(jspAnoA.getValue().toString()));
-                Utils.getInstance().showReport("aportes_por_mes", parameters);
+                Utils.getInstance().showReport("aportes_por_mes", parameters, false);
             }
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -409,7 +409,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     private void cmdPendientesPorMesAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdPendientesPorMesAActionPerformed
         try {
             Map parameters = new HashMap();
-            Utils.getInstance().showReport("aportes_pendientes_por_mes", parameters);
+            Utils.getInstance().showReport("aportes_pendientes_por_mes", parameters, false);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -420,7 +420,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("ano", Integer.parseInt(jspAnoDebitoManual.getValue().toString()));
-            Utils.getInstance().showReport("aportes_resumen_miembros_manual", "aportes_resumen_miembros_manual_subreport", parameters);
+            Utils.getInstance().showReport("aportes_resumen_miembros_manual", "aportes_resumen_miembros_manual_subreport", parameters, true);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -431,7 +431,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("ano", Integer.parseInt(jspAnoAportesResumen.getValue().toString()));
-            Utils.getInstance().showReport("aportes_resumen", "aportes_resumen_subreport", parameters);
+            Utils.getInstance().showReport("aportes_resumen", "aportes_resumen_subreport", parameters, true);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -445,7 +445,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
 
                 parameters.put("pMes", Integer.parseInt(cboMesCP.getSelectedItem().toString()));
                 parameters.put("pAno", Integer.parseInt(jspAnoCP.getValue().toString()));
-                Utils.getInstance().showReport("aportes_colectas_resumen_compromisos_pagos_por_mes", parameters);
+                Utils.getInstance().showReport("aportes_colectas_resumen_compromisos_pagos_por_mes", parameters, true);
             }
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);

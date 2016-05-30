@@ -280,7 +280,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
-            Utils.getInstance().showReport("remate_detalle", parameters);
+            Utils.getInstance().showReport("remate_detalle", parameters, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -291,7 +291,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
-            Utils.getInstance().showReport("remate_detalle_transferencias", parameters);
+            Utils.getInstance().showReport("remate_detalle_transferencias", parameters, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -302,7 +302,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
-            Utils.getInstance().showReport("remate_detalle_recibos", parameters);
+            Utils.getInstance().showReport("remate_detalle_recibos", parameters, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -313,7 +313,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
-            Utils.getInstance().showReport("remate_pendientes", parameters);
+            Utils.getInstance().showReport("remate_pendientes", parameters, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -325,7 +325,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
             Map parameters = new HashMap();
             parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
             parameters.put("id_miembro", ((TblEntidades) cboMiembro.getSelectedItem()).getId());
-            Utils.getInstance().showReport("remate_detalle_compras_miembro", parameters);
+            Utils.getInstance().showReport("remate_detalle_compras_miembro", parameters, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -337,7 +337,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
             Map parameters = new HashMap();
             parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
             parameters.put("id_miembro", ((TblEntidades) cboMiembro.getSelectedItem()).getId());
-            Utils.getInstance().showReport("remate_detalle_pagos_miembro", parameters);
+            Utils.getInstance().showReport("remate_detalle_pagos_miembro", parameters, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);

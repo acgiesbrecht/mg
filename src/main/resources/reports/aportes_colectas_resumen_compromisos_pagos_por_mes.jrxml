@@ -44,7 +44,7 @@
         MG.TBL_ENTIDADES m
 where c.id_entidad = d.id_entidad AND (c.id_entidad = m.id OR c.id_entidad = m.ID_ENTIDAD_PAGANTE_APORTES)
 AND c.ano = d.ano AND c.mes = d.mes
-ORDER BY c.ano, c.mes, m.ctacte]]>
+ORDER BY c.ano, c.mes, m.ctacte, m.APELLIDOS, m.NOMBRES]]>
     </queryString>
     <field name="APELLIDOS" class="java.lang.String"/>
     <field name="NOMBRES" class="java.lang.String"/>

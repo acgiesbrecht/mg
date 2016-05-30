@@ -300,37 +300,42 @@ public class Utils extends Component {
         }
     }
 
-    public void showReport(String reportFile, String subReportFile, Map parameters) {
+    public void showReport(String reportFile, String subReportFile, Map parameters, Boolean landscape) {
         try {
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + subReportFile + ".jrxml"));
             parameters.put("subreportObject", report);
-            showReport(reportFile, parameters);
+            showReport(reportFile, parameters, landscape);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
 
-    public void showReport(String reportFile, String subReportFile, String subSubReportFile, Map parameters) {
+    public void showReport(String reportFile, String subReportFile, String subSubReportFile, Map parameters, Boolean landscape) {
         try {
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + subSubReportFile + ".jrxml"));
             parameters.put("subSubreportObject", report);
-            showReport(reportFile, subReportFile, parameters);
+            showReport(reportFile, subReportFile, parameters, landscape);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
 
-    public void showReport(String reportFile, Map parameters) {
+    public void showReport(String reportFile, Map parameters, Boolean landscape) {
         try {
             String url = getPersistenceMap().get("javax.persistence.jdbc.url");
             String user = getPersistenceMap().get("javax.persistence.jdbc.user");
             String pass = getPersistenceMap().get("javax.persistence.jdbc.password");
             parameters.put("user", currentUser.getUser().getNombrecompleto());
 
-            JasperReport reportHeader = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/header.jrxml"));
-            parameters.put("subreportHeader", reportHeader);
+            if (landscape) {
+                JasperReport reportHeader = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/header_landscape.jrxml"));
+                parameters.put("subreportHeader", reportHeader);
+            } else {
+                JasperReport reportHeader = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/header.jrxml"));
+                parameters.put("subreportHeader", reportHeader);
+            }
 
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFile + ".jrxml"));
             report.setWhenNoDataType(WhenNoDataTypeEnum.NO_DATA_SECTION);
