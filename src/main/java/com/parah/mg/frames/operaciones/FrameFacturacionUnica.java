@@ -566,8 +566,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
                 }
             }
 
-            factura.setImporteDonacion(montoAporte);
-            factura.setImporteAporte(montoDonacion);
+            factura.setImporteDonacion(montoDonacion);
+            factura.setImporteAporte(montoAporte);
             factura.setAnulado(false);
             factura.setIdUser(currentUser.getUser());
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-05-27T11:29:46 -->
+<!-- 2016-05-30T17:58:42 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="mgdb"/>
     <property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -17,34 +17,40 @@
     <parameter name="pAno" class="java.lang.Integer"/>
     <parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
     <queryString language="SQL">
-		<![CDATA[SELECT m.APELLIDOS, m.NOMBRES, m.CTACTE, c.MES, c.ANO, c.monto_compra, d.monto_pago FROM
- (SELECT ed.id_entidad,
-        MONTH(ev.FECHA) AS mes,
-        YEAR(ev.FECHA) AS ano,
-        COALESCE(SUM(ed.monto),0) as monto_compra
-      FROM MG.TBL_EVENTO_DETALLE ed
-            LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE (ev.ID_EVENTO_TIPO = 2 OR ev.ID_EVENTO_TIPO = 3)
-            AND YEAR(ev.FECHA) = $P{pAno} AND MONTH(ev.FECHA) = $P{pMes}
-        group by MONTH(ev.FECHA), YEAR(ev.FECHA), ed.id_entidad) c,
-    (SELECT p.id_entidad,
-        MONTH(p.fechahora_compromiso) AS mes,
-        YEAR(p.fechahora_compromiso) AS ano,
-        SUM(p.MONTO_APORTE + p.MONTO_DONACION) AS monto_pago
-        FROM MG.TBL_TRANSFERENCIAS p WHERE (p.ID_EVENTO_TIPO = 2 OR p.ID_EVENTO_TIPO = 3)
-        AND YEAR(p.fechahora_compromiso) = $P{pAno} AND MONTH(p.fechahora_compromiso) = $P{pMes}
-        group by YEAR(p.fechahora_compromiso), MONTH(p.fechahora_compromiso), p.id_entidad
+		<![CDATA[
+SELECT * FROM
+(select COALESCE(SUM(rd.monto),0) as monto_compra, rd.id_entidad, m.apellidos, m.nombres, m.ctacte,
+        MONTH(rd.FECHA) AS mes,
+        YEAR(rd.FECHA) AS ano
+    from (SELECT * FROm tbl_evento_detalle ed
+            LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID
+            WHERE (ev.ID_EVENTO_TIPO = 2 OR ev.ID_EVENTO_TIPO = 3)
+            AND YEAR(ev.fecha) = $P{pAno} AND MONTH(ev.fecha) = $P{pMes}) rd
+    LEFT JOIN tbl_entidades m ON rd.id_entidad = m.id
+    GROUP BY MONTH(rd.FECHA), YEAR(rd.FECHA), rd.id_entidad, m.apellidos, m.nombres, m.ctacte) c
+LEFT JOIN
+(SELECT entidad, SUM(monto_p) as monto_pago FROM
+    (SELECT m.id as entidad,
+        MONTH(t.FECHAHORA_COMPROMISO) AS mes,
+        YEAR(t.FECHAHORA_COMPROMISO) AS ano,
+        SUM(COALESCE(t.monto_aporte,0)+COALESCE(t.monto_donacion,0)) as monto_p FROM tbl_entidades m
+        LEFT JOIN (SELECT * FROM tbl_transferencias WHERE (ID_EVENTO_TIPO = 2 OR ID_EVENTO_TIPO = 3)
+            AND YEAR(fechahora_compromiso) = $P{pAno} AND MONTH(fechahora_compromiso) = $P{pMes}) t
+        ON m.id = t.ID_ENTIDAD
+    GROUP BY YEAR(t.FECHAHORA_COMPROMISO), MONTH(t.FECHAHORA_COMPROMISO), m.id
     UNION ALL
-    SELECT p.id_entidad,
-        MONTH(p.fechahora) AS mes,
-        YEAR(p.fechahora) AS ano,
-        -SUM(p.MONTO_APORTE + p.MONTO_DONACION) AS monto_pago
-        FROM MG.TBL_RECIBOS p WHERE (p.ID_EVENTO_TIPO = 2 OR p.ID_EVENTO_TIPO = 3)
-        AND YEAR(p.fechahora) = $P{pAno} AND MONTH(p.fechahora) = $P{pMes}
-        group by YEAR(p.FECHAHORA), MONTH(p.FECHAHORA), p.id_entidad) d,
-        MG.TBL_ENTIDADES m
-where c.id_entidad = d.id_entidad AND (c.id_entidad = m.id OR c.id_entidad = m.ID_ENTIDAD_PAGANTE_APORTES)
-AND c.ano = d.ano AND c.mes = d.mes
-ORDER BY c.ano, c.mes, m.ctacte, m.APELLIDOS, m.NOMBRES]]>
+    SELECT m.id as entidad,
+        MONTH(r.FECHAHORA) AS mes,
+        YEAR(r.FECHAHORA) AS ano,
+        SUM(COALESCE(monto_aporte,0)+COALESCE(monto_donacion,0)) as monto_p FROM tbl_entidades m
+        LEFT JOIN (SELECT * FROM tbl_recibos WHERE (ID_EVENTO_TIPO = 2 OR ID_EVENTO_TIPO = 3)
+            AND YEAR(fechahora) = $P{pAno} AND MONTH(fechahora) = $P{pMes}) r
+        ON m.id = r.ID_ENTIDAD
+        GROUP BY YEAR(r.FECHAHORA), MONTH(r.FECHAHORA), m.id
+ORDER BY entidad) pago
+GROUP BY pago.entidad) p
+ON c.id_entidad = p.entidad
+]]>
     </queryString>
     <field name="APELLIDOS" class="java.lang.String"/>
     <field name="NOMBRES" class="java.lang.String"/>
@@ -86,6 +92,7 @@ ORDER BY c.ano, c.mes, m.ctacte, m.APELLIDOS, m.NOMBRES]]>
     </pageHeader>
     <columnHeader>
         <band height="20" splitType="Stretch">
+            <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
             <staticText>
                 <reportElement x="40" y="0" width="70" height="20" uuid="dc294cd0-3033-459e-9c9c-0a0afb9a3335"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
@@ -108,17 +115,30 @@ ORDER BY c.ano, c.mes, m.ctacte, m.APELLIDOS, m.NOMBRES]]>
                 <text><![CDATA[Miembro]]></text>
             </staticText>
             <staticText>
-                <reportElement x="420" y="0" width="160" height="20" uuid="3700a0a7-58cf-4ca1-a6ff-06b2028578f9"/>
+                <reportElement x="420" y="0" width="110" height="20" uuid="3700a0a7-58cf-4ca1-a6ff-06b2028578f9"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="12" isBold="true"/>
                 </textElement>
                 <text><![CDATA[Importe Compromiso]]></text>
             </staticText>
+            <staticText>
+                <reportElement x="530" y="0" width="115" height="20" uuid="671fa341-f950-4de1-a010-e9c782227f00"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Importe Compromiso]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="645" y="0" width="115" height="20" uuid="5484d81b-a427-4be8-883a-9d0d641034a4"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Saldo]]></text>
+            </staticText>
         </band>
     </columnHeader>
     <detail>
-        <band height="20" splitType="Stretch">
-            <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+        <band height="20">
             <textField>
                 <reportElement x="180" y="0" width="240" height="20" uuid="97cad6e3-efc3-4cbc-95f0-fe04f55ad5c2"/>
                 <box leftPadding="3" rightPadding="3">
@@ -142,7 +162,7 @@ ORDER BY c.ano, c.mes, m.ctacte, m.APELLIDOS, m.NOMBRES]]>
                 <textFieldExpression><![CDATA[com.parah.utils.FormatCtaCte.format($F{CTACTE})]]></textFieldExpression>
             </textField>
             <textField pattern="#,##0">
-                <reportElement x="420" y="0" width="160" height="20" uuid="920b3bb4-9c54-4815-b16a-8c493ad8c299"/>
+                <reportElement x="420" y="0" width="110" height="20" uuid="920b3bb4-9c54-4815-b16a-8c493ad8c299"/>
                 <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
                     <topPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
                     <leftPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
@@ -164,7 +184,7 @@ ORDER BY c.ano, c.mes, m.ctacte, m.APELLIDOS, m.NOMBRES]]>
                 <textFieldExpression><![CDATA[$F{MES} + " / " + $F{ANO}]]></textFieldExpression>
             </textField>
             <textField pattern="#,##0">
-                <reportElement x="580" y="0" width="160" height="20" uuid="e318ae80-ad17-42f9-9603-a92ea39b9019"/>
+                <reportElement x="530" y="0" width="115" height="20" uuid="e318ae80-ad17-42f9-9603-a92ea39b9019"/>
                 <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
                     <topPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
                     <leftPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
@@ -173,6 +193,17 @@ ORDER BY c.ano, c.mes, m.ctacte, m.APELLIDOS, m.NOMBRES]]>
                 </box>
                 <textElement textAlignment="Right" verticalAlignment="Middle"/>
                 <textFieldExpression><![CDATA[$F{MONTO_PAGO}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0">
+                <reportElement x="645" y="0" width="115" height="20" uuid="b237a3ce-d4b8-4f72-b03c-87aff4c839aa"/>
+                <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
+                    <topPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{MONTO_COMPRA}-$F{MONTO_PAGO}]]></textFieldExpression>
             </textField>
         </band>
     </detail>
@@ -185,7 +216,7 @@ ORDER BY c.ano, c.mes, m.ctacte, m.APELLIDOS, m.NOMBRES]]>
     <summary>
         <band height="42" splitType="Stretch">
             <textField pattern="#,##0">
-                <reportElement x="420" y="0" width="160" height="30" uuid="42e527ad-ea36-4acc-9ccc-bc9199249333"/>
+                <reportElement x="420" y="0" width="110" height="30" uuid="42e527ad-ea36-4acc-9ccc-bc9199249333"/>
                 <box leftPadding="3" rightPadding="3"/>
                 <textElement textAlignment="Right" verticalAlignment="Middle">
                     <font size="14" isBold="true"/>
@@ -200,12 +231,20 @@ ORDER BY c.ano, c.mes, m.ctacte, m.APELLIDOS, m.NOMBRES]]>
                 <text><![CDATA[TOTAL:]]></text>
             </staticText>
             <textField pattern="#,##0">
-                <reportElement x="580" y="0" width="160" height="30" uuid="adf9400c-ddfe-4ab3-963b-124f29a0c3e9"/>
+                <reportElement x="530" y="0" width="115" height="30" uuid="adf9400c-ddfe-4ab3-963b-124f29a0c3e9"/>
                 <box leftPadding="3" rightPadding="3"/>
                 <textElement textAlignment="Right" verticalAlignment="Middle">
                     <font size="14" isBold="true"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$V{sum_monto_pago}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0">
+                <reportElement x="645" y="0" width="115" height="30" uuid="50ab3e40-980b-4b36-a16e-f4ed23d6fea7"/>
+                <box leftPadding="3" rightPadding="3"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{sum_monto_compra}-$V{sum_monto_pago}]]></textFieldExpression>
             </textField>
         </band>
     </summary>
