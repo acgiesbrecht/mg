@@ -711,7 +711,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                             setStatus("Descargando listado de RUC con terminacion " + String.valueOf(i) + " - Cantidad de contribuyentes procesada: " + String.format("%,d", count) + " de aprox. 850.000.");
                             count++;
                         } else {
-                            System.out.println(temp);
+                            setStatus(temp);
                         }
 
                     }
