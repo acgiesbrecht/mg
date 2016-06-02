@@ -10,6 +10,7 @@ import com.parah.mg.domain.TblContribuyentes;
 import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.domain.TblEventoDetalle;
 import com.parah.mg.domain.TblFacturas;
+import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.beans.PropertyChangeEvent;
@@ -135,6 +136,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         jButton3 = new javax.swing.JButton();
         updateSETbutton = new javax.swing.JButton();
         lblStatusSET = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -283,6 +285,13 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
         lblStatusSET.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
+        jButton4.setText("Dividir Miembros por comma");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -293,7 +302,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(txtIP, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                        .addComponent(txtIP)
                         .addGap(275, 275, 275))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -328,11 +337,14 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                                 .addGap(39, 39, 39)
                                 .addComponent(jButton3))
                             .addComponent(jLabel7))
-                        .addGap(0, 197, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(updateSETbutton)
+                        .addGap(301, 301, 301)
+                        .addComponent(lblStatusSET, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblStatusSET, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jButton4)
+                        .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2)
@@ -372,8 +384,10 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cmdFacturaPrintTest)
                 .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(updateSETbutton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(updateSETbutton)
+                        .addComponent(jButton4))
                     .addComponent(lblStatusSET, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(58, 58, 58)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -419,7 +433,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         txtDatadir.setText(Preferences.userRoot().node("MG").get("Datadir", "C:\\javadb"));
         rbServidor.setSelected(Boolean.parseBoolean(Preferences.userRoot().node("MG").get("isServer", "true")));
         cboModoImpresion.setSelectedItem(Preferences.userRoot().node("MG").get("modoImpresion", "Normal"));
-        cboFormatoFactura.setSelectedItem(Preferences.userRoot().node("MG").get("formateFactura", "Preimpreso sin rejilla"));
+        cboFormatoFactura.setSelectedItem(Preferences.userRoot().node("MG").get("formatoFactura", "Preimpreso sin rejilla"));
         txtFacturaX.setText(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0"));
         txtFacturaY.setText(Preferences.userRoot().node("MG").get("facturaTopMargin", "0"));
 
@@ -630,6 +644,34 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         }
     }//GEN-LAST:event_updateSETbuttonActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            CurrentUser currentUser = CurrentUser.getInstance();
+            Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
+            EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
+            entityManager.getTransaction().begin();
+
+            List<TblEntidades> list = (List<TblEntidades>) entityManager.createQuery("select e from TblEntidades e").getResultList();
+
+            for (TblEntidades e : list) {
+                String nombreviejo = e.getNombres();
+                if (nombreviejo.contains(",")) {
+                    String[] parts = nombreviejo.split(",");
+                    e.setNombres(parts[0].trim());
+                    e.setApellidos(parts[1].trim());
+                    entityManager.merge(e);
+                }
+            }
+
+            entityManager.getTransaction().commit();
+            entityManager.getTransaction().begin();
+            JOptionPane.showMessageDialog(null, "Nombres actualizados!");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     public void propertyChange(PropertyChangeEvent evt) {
         if ("statusUpdate".equals(evt.getPropertyName())) {
             lblStatusSET.setText(taskUpdate.getStatus());
@@ -753,6 +795,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

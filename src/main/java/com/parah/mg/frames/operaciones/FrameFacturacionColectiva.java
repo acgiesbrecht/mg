@@ -14,6 +14,7 @@ import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.models.PagosRealizados;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
+import com.parah.utils.CalcDV;
 import java.awt.EventQueue;
 import java.beans.Beans;
 import java.util.ArrayList;
@@ -393,11 +394,17 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                         f.setRazonSocial(pago.getEntidad().getNombreCompleto());
                     }
 
-                    if (pago.getEntidad().getRucSinDv() != null) {
+                    /*if (pago.getEntidad().getRucSinDv() != null) {
                         f.setRuc(pago.getEntidad().getRucSinDv());
                     } else {
                         f.setRuc("44444401");
+                    }*/
+                    if (pago.getEntidad().getRucSinDv() != null) {
+                        f.setRuc(CalcDV.getRucEntero(pago.getEntidad().getRucSinDv()));
+                    } else {
+                        f.setRuc(CalcDV.getRucEntero("44444401"));
                     }
+
                     f.setAnulado(false);
                     f.setDomicilio(pago.getEntidad().getDomicilio());
                     f.setCasillaDeCorreo(pago.getEntidad().getBox());
