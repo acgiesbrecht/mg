@@ -725,7 +725,14 @@ public class FrameRematesDetalle extends JInternalFrame {
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
 
             fechahoraField.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-            cboCategoria.requestFocusInWindow();
+            if (tblCategoriasArticulosList.size() > 0) {
+                cboCategoria.setSelectedItem(tblCategoriasArticulosList.get(tblCategoriasArticulosList.size() - 1));
+            }
+            if (tblCategoriasArticulosList.size() == 1) {
+                observacionField.requestFocusInWindow();
+            } else {
+                cboCategoria.requestFocusInWindow();
+            }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);

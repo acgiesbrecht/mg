@@ -6,6 +6,7 @@
 package com.parah.mg.domain.models;
 
 import com.parah.mg.domain.TblAsientosTemporales;
+import com.parah.mg.domain.TblEventoTipos;
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.Collection;
@@ -26,6 +27,7 @@ public class PagosRealizados implements Serializable {
     private TblEntidades entidad;
     private Date fechahora;
     private Collection<TblAsientosTemporales> asientosTemporalesList;
+    private TblEventoTipos eventoTipo;
     private Integer montoAporte;
     private Integer montoDonacion;
     private Boolean facturado = false;
@@ -112,6 +114,20 @@ public class PagosRealizados implements Serializable {
      */
     public void setFacturado(Boolean facturado) {
         this.facturado = facturado;
+    }
+
+    /**
+     * @return the eventoTipo
+     */
+    public TblEventoTipos getEventoTipo() {
+        return eventoTipo;
+    }
+
+    /**
+     * @param eventoTipo the eventoTipo to set
+     */
+    public void setEventoTipo(TblEventoTipos eventoTipo) {
+        this.eventoTipo = eventoTipo;
     }
 
 }

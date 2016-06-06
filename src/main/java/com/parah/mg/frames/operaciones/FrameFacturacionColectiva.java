@@ -70,10 +70,19 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
             Calendar c = Calendar.getInstance();
 
+            c.set(Calendar.DAY_OF_YEAR, 1);
+            c.set(Calendar.HOUR, 0);
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.SECOND, 0);
+            Date date = c.getTime();
+            dtpFechaDesde.setDate(date);
+
+            c = Calendar.getInstance();
             c.set(Calendar.DAY_OF_MONTH, 1);
             c.add(Calendar.DATE, -1);
-            Date date = c.getTime();
-            dtpFecha.setDate(date);
+            date = c.getTime();
+
+            dtpFechaHasta.setDate(date);
 
             list.clear();
             list.addAll(query.getResultList());
@@ -124,8 +133,10 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        dtpFecha = new org.jdesktop.swingx.JXDatePicker();
+        dtpFechaHasta = new org.jdesktop.swingx.JXDatePicker();
         cmdCalcular = new javax.swing.JButton();
+        dtpFechaDesde = new org.jdesktop.swingx.JXDatePicker();
+        jLabel2 = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
@@ -185,10 +196,12 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
         }
 
-        jLabel1.setText("Fecha de Facturacion:");
+        jLabel1.setText("Fecha de Facturacion:  Desde:");
 
         cmdCalcular.setText("Calcular");
         cmdCalcular.addActionListener(formListener);
+
+        jLabel2.setText("Hasta:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -198,17 +211,22 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 595, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(imprimirButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelarButton))
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 847, Short.MAX_VALUE)
+                    .addComponent(masterScrollPane, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmdCalcular)))
+                        .addComponent(dtpFechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dtpFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdCalcular)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 210, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -220,11 +238,13 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmdCalcular))
+                    .addComponent(dtpFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdCalcular)
+                    .addComponent(dtpFechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(imprimirButton))
@@ -295,13 +315,20 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
             List<PagosRealizados> pagosList = new ArrayList<>();
 
-            Query queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblTransferenciasCollection t WHERE t.fechahora <= :fecha");
+            Query queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblTransferenciasCollection t WHERE t.fechahora >= :fechaDesde AND t.fechahora <= :fechaHasta");
             Calendar c = Calendar.getInstance();
-            c.setTime(dtpFecha.getDate());
+            c.setTime(dtpFechaDesde.getDate());
+            c.set(Calendar.HOUR, 0);
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.SECOND, 0);
+            queryE.setParameter("fechaDesde", c.getTime());
+
+            c = Calendar.getInstance();
+            c.setTime(dtpFechaHasta.getDate());
             c.set(Calendar.HOUR, 23);
             c.set(Calendar.MINUTE, 59);
             c.set(Calendar.SECOND, 59);
-            queryE.setParameter("fecha", c.getTime());
+            queryE.setParameter("fechaHasta", c.getTime());
             List<TblEntidades> listE = (List<TblEntidades>) queryE.getResultList();
 
             for (TblEntidades e : listE) {
@@ -525,11 +552,13 @@ public class FrameFacturacionColectiva extends JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelarButton;
     private javax.swing.JButton cmdCalcular;
-    private org.jdesktop.swingx.JXDatePicker dtpFecha;
+    private org.jdesktop.swingx.JXDatePicker dtpFechaDesde;
+    private org.jdesktop.swingx.JXDatePicker dtpFechaHasta;
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.FacturaNroTableCellRenderer facturaNroTableCellRenderer1;
     private javax.swing.JButton imprimirButton;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private java.util.List<com.parah.mg.domain.TblFacturas> list;
     private java.util.List<com.parah.mg.domain.miembros.TblEntidades> listEntidades;
     private java.util.List<com.parah.mg.domain.TblTimbrados> listTimbrados;

@@ -248,15 +248,21 @@ public class FrameFacturacionUnica extends JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${eventoTipo}"));
+        columnBinding.setColumnName("Tipo de Evento");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblEventoTipos.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoDonacion}"));
         columnBinding.setColumnName("Monto Donacion");
         columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoAporte}"));
         columnBinding.setColumnName("Monto Aporte");
         columnBinding.setColumnClass(Integer.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${facturado}"));
         columnBinding.setColumnName("Facturar");
         columnBinding.setColumnClass(Boolean.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(jTable1);
@@ -663,8 +669,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
         try {
             txtCtaCte.setBackground(Color.white);
             if (txtCtaCte.getText().length() > 4) {
-                List<TblEntidades> list = listEntidades;
-                Optional<TblEntidades> value = list.stream().filter(
+                List<TblEntidades> listE = listEntidades;
+                Optional<TblEntidades> value = listE.stream().filter(
                         a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
                         .findFirst();
                 if (value.isPresent()) {
@@ -685,8 +691,10 @@ public class FrameFacturacionUnica extends JInternalFrame {
     private void cboEntidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEntidadActionPerformed
         if (cboEntidad.getSelectedItem() != null) {
             txtCtaCte.setText(((TblEntidades) cboEntidad.getSelectedItem()).getCtacte().toString());
-            rucField.setText(((TblEntidades) cboEntidad.getSelectedItem()).getRucSinDv() + "-" + CalcDV.Pa_Calcular_Dv_11_A(((TblEntidades) cboEntidad.getSelectedItem()).getRucSinDv(), 11)
-            );
+            rucField.setText(((TblEntidades) cboEntidad.getSelectedItem()).getRucSinDv() + "-" + CalcDV.Pa_Calcular_Dv_11_A(((TblEntidades) cboEntidad.getSelectedItem()).getRucSinDv(), 11));
+            txtRazonSocial.setText(((TblEntidades) cboEntidad.getSelectedItem()).getRazonSocial().equals("") ? ((TblEntidades) cboEntidad.getSelectedItem()).getNombreCompleto() : ((TblEntidades) cboEntidad.getSelectedItem()).getRazonSocial());
+            txtDomicilio.setText(((TblEntidades) cboEntidad.getSelectedItem()).getDomicilio());
+            txtCdC.setValue(((TblEntidades) cboEntidad.getSelectedItem()).getBox());
             loadPagos();
         } else {
             txtCtaCte.setText("");
@@ -722,6 +730,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     p.setFechahora(t.getFechahora());
                     p.setMontoAporte(t.getMontoAporte());
                     p.setMontoDonacion(t.getMontoDonacion());
+                    p.setEventoTipo(t.getIdEventoTipo());
                     listPagos.add(p);
                 }
             }
@@ -743,6 +752,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     p.setFechahora(r.getFechahora());
                     p.setMontoAporte(r.getMontoAporte());
                     p.setMontoDonacion(r.getMontoDonacion());
+                    p.setEventoTipo(r.getIdEventoTipo());
                     listPagos.add(p);
                 }
             }

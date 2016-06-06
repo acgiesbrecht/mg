@@ -106,7 +106,7 @@
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font fontName="Arial" size="10" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[com.parah.utils.CalcDV.getRucEntero($P{ruc})]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$P{ruc}]]></textFieldExpression>
             </textField>
             <textField pattern="#000000" isBlankWhenNull="false">
                 <reportElement x="345" y="84" width="186" height="24" uuid="8e001246-49f6-4bc3-b931-bbd496e29651"/>
@@ -433,7 +433,7 @@
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font fontName="Arial" size="10" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[com.parah.utils.CalcDV.getRucEntero($P{ruc})]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$P{ruc}]]></textFieldExpression>
             </textField>
             <textField pattern="#,##0">
                 <reportElement x="319" y="610" width="77" height="15" uuid="eeb74386-b2ee-449a-bacb-ad4cf926eb0d"/>

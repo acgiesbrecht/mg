@@ -36,6 +36,8 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 import org.apache.logging.log4j.LogManager;
@@ -45,7 +47,7 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Industria
  */
-public class FrameCobrarTransferenciasAyC extends JInternalFrame {
+public class FrameCobrarTransferenciasAyC extends JInternalFrame implements TableModelListener {
 
     private static final Logger LOGGER = LogManager.getLogger(FrameCobrarTransferenciasAyC.class);
     CurrentUser currentUser = CurrentUser.getInstance();
@@ -85,6 +87,24 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
                 "marcarCobrado");
         masterTable.getActionMap().put("marcarCobrado",
                 marcarCobrado);
+
+        masterTable.getModel().addTableModelListener(this);
+    }
+
+    @Override
+    public void tableChanged(TableModelEvent e) {
+        try {
+            int suma = 0;
+            for (PagosMensualesPendientes pago : list) {
+                if (pago.getCobrado()) {
+                    suma += pago.getMontoTotal();
+                }
+            }
+            lblTotal.setText(String.format("%(,d", suma));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }
 
     /**
@@ -122,6 +142,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
         cboMarcarSeleccionados = new javax.swing.JButton();
         descripcionLabel4 = new javax.swing.JLabel();
         dtpFechaCobro = new org.jdesktop.swingx.JXDatePicker();
+        lblTotal = new javax.swing.JLabel();
+        descripcionLabel5 = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
@@ -195,30 +217,41 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
 
         descripcionLabel4.setText("Fecha de Cobro:");
 
+        lblTotal.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        lblTotal.setForeground(new java.awt.Color(102, 102, 102));
+        lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblTotal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+
+        descripcionLabel5.setText("Importe total de Registros marcados:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(masterScrollPane)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(masterScrollPane, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(descripcionLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cboEventoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(cboMarcarSeleccionados)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
                         .addComponent(saveButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(refreshButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(descripcionLabel4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(descripcionLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(descripcionLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(dtpFechaCobro, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dtpFechaCobro, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
@@ -226,14 +259,18 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(descripcionLabel3)
                     .addComponent(cboEventoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
-                .addGap(10, 10, 10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(descripcionLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(descripcionLabel4)
                     .addComponent(dtpFechaCobro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -608,9 +645,11 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame {
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.swing.JLabel descripcionLabel3;
     private javax.swing.JLabel descripcionLabel4;
+    private javax.swing.JLabel descripcionLabel5;
     private org.jdesktop.swingx.JXDatePicker dtpFechaCobro;
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
+    private javax.swing.JLabel lblTotal;
     private java.util.List<com.parah.mg.domain.models.PagosMensualesPendientes> list;
     private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
     private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
