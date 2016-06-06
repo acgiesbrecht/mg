@@ -201,7 +201,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         cmdCalcular.setText("Calcular");
         cmdCalcular.addActionListener(formListener);
 
-        jLabel2.setText("Hasta:");
+        jLabel2.setText("Hasta (Fecha de Facturacion):");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -226,7 +226,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                         .addComponent(dtpFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmdCalcular)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 210, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 

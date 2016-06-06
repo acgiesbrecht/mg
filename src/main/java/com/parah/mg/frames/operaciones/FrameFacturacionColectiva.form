@@ -132,7 +132,7 @@
                       <Component id="dtpFechaHasta" min="-2" pref="205" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cmdCalcular" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="210" max="32767" attributes="0"/>
+                      <EmptySpace pref="74" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -325,7 +325,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Hasta:"/>
+        <Property name="text" type="java.lang.String" value="Hasta (Fecha de Facturacion):"/>
       </Properties>
     </Component>
   </SubComponents>
