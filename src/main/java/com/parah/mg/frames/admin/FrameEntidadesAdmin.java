@@ -12,7 +12,6 @@ import com.parah.mg.domain.TblContribuyentes;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
-import com.parah.utils.CalcDV;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
@@ -115,8 +114,8 @@ public class FrameEntidadesAdmin extends JInternalFrame {
 
                 public void process() {
                     if (rucField.getText().length() > 6) {
-                        if (CalcDV.isValidRUC(rucField.getText())) {
-                            TblContribuyentes c = entityManager.find(TblContribuyentes.class, rucField.getText().substring(0, rucField.getText().length() - 2));
+                        if (rucField.getText() != null) {
+                            TblContribuyentes c = entityManager.find(TblContribuyentes.class, rucField.getText());
                             if (c != null) {
                                 txtRazonSocial.setText(c.getRazonSocial());
                             }

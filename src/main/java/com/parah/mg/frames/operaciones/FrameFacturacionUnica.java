@@ -248,6 +248,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${eventoTipo}"));
         columnBinding.setColumnName("Tipo de Evento");
         columnBinding.setColumnClass(com.parah.mg.domain.TblEventoTipos.class);
@@ -259,10 +260,10 @@ public class FrameFacturacionUnica extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoAporte}"));
         columnBinding.setColumnName("Monto Aporte");
         columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${facturado}"));
         columnBinding.setColumnName("Facturar");
         columnBinding.setColumnClass(Boolean.class);
-        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(jTable1);
@@ -691,7 +692,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
     private void cboEntidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEntidadActionPerformed
         if (cboEntidad.getSelectedItem() != null) {
             txtCtaCte.setText(((TblEntidades) cboEntidad.getSelectedItem()).getCtacte().toString());
-            rucField.setText(((TblEntidades) cboEntidad.getSelectedItem()).getRucSinDv() + "-" + CalcDV.Pa_Calcular_Dv_11_A(((TblEntidades) cboEntidad.getSelectedItem()).getRucSinDv(), 11));
+            rucField.setText(CalcDV.getRucEntero(((TblEntidades) cboEntidad.getSelectedItem()).getRucSinDv()));
             txtRazonSocial.setText(((TblEntidades) cboEntidad.getSelectedItem()).getRazonSocial().equals("") ? ((TblEntidades) cboEntidad.getSelectedItem()).getNombreCompleto() : ((TblEntidades) cboEntidad.getSelectedItem()).getRazonSocial());
             txtDomicilio.setText(((TblEntidades) cboEntidad.getSelectedItem()).getDomicilio());
             txtCdC.setValue(((TblEntidades) cboEntidad.getSelectedItem()).getBox());

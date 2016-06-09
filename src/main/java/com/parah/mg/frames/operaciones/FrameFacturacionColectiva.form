@@ -225,7 +225,7 @@
                   <Title/>
                   <Editor/>
                   <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="rucTableCellRenderer1"/>
+                    <ComponentRef name="null"/>
                   </Renderer>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
@@ -283,10 +283,12 @@
               <Subbinding sourcePath="${importeAporte}">
                 <BindingParameter name="NAME" value="Importe Aporte"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${importeDonacion}">
                 <BindingParameter name="NAME" value="Importe Donacion"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${idTimbrado}">
                 <BindingParameter name="NAME" value="Timbrado"/>

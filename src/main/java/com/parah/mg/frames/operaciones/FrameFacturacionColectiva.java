@@ -179,9 +179,11 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${importeAporte}"));
         columnBinding.setColumnName("Importe Aporte");
         columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${importeDonacion}"));
         columnBinding.setColumnName("Importe Donacion");
         columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idTimbrado}"));
         columnBinding.setColumnName("Timbrado");
         columnBinding.setColumnClass(com.parah.mg.domain.TblTimbrados.class);
@@ -191,7 +193,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(0).setCellRenderer(facturaNroTableCellRenderer1);
-            masterTable.getColumnModel().getColumn(4).setCellRenderer(rucTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(4).setCellRenderer(null);
             masterTable.getColumnModel().getColumn(5).setCellRenderer(numberCellRenderer1);
             masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
         }
