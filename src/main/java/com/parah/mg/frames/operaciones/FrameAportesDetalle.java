@@ -676,6 +676,7 @@ public class FrameAportesDetalle extends JInternalFrame {
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
 
+            cboForma.setSelectedIndex(0);
             txtCtaCte.requestFocusInWindow();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -803,9 +804,9 @@ public class FrameAportesDetalle extends JInternalFrame {
     }
     private void txtCtaCteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCtaCteKeyReleased
         try {
-            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            /*if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 cboEntidad.requestFocusInWindow();
-            }
+            }*/
             txtCtaCte.setBackground(Color.white);
             if (txtCtaCte.getText().length() > 4) {
                 List<TblEntidades> list = listEntidades;
