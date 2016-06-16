@@ -9,8 +9,8 @@
 (SELECT ed.id_entidad,
                 MONTH(ev.FECHA) AS mes,
                 YEAR(ev.FECHA) AS ano,
-                SUM(ed.monto*ev.PORCENTAJE_APORTE/100) AS montoAporte,
-                SUM(ed.monto*(100-ev.PORCENTAJE_APORTE)/100) AS montoDonacion
+                SUM(ed.monto*(ev.PORCENTAJE_APORTE/100)) AS montoAporte,
+                SUM(ed.monto*((100-ev.PORCENTAJE_APORTE)/100)) AS montoDonacion
               FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = 2
                 group by MONTH(ev.FECHA), YEAR(ev.FECHA), ed.id_entidad
 UNION ALL

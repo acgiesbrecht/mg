@@ -676,8 +676,8 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
              */
             queryEntidades = entityManager.createNativeQuery("SELECT entidades.* FROM TBL_ENTIDADES entidades, (SELECT ID FROM (SELECT e.ID, e.CTACTE, SUM(DETALLE.MONTOAPORTE) AS MONTOAPORTE, SUM(DETALLE.MONTODONACION) AS MONTODONACION FROM"
                     + " (SELECT ed.id_entidad,"
-                    + "                SUM(ed.monto*ev.PORCENTAJE_APORTE/100) AS montoAporte,"
-                    + "                SUM(ed.monto*(100-ev.PORCENTAJE_APORTE)/100) AS montoDonacion"
+                    + "                SUM(ed.monto*(ev.PORCENTAJE_APORTE/100)) AS montoAporte,"
+                    + "                SUM(ed.monto*((100-ev.PORCENTAJE_APORTE)/100)) AS montoDonacion"
                     + "              FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID = " + ((TblEventos) cboFechaRemate.getSelectedItem()).getId().toString()
                     + "                group by ed.id_entidad"
                     + " UNION ALL  "
