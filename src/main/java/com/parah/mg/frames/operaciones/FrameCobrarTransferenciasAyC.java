@@ -580,8 +580,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                         + "(SELECT ed.id_entidad,"
                         + "                MONTH(ev.FECHA) AS mes,"
                         + "                YEAR(ev.FECHA) AS ano,"
-                        + "                SUM(ed.monto*(ev.PORCENTAJE_APORTE/100)) AS montoAporte,"
-                        + "                SUM(ed.monto*((100-ev.PORCENTAJE_APORTE)/100)) AS montoDonacion"
+                        + "                SUM(CAST(ed.monto*(CAST(ev.PORCENTAJE_APORTE AS FLOAT)/100) AS INTEGER)) AS montoAporte,"
+                        + "                SUM(CAST(ed.monto*(CAST(100-ev.PORCENTAJE_APORTE AS FLOAT)/100) AS INTEGER)) AS montoDonacion"
                         + "              FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString()
                         + "                group by MONTH(ev.FECHA), YEAR(ev.FECHA), ed.id_entidad"
                         + " UNION ALL  "

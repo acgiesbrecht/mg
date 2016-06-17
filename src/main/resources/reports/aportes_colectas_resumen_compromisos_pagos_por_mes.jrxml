@@ -91,45 +91,45 @@ ON c.id_entidad = p.entidad
         <band height="35" splitType="Stretch"/>
     </pageHeader>
     <columnHeader>
-        <band height="20" splitType="Stretch">
+        <band height="40" splitType="Stretch">
             <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
             <staticText>
-                <reportElement x="40" y="0" width="70" height="20" uuid="dc294cd0-3033-459e-9c9c-0a0afb9a3335"/>
+                <reportElement x="40" y="0" width="70" height="40" uuid="dc294cd0-3033-459e-9c9c-0a0afb9a3335"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="12" isBold="true"/>
                 </textElement>
                 <text><![CDATA[Mes / Año]]></text>
             </staticText>
             <staticText>
-                <reportElement x="110" y="0" width="70" height="20" uuid="ed4cd09c-617b-431c-b687-398986e1d8df"/>
+                <reportElement x="110" y="0" width="70" height="40" uuid="ed4cd09c-617b-431c-b687-398986e1d8df"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="12" isBold="true"/>
                 </textElement>
                 <text><![CDATA[Cta. Cte.N°]]></text>
             </staticText>
             <staticText>
-                <reportElement x="180" y="0" width="240" height="20" uuid="ab27f696-a8ca-4ccc-988b-f118306c527a"/>
+                <reportElement x="180" y="0" width="240" height="40" uuid="ab27f696-a8ca-4ccc-988b-f118306c527a"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="12" isBold="true"/>
                 </textElement>
                 <text><![CDATA[Miembro]]></text>
             </staticText>
             <staticText>
-                <reportElement x="420" y="0" width="110" height="20" uuid="3700a0a7-58cf-4ca1-a6ff-06b2028578f9"/>
+                <reportElement x="420" y="0" width="110" height="40" uuid="3700a0a7-58cf-4ca1-a6ff-06b2028578f9"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="12" isBold="true"/>
                 </textElement>
                 <text><![CDATA[Importe Compromiso]]></text>
             </staticText>
             <staticText>
-                <reportElement x="530" y="0" width="115" height="20" uuid="671fa341-f950-4de1-a010-e9c782227f00"/>
+                <reportElement x="530" y="0" width="115" height="40" uuid="671fa341-f950-4de1-a010-e9c782227f00"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="12" isBold="true"/>
                 </textElement>
-                <text><![CDATA[Importe Compromiso]]></text>
+                <text><![CDATA[Importe Pago]]></text>
             </staticText>
             <staticText>
-                <reportElement x="645" y="0" width="115" height="20" uuid="5484d81b-a427-4be8-883a-9d0d641034a4"/>
+                <reportElement x="645" y="0" width="115" height="40" uuid="5484d81b-a427-4be8-883a-9d0d641034a4"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="12" isBold="true"/>
                 </textElement>

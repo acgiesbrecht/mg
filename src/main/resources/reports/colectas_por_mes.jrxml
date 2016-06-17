@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-05-30T15:22:55 -->
+<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
+<!-- 2016-06-16T19:23:35 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -81,7 +81,7 @@ ORDER BY e.FECHA, m.CTACTE]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="120" splitType="Stretch">
+		<band height="92" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="30" width="800" height="30" uuid="a63323e5-1d25-45b0-bc23-c36c39a4393e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -113,9 +113,9 @@ ORDER BY e.FECHA, m.CTACTE]]>
 		</band>
 	</title>
 	<detail>
-		<band height="100" splitType="Stretch">
+		<band height="63" splitType="Stretch">
 			<crosstab>
-				<reportElement x="0" y="0" width="554" height="72" uuid="9992c8e8-d4b2-4424-a6dd-f8dcce08d1df"/>
+				<reportElement x="0" y="0" width="800" height="60" uuid="9992c8e8-d4b2-4424-a6dd-f8dcce08d1df"/>
 				<crosstabDataset>
 					<dataset>
 						<datasetRun subDataset="subdataset" uuid="d8c9f55e-ed53-44b8-b801-8f2f4a235dee">
@@ -260,14 +260,14 @@ ORDER BY e.FECHA, m.CTACTE]]>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="100" splitType="Stretch">
+		<band height="28" splitType="Stretch">
 			<textField>
-				<reportElement x="309" y="7" width="245" height="13" uuid="e6915b5d-ce5f-4459-8cb8-759d13001e66"/>
+				<reportElement x="554" y="0" width="245" height="13" uuid="e6915b5d-ce5f-4459-8cb8-759d13001e66"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["Creado por: " + $P{user}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy HH:mm">
-				<reportElement x="310" y="20" width="245" height="13" uuid="fbeebc07-ac09-422e-8c57-674edb2dd3e1"/>
+				<reportElement x="555" y="13" width="245" height="13" uuid="fbeebc07-ac09-422e-8c57-674edb2dd3e1"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
@@ -283,7 +283,4 @@ ORDER BY e.FECHA, m.CTACTE]]>
 			</textField>
 		</band>
 	</pageFooter>
-	<summary>
-		<band height="19" splitType="Stretch"/>
-	</summary>
 </jasperReport>

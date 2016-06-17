@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
-<!-- 2016-05-04T21:52:26 -->
+<!-- 2016-06-16T19:18:49 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg"/>
 	<parameter name="id_evento" class="java.lang.Integer"/>
@@ -122,7 +122,7 @@ ORDER BY rd.fechahora]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="181" splitType="Stretch">
+		<band height="159" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="30" width="554" height="30" uuid="a63323e5-1d25-45b0-bc23-c36c39a4393e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -295,9 +295,6 @@ ORDER BY rd.fechahora]]>
 			</textField>
 		</band>
 	</detail>
-	<pageFooter>
-		<band height="50"/>
-	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch">
 			<textField pattern="#,##0">
