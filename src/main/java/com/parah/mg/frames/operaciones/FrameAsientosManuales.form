@@ -102,6 +102,8 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
+    <Component class="com.parah.mg.utils.LocalDateTimeToDateTimeConverter" name="localDateTimeToDateTimeConverter1">
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -148,44 +150,41 @@
                               <EmptySpace min="-2" pref="364" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="conceptoLabel3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="montoLabel" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="montoField" min="-2" pref="124" max="-2" attributes="0"/>
-                                          <Component id="cboCuentaHaber" min="-2" pref="185" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="263" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="conceptoLabel3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="montoLabel" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="montoField" min="-2" pref="124" max="-2" attributes="0"/>
+                                  <Component id="cboCuentaHaber" min="-2" pref="185" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="conceptoLabel2" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace pref="40" max="32767" attributes="0"/>
+                                      <Component id="cboCuentaDebe" min="-2" pref="185" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="conceptoLabel2" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Component id="cboCuentaDebe" min="-2" pref="185" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="conceptoLabel1" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                                          <Component id="cboCentroDeCosto" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="fechahoraLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="idLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="dtpFecha" min="-2" pref="185" max="-2" attributes="0"/>
-                                              <Component id="idField" min="-2" pref="69" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="conceptoLabel1" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                                      <Component id="cboCentroDeCosto" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="334" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="fechahoraLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="idLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="idField" min="-2" pref="69" max="-2" attributes="0"/>
+                                  <Component id="dtpFecha" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                   </Group>
@@ -198,16 +197,16 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="156" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" pref="161" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="idField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="idLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="fechahoraLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="dtpFecha" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="fechahoraLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="dtpFecha" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -415,12 +414,6 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="org.jdesktop.swingx.JXDatePicker" name="dtpFecha">
-      <BindingProperties>
-        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fechahora}" target="dtpFecha" targetPath="date" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="dtpFecha" targetPath="enabled" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
-    </Component>
     <Component class="javax.swing.JLabel" name="conceptoLabel1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Centro de Costo:"/>
@@ -497,6 +490,15 @@
           <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
         </BindingProperty>
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="conceptoField" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dtpFecha">
+      <BindingProperties>
+        <BindingProperty name="dateTime" source="masterTable" sourcePath="${selectedElement.fechahora}" target="dtpFecha" targetPath="dateTime" updateStrategy="0" immediately="false">
+          <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.ComponentChooserEditor">
+            <ComponentRef name="localDateTimeToDateTimeConverter1"/>
+          </Property>
+        </BindingProperty>
       </BindingProperties>
     </Component>
   </SubComponents>

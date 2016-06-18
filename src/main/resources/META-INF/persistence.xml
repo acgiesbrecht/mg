@@ -47,6 +47,7 @@
         <class>com.parah.mg.domain.TblCuentasContables_1</class>
         <class>com.parah.mg.domain.TblUsers_1</class>
         <class>com.parah.mg.domain.TblCentrosDeCosto_1</class>
+        <class>com.parah.mg.utils.LocalDateTimeAttributeConverter</class>
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/mgdb;create=true"/>
             <property name="javax.persistence.jdbc.user" value="mg"/>

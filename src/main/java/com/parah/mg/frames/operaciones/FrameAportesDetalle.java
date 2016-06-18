@@ -21,12 +21,9 @@ import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.Beans;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,13 +33,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -109,7 +105,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                 cboFechaAporte.setSelectedIndex(-1);
             }
 
-            KeyboardFocusManager.getCurrentKeyboardFocusManager()
+            /*KeyboardFocusManager.getCurrentKeyboardFocusManager()
                     .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
                         @Override
                         public void propertyChange(final PropertyChangeEvent e) {
@@ -122,7 +118,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                                 });
                             }
                         }
-                    });
+                    });*/
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -810,12 +806,27 @@ public class FrameAportesDetalle extends JInternalFrame {
             txtCtaCte.setBackground(Color.white);
             if (txtCtaCte.getText().length() > 4) {
                 List<TblEntidades> list = listEntidades;
-                Optional<TblEntidades> value = list.stream().filter(a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
+                /*Optional<TblEntidades> value = list.stream().filter(a -> a.getCtacte().equals(Integer.valueOf(txtCtaCte.getText())))
                         .findFirst();
                 if (value.isPresent()) {
                     cboEntidad.setSelectedItem(value.get());
                     txtCtaCte.setBackground(Color.green);
                     montoField.requestFocus();
+                }*/
+                List<TblEntidades> valueList = list.stream()
+                        .filter(a -> String.valueOf(a.getCtacte()).contains(txtCtaCte.getText()))
+                        .collect(Collectors.toList());
+                if (valueList.size() == 1) {
+                    cboEntidad.setSelectedItem(valueList.get(0));
+                    txtCtaCte.setBackground(Color.green);
+                    montoField.requestFocus();
+                } else if (valueList.size() > 1) {
+                    cboEntidad.setSelectedItem(valueList.get(0));
+                    txtCtaCte.setBackground(Color.green);
+                    txtCtaCte.requestFocus();
+                    int end = txtCtaCte.getSelectionEnd();
+                    txtCtaCte.setSelectionStart(end);
+                    txtCtaCte.setSelectionEnd(end);
                 }
 
             }
