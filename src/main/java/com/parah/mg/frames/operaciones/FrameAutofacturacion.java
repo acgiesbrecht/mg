@@ -8,6 +8,8 @@ package com.parah.mg.frames.operaciones;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblAutofacturas;
 import com.parah.mg.domain.TblCentrosDeCosto;
@@ -50,6 +52,8 @@ public class FrameAutofacturacion extends JInternalFrame {
     JComboBox<TblCentrosDeCosto> cboCentroDeCosto = new JComboBox();
     JComboBox<TblCuentasContables> cboCuentaHaber = new JComboBox();
     JComboBox<TblCuentasContables> cboCuentaDebe = new JComboBox();
+    DatePickerSettings dps = new DatePickerSettings();
+    TimePickerSettings tps = new TimePickerSettings();
 
     public FrameAutofacturacion() {
         super("Facturacion Unica",
@@ -60,6 +64,13 @@ public class FrameAutofacturacion extends JInternalFrame {
         try {
 
             persistenceMap = Utils.getInstance().getPersistenceMap();
+
+            dps.setFormatForDatesCommonEra("dd/MM/yyyy");
+
+            tps.setFormatForDisplayTime("HH:mm:ss");
+            tps.setFormatForMenuTimes("HH:mm:ss");
+            tps.setDisplayToggleTimeMenuButton(false);
+
             initComponents();
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
@@ -156,7 +167,7 @@ public class FrameAutofacturacion extends JInternalFrame {
         txtConcepto = new javax.swing.JTextField();
         conceptoLabel = new javax.swing.JLabel();
         txtObservacion = new javax.swing.JTextField();
-        dtpFecha = new com.github.lgooddatepicker.components.DateTimePicker();
+        dtpFecha = new com.github.lgooddatepicker.components.DateTimePicker(dps, tps);
 
         FormListener formListener = new FormListener();
 

@@ -23,11 +23,9 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.Beans;
 import java.time.LocalDate;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -247,19 +245,19 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cboMarcarSeleccionados)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
                         .addComponent(saveButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(refreshButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(200, 200, 200)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(descripcionLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(descripcionLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(dtpFechaCobro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(descripcionLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(descripcionLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dtpFechaCobro, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
@@ -273,7 +271,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                     .addComponent(descripcionLabel3)
                     .addComponent(cboEventoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -282,12 +280,12 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(dtpFechaCobro, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(descripcionLabel4))
-                .addGap(5, 5, 5)
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
                     .addComponent(cboMarcarSeleccionados))
-                .addGap(31, 31, 31))
+                .addContainerGap())
         );
 
         bindingGroup.bind();

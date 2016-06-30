@@ -24,9 +24,9 @@ import java.awt.EventQueue;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.Beans;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -178,6 +178,7 @@ public class FrameAportesDetalle extends JInternalFrame {
         montoLabel1 = new javax.swing.JLabel();
         cboForma = new javax.swing.JComboBox();
         cmdGenerar = new javax.swing.JButton();
+        lblCtaCte = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
@@ -273,7 +274,9 @@ public class FrameAportesDetalle extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboEntidad, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        cboEntidad.addFocusListener(formListener);
         cboEntidad.addActionListener(formListener);
+        cboEntidad.addKeyListener(formListener);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -420,6 +423,8 @@ public class FrameAportesDetalle extends JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
+                                .addComponent(lblCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton2)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -444,7 +449,8 @@ public class FrameAportesDetalle extends JInternalFrame {
                     .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(idMiembroLabel2)
                     .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(lblCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(montoLabel1)
@@ -466,7 +472,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                             .addComponent(refreshButton))))
                 .addGap(97, 97, 97)
                 .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -525,6 +531,9 @@ public class FrameAportesDetalle extends JInternalFrame {
             if (evt.getSource() == newButton) {
                 FrameAportesDetalle.this.newButtonFocusLost(evt);
             }
+            else if (evt.getSource() == cboEntidad) {
+                FrameAportesDetalle.this.cboEntidadFocusLost(evt);
+            }
         }
 
         public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -539,6 +548,9 @@ public class FrameAportesDetalle extends JInternalFrame {
             }
             else if (evt.getSource() == cboForma) {
                 FrameAportesDetalle.this.cboFormaKeyReleased(evt);
+            }
+            else if (evt.getSource() == cboEntidad) {
+                FrameAportesDetalle.this.cboEntidadKeyReleased(evt);
             }
         }
 
@@ -657,20 +669,21 @@ public class FrameAportesDetalle extends JInternalFrame {
     private void newDetalle() {
         try {
             TblEventoDetalle t = new TblEventoDetalle();
-            entityManager.persist(t);
+
             TblEventos currEvento = (TblEventos) cboFechaAporte.getSelectedItem();
             t.setIdEvento(currEvento);
             t.setFechahora(currEvento.getFecha().atStartOfDay());
             t.setIdCategoriaArticulo(entityManager.find(TblCategoriasArticulos.class, 2));
             t.setIdUser(currentUser.getUser());
 
+            entityManager.persist(t);
             listEventoDetalle.add(t);
             int row = listEventoDetalle.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
-
             cboForma.setSelectedIndex(0);
             txtCtaCte.requestFocusInWindow();
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -740,8 +753,17 @@ public class FrameAportesDetalle extends JInternalFrame {
             for (TblEventoDetalle evd : listEventoDetalle) {
                 if (entityManager.contains(evd)) {
                     if (evd.getTblAsientosCollection().size() == 2) {
-                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
-                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getMonto());
+                        Integer indexAsientoAporte = -1;
+                        Integer indexAsientoDonacion = -1;
+                        if (((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
+                            indexAsientoAporte = 0;
+                            indexAsientoDonacion = 1;
+                        } else if (((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
+                            indexAsientoAporte = 1;
+                            indexAsientoDonacion = 0;
+                        }
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoDonacion).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).getMonto());
                         entityManager.merge(evd);
                     } else if (evd.getTblAsientosCollection().isEmpty()) {
 
@@ -896,10 +918,10 @@ public class FrameAportesDetalle extends JInternalFrame {
     private void cboEntidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEntidadActionPerformed
         try {
             if (cboEntidad.getSelectedItem() != null) {
-                txtCtaCte.setText(((TblEntidades) cboEntidad.getSelectedItem()).getCtacte().toString());
-                montoField.requestFocusInWindow();
+                //txtCtaCte.setText(((TblEntidades) cboEntidad.getSelectedItem()).getCtacte().toString());
+                //montoField.requestFocusInWindow();
             } else {
-                txtCtaCte.setText("");
+                //txtCtaCte.setText("");
             }
         } catch (Exception exx) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + exx.getMessage());
@@ -959,7 +981,7 @@ public class FrameAportesDetalle extends JInternalFrame {
     }//GEN-LAST:event_cmdGenerarActionPerformed
 
     private void newButtonFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_newButtonFocusLost
-        cboEntidad.requestFocusInWindow();
+
     }//GEN-LAST:event_newButtonFocusLost
 
     private void montoFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoFieldKeyReleased
@@ -993,6 +1015,21 @@ public class FrameAportesDetalle extends JInternalFrame {
         }
     }//GEN-LAST:event_cboFormaKeyReleased
 
+    private void cboEntidadFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cboEntidadFocusLost
+        if (cboEntidad.getSelectedItem() != null) {
+            txtCtaCte.setText(((TblEntidades) cboEntidad.getSelectedItem()).getCtacte().toString());
+            montoField.requestFocusInWindow();
+        } else {
+            txtCtaCte.setText("");
+        }
+    }//GEN-LAST:event_cboEntidadFocusLost
+
+    private void cboEntidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cboEntidadKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            montoField.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_cboEntidadKeyReleased
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.parah.mg.utils.CategoriasConverter categoriasConverter1;
     private javax.swing.JComboBox cboEntidad;
@@ -1015,6 +1052,7 @@ public class FrameAportesDetalle extends JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
+    private javax.swing.JLabel lblCtaCte;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalOperaciones;
     private java.util.List<com.parah.mg.domain.miembros.TblEntidades> listEntidades;

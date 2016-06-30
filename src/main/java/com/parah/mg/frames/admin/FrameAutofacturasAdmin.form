@@ -156,8 +156,8 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="290" max="32767" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="masterScrollPane" pref="305" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="anularButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="imprimirButton" alignment="3" min="-2" max="-2" attributes="0"/>

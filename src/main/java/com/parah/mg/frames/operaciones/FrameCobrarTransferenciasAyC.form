@@ -161,21 +161,21 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="cboMarcarSeleccionados" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="148" max="32767" attributes="0"/>
                       <Component id="saveButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="refreshButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="200" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="descripcionLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="descripcionLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="descripcionLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="dtpFechaCobro" max="32767" attributes="0"/>
-                          <Component id="lblTotal" alignment="1" min="-2" pref="116" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="dtpFechaCobro" pref="0" max="32767" attributes="0"/>
+                          <Component id="lblTotal" pref="116" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -192,7 +192,7 @@
                   <Component id="cboEventoTipo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="594" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" pref="598" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="lblTotal" max="32767" attributes="0"/>
@@ -203,13 +203,13 @@
                   <Component id="dtpFechaCobro" min="-2" pref="25" max="-2" attributes="0"/>
                   <Component id="descripcionLabel4" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cboMarcarSeleccionados" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

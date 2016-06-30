@@ -26,7 +26,6 @@ import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.text.MaskFormatter;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 import org.apache.logging.log4j.LogManager;
@@ -124,7 +123,6 @@ public class FrameEventosAdmin extends JInternalFrame {
         cboCentroDeCosto = new javax.swing.JComboBox();
         descripcionLabel7 = new javax.swing.JLabel();
         datePicker1 = new DatePicker(datePickerSettings);
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
 
         FormListener formListener = new FormListener();
 
@@ -255,12 +253,6 @@ public class FrameEventosAdmin extends JInternalFrame {
 
         datePicker1.addPropertyChangeListener(formListener);
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fecha}"), jFormattedTextField1, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        binding.setConverter(dateToStringConverter1);
-        bindingGroup.addBinding(binding);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -290,9 +282,7 @@ public class FrameEventosAdmin extends JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(cboEventoTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(descripcionField)
-                                    .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(descripcionLabel1)
@@ -323,12 +313,11 @@ public class FrameEventosAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fechaLabel)
-                    .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(descripcionLabel3)
@@ -525,7 +514,6 @@ public class FrameEventosAdmin extends JInternalFrame {
     private com.parah.mg.utils.DonacionTableCellRenderer donacionTableCellRenderer1;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fechaLabel;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel lblAporte;
     private javax.swing.JLabel lblDonacion;
     private java.util.List<com.parah.mg.domain.TblEventos> list;

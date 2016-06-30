@@ -1,15 +1,15 @@
 package com.github.lgooddatepicker.components;
 
-import com.privatejgoodies.forms.layout.FormLayout;
-import com.privatejgoodies.forms.layout.ConstantSize;
-import com.privatejgoodies.forms.layout.ColumnSpec;
-import com.privatejgoodies.forms.factories.CC;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
+import com.privatejgoodies.forms.factories.CC;
+import com.privatejgoodies.forms.layout.ColumnSpec;
+import com.privatejgoodies.forms.layout.ConstantSize;
+import com.privatejgoodies.forms.layout.FormLayout;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -416,10 +416,17 @@ public class DateTimePicker extends JPanel {
             for (DateTimeChangeListener listener : dateTimeChangeListeners) {
                 listener.dateOrTimeChanged(summaryEvent);
             }
-            if(source.datePicker.getDate() != null && source.timePicker.getTime() != null){
-                LocalDateTime newDateTime = LocalDateTime.of(source.datePicker.getDate(), source.timePicker.getTime());
-                firePropertyChange("dateTime",null,newDateTime);
+            LocalDateTime oldDateTime = null;
+            LocalDateTime newDateTime = null;
+            if(dateEvent != null && timeEvent != null){
+                if(dateEvent.getOldDate() != null && timeEvent.getOldTime() != null){
+                    oldDateTime = LocalDateTime.of(dateEvent.getOldDate(), timeEvent.getOldTime());
+                }
+                if(dateEvent.getNewDate() != null && timeEvent.getNewTime() != null){
+                    newDateTime = LocalDateTime.of(dateEvent.getNewDate(), timeEvent.getNewTime());
+                }
             }
+            firePropertyChange("dateTime", oldDateTime, newDateTime);
         }
 
     }

@@ -14,7 +14,6 @@ import java.beans.Beans;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalField;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,7 +114,7 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha");
-        columnBinding.setColumnClass(java.time.LocalDateTime.class);
+        columnBinding.setColumnClass(java.util.Date.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
         columnBinding.setColumnName("Nombre");
@@ -137,11 +136,9 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
-            masterTable.getColumnModel().getColumn(0).setCellRenderer(null);
             masterTable.getColumnModel().getColumn(2).setResizable(false);
             masterTable.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer1);
             masterTable.getColumnModel().getColumn(4).setResizable(false);
-            masterTable.getColumnModel().getColumn(4).setCellRenderer(null);
             masterTable.getColumnModel().getColumn(5).setCellRenderer(numberCellRenderer1);
         }
 
@@ -192,8 +189,8 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(anularButton)
                     .addComponent(imprimirButton)

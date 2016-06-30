@@ -234,6 +234,8 @@
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="cboEntidad" min="-2" pref="324" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="lblCtaCte" min="-2" pref="75" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButton2" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -263,6 +265,7 @@
                   <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblCtaCte" alignment="1" min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -291,7 +294,7 @@
               </Group>
               <EmptySpace min="-2" pref="97" max="-2" attributes="0"/>
               <Component id="dateTableCellRenderer1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <EmptySpace pref="19" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -497,7 +500,9 @@
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="cboEntidad" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="cboEntidadFocusLost"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboEntidadActionPerformed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="cboEntidadKeyReleased"/>
       </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="jPanel1">
@@ -668,6 +673,8 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdGenerarActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblCtaCte">
     </Component>
   </SubComponents>
 </Form>

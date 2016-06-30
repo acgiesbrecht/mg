@@ -98,11 +98,10 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t JOIN FETCH t.idEntidad");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
-        dateToStringConverter1 = new com.parah.mg.utils.DateToStringConverter();
-        dateTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
         numberCellRenderer1 = new com.parah.mg.utils.NumberCellRenderer();
         integerLongConverter1 = new com.parah.mg.utils.IntegerLongConverter();
         ctaCteTableCellRenderer1 = new com.parah.mg.utils.CtaCteTableCellRenderer();
+        dateTableCellRenderer2 = new com.parah.mg.utils.DateTableCellRenderer();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         deleteButton = new javax.swing.JButton();
@@ -110,12 +109,12 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
 
         FormListener formListener = new FormListener();
 
-        dateTableCellRenderer1.setText("dateTableCellRenderer1");
-
         numberCellRenderer1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         numberCellRenderer1.setText("numberCellRenderer1");
 
         ctaCteTableCellRenderer1.setText("ctaCteTableCellRenderer1");
+
+        dateTableCellRenderer2.setText("dateTableCellRenderer2");
 
         addInternalFrameListener(formListener);
 
@@ -128,11 +127,11 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahoraCompromiso}"));
         columnBinding.setColumnName("Fecha/Hora Compromiso");
-        columnBinding.setColumnClass(java.time.LocalDateTime.class);
+        columnBinding.setColumnClass(java.time.LocalDate.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha/Hora Cobro");
-        columnBinding.setColumnClass(java.time.LocalDateTime.class);
+        columnBinding.setColumnClass(java.time.LocalDate.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad.ctacte}"));
         columnBinding.setColumnName("Cta Cte");
@@ -158,8 +157,8 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
-            masterTable.getColumnModel().getColumn(1).setCellRenderer(dateTableCellRenderer1);
-            masterTable.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(1).setCellRenderer(dateTableCellRenderer2);
+            masterTable.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer2);
             masterTable.getColumnModel().getColumn(3).setResizable(false);
             masterTable.getColumnModel().getColumn(3).setCellRenderer(ctaCteTableCellRenderer1);
             masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
@@ -342,8 +341,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.parah.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
-    private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
-    private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
+    private com.parah.mg.utils.DateTableCellRenderer dateTableCellRenderer2;
     private javax.swing.JButton deleteButton;
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;

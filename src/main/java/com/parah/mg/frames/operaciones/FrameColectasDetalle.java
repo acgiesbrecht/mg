@@ -31,7 +31,6 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -763,8 +762,20 @@ public class FrameColectasDetalle extends JInternalFrame {
             for (TblEventoDetalle evd : listEventoDetalle) {
                 if (entityManager.contains(evd)) {
                     if (evd.getTblAsientosCollection().size() == 2) {
-                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                        /*((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
                         ((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getMonto());
+                        entityManager.merge(evd);*/
+                        Integer indexAsientoAporte = -1;
+                        Integer indexAsientoDonacion = -1;
+                        if (((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
+                            indexAsientoAporte = 0;
+                            indexAsientoDonacion = 1;
+                        } else if (((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
+                            indexAsientoAporte = 1;
+                            indexAsientoDonacion = 0;
+                        }
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoDonacion).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).getMonto());
                         entityManager.merge(evd);
                     } else if (evd.getTblAsientosCollection().isEmpty()) {
 

@@ -579,6 +579,9 @@
     <Component class="javax.swing.JTextField" name="txtObservacion">
     </Component>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dtpFecha">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(dps, tps);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

@@ -5,9 +5,8 @@
  */
 package com.parah.mg.frames.operaciones;
 
+import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
-import com.github.lgooddatepicker.components.DateTimePicker;
-import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblFacturas;
@@ -22,9 +21,7 @@ import java.awt.EventQueue;
 import java.beans.Beans;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,9 +49,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
     Map<String, String> persistenceMap = new HashMap<>();
     int siguienteFacturaNro;
     DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.getDefault());
-    TimePickerSettings timePickerSettings = new TimePickerSettings(Locale.getDefault());
-    DatePickerSettings datePickerSettings2 = new DatePickerSettings(Locale.getDefault());
-    TimePickerSettings timePickerSettings2 = new TimePickerSettings(Locale.getDefault());
+    DatePickerSettings datePickerSettings1 = new DatePickerSettings(Locale.getDefault());
 
     public FrameFacturacionColectiva() {
         super("Facturacion Unica",
@@ -66,12 +61,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
             persistenceMap = Utils.getInstance().getPersistenceMap();
             datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
-            timePickerSettings.setFormatForDisplayTime("HH:mm:ss");
-            timePickerSettings.setFormatForMenuTimes("HH:mm:ss");
-
-            datePickerSettings2.setFormatForDatesCommonEra("dd/MM/yyyy");
-            timePickerSettings2.setFormatForDisplayTime("HH:mm:ss");
-            timePickerSettings2.setFormatForMenuTimes("HH:mm:ss");
+            datePickerSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");
 
             initComponents();
             if (!Beans.isDesignTime()) {
@@ -85,9 +75,9 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 imprimirButton.setEnabled(true);
             }
 
-            dtpFechaDesde.setDateTime(LocalDate.now().withDayOfYear(1).atStartOfDay());
+            dtpFechaDesde.setDate(LocalDate.now().withDayOfYear(1));
 
-            dtpFechaHasta.setDateTime(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).atTime(23, 59, 59));
+            dtpFechaHasta.setDate(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()));
 
             list.clear();
             list.addAll(query.getResultList());
@@ -141,8 +131,8 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         cmdCalcular = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        dtpFechaDesde = new DateTimePicker(datePickerSettings, timePickerSettings);
-        dtpFechaHasta = new DateTimePicker(datePickerSettings2, timePickerSettings2);
+        dtpFechaDesde = new DatePicker(datePickerSettings);
+        dtpFechaHasta = new DatePicker(datePickerSettings1);
 
         FormListener formListener = new FormListener();
 
@@ -225,18 +215,18 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                         .addComponent(imprimirButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelarButton))
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(masterScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1055, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(dtpFechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dtpFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(cmdCalcular)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -249,13 +239,13 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(cmdCalcular)
                         .addComponent(jLabel2))
                     .addComponent(dtpFechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dtpFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dtpFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdCalcular))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(imprimirButton))
@@ -328,14 +318,14 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
             Query queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblTransferenciasCollection t WHERE t.fechahora >= :fechaDesde AND t.fechahora <= :fechaHasta");
 
-            queryE.setParameter("fechaDesde", dtpFechaDesde.getDateTime());
+            queryE.setParameter("fechaDesde", dtpFechaDesde.getDate());
 
-            queryE.setParameter("fechaHasta", dtpFechaHasta.getDateTime());
+            queryE.setParameter("fechaHasta", dtpFechaHasta.getDate());
             List<TblEntidades> listE = (List<TblEntidades>) queryE.getResultList();
 
             for (TblEntidades e : listE) {
                 Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
-                queryT.setParameter("fecha", dtpFechaHasta.getDateTime());
+                queryT.setParameter("fecha", dtpFechaHasta.getDate());
                 queryT.setParameter("entidad", e);
                 List<TblTransferencias> listT = (List<TblTransferencias>) queryT.getResultList();
                 if (listT.size() > 0) {
@@ -368,12 +358,12 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             }
 
             queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblRecibosCollection t WHERE t.fechahora <= :fecha");
-            queryE.setParameter("fecha", dtpFechaHasta.getDateTime());
+            queryE.setParameter("fecha", dtpFechaHasta.getDate());
             listE = (List<TblEntidades>) queryE.getResultList();
 
             for (TblEntidades e : listE) {
                 Query queryRecibos = entityManager.createQuery("SELECT distinct t FROM TblRecibos t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
-                queryRecibos.setParameter("fecha", dtpFechaHasta.getDateTime());
+                queryRecibos.setParameter("fecha", dtpFechaHasta.getDate());
                 queryRecibos.setParameter("entidad", e);
                 List<TblRecibos> listR = (List<TblRecibos>) queryRecibos.getResultList();
                 if (listR.size() > 0) {
@@ -411,7 +401,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     entityManager.persist(f);
                     f.setNro(siguienteFacturaNro);
                     f.setIdTimbrado(listTimbrados.get(0));
-                    f.setFechahora(dtpFechaHasta.getDateTime());
+                    f.setFechahora(dtpFechaHasta.getDate().atStartOfDay());
                     f.setIdEntidad(pago.getEntidad());
                     if (pago.getEntidad().getRazonSocial() != null) {
                         if (!pago.getEntidad().getRazonSocial().equals("")) {
@@ -555,8 +545,8 @@ public class FrameFacturacionColectiva extends JInternalFrame {
     private javax.swing.JButton cancelarButton;
     private javax.swing.JButton cmdCalcular;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
-    private com.github.lgooddatepicker.components.DateTimePicker dtpFechaDesde;
-    private com.github.lgooddatepicker.components.DateTimePicker dtpFechaHasta;
+    private com.github.lgooddatepicker.components.DatePicker dtpFechaDesde;
+    private com.github.lgooddatepicker.components.DatePicker dtpFechaHasta;
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.FacturaNroTableCellRenderer facturaNroTableCellRenderer1;
     private javax.swing.JButton imprimirButton;

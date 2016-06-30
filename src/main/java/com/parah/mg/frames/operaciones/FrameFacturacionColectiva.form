@@ -126,18 +126,18 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cancelarButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="masterScrollPane" alignment="1" max="32767" attributes="0"/>
+                  <Component id="masterScrollPane" alignment="1" pref="1055" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="dtpFechaDesde" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="dtpFechaHasta" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="cmdCalcular" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="116" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -151,15 +151,15 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cmdCalcular" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="dtpFechaDesde" min="-2" max="-2" attributes="0"/>
                   <Component id="dtpFechaHasta" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmdCalcular" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="masterScrollPane" min="-2" pref="278" max="-2" attributes="0"/>
-              <EmptySpace pref="33" max="32767" attributes="0"/>
+              <EmptySpace pref="37" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cancelarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="imprimirButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -333,14 +333,14 @@
         <Property name="text" type="java.lang.String" value="Hasta (Fecha de Facturacion):"/>
       </Properties>
     </Component>
-    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dtpFechaDesde">
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="dtpFechaDesde">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DateTimePicker(datePickerSettings, timePickerSettings);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DatePicker(datePickerSettings);"/>
       </AuxValues>
     </Component>
-    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dtpFechaHasta">
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="dtpFechaHasta">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DateTimePicker(datePickerSettings2, timePickerSettings2);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DatePicker(datePickerSettings1);"/>
       </AuxValues>
     </Component>
   </SubComponents>
