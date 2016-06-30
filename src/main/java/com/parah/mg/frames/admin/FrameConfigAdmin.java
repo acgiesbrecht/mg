@@ -19,8 +19,8 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -482,7 +482,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         try {
             TblFacturas testF = new TblFacturas();
             testF.setNro(1234567);
-            testF.setFechahora(new java.sql.Date((new Date()).getTime()));
+            testF.setFechahora(LocalDateTime.now());
             testF.setRazonSocial("Empresa SA");
             testF.setRuc("8888888");
             testF.setDomicilio("Loma Plata");
@@ -561,7 +561,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                         evd.setTblAsientosCollection((List) ts);
                     }
                     TblAsientos asientoAporte = new TblAsientos();
-                    asientoAporte.setFechahora(evd.getIdEvento().getFecha());
+                    asientoAporte.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
                     asientoAporte.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
                     asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                     asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
@@ -571,7 +571,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                     ts.add(asientoAporte);
 
                     TblAsientos asientoDonacion = new TblAsientos();
-                    asientoDonacion.setFechahora(evd.getIdEvento().getFecha());
+                    asientoDonacion.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
                     asientoDonacion.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
                     asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                     asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());

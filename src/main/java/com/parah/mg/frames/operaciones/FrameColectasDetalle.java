@@ -30,10 +30,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -128,10 +128,7 @@ public class FrameColectasDetalle extends JInternalFrame {
 
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String s = sdf.format(new Date());
-            Date today = sdf.parse(s);
-            Optional<TblEventos> value = listEventos.stream().filter(a -> a.getFecha().equals(today))
+            Optional<TblEventos> value = listEventos.stream().filter(a -> a.getFecha().equals(LocalDate.now().atStartOfDay()))
                     .findFirst();
 
             if (value.isPresent()) {
@@ -693,7 +690,7 @@ public class FrameColectasDetalle extends JInternalFrame {
         try {
             TblEventoDetalle t = new TblEventoDetalle();
             TblEventos currEvento = (TblEventos) cboFechaColecta.getSelectedItem();
-            t.setFechahora(currEvento.getFecha());
+            t.setFechahora(currEvento.getFecha().atStartOfDay());
             t.setIdCategoriaArticulo(entityManager.find(TblCategoriasArticulos.class, 1));
             t.setIdEvento(currEvento);
             t.setIdUser(currentUser.getUser());
@@ -777,7 +774,7 @@ public class FrameColectasDetalle extends JInternalFrame {
                             evd.setTblAsientosCollection((List) ts);
                         }
                         TblAsientos asientoAporte = new TblAsientos();
-                        asientoAporte.setFechahora(evd.getIdEvento().getFecha());
+                        asientoAporte.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
                         asientoAporte.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
                         asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
@@ -787,7 +784,7 @@ public class FrameColectasDetalle extends JInternalFrame {
                         ts.add(asientoAporte);
 
                         TblAsientos asientoDonacion = new TblAsientos();
-                        asientoDonacion.setFechahora(evd.getIdEvento().getFecha());
+                        asientoDonacion.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
                         asientoDonacion.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
                         asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
@@ -1002,7 +999,7 @@ public class FrameColectasDetalle extends JInternalFrame {
 
                         TblEventoDetalle t = new TblEventoDetalle();
                         TblEventos currEvento = (TblEventos) cboFechaColecta.getSelectedItem();
-                        t.setFechahora(currEvento.getFecha());
+                        t.setFechahora(currEvento.getFecha().atStartOfDay());
                         t.setIdCategoriaArticulo(entityManager.find(TblCategoriasArticulos.class, 1));
                         t.setIdEvento(currEvento);
                         t.setIdUser(currentUser.getUser());

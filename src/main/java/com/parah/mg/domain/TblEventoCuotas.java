@@ -6,7 +6,7 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,16 +46,16 @@ public class TblEventoCuotas implements Serializable {
     private Integer idEvento;
     @Column(name = "FECHA_1")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fecha1;
+    private LocalDate fecha1;
     @Column(name = "FECHA_2")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fecha2;
+    private LocalDate fecha2;
     @Column(name = "FECHA_3")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fecha3;
+    private LocalDate fecha3;
     @Column(name = "FECHA_4")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fecha4;
+    private LocalDate fecha4;
     @Column(name = "ID_USER")
     private Integer idUser;
     @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID", insertable = false, updatable = false)
@@ -77,35 +77,35 @@ public class TblEventoCuotas implements Serializable {
         this.idEvento = idEvento;
     }
 
-    public Date getFecha1() {
+    public LocalDate getFecha1() {
         return fecha1;
     }
 
-    public void setFecha1(Date fecha1) {
+    public void setFecha1(LocalDate fecha1) {
         this.fecha1 = fecha1;
     }
 
-    public Date getFecha2() {
+    public LocalDate getFecha2() {
         return fecha2;
     }
 
-    public void setFecha2(Date fecha2) {
+    public void setFecha2(LocalDate fecha2) {
         this.fecha2 = fecha2;
     }
 
-    public Date getFecha3() {
+    public LocalDate getFecha3() {
         return fecha3;
     }
 
-    public void setFecha3(Date fecha3) {
+    public void setFecha3(LocalDate fecha3) {
         this.fecha3 = fecha3;
     }
 
-    public Date getFecha4() {
+    public LocalDate getFecha4() {
         return fecha4;
     }
 
-    public void setFecha4(Date fecha4) {
+    public void setFecha4(LocalDate fecha4) {
         this.fecha4 = fecha4;
     }
 

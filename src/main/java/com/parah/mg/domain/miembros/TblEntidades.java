@@ -13,7 +13,7 @@ import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.TblUsers;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDate;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -104,19 +104,19 @@ public class TblEntidades implements Serializable {
     private int aporteMensual;
     @Column(name = "FECHA_NACIMIENTO")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaNacimiento;
+    private LocalDate fechaNacimiento;
     @Column(name = "FECHA_BAUTISMO")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaBautismo;
+    private LocalDate fechaBautismo;
     @Column(name = "FECHA_ENTRADA_CONGREGACION")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaEntradaCongregacion;
+    private LocalDate fechaEntradaCongregacion;
     @Column(name = "FECHA_SALIDA_CONGREGACION")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaSalidaCongregacion;
+    private LocalDate fechaSalidaCongregacion;
     @Column(name = "FECHA_DEFUNCION")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaDefuncion;
+    private LocalDate fechaDefuncion;
     @OneToMany(mappedBy = "idEntidad2", fetch = FetchType.LAZY)
     private Collection<TblMiembrosRelaciones> tblMiembrosRelacionesCollection;
     @OneToMany(mappedBy = "idEntidad1", fetch = FetchType.LAZY)
@@ -248,43 +248,43 @@ public class TblEntidades implements Serializable {
         this.aporteMensual = aporteMensual;
     }
 
-    public Date getFechaNacimiento() {
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public Date getFechaBautismo() {
+    public LocalDate getFechaBautismo() {
         return fechaBautismo;
     }
 
-    public void setFechaBautismo(Date fechaBautismo) {
+    public void setFechaBautismo(LocalDate fechaBautismo) {
         this.fechaBautismo = fechaBautismo;
     }
 
-    public Date getFechaEntradaCongregacion() {
+    public LocalDate getFechaEntradaCongregacion() {
         return fechaEntradaCongregacion;
     }
 
-    public void setFechaEntradaCongregacion(Date fechaEntradaCongregacion) {
+    public void setFechaEntradaCongregacion(LocalDate fechaEntradaCongregacion) {
         this.fechaEntradaCongregacion = fechaEntradaCongregacion;
     }
 
-    public Date getFechaSalidaCongregacion() {
+    public LocalDate getFechaSalidaCongregacion() {
         return fechaSalidaCongregacion;
     }
 
-    public void setFechaSalidaCongregacion(Date fechaSalidaCongregacion) {
+    public void setFechaSalidaCongregacion(LocalDate fechaSalidaCongregacion) {
         this.fechaSalidaCongregacion = fechaSalidaCongregacion;
     }
 
-    public Date getFechaDefuncion() {
+    public LocalDate getFechaDefuncion() {
         return fechaDefuncion;
     }
 
-    public void setFechaDefuncion(Date fechaDefuncion) {
+    public void setFechaDefuncion(LocalDate fechaDefuncion) {
         this.fechaDefuncion = fechaDefuncion;
     }
 

@@ -54,11 +54,6 @@
     </Component>
     <Component class="com.parah.mg.utils.DateToStringConverter" name="dateToStringConverter1">
     </Component>
-    <Component class="com.parah.mg.utils.DateTimeTableCellRenderer" name="dateTableCellRenderer1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="dateTableCellRenderer1"/>
-      </Properties>
-    </Component>
     <Component class="com.parah.mg.utils.NumberCellRenderer" name="numberCellRenderer1">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="4"/>
@@ -103,6 +98,11 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
+    <Component class="com.parah.mg.utils.DateTableCellRenderer" name="dateTableCellRenderer2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="dateTableCellRenderer2"/>
+      </Properties>
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -139,8 +139,8 @@
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="descripcionLabel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="dtpFechaCobro" min="-2" pref="116" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="dtpFechaCobro" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
@@ -162,17 +162,19 @@
                   <Component id="cboFechaRemate" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="563" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" pref="575" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="descripcionLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="dtpFechaCobro" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cboMarcarSeleccionados" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="descripcionLabel4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cboMarcarSeleccionados" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Component id="dtpFechaCobro" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
           </Group>
@@ -199,7 +201,7 @@
                   <Title/>
                   <Editor/>
                   <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="dateTableCellRenderer1"/>
+                    <ComponentRef name="dateTableCellRenderer2"/>
                   </Renderer>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
@@ -236,7 +238,7 @@
             <BindingProperty name="elements" source="list" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${fechahoraCompromiso}">
                 <BindingParameter name="NAME" value="Fecha"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDateTime.class"/>
               </Subbinding>
               <Subbinding sourcePath="${idEntidad.ctacte}">
                 <BindingParameter name="NAME" value="Cta Cte"/>
@@ -307,8 +309,6 @@
         <Property name="text" type="java.lang.String" value="Fecha de Cobro:"/>
       </Properties>
     </Component>
-    <Component class="org.jdesktop.swingx.JXDatePicker" name="dtpFechaCobro">
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
         <Property name="text" type="java.lang.String" value="Fecha de Remate:"/>
@@ -318,6 +318,11 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboFechaRemateActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="dtpFechaCobro">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DatePicker(datePickerSettings);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

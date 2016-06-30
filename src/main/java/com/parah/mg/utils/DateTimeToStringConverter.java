@@ -6,7 +6,9 @@
 package com.parah.mg.utils;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import org.jdesktop.beansbinding.Converter;
 
 /**
@@ -17,18 +19,16 @@ public class DateTimeToStringConverter extends Converter {
 
     @Override
     public Object convertForward(Object value) {
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(value);
+        return ((LocalDateTime) value).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     @Override
-    public Date convertReverse(Object value) {
-        Date res = new Date();
+    public LocalDateTime convertReverse(Object value) {
         try {
-            res = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(value.toString());
-
+            return (LocalDateTime) value;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
+            return null;
         }
-        return res;
     }
 }

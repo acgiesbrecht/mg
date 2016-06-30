@@ -5,8 +5,8 @@
  */
 package com.parah.mg.utils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import org.jdesktop.beansbinding.Converter;
 
 /**
@@ -17,18 +17,16 @@ public class DateToStringConverter extends Converter {
 
     @Override
     public Object convertForward(Object value) {
-        return new SimpleDateFormat("yyyy-MM-dd").format(value);
+        return ((LocalDate) value).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
     @Override
-    public Date convertReverse(Object value) {
-        Date res = new Date();
+    public LocalDate convertReverse(Object value) {
         try {
-            res = new SimpleDateFormat("yyyy-MM-dd").parse(value.toString());
-
+            return LocalDate.parse(value.toString());
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
+            return null;
         }
-        return res;
     }
 }

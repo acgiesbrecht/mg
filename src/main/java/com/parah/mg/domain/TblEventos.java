@@ -6,9 +6,10 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -62,7 +63,7 @@ public class TblEventos implements Serializable {
     @NotNull
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fecha;
+    private LocalDate fecha;
     @Size(max = 100)
     @Column(name = "DESCRIPCION")
     private String descripcion;
@@ -90,7 +91,7 @@ public class TblEventos implements Serializable {
         this.id = id;
     }
 
-    public TblEventos(Integer id, Date fecha, int porcentajeAporte) {
+    public TblEventos(Integer id, LocalDate fecha, int porcentajeAporte) {
         this.id = id;
         this.fecha = fecha;
         this.porcentajeAporte = porcentajeAporte;
@@ -104,11 +105,11 @@ public class TblEventos implements Serializable {
         this.id = id;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
@@ -182,8 +183,7 @@ public class TblEventos implements Serializable {
 
     @Override
     public String toString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return sdf.format(fecha) + " - " + descripcion;
+        return fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " - " + descripcion;
     }
 
     @XmlTransient

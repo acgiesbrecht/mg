@@ -6,7 +6,7 @@
 package com.parah.mg.domain.models;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,7 +41,7 @@ public class Transferencia implements Serializable {
     @Basic(optional = false)
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechahora;
+    private LocalDateTime fechahora;
     @Basic(optional = false)
     @Column(name = "NOMBRE")
     private String nombre;
@@ -62,11 +62,11 @@ public class Transferencia implements Serializable {
         this.id = id;
     }
 
-    public Date getFechahora() {
+    public LocalDateTime getFechahora() {
         return fechahora;
     }
 
-    public void setFechahora(Date fechahora) {
+    public void setFechahora(LocalDateTime fechahora) {
         this.fechahora = fechahora;
     }
 

@@ -10,7 +10,7 @@ import com.parah.mg.domain.TblEventoTipos;
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -25,7 +25,7 @@ public class PagosRealizados implements Serializable {
 
     @Id
     private TblEntidades entidad;
-    private Date fechahora;
+    private LocalDate fecha;
     private Collection<TblAsientosTemporales> asientosTemporalesList;
     private TblEventoTipos eventoTipo;
     private Integer montoAporte;
@@ -89,17 +89,17 @@ public class PagosRealizados implements Serializable {
     }
 
     /**
-     * @return the fechahora
+     * @return the fecha
      */
-    public Date getFechahora() {
-        return fechahora;
+    public LocalDate getFecha() {
+        return fecha;
     }
 
     /**
-     * @param fechahora the fechahora to set
+     * @param fecha the fecha to set
      */
-    public void setFechahora(Date fechahora) {
-        this.fechahora = fechahora;
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
     }
 
     /**

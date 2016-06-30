@@ -10,6 +10,9 @@ import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.DateTimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblCategoriasArticulos;
 import com.parah.mg.domain.TblCuentasContablesPorDefecto;
@@ -29,13 +32,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.prefs.Preferences;
@@ -66,6 +69,8 @@ public class FrameRematesDetalle extends JInternalFrame {
     EventList<TblEntidades> eventListEntidades = new BasicEventList<>();
     EventList<TblCategoriasArticulos> eventListTblCategoriasArticulos = new BasicEventList<>();
     TblCuentasContablesPorDefecto cuentasContablesPorDefecto;
+    DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.getDefault());
+    TimePickerSettings timePickerSettings = new TimePickerSettings(Locale.getDefault());
 
     public FrameRematesDetalle() {
         super("Remates",
@@ -75,6 +80,9 @@ public class FrameRematesDetalle extends JInternalFrame {
                 true);//iconifiable
         try {
             persistenceMap = Utils.getInstance().getPersistenceMap();
+            datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
+            timePickerSettings.setFormatForDisplayTime("HH:mm:ss");
+            timePickerSettings.setFormatForMenuTimes("HH:mm:ss");
             initComponents();
             cboFormaDePagoPreferida.setVisible(false);
             this.dateTimeTableCellRenderer1.setEnProceso(true);
@@ -103,10 +111,7 @@ public class FrameRematesDetalle extends JInternalFrame {
             AutoCompleteSupport support2 = AutoCompleteSupport.install(cboEntidad, eventListEntidades);
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String s = sdf.format(new Date());
-            Date today = sdf.parse(s);
-            Optional<TblEventos> value = listEventos.stream().filter(a -> a.getFecha().equals(today))
+            Optional<TblEventos> value = listEventos.stream().filter(a -> a.getFecha().equals(LocalDateTime.now()))
                     .findFirst();
             if (value.isPresent()) {
                 cboFechaRemate.setSelectedItem(value.get());
@@ -171,7 +176,6 @@ public class FrameRematesDetalle extends JInternalFrame {
         montoLabel = new javax.swing.JLabel();
         observacionLabel = new javax.swing.JLabel();
         idMiembroLabel = new javax.swing.JLabel();
-        fechahoraField = new javax.swing.JTextField();
         observacionField = new javax.swing.JTextField();
         saveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
@@ -194,6 +198,7 @@ public class FrameRematesDetalle extends JInternalFrame {
         jButton2 = new javax.swing.JButton();
         saveButton1 = new javax.swing.JButton();
         cboFormaDePagoPreferida = new javax.swing.JComboBox<>();
+        fechahoraField = new DateTimePicker(datePickerSettings, timePickerSettings);
 
         FormListener formListener = new FormListener();
 
@@ -212,7 +217,7 @@ public class FrameRematesDetalle extends JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventosDetalle, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha/Hora");
-        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setColumnClass(java.time.LocalDateTime.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
         columnBinding.setColumnName("Miembro");
         columnBinding.setColumnClass(com.parah.mg.domain.miembros.TblEntidades.class);
@@ -253,18 +258,9 @@ public class FrameRematesDetalle extends JInternalFrame {
         idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel.setText("Cliente:");
 
-        fechahoraField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), fechahoraField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue("null");
-        binding.setConverter(dateTimeToStringConverter1);
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechahoraField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
         observacionField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.observacion}"), observacionField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.observacion}"), observacionField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), observacionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
@@ -415,6 +411,11 @@ public class FrameRematesDetalle extends JInternalFrame {
 
         cboFormaDePagoPreferida.addActionListener(formListener);
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), fechahoraField, org.jdesktop.beansbinding.BeanProperty.create("dateTime"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechahoraField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -471,11 +472,12 @@ public class FrameRematesDetalle extends JInternalFrame {
                                     .addComponent(fechahoraLabel)
                                     .addComponent(idCategoriaLabel))
                                 .addGap(22, 22, 22)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cboCategoria, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(fechahoraField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jButton1))
+                                    .addComponent(fechahoraField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(masterScrollPane))
                 .addContainerGap())
@@ -493,7 +495,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fechahoraLabel)
                     .addComponent(fechahoraField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -534,7 +536,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                                 .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(saveButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(521, Short.MAX_VALUE))
+                .addContainerGap(523, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -724,7 +726,7 @@ public class FrameRematesDetalle extends JInternalFrame {
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
 
-            fechahoraField.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            fechahoraField.setDateTime(LocalDateTime.now());
             if (tblCategoriasArticulosList.size() > 0) {
                 cboCategoria.setSelectedItem(tblCategoriasArticulosList.get(tblCategoriasArticulosList.size() - 1));
             }
@@ -765,7 +767,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                             evd.setTblAsientosCollection((List) ts);
                         }
                         TblAsientos asientoAporte = new TblAsientos();
-                        asientoAporte.setFechahora(evd.getIdEvento().getFecha());
+                        asientoAporte.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
                         asientoAporte.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
                         asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
@@ -775,7 +777,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                         ts.add(asientoAporte);
 
                         TblAsientos asientoDonacion = new TblAsientos();
-                        asientoDonacion.setFechahora(evd.getIdEvento().getFecha());
+                        asientoDonacion.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
                         asientoDonacion.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
                         asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
@@ -1010,7 +1012,7 @@ public class FrameRematesDetalle extends JInternalFrame {
     private javax.swing.JButton deleteButton;
     private javax.persistence.EntityManager entityManager;
     private javax.persistence.EntityManager entityManager1;
-    private javax.swing.JTextField fechahoraField;
+    private com.github.lgooddatepicker.components.DateTimePicker fechahoraField;
     private javax.swing.JLabel fechahoraLabel;
     private javax.swing.JLabel idCategoriaLabel;
     private javax.swing.JLabel idMiembroLabel;

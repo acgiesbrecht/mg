@@ -164,7 +164,7 @@ public class FrameCobrarTransferencias extends JInternalFrame {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha/Hora");
-        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setColumnClass(java.time.LocalDateTime.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
         columnBinding.setColumnName("Razon Social");

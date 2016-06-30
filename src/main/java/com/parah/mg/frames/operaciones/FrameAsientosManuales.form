@@ -104,6 +104,11 @@
     </Component>
     <Component class="com.parah.mg.utils.LocalDateTimeToDateTimeConverter" name="localDateTimeToDateTimeConverter1">
     </Component>
+    <Component class="com.parah.mg.utils.DateTimeTableCellRenderer" name="dateTimeTableCellRenderer1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="dateTimeTableCellRenderer1"/>
+      </Properties>
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -139,41 +144,21 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="saveButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="masterScrollPane" alignment="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="masterScrollPane" alignment="0" pref="497" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="conceptoLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
-                              <Component id="conceptoField" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="364" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="conceptoLabel3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="montoLabel" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="conceptoLabel2" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace pref="40" max="32767" attributes="0"/>
+                                  <Component id="cboCuentaDebe" min="-2" pref="185" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="montoField" min="-2" pref="124" max="-2" attributes="0"/>
-                                  <Component id="cboCuentaHaber" min="-2" pref="185" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="conceptoLabel1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                                  <Component id="cboCentroDeCosto" max="32767" attributes="0"/>
                               </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="conceptoLabel2" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="40" max="32767" attributes="0"/>
-                                      <Component id="cboCuentaDebe" min="-2" pref="185" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="conceptoLabel1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                                      <Component id="cboCentroDeCosto" max="32767" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -183,7 +168,25 @@
                               <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="idField" min="-2" pref="69" max="-2" attributes="0"/>
-                                  <Component id="dtpFecha" min="-2" max="-2" attributes="0"/>
+                                  <Component id="dtpFecha" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="conceptoLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                                  <Component id="conceptoField" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="conceptoLabel3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="montoLabel" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="montoField" min="-2" pref="124" max="-2" attributes="0"/>
+                                      <Component id="cboCuentaHaber" alignment="0" min="-2" pref="185" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                       </Group>
@@ -197,7 +200,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="161" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" pref="169" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="idField" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -267,7 +270,7 @@
                   <Title/>
                   <Editor/>
                   <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="dateTableCellRenderer1"/>
+                    <ComponentRef name="dateTimeTableCellRenderer1"/>
                   </Renderer>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
@@ -307,7 +310,7 @@
               </Subbinding>
               <Subbinding sourcePath="${fechahora}">
                 <BindingParameter name="NAME" value="Fecha/Hora"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDateTime.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${idCentroDeCosto}">
@@ -361,6 +364,7 @@
         <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.id}" target="idField" targetPath="text" updateStrategy="0" immediately="false">
           <Property name="incompletePathValue" type="java.lang.String" value="null"/>
         </BindingProperty>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="idField" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
     </Component>
     <Component class="javax.swing.JButton" name="saveButton">
@@ -494,12 +498,12 @@
     </Component>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dtpFecha">
       <BindingProperties>
-        <BindingProperty name="dateTime" source="masterTable" sourcePath="${selectedElement.fechahora}" target="dtpFecha" targetPath="dateTime" updateStrategy="0" immediately="false">
-          <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.ComponentChooserEditor">
-            <ComponentRef name="localDateTimeToDateTimeConverter1"/>
-          </Property>
-        </BindingProperty>
+        <BindingProperty name="dateTime" source="masterTable" sourcePath="${selectedElement.fechahora}" target="dtpFecha" targetPath="dateTime" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="dtpFecha" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(dps, tps);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

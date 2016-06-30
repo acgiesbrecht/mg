@@ -5,7 +5,7 @@
  */
 package com.parah.mg.domain.models;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -13,20 +13,20 @@ import java.util.Date;
  */
 public class CuotaModel {
 
-    private Date fecha;
+    private LocalDate fecha;
     private Integer monto;
 
     /**
      * @return the fecha
      */
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
     /**
      * @param fecha the fecha to set
      */
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

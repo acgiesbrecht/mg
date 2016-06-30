@@ -19,7 +19,7 @@
 		<![CDATA[SELECT * FROM MG.TBL_FACTURAS WHERE NRO = $P{factura_id}]]>
     </queryString>
     <field name="nro" class="java.lang.Integer"/>
-    <field name="fechahora" class="java.util.Date"/>
+    <field name="fechahora" class="java.time.LocalDateTime"/>
     <field name="razon_social" class="java.lang.String"/>
     <field name="ruc" class="java.lang.String"/>
     <field name="importe_donacion" class="java.lang.Integer"/>

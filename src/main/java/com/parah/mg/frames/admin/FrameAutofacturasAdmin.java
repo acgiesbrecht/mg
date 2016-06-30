@@ -13,7 +13,8 @@ import java.awt.EventQueue;
 import java.beans.Beans;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalField;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,7 +115,7 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha");
-        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setColumnClass(java.time.LocalDateTime.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
         columnBinding.setColumnName("Nombre");
@@ -241,12 +242,10 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
                 t.setAnulado(true);
                 Calendar calendar = Calendar.getInstance();
                 for (TblAsientos asiento : t.getTblAsientosCollection()) {
-                    Calendar calendarAsiento = Calendar.getInstance();
-                    calendarAsiento.setTime(asiento.getFechahora());
-                    if (calendarAsiento.get(Calendar.MONTH) < calendar.get(Calendar.MONTH)) {
+                    if (asiento.getFechahora().getMonth().getValue() < LocalDateTime.now().getMonth().getValue()) {
                         TblAsientos asientoInverso = new TblAsientos();
                         entityManager.persist(asientoInverso);
-                        asientoInverso.setFechahora(new Date());
+                        asientoInverso.setFechahora(LocalDateTime.now());
                         asientoInverso.setIdCentroDeCosto(asiento.getIdCentroDeCosto());
                         asientoInverso.setIdCuentaContableDebe(asiento.getIdCuentaContableHaber());
                         asientoInverso.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());

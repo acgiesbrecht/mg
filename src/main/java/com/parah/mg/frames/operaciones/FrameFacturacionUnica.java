@@ -9,6 +9,9 @@ import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.DateTimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblContribuyentes;
@@ -28,10 +31,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import javax.persistence.Persistence;
@@ -57,6 +61,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
     CurrentUser currentUser = CurrentUser.getInstance();
     Map<String, String> persistenceMap = new HashMap<>();
     EventList<TblEntidades> eventListMiembros = new BasicEventList<>();
+    DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.getDefault());
+    TimePickerSettings timePickerSettings = new TimePickerSettings(Locale.getDefault());
 
     public FrameFacturacionUnica() {
         super("Facturacion Unica",
@@ -67,6 +73,10 @@ public class FrameFacturacionUnica extends JInternalFrame {
         try {
 
             persistenceMap = Utils.getInstance().getPersistenceMap();
+            datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
+            timePickerSettings.setFormatForDisplayTime("HH:mm:ss");
+            timePickerSettings.setFormatForMenuTimes("HH:mm:ss");
+
             initComponents();
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
@@ -159,6 +169,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
         listEntidades = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEntidades.getResultList());
         queryTimbrados = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTimbrados t WHERE t.activo = true");
         listTimbrados = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTimbrados.getResultList());
+        dateTableCellRenderer1 = new com.parah.mg.utils.DateTableCellRenderer();
         cancelarButton = new javax.swing.JButton();
         imprimirButton = new javax.swing.JButton();
         montoLabel = new javax.swing.JLabel();
@@ -166,7 +177,6 @@ public class FrameFacturacionUnica extends JInternalFrame {
         montoLabel1 = new javax.swing.JLabel();
         txtNro = new javax.swing.JFormattedTextField();
         fecha1Label = new javax.swing.JLabel();
-        dtpFecha = new org.jdesktop.swingx.JXDatePicker();
         montoLabel2 = new javax.swing.JLabel();
         idMiembroLabel1 = new javax.swing.JLabel();
         txtCtaCte = new javax.swing.JTextField();
@@ -182,8 +192,11 @@ public class FrameFacturacionUnica extends JInternalFrame {
         txtCdC = new javax.swing.JFormattedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        dtpFecha = new DateTimePicker(datePickerSettings, timePickerSettings);
 
         FormListener formListener = new FormListener();
+
+        dateTableCellRenderer1.setText("dateTableCellRenderer1");
 
         cancelarButton.setText("Cancelar");
         cancelarButton.addActionListener(formListener);
@@ -247,7 +260,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listPagos, jTable1);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha");
-        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setColumnClass(java.time.LocalDate.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${eventoTipo}"));
         columnBinding.setColumnName("Tipo de Evento");
@@ -267,6 +280,9 @@ public class FrameFacturacionUnica extends JInternalFrame {
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setCellRenderer(dateTableCellRenderer1);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -278,6 +294,17 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(montoLabel2)
+                                .addComponent(ctacteLabel3))
+                            .addGap(44, 44, 44)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtRazonSocial)
+                                .addComponent(txtDomicilio)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(0, 499, Short.MAX_VALUE))))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(montoLabel)
                                 .addComponent(montoLabel1)
                                 .addComponent(fecha1Label))
@@ -285,7 +312,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtNro, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(idMiembroLabel)
                             .addGap(67, 67, 67)
@@ -295,18 +322,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                             .addGap(12, 12, 12)
                             .addComponent(idMiembroLabel2)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(montoLabel2)
-                                .addComponent(ctacteLabel3))
-                            .addGap(44, 44, 44)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtRazonSocial)
-                                .addComponent(txtDomicilio)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(0, 499, Short.MAX_VALUE)))))
+                            .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(montoLabel5)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(montoLabel6)
@@ -336,39 +352,40 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     .addComponent(txtNro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(montoLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fecha1Label))
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idMiembroLabel)
-                    .addComponent(idMiembroLabel1)
-                    .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idMiembroLabel2)
-                    .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ctacteLabel3)
-                    .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(montoLabel2)
-                    .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(montoLabel5)
-                    .addComponent(txtDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(montoLabel6)
-                    .addComponent(txtCdC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelarButton)
-                    .addComponent(imprimirButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(fecha1Label)
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(idMiembroLabel)
+                            .addComponent(idMiembroLabel1)
+                            .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(idMiembroLabel2)
+                            .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ctacteLabel3)
+                            .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(montoLabel2)
+                            .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(montoLabel5)
+                            .addComponent(txtDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(montoLabel6)
+                            .addComponent(txtCdC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cancelarButton)
+                            .addComponent(imprimirButton)))
+                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -475,7 +492,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
         } else {
             txtNro.setValue(listTimbrados.get(0).getNroFacturaIncio());
         }
-        dtpFecha.setDate(new Date());
+        dtpFecha.setDateTime(LocalDateTime.now());
         txtCtaCte.setText("");
         cboEntidad.setSelectedItem(null);
         txtRazonSocial.setText("");
@@ -528,7 +545,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
 
             factura.setNro(((Number) txtNro.getValue()).intValue());
             factura.setIdTimbrado(listTimbrados.get(0));
-            factura.setFechahora(dtpFecha.getDate());
+            factura.setFechahora(dtpFecha.getDateTime());
             factura.setIdEntidad((TblEntidades) cboEntidad.getSelectedItem());
             factura.setRazonSocial(txtRazonSocial.getText());
             factura.setRuc(rucField.getText());
@@ -707,14 +724,9 @@ public class FrameFacturacionUnica extends JInternalFrame {
             imprimirButton.setEnabled(false);
             listPagos.clear();
             TblEntidades selectedEntidad = (TblEntidades) cboEntidad.getSelectedItem();
-            Calendar c = Calendar.getInstance();
-            c.setTime(dtpFecha.getDate());
-            c.set(Calendar.HOUR, 23);
-            c.set(Calendar.MINUTE, 59);
-            c.set(Calendar.SECOND, 59);
 
             Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
-            queryT.setParameter("fecha", c.getTime());
+            queryT.setParameter("fecha", dtpFecha.getDateTime().toLocalDate());
             queryT.setParameter("entidad", selectedEntidad);
             List<TblTransferencias> listT = (List<TblTransferencias>) queryT.getResultList();
             if (listT.size() > 0) {
@@ -728,7 +740,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     }
                     p.getAsientosTemporalesList().addAll(t.getTblAsientosTemporalesCollection());
                     p.setEntidad(t.getIdEntidad());
-                    p.setFechahora(t.getFechahora());
+                    p.setFecha(t.getFechahora());
                     p.setMontoAporte(t.getMontoAporte());
                     p.setMontoDonacion(t.getMontoDonacion());
                     p.setEventoTipo(t.getIdEventoTipo());
@@ -736,7 +748,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                 }
             }
             Query queryR = entityManager.createQuery("SELECT distinct t FROM TblRecibos t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
-            queryR.setParameter("fecha", c.getTime());
+            queryR.setParameter("fecha", dtpFecha.getDateTime().toLocalDate());
             queryR.setParameter("entidad", selectedEntidad);
             List<TblRecibos> listR = (List<TblRecibos>) queryR.getResultList();
             if (listR.size() > 0) {
@@ -750,7 +762,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     }
                     p.getAsientosTemporalesList().addAll(r.getTblAsientosTemporalesCollection());
                     p.setEntidad(r.getIdEntidad());
-                    p.setFechahora(r.getFechahora());
+                    p.setFecha(r.getFechahora());
                     p.setMontoAporte(r.getMontoAporte());
                     p.setMontoDonacion(r.getMontoDonacion());
                     p.setEventoTipo(r.getIdEventoTipo());
@@ -771,7 +783,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
     private javax.swing.JButton cancelarButton;
     private javax.swing.JComboBox cboEntidad;
     private javax.swing.JLabel ctacteLabel3;
-    private org.jdesktop.swingx.JXDatePicker dtpFecha;
+    private com.parah.mg.utils.DateTableCellRenderer dateTableCellRenderer1;
+    private com.github.lgooddatepicker.components.DateTimePicker dtpFecha;
     private javax.persistence.EntityManager entityManager;
     private javax.persistence.EntityManager entityManager1;
     private javax.swing.JLabel fecha1Label;

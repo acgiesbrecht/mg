@@ -6,6 +6,9 @@
 package com.parah.mg.utils;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  *
@@ -15,7 +18,8 @@ public class DateTimeTableCellRenderer extends NormalTableCellRenderer {
 
     @Override
     public void setValue(Object value) {
-        setText((value == null) ? "" : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(value));
+        //setText((value == null) ? "" : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(value));
+        setText((value == null) ? "" : ((LocalDateTime) value).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
     }
     /*
      @Override

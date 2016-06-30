@@ -6,7 +6,7 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -68,7 +68,7 @@ public class TblAutofacturas implements Serializable {
     @NotNull
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechahora;
+    private LocalDateTime fechahora;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -132,7 +132,7 @@ public class TblAutofacturas implements Serializable {
         this.id = id;
     }
 
-    public TblAutofacturas(Integer id, String nro, Date fechahora, String nombre, String domicilio, String direccionDeTransaccion, String ci, int cantidad, String concepto, int precioUnitario, int monto, Boolean anulado) {
+    public TblAutofacturas(Integer id, String nro, LocalDateTime fechahora, String nombre, String domicilio, String direccionDeTransaccion, String ci, int cantidad, String concepto, int precioUnitario, int monto, Boolean anulado) {
         this.id = id;
         this.nro = nro;
         this.fechahora = fechahora;
@@ -163,11 +163,11 @@ public class TblAutofacturas implements Serializable {
         this.nro = nro;
     }
 
-    public Date getFechahora() {
+    public LocalDateTime getFechahora() {
         return fechahora;
     }
 
-    public void setFechahora(Date fechahora) {
+    public void setFechahora(LocalDateTime fechahora) {
         this.fechahora = fechahora;
     }
 

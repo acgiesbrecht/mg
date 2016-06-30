@@ -17,10 +17,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,11 +66,11 @@ public class Utils extends Component {
     }
 
     public List<CuotaModel> getCuotas(TblEventoCuotas eventoCuotas, Integer monto) {
-        List<Date> fechas = getCuotasFechas(eventoCuotas);
+        List<LocalDate> fechas = getCuotasFechas(eventoCuotas);
         List<CuotaModel> listCuotas = new ArrayList<>();
         float divi = monto * 1.0F / fechas.size();
         Integer montoCuota = Math.round(divi);
-        for (Date fecha : fechas) {
+        for (LocalDate fecha : fechas) {
             CuotaModel cuota = new CuotaModel();
             cuota.setFecha(fecha);
             cuota.setMonto(montoCuota);
@@ -90,8 +91,8 @@ public class Utils extends Component {
         return listCuotas;
     }
 
-    public List<Date> getCuotasFechas(TblEventoCuotas cuotas) {
-        List<Date> cuotasList = new ArrayList<>();
+    public List<LocalDate> getCuotasFechas(TblEventoCuotas cuotas) {
+        List<LocalDate> cuotasList = new ArrayList<>();
         if (cuotas.getFecha1() != null) {
             cuotasList.add(cuotas.getFecha1());
         }
@@ -134,7 +135,7 @@ public class Utils extends Component {
 
             Map parameters = new HashMap();
             parameters.put("factura_id", factura.getNro());
-            parameters.put("fechahora", new java.sql.Date(factura.getFechahora().getTime()));
+            parameters.put("fechahora", java.sql.Date.valueOf(factura.getFechahora().toLocalDate()));
             parameters.put("razon_social", factura.getRazonSocial());
             parameters.put("ruc", factura.getRuc());
             parameters.put("domicilio", factura.getDomicilio());
@@ -172,7 +173,7 @@ public class Utils extends Component {
 
             Map parameters = new HashMap();
             parameters.put("factura_nro", factura.getNro());
-            parameters.put("fechahora", new java.sql.Date(factura.getFechahora().getTime()));
+            parameters.put("fechahora", java.sql.Date.valueOf(factura.getFechahora().toLocalDate()));
             parameters.put("nombre", factura.getNombre());
             parameters.put("ci", factura.getCi());
             parameters.put("domicilio", factura.getDomicilio());
@@ -281,9 +282,9 @@ public class Utils extends Component {
 
     public Boolean exectueBackUp(String backupDirectory) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-            String backupfile = backupDirectory + "\\BackUp_" + sdf.format(new Date());
-
+            //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+            //String backupfile = backupDirectory + "\\BackUp_" + sdf.format(new LocalDateTime());
+            String backupfile = backupDirectory + "\\BackUp_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"));
             Connection conn = DriverManager.getConnection(getPersistenceMap().get("javax.persistence.jdbc.url"), getPersistenceMap().get("javax.persistence.jdbc.user"), getPersistenceMap().get("javax.persistence.jdbc.password"));
 
             try (CallableStatement cs = conn.prepareCall("CALL SYSCS_UTIL.SYSCS_BACKUP_DATABASE(?)")) {

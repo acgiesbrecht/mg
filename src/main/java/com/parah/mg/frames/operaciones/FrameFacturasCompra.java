@@ -8,6 +8,8 @@ package com.parah.mg.frames.operaciones;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblCentrosDeCosto;
 import com.parah.mg.domain.TblContribuyentes;
@@ -28,6 +30,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
@@ -62,6 +65,9 @@ public class FrameFacturasCompra extends JInternalFrame {
     JComboBox<TblCuentasContables> cboCuentaHaber = new JComboBox();
     JComboBox<TblCuentasContables> cboCuentaDebe = new JComboBox();
     TblCentrosDeCosto centroDeCostoPreferido;
+    DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.getDefault());
+    DatePickerSettings datePickerSettings1 = new DatePickerSettings(Locale.getDefault());
+    DatePickerSettings datePickerSettings2 = new DatePickerSettings(Locale.getDefault());
 
     public FrameFacturasCompra() {
         super("Facturas Compras",
@@ -71,14 +77,13 @@ public class FrameFacturasCompra extends JInternalFrame {
                 true);//iconifiable
         try {
             persistenceMap = Utils.getInstance().getPersistenceMap();
+            datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
+            datePickerSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");
+            datePickerSettings2.setFormatForDatesCommonEra("dd/MM/yyyy");
             initComponents();
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
             }
-
-            dtpVencimientoTimbrado.setFormats("dd/MM/yyyy");
-            dtpFecha.setFormats("dd/MM/yyyy");
-            dtpVencimientoFactura.setFormats("dd/MM/yyyy");
 
             centroDeCostoPreferido = (TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult();
 
@@ -308,13 +313,11 @@ public class FrameFacturasCompra extends JInternalFrame {
         deleteButton = new javax.swing.JButton();
         rucField = new javax.swing.JTextField();
         idMiembroLabel2 = new javax.swing.JLabel();
-        dtpFecha = new org.jdesktop.swingx.JXDatePicker();
         txtMontoExentas = new javax.swing.JFormattedTextField();
         idMiembroLabel3 = new javax.swing.JLabel();
         txtNro = new javax.swing.JFormattedTextField();
         txtTimbrado = new javax.swing.JFormattedTextField();
         idLabel1 = new javax.swing.JLabel();
-        dtpVencimientoTimbrado = new org.jdesktop.swingx.JXDatePicker();
         fechahoraLabel1 = new javax.swing.JLabel();
         txtMontoIVA5 = new javax.swing.JFormattedTextField();
         montoLabel1 = new javax.swing.JLabel();
@@ -334,8 +337,10 @@ public class FrameFacturasCompra extends JInternalFrame {
         idLabel2 = new javax.swing.JLabel();
         txtCuotas = new javax.swing.JFormattedTextField();
         fechahoraLabel2 = new javax.swing.JLabel();
-        dtpVencimientoFactura = new org.jdesktop.swingx.JXDatePicker();
         montoLabel6 = new javax.swing.JLabel();
+        dtpFecha = new DatePicker(datePickerSettings1);
+        dtpVencimientoTimbrado = new DatePicker(datePickerSettings);
+        dtpVencimientoFactura = new DatePicker(datePickerSettings2);
 
         FormListener formListener = new FormListener();
 
@@ -357,7 +362,7 @@ public class FrameFacturasCompra extends JInternalFrame {
         columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha");
-        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setColumnClass(java.time.LocalDate.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${razonSocial}"));
         columnBinding.setColumnName("Razon Social");
@@ -441,14 +446,6 @@ public class FrameFacturasCompra extends JInternalFrame {
         idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel2.setText("Razon Social: ");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("date"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        dtpFecha.addActionListener(formListener);
-        dtpFecha.addPropertyChangeListener(formListener);
-
         txtMontoExentas.setColumns(9);
         txtMontoExentas.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         txtMontoExentas.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
@@ -492,12 +489,10 @@ public class FrameFacturasCompra extends JInternalFrame {
         idLabel1.setDisplayedMnemonic('N');
         idLabel1.setText("Nro Timbrado:");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.vencimientoTimbrado}"), dtpVencimientoTimbrado, org.jdesktop.beansbinding.BeanProperty.create("date"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), dtpVencimientoTimbrado, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
         fechahoraLabel1.setText("Vencimiento Timbrado:");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechahoraLabel1, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
 
         txtMontoIVA5.setColumns(9);
         txtMontoIVA5.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
@@ -650,12 +645,22 @@ public class FrameFacturasCompra extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, rbCredito, org.jdesktop.beansbinding.ELProperty.create("${selected}"), fechahoraLabel2, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        montoLabel6.setText("Asientos");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("date"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.vencimientoTimbrado}"), dtpVencimientoTimbrado, org.jdesktop.beansbinding.BeanProperty.create("date"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), dtpVencimientoTimbrado, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechaVencimientoCredito}"), dtpVencimientoFactura, org.jdesktop.beansbinding.BeanProperty.create("date"));
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, rbCredito, org.jdesktop.beansbinding.ELProperty.create("${selected}"), dtpVencimientoFactura, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
-
-        montoLabel6.setText("Asientos");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -705,8 +710,8 @@ public class FrameFacturasCompra extends JInternalFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(fechahoraLabel1))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(52, 52, 52)
                                         .addComponent(rbContado)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(rbCredito)
@@ -714,13 +719,13 @@ public class FrameFacturasCompra extends JInternalFrame {
                                         .addComponent(idLabel2)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dtpVencimientoTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dtpVencimientoTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(txtCuotas, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(fechahoraLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(dtpVencimientoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(dtpVencimientoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(conceptoLabel)
                                 .addGap(8, 8, 8)
@@ -754,7 +759,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                                         .addComponent(montoLabel4)
                                         .addGap(12, 12, 12)
                                         .addComponent(txtIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(78, 78, 78)))
                 .addContainerGap())
         );
 
@@ -773,65 +778,68 @@ public class FrameFacturasCompra extends JInternalFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(fechahoraLabel1)
-                        .addComponent(dtpVencimientoTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(idLabel1)))
+                        .addComponent(idLabel1))
+                    .addComponent(dtpVencimientoTimbrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fechahoraLabel)
-                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rbContado)
-                    .addComponent(rbCredito)
-                    .addComponent(idLabel2)
-                    .addComponent(txtCuotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fechahoraLabel2)
-                    .addComponent(dtpVencimientoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idMiembroLabel)
-                    .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idMiembroLabel2)
-                    .addComponent(idMiembroLabel3)
-                    .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(fechahoraLabel)
+                                .addComponent(rbContado)
+                                .addComponent(rbCredito)
+                                .addComponent(idLabel2)
+                                .addComponent(txtCuotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(fechahoraLabel2))
+                            .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(7, 7, 7)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(montoLabel)
-                            .addComponent(txtMontoExentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(montoLabel1)
-                            .addComponent(txtMontoIVA5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(idMiembroLabel)
+                            .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(idMiembroLabel2)
+                            .addComponent(idMiembroLabel3)
+                            .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtMontoIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(montoLabel2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(montoLabel3)
-                            .addComponent(txtIVA5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(montoLabel)
+                                    .addComponent(txtMontoExentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(montoLabel1)
+                                    .addComponent(txtMontoIVA5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtMontoIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(montoLabel2)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(montoLabel3)
+                                    .addComponent(txtIVA5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(montoLabel4))))
+                        .addGap(26, 26, 26)
+                        .addComponent(montoLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(montoLabel4))))
-                .addGap(26, 26, 26)
-                .addComponent(montoLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmdAddAsiento)
-                    .addComponent(cmdBorrarAsiento))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(conceptoLabel)
-                    .addComponent(conceptoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(51, 51, 51)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(saveButton)
-                    .addComponent(refreshButton)
-                    .addComponent(deleteButton)
-                    .addComponent(newButton))
+                            .addComponent(cmdAddAsiento)
+                            .addComponent(cmdBorrarAsiento))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(conceptoLabel)
+                            .addComponent(conceptoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(51, 51, 51)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(saveButton)
+                            .addComponent(refreshButton)
+                            .addComponent(deleteButton)
+                            .addComponent(newButton)))
+                    .addComponent(dtpVencimientoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -840,7 +848,7 @@ public class FrameFacturasCompra extends JInternalFrame {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener, java.awt.event.MouseListener, java.beans.PropertyChangeListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener, java.awt.event.MouseListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -857,9 +865,6 @@ public class FrameFacturasCompra extends JInternalFrame {
             }
             else if (evt.getSource() == rucField) {
                 FrameFacturasCompra.this.rucFieldActionPerformed(evt);
-            }
-            else if (evt.getSource() == dtpFecha) {
-                FrameFacturasCompra.this.dtpFechaActionPerformed(evt);
             }
             else if (evt.getSource() == txtMontoExentas) {
                 FrameFacturasCompra.this.txtMontoExentasActionPerformed(evt);
@@ -957,12 +962,6 @@ public class FrameFacturasCompra extends JInternalFrame {
         }
 
         public void mouseReleased(java.awt.event.MouseEvent evt) {
-        }
-
-        public void propertyChange(java.beans.PropertyChangeEvent evt) {
-            if (evt.getSource() == dtpFecha) {
-                FrameFacturasCompra.this.dtpFechaPropertyChange(evt);
-            }
         }
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1189,19 +1188,12 @@ public class FrameFacturasCompra extends JInternalFrame {
         }
     }//GEN-LAST:event_cmdAddAsientoActionPerformed
 
-    private void dtpFechaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dtpFechaPropertyChange
-
-    }//GEN-LAST:event_dtpFechaPropertyChange
-
     private void rbCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCreditoActionPerformed
         try {
             if (rbCredito.isSelected()) {
 
                 if (dtpFecha.getDate() != null) {
-                    Calendar c = Calendar.getInstance();
-                    c.setTime(dtpFecha.getDate());
-                    c.set(Calendar.DATE, c.getActualMaximum(Calendar.DAY_OF_MONTH));
-                    dtpVencimientoFactura.setDate(c.getTime());
+                    dtpVencimientoFactura.setDate(dtpFecha.getDate().withDayOfMonth(dtpFecha.getDate().lengthOfMonth()));
                 }
                 txtCuotas.setValue(1L);
             }
@@ -1210,20 +1202,6 @@ public class FrameFacturasCompra extends JInternalFrame {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_rbCreditoActionPerformed
-
-    private void dtpFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dtpFechaActionPerformed
-        try {
-            int index = masterTable.getSelectedRow();
-            TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
-            T.getTblAsientosList().stream().forEach((t) -> {
-                t.setFechahora(dtpFecha.getDate());
-            });
-            entityManager.merge(T);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_dtpFechaActionPerformed
 
     private void addAsiento() {
         try {
@@ -1236,7 +1214,7 @@ public class FrameFacturasCompra extends JInternalFrame {
             }
             TblAsientos t = new TblAsientos();
 
-            t.setFechahora(T.getFechahora());
+            t.setFechahora(T.getFechahora() != null ? T.getFechahora().atStartOfDay() : null);
             t.setIdUser(currentUser.getUser());
 
             t.setIdCentroDeCosto(centroDeCostoPreferido);
@@ -1290,7 +1268,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                     if (asientosTable.getModel().getRowCount() == 1) {
                         asientosTable.getModel().setValueAt(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10(), 0, 3);
                         TblAsientos asiento = ts.get(0);
-                        asiento.setFechahora(T.getFechahora());
+                        asiento.setFechahora(T.getFechahora() != null ? T.getFechahora().atStartOfDay() : null);
                         //asiento.setMonto(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10());
                         entityManager.merge(asiento);
                     }
@@ -1339,9 +1317,9 @@ public class FrameFacturasCompra extends JInternalFrame {
     private javax.swing.JLabel conceptoLabel;
     private com.parah.mg.utils.CondicionFacturaTableCellRenderer condicionFacturaTableCellRenderer1;
     private javax.swing.JButton deleteButton;
-    private org.jdesktop.swingx.JXDatePicker dtpFecha;
-    private org.jdesktop.swingx.JXDatePicker dtpVencimientoFactura;
-    private org.jdesktop.swingx.JXDatePicker dtpVencimientoTimbrado;
+    private com.github.lgooddatepicker.components.DatePicker dtpFecha;
+    private com.github.lgooddatepicker.components.DatePicker dtpVencimientoFactura;
+    private com.github.lgooddatepicker.components.DatePicker dtpVencimientoTimbrado;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fechahoraLabel;
     private javax.swing.JLabel fechahoraLabel1;

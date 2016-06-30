@@ -8,7 +8,7 @@ package com.parah.mg.domain;
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDate;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -56,10 +56,10 @@ public class TblRecibos implements Serializable {
     @NotNull
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechahora;
+    private LocalDate fechahora;
     @Column(name = "FECHAHORA_COMPROMISO")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechahoraCompromiso;
+    private LocalDate fechahoraCompromiso;
     @Size(max = 50)
     @Column(name = "CONCEPTO")
     private String concepto;
@@ -96,7 +96,7 @@ public class TblRecibos implements Serializable {
         this.id = id;
     }
 
-    public TblRecibos(Integer id, Date fechahora, int montoAporte, int montoDonacion) {
+    public TblRecibos(Integer id, LocalDate fechahora, int montoAporte, int montoDonacion) {
         this.id = id;
         this.fechahora = fechahora;
         this.montoAporte = montoAporte;
@@ -111,19 +111,19 @@ public class TblRecibos implements Serializable {
         this.id = id;
     }
 
-    public Date getFechahora() {
+    public LocalDate getFechahora() {
         return fechahora;
     }
 
-    public void setFechahora(Date fechahora) {
+    public void setFechahora(LocalDate fechahora) {
         this.fechahora = fechahora;
     }
 
-    public Date getFechahoraCompromiso() {
+    public LocalDate getFechahoraCompromiso() {
         return fechahoraCompromiso;
     }
 
-    public void setFechahoraCompromiso(Date fechahoraCompromiso) {
+    public void setFechahoraCompromiso(LocalDate fechahoraCompromiso) {
         this.fechahoraCompromiso = fechahoraCompromiso;
     }
 

@@ -7,7 +7,7 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,7 +52,7 @@ public class TblAsientosTemporales implements Serializable {
     @NotNull
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechahora;
+    private LocalDateTime fechahora;
     @Basic(optional = false)
     @NotNull
     @Column(name = "MONTO")
@@ -82,7 +82,7 @@ public class TblAsientosTemporales implements Serializable {
         this.id = id;
     }
 
-    public TblAsientosTemporales(Integer id, Date fechahora, int monto, Boolean facturado) {
+    public TblAsientosTemporales(Integer id, LocalDateTime fechahora, int monto, Boolean facturado) {
         this.id = id;
         this.fechahora = fechahora;
         this.monto = monto;
@@ -97,11 +97,11 @@ public class TblAsientosTemporales implements Serializable {
         this.id = id;
     }
 
-    public Date getFechahora() {
+    public LocalDateTime getFechahora() {
         return fechahora;
     }
 
-    public void setFechahora(Date fechahora) {
+    public void setFechahora(LocalDateTime fechahora) {
         this.fechahora = fechahora;
     }
 

@@ -5,11 +5,13 @@
  */
 package com.parah.mg.domain;
 
+import com.parah.mg.utils.LocalDateTimeAttributeConverter;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -53,7 +55,8 @@ public class TblAsientos implements Serializable {
     @NotNull
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechahora;
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
+    private LocalDateTime fechahora;
     @Size(max = 255)
     @Column(name = "OBSERVACION")
     private String observacion;
@@ -86,7 +89,7 @@ public class TblAsientos implements Serializable {
         this.id = id;
     }
 
-    public TblAsientos(Integer id, Date fechahora, int monto) {
+    public TblAsientos(Integer id, LocalDateTime fechahora, int monto) {
         this.id = id;
         this.fechahora = fechahora;
         this.monto = monto;
@@ -100,11 +103,11 @@ public class TblAsientos implements Serializable {
         this.id = id;
     }
 
-    public Date getFechahora() {
+    public LocalDateTime getFechahora() {
         return fechahora;
     }
 
-    public void setFechahora(Date fechahora) {
+    public void setFechahora(LocalDateTime fechahora) {
         this.fechahora = fechahora;
     }
 

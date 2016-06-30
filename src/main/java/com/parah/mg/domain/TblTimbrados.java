@@ -6,7 +6,7 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -52,12 +52,12 @@ public class TblTimbrados implements Serializable {
     @NotNull
     @Column(name = "FECHA_INICIO")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaInicio;
+    private LocalDateTime fechaInicio;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_VENCIMIENTO")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaVencimiento;
+    private LocalDateTime fechaVencimiento;
     @Basic(optional = false)
     @NotNull
     @Column(name = "NRO_FACTURA_INCIO")
@@ -83,7 +83,7 @@ public class TblTimbrados implements Serializable {
         this.nro = nro;
     }
 
-    public TblTimbrados(Integer nro, Date fechaInicio, Date fechaVencimiento, int nroFacturaIncio, int nroFacturaFin, Boolean activo) {
+    public TblTimbrados(Integer nro, LocalDateTime fechaInicio, LocalDateTime fechaVencimiento, int nroFacturaIncio, int nroFacturaFin, Boolean activo) {
         this.nro = nro;
         this.fechaInicio = fechaInicio;
         this.fechaVencimiento = fechaVencimiento;
@@ -100,19 +100,19 @@ public class TblTimbrados implements Serializable {
         this.nro = nro;
     }
 
-    public Date getFechaInicio() {
+    public LocalDateTime getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(LocalDateTime fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaVencimiento() {
+    public LocalDateTime getFechaVencimiento() {
         return fechaVencimiento;
     }
 
-    public void setFechaVencimiento(Date fechaVencimiento) {
+    public void setFechaVencimiento(LocalDateTime fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
     }
 

@@ -6,7 +6,7 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -58,7 +58,7 @@ public class TblRecibosCompra implements Serializable {
     @NotNull
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechahora;
+    private LocalDateTime fechahora;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -93,7 +93,7 @@ public class TblRecibosCompra implements Serializable {
         this.id = id;
     }
 
-    public TblRecibosCompra(Integer id, Date fechahora, String razonSocial, String ruc, int monto, int idUser) {
+    public TblRecibosCompra(Integer id, LocalDateTime fechahora, String razonSocial, String ruc, int monto, int idUser) {
         this.id = id;
         this.fechahora = fechahora;
         this.razonSocial = razonSocial;
@@ -110,11 +110,11 @@ public class TblRecibosCompra implements Serializable {
         this.id = id;
     }
 
-    public Date getFechahora() {
+    public LocalDateTime getFechahora() {
         return fechahora;
     }
 
-    public void setFechahora(Date fechahora) {
+    public void setFechahora(LocalDateTime fechahora) {
         this.fechahora = fechahora;
     }
 

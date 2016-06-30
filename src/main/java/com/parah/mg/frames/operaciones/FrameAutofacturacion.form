@@ -190,7 +190,6 @@
                               </Group>
                               <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="dtpFecha" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="rucField" alignment="0" min="-2" pref="115" max="-2" attributes="0"/>
                                       <Component id="txtDomicilio" alignment="0" pref="276" max="32767" attributes="0"/>
@@ -201,6 +200,7 @@
                                       <Component id="txtNro" alignment="0" max="32767" attributes="0"/>
                                       <Component id="txtTimbrado" alignment="0" pref="124" max="32767" attributes="0"/>
                                   </Group>
+                                  <Component id="dtpFecha" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -235,7 +235,6 @@
                               <Component id="conceptoLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                               <Component id="txtObservacion" min="-2" pref="527" max="-2" attributes="0"/>
-                              <EmptySpace min="615" max="32767" attributes="0"/>
                           </Group>
                           <Component id="jScrollPane2" alignment="1" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
@@ -277,9 +276,9 @@
                   <Component id="txtNro" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="dtpFecha" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fecha1Label" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="fecha1Label" min="-2" max="-2" attributes="0"/>
+                  <Component id="dtpFecha" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -340,7 +339,7 @@
                   <Component id="cancelarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="imprimirButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="14" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -404,8 +403,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Fecha:"/>
       </Properties>
-    </Component>
-    <Component class="org.jdesktop.swingx.JXDatePicker" name="dtpFecha">
     </Component>
     <Component class="javax.swing.JLabel" name="montoLabel2">
       <Properties>
@@ -580,6 +577,8 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtObservacion">
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dtpFecha">
     </Component>
   </SubComponents>
 </Form>

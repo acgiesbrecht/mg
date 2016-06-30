@@ -5,7 +5,12 @@
  */
 package com.parah.mg.utils;
 
-import java.text.SimpleDateFormat;
+import com.parah.mg.frames.operaciones.FrameAsientosManuales;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import javax.swing.JOptionPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -13,9 +18,18 @@ import java.text.SimpleDateFormat;
  */
 public class DateTableCellRenderer extends NormalTableCellRenderer {
 
+    private final Logger LOGGER = LogManager.getLogger(this);
+
     @Override
     public void setValue(Object value) {
-        setText((value == null) ? "" : new SimpleDateFormat("yyyy-MM-dd").format(value));
+        try {
+
+            //setText((value == null) ? "" : new SimpleDateFormat("yyyy-MM-dd").format(value));
+            setText((value == null) ? "" : ((LocalDate) value).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }
     /*
      @Override

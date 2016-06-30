@@ -5,6 +5,8 @@
  */
 package com.parah.mg.frames.operaciones;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblCuentasContablesPorDefecto;
@@ -20,13 +22,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.Beans;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
@@ -53,6 +58,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
     CurrentUser currentUser = CurrentUser.getInstance();
     Map<String, String> persistenceMap = new HashMap<>();
     TblCuentasContablesPorDefecto cuentasContablesPorDefecto;
+    DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.getDefault());
 
     public FrameCobrarTransferenciasAyC() {
         super("Cobrar Aportes y Colectas",
@@ -65,6 +71,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
+
+        datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
 
         cuentasContablesPorDefecto = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
 
@@ -141,9 +149,9 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
         descripcionLabel3 = new javax.swing.JLabel();
         cboMarcarSeleccionados = new javax.swing.JButton();
         descripcionLabel4 = new javax.swing.JLabel();
-        dtpFechaCobro = new org.jdesktop.swingx.JXDatePicker();
         lblTotal = new javax.swing.JLabel();
         descripcionLabel5 = new javax.swing.JLabel();
+        dtpFechaCobro = new DatePicker(datePickerSettings);
 
         FormListener formListener = new FormListener();
 
@@ -239,19 +247,19 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cboMarcarSeleccionados)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(saveButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(refreshButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(200, 200, 200)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(descripcionLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(descripcionLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(dtpFechaCobro, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dtpFechaCobro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
 
@@ -265,16 +273,16 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                     .addComponent(descripcionLabel3)
                     .addComponent(cboEventoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(descripcionLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(descripcionLabel4)
-                    .addComponent(dtpFechaCobro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(dtpFechaCobro, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(descripcionLabel4))
+                .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
@@ -346,13 +354,15 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                     t.setMontoAporte(pago.getMontoAporte());
                     t.setMontoDonacion(pago.getMontoDonacion());
                     t.setCobrado(true);
-                    Calendar c = Calendar.getInstance();
+                    /*Calendar c = Calendar.getInstance();
                     c.set(Calendar.MONTH, pago.getMes());
                     c.set(Calendar.YEAR, pago.getAno());
                     c.set(Calendar.DAY_OF_MONTH, 1);
                     c.add(Calendar.DATE, -1);
-                    Date date = c.getTime();
-                    t.setFechahoraCompromiso(date);
+                    LocalDateTime date = c.getTime();
+                    t.setFechahoraCompromiso(date);*/
+                    LocalDate primerDiaDelMes = LocalDate.of(pago.getAno(), pago.getMes(), 1);
+                    t.setFechahoraCompromiso(primerDiaDelMes.with(lastDayOfMonth()));
                     t.setFechahora(dtpFechaCobro.getDate());
                     t.setIdEventoTipo((TblEventoTipos) cboEventoTipo.getSelectedItem());
                     t.setIdUser(currentUser.getUser());
@@ -380,7 +390,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                         TblAsientosTemporales aT = new TblAsientosTemporales();
                         //entityManager.persist(aT);
                         aT.setFacturado(false);
-                        aT.setFechahora(t.getFechahora());
+                        aT.setFechahora(t.getFechahora().atStartOfDay());
                         aT.setIdCentroDeCosto(asiento.getIdCentroDeCosto());
                         aT.setIdCuentaContableDebe(asiento.getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
                         aT.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
@@ -622,13 +632,15 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                     list.add(p);
                 }
                 if (list.size() > 0) {
-                    Calendar c = Calendar.getInstance();
+                    /*Calendar c = Calendar.getInstance();
                     c.set(Calendar.MONTH, list.get(0).getMes());
                     c.set(Calendar.YEAR, list.get(0).getAno());
                     c.set(Calendar.DAY_OF_MONTH, 1);
                     c.add(Calendar.DATE, -1);
-                    Date date = c.getTime();
-                    dtpFechaCobro.setDate(date);
+                    LocalDateTime date = c.getTime();
+                    dtpFechaCobro.setDate(date);*/
+                    LocalDate primerDiaDelMes = LocalDate.of(list.get(0).getAno(), list.get(0).getMes(), 1);
+                    dtpFechaCobro.setDate((primerDiaDelMes.with(lastDayOfMonth())));
                 }
 
             }
@@ -646,7 +658,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
     private javax.swing.JLabel descripcionLabel3;
     private javax.swing.JLabel descripcionLabel4;
     private javax.swing.JLabel descripcionLabel5;
-    private org.jdesktop.swingx.JXDatePicker dtpFechaCobro;
+    private com.github.lgooddatepicker.components.DatePicker dtpFechaCobro;
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private javax.swing.JLabel lblTotal;

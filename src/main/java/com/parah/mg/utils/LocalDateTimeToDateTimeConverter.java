@@ -5,9 +5,13 @@
  */
 package com.parah.mg.utils;
 
+import com.parah.mg.frames.operaciones.FrameAsientosManuales;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import javax.swing.JOptionPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdesktop.beansbinding.Converter;
 
 /**
@@ -16,9 +20,17 @@ import org.jdesktop.beansbinding.Converter;
  */
 public class LocalDateTimeToDateTimeConverter extends Converter {
 
+    private final Logger LOGGER = LogManager.getLogger(this.getClass());
+
     @Override
     public Object convertForward(Object value) {
-        return LocalDateTime.ofInstant(((Date) value).toInstant(), ZoneId.systemDefault());
+        try {
+            return LocalDateTime.ofInstant(((Date) value).toInstant(), ZoneId.systemDefault());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            return null;
+        }
     }
 
     @Override
@@ -27,7 +39,8 @@ public class LocalDateTimeToDateTimeConverter extends Converter {
         try {
             return Date.from(((LocalDateTime) value).atZone(ZoneId.systemDefault()).toInstant());
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             return null;
         }
 

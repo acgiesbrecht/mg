@@ -66,7 +66,7 @@
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="240" max="32767" attributes="0"/>
                       <Component id="refreshButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="saveButton" linkSize="1" min="-2" max="-2" attributes="0"/>
@@ -74,23 +74,32 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="masterScrollPane" pref="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="fecha1Label" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="fecha2Label" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="fecha3Label" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="fecha4Label" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jXDatePicker1" alignment="1" min="-2" pref="146" max="-2" attributes="0"/>
-                                  <Component id="jXDatePicker2" alignment="1" min="-2" pref="146" max="-2" attributes="0"/>
-                                  <Component id="jXDatePicker3" alignment="1" min="-2" pref="146" max="-2" attributes="0"/>
-                                  <Component id="jXDatePicker4" min="-2" pref="146" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="fecha2Label" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="datePicker2" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="fecha3Label" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="datePicker3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="fecha4Label" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="datePicker4" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="fecha1Label" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="datePicker1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="masterScrollPane" pref="380" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -101,29 +110,29 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="134" max="32767" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jXDatePicker1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fecha1Label" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="masterScrollPane" pref="154" max="32767" attributes="0"/>
+              <EmptySpace pref="12" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="fecha1Label" min="-2" max="-2" attributes="0"/>
+                  <Component id="datePicker1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jXDatePicker2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fecha2Label" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="fecha2Label" min="-2" max="-2" attributes="0"/>
+                  <Component id="datePicker2" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jXDatePicker3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fecha3Label" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="fecha3Label" min="-2" max="-2" attributes="0"/>
+                  <Component id="datePicker3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jXDatePicker4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fecha4Label" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="fecha4Label" min="-2" max="-2" attributes="0"/>
+                  <Component id="datePicker4" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -194,22 +203,22 @@
               </Subbinding>
               <Subbinding sourcePath="${fecha1}">
                 <BindingParameter name="NAME" value="1&#xaa; Cuota"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDate.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${fecha2}">
                 <BindingParameter name="NAME" value="2&#xaa; Cuota"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDate.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${fecha3}">
                 <BindingParameter name="NAME" value="3&#xaa; Cuota"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDate.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${fecha4}">
                 <BindingParameter name="NAME" value="4&#xaa; Cuota"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDate.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
             </BindingProperty>
@@ -265,29 +274,37 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="org.jdesktop.swingx.JXDatePicker" name="jXDatePicker1">
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="datePicker1">
       <BindingProperties>
-        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fecha1}" target="jXDatePicker1" targetPath="date" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="jXDatePicker1" targetPath="enabled" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fecha1}" target="datePicker1" targetPath="date" updateStrategy="0" immediately="false"/>
       </BindingProperties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DatePicker(datePickerSettings);"/>
+      </AuxValues>
     </Component>
-    <Component class="org.jdesktop.swingx.JXDatePicker" name="jXDatePicker2">
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="datePicker2">
       <BindingProperties>
-        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fecha2}" target="jXDatePicker2" targetPath="date" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="jXDatePicker2" targetPath="enabled" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fecha2}" target="datePicker2" targetPath="date" updateStrategy="0" immediately="false"/>
       </BindingProperties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DatePicker(datePickerSettings1);"/>
+      </AuxValues>
     </Component>
-    <Component class="org.jdesktop.swingx.JXDatePicker" name="jXDatePicker3">
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="datePicker3">
       <BindingProperties>
-        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fecha3}" target="jXDatePicker3" targetPath="date" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="jXDatePicker3" targetPath="enabled" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fecha3}" target="datePicker3" targetPath="date" updateStrategy="0" immediately="false"/>
       </BindingProperties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DatePicker(datePickerSettings2);"/>
+      </AuxValues>
     </Component>
-    <Component class="org.jdesktop.swingx.JXDatePicker" name="jXDatePicker4">
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="datePicker4">
       <BindingProperties>
-        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fecha4}" target="jXDatePicker4" targetPath="date" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="jXDatePicker4" targetPath="enabled" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fecha4}" target="datePicker4" targetPath="date" updateStrategy="0" immediately="false"/>
       </BindingProperties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DatePicker(datePickerSettings3);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

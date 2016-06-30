@@ -6,7 +6,7 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -73,12 +73,12 @@ public class TblNotasDeCredito implements Serializable {
     @NotNull
     @Column(name = "VENCIMIENTO_TIMBRADO")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date vencimientoTimbrado;
+    private LocalDateTime vencimientoTimbrado;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechahora;
+    private LocalDateTime fechahora;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -129,7 +129,7 @@ public class TblNotasDeCredito implements Serializable {
         this.id = id;
     }
 
-    public TblNotasDeCredito(Integer id, String nro, String nroTimbrado, Date vencimientoTimbrado, Date fechahora, String razonSocial, String ruc, int montoExentas, int montoIva5, int montoIva10, int iva5, int iva10, int idUser) {
+    public TblNotasDeCredito(Integer id, String nro, String nroTimbrado, LocalDateTime vencimientoTimbrado, LocalDateTime fechahora, String razonSocial, String ruc, int montoExentas, int montoIva5, int montoIva10, int iva5, int iva10, int idUser) {
         this.id = id;
         this.nro = nro;
         this.nroTimbrado = nroTimbrado;
@@ -169,19 +169,19 @@ public class TblNotasDeCredito implements Serializable {
         this.nroTimbrado = nroTimbrado;
     }
 
-    public Date getVencimientoTimbrado() {
+    public LocalDateTime getVencimientoTimbrado() {
         return vencimientoTimbrado;
     }
 
-    public void setVencimientoTimbrado(Date vencimientoTimbrado) {
+    public void setVencimientoTimbrado(LocalDateTime vencimientoTimbrado) {
         this.vencimientoTimbrado = vencimientoTimbrado;
     }
 
-    public Date getFechahora() {
+    public LocalDateTime getFechahora() {
         return fechahora;
     }
 
-    public void setFechahora(Date fechahora) {
+    public void setFechahora(LocalDateTime fechahora) {
         this.fechahora = fechahora;
     }
 

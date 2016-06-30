@@ -8,7 +8,8 @@ package com.parah.mg.frames.admin;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
-import com.parah.mg.domain.TblCentrosDeCosto;
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.parah.mg.domain.TblEventoTipos;
 import com.parah.mg.domain.TblEventos;
 import com.parah.mg.utils.CurrentUser;
@@ -18,11 +19,14 @@ import java.beans.Beans;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+import javax.swing.text.MaskFormatter;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 import org.apache.logging.log4j.LogManager;
@@ -38,6 +42,7 @@ public class FrameEventosAdmin extends JInternalFrame {
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
+    DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.getDefault());
 
     public FrameEventosAdmin() {
         super("Administrar Eventos",
@@ -45,26 +50,31 @@ public class FrameEventosAdmin extends JInternalFrame {
                 true, //closable
                 true, //maximizable
                 true);//iconifiable
-        persistenceMap = Utils.getInstance().getPersistenceMap();
+        try {
+            persistenceMap = Utils.getInstance().getPersistenceMap();
+            datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
+            //System.out.print(currentUser.getUser().getTblGruposList().size());
+            initComponents();
 
-        //System.out.print(currentUser.getUser().getTblGruposList().size());
-        initComponents();
+            if (!Beans.isDesignTime()) {
+                entityManager.getTransaction().begin();
+            }
 
-        if (!Beans.isDesignTime()) {
-            entityManager.getTransaction().begin();
+            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboGrupo, GlazedLists.eventListOf(listGrupos.toArray()));
+            support1.setFilterMode(TextMatcherEditor.CONTAINS);
+            AutoCompleteSupport support2 = AutoCompleteSupport.install(cboEventoTipo, GlazedLists.eventListOf(listEventoTipos.toArray()));
+            support2.setFilterMode(TextMatcherEditor.CONTAINS);
+            AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            support3.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.DISABLED);
+            filterHeader.setAdaptiveChoices(false);
+            filterHeader.getParserModel().setIgnoreCase(true);
+            filterHeader.setPosition(TableFilterHeader.Position.TOP);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
-
-        AutoCompleteSupport support1 = AutoCompleteSupport.install(cboGrupo, GlazedLists.eventListOf(listGrupos.toArray()));
-        support1.setFilterMode(TextMatcherEditor.CONTAINS);
-        AutoCompleteSupport support2 = AutoCompleteSupport.install(cboEventoTipo, GlazedLists.eventListOf(listEventoTipos.toArray()));
-        support2.setFilterMode(TextMatcherEditor.CONTAINS);
-        AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
-        support3.setFilterMode(TextMatcherEditor.CONTAINS);
-
-        TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.DISABLED);
-        filterHeader.setAdaptiveChoices(false);
-        filterHeader.getParserModel().setIgnoreCase(true);
-        filterHeader.setPosition(TableFilterHeader.Position.TOP);
     }
 
     /**
@@ -81,8 +91,6 @@ public class FrameEventosAdmin extends JInternalFrame {
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idGrupo IN :grupos ORDER BY t.fecha");
         query.setParameter("grupos", currentUser.getUser().getTblGruposList());
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
-        dateToStringConverter1 = new com.parah.mg.utils.DateToStringConverter();
-        dateTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
         queryGrupos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblGrupos t");
         listGrupos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryGrupos.getResultList());
         queryEventoTipos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoTipos t");
@@ -90,6 +98,9 @@ public class FrameEventosAdmin extends JInternalFrame {
         donacionTableCellRenderer1 = new com.parah.mg.utils.DonacionTableCellRenderer();
         queryCentrosDeCosto = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t");
         listCentrosDeCosto = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCentrosDeCosto.getResultList());
+        dateTableCellRenderer2 = new com.parah.mg.utils.DateTableCellRenderer();
+        dateToStringConverter1 = new com.parah.mg.utils.DateToStringConverter();
+        dateToStringConverterInverse1 = new com.parah.mg.utils.DateToStringConverterInverse();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         fechaLabel = new javax.swing.JLabel();
@@ -99,7 +110,6 @@ public class FrameEventosAdmin extends JInternalFrame {
         refreshButton = new javax.swing.JButton();
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
-        jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
         cboGrupo = new javax.swing.JComboBox();
         descripcionLabel1 = new javax.swing.JLabel();
         descripcionLabel2 = new javax.swing.JLabel();
@@ -113,20 +123,21 @@ public class FrameEventosAdmin extends JInternalFrame {
         descripcionLabel6 = new javax.swing.JLabel();
         cboCentroDeCosto = new javax.swing.JComboBox();
         descripcionLabel7 = new javax.swing.JLabel();
+        datePicker1 = new DatePicker(datePickerSettings);
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
 
         FormListener formListener = new FormListener();
 
-        dateTableCellRenderer1.setText("dateTableCellRenderer1");
-
         donacionTableCellRenderer1.setText("donacionTableCellRenderer1");
+
+        dateTableCellRenderer2.setText("dateTableCellRenderer2");
 
         masterTable.setAutoCreateRowSorter(true);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fecha}"));
         columnBinding.setColumnName("Fecha");
-        columnBinding.setColumnClass(java.util.Date.class);
-        columnBinding.setEditable(false);
+        columnBinding.setColumnClass(java.time.LocalDate.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEventoTipo}"));
         columnBinding.setColumnName("Tipo");
         columnBinding.setColumnClass(com.parah.mg.domain.TblEventoTipos.class);
@@ -152,7 +163,7 @@ public class FrameEventosAdmin extends JInternalFrame {
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(0).setResizable(false);
-            masterTable.getColumnModel().getColumn(0).setCellRenderer(dateTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(0).setCellRenderer(dateTableCellRenderer2);
             masterTable.getColumnModel().getColumn(5).setCellRenderer(donacionTableCellRenderer1);
             masterTable.getColumnModel().getColumn(6).setResizable(false);
         }
@@ -183,11 +194,6 @@ public class FrameEventosAdmin extends JInternalFrame {
 
         deleteButton.addActionListener(formListener);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fecha}"), jXDatePicker1, org.jdesktop.beansbinding.BeanProperty.create("date"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), jXDatePicker1, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
         cboGrupo.setEditable(true);
         cboGrupo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -211,10 +217,14 @@ public class FrameEventosAdmin extends JInternalFrame {
         bindingGroup.addBinding(jComboBoxBinding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idEventoTipo}"), cboEventoTipo, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboEventoTipo, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
 
         cboEventoTipo.addActionListener(formListener);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.porcentajeAporte}"), sldCatTrib, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), sldCatTrib, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         sldCatTrib.addChangeListener(formListener);
@@ -238,6 +248,19 @@ public class FrameEventosAdmin extends JInternalFrame {
 
         descripcionLabel7.setText("Centro de Costo:");
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fecha}"), datePicker1, org.jdesktop.beansbinding.BeanProperty.create("date"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), datePicker1, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        datePicker1.addPropertyChangeListener(formListener);
+
+        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fecha}"), jFormattedTextField1, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding.setConverter(dateToStringConverter1);
+        bindingGroup.addBinding(binding);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -256,6 +279,30 @@ public class FrameEventosAdmin extends JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton))
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(descripcionLabel6)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(descripcionLabel3)
+                                    .addComponent(fechaLabel)
+                                    .addComponent(descripcionLabel))
+                                .addGap(69, 69, 69)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cboEventoTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(descripcionField)
+                                    .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(descripcionLabel1)
+                                    .addComponent(descripcionLabel7))
+                                .addGap(44, 44, 44)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cboGrupo, 0, 144, Short.MAX_VALUE)
+                                    .addComponent(cboCentroDeCosto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(descripcionLabel2)
                         .addGap(46, 46, 46)
                         .addComponent(descripcionLabel4)
@@ -266,29 +313,7 @@ public class FrameEventosAdmin extends JInternalFrame {
                         .addGap(15, 15, 15)
                         .addComponent(lblAporte)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(descripcionLabel5))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(descripcionLabel6)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(descripcionLabel3)
-                                    .addComponent(fechaLabel)
-                                    .addComponent(descripcionLabel))
-                                .addGap(69, 69, 69)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jXDatePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
-                                    .addComponent(cboEventoTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(descripcionField)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(descripcionLabel1)
-                                    .addComponent(descripcionLabel7))
-                                .addGap(44, 44, 44)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cboGrupo, 0, 144, Short.MAX_VALUE)
-                                    .addComponent(cboCentroDeCosto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(descripcionLabel5)))
                 .addContainerGap())
         );
 
@@ -298,12 +323,13 @@ public class FrameEventosAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fechaLabel)
-                    .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
+                    .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(descripcionLabel3)
                     .addComponent(cboEventoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -345,7 +371,7 @@ public class FrameEventosAdmin extends JInternalFrame {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, javax.swing.event.ChangeListener {
+    private class FormListener implements java.awt.event.ActionListener, java.beans.PropertyChangeListener, javax.swing.event.ChangeListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -365,6 +391,12 @@ public class FrameEventosAdmin extends JInternalFrame {
             }
         }
 
+        public void propertyChange(java.beans.PropertyChangeEvent evt) {
+            if (evt.getSource() == datePicker1) {
+                FrameEventosAdmin.this.datePicker1PropertyChange(evt);
+            }
+        }
+
         public void stateChanged(javax.swing.event.ChangeEvent evt) {
             if (evt.getSource() == sldCatTrib) {
                 FrameEventosAdmin.this.sldCatTribStateChanged(evt);
@@ -374,38 +406,53 @@ public class FrameEventosAdmin extends JInternalFrame {
 
     @SuppressWarnings("unchecked")
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        entityManager.getTransaction().rollback();
-        entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
-            entityManager.refresh(entity);
+        try {
+            entityManager.getTransaction().rollback();
+            entityManager.getTransaction().begin();
+            java.util.Collection data = query.getResultList();
+            for (Object entity : data) {
+                entityManager.refresh(entity);
+            }
+            list.clear();
+            list.addAll(data);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
-        list.clear();
-        list.addAll(data);
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        int[] selected = masterTable.getSelectedRows();
-        List<com.parah.mg.domain.TblEventos> toRemove = new ArrayList<>(selected.length);
-        for (int idx = 0; idx < selected.length; idx++) {
-            com.parah.mg.domain.TblEventos t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-            toRemove.add(t);
-            entityManager.remove(t);
+        try {
+            int[] selected = masterTable.getSelectedRows();
+            List<com.parah.mg.domain.TblEventos> toRemove = new ArrayList<>(selected.length);
+            for (int idx = 0; idx < selected.length; idx++) {
+                com.parah.mg.domain.TblEventos t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                toRemove.add(t);
+                entityManager.remove(t);
+            }
+            list.removeAll(toRemove);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
-        list.removeAll(toRemove);
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        TblEventos t = new TblEventos();
-        listCentrosDeCosto.stream().filter((c) -> (c.getPreferido())).forEach((c) -> {
-            t.setIdCentroDeCosto(c);
-        });
-        t.setIdUser(currentUser.getUser());
-        entityManager.persist(t);
-        list.add(t);
-        int row = list.size() - 1;
-        masterTable.setRowSelectionInterval(row, row);
-        masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+        try {
+            TblEventos t = new TblEventos();
+            listCentrosDeCosto.stream().filter((c) -> (c.getPreferido())).forEach((c) -> {
+                t.setIdCentroDeCosto(c);
+            });
+            t.setIdUser(currentUser.getUser());
+            entityManager.persist(t);
+            list.add(t);
+            int row = list.size() - 1;
+            masterTable.setRowSelectionInterval(row, row);
+            masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
@@ -431,24 +478,40 @@ public class FrameEventosAdmin extends JInternalFrame {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void sldCatTribStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldCatTribStateChanged
-        lblDonacion.setText(String.valueOf(100 - sldCatTrib.getValue()) + "%");
-        lblAporte.setText(String.valueOf(sldCatTrib.getValue()) + "%");
+        try {
+            lblDonacion.setText(String.valueOf(100 - sldCatTrib.getValue()) + "%");
+            lblAporte.setText(String.valueOf(sldCatTrib.getValue()) + "%");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }//GEN-LAST:event_sldCatTribStateChanged
 
     private void cboEventoTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEventoTipoActionPerformed
-        if (cboEventoTipo.getSelectedItem() != null) {
-            if (((TblEventoTipos) cboEventoTipo.getSelectedItem()).getDescripcion().equals("Aporte")) {
-                sldCatTrib.setValue(100);
+        try {
+            if (cboEventoTipo.getSelectedItem() != null) {
+                if (((TblEventoTipos) cboEventoTipo.getSelectedItem()).getDescripcion().equals("Aporte")) {
+                    sldCatTrib.setValue(100);
+                }
             }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cboEventoTipoActionPerformed
+
+    private void datePicker1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_datePicker1PropertyChange
+
+    }//GEN-LAST:event_datePicker1PropertyChange
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboCentroDeCosto;
     private javax.swing.JComboBox cboEventoTipo;
     private javax.swing.JComboBox cboGrupo;
-    private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
+    private com.github.lgooddatepicker.components.DatePicker datePicker1;
+    private com.parah.mg.utils.DateTableCellRenderer dateTableCellRenderer2;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
+    private com.parah.mg.utils.DateToStringConverterInverse dateToStringConverterInverse1;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField descripcionField;
     private javax.swing.JLabel descripcionLabel;
@@ -462,7 +525,7 @@ public class FrameEventosAdmin extends JInternalFrame {
     private com.parah.mg.utils.DonacionTableCellRenderer donacionTableCellRenderer1;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fechaLabel;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel lblAporte;
     private javax.swing.JLabel lblDonacion;
     private java.util.List<com.parah.mg.domain.TblEventos> list;

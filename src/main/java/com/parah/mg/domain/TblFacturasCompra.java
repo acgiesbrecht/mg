@@ -6,7 +6,8 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import javax.persistence.Basic;
@@ -81,21 +82,21 @@ public class TblFacturasCompra implements Serializable {
     @NotNull
     @Column(name = "VENCIMIENTO_TIMBRADO")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date vencimientoTimbrado;
+    private LocalDate vencimientoTimbrado;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CONDICION_CONTADO")
     private Boolean condicionContado;
     @Column(name = "FECHA_VENCIMIENTO_CREDITO")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaVencimientoCredito;
+    private LocalDate fechaVencimientoCredito;
     @Column(name = "CUOTAS_CREDITO")
     private Integer cuotasCredito;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechahora;
+    private LocalDate fechahora;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -145,7 +146,7 @@ public class TblFacturasCompra implements Serializable {
         this.id = id;
     }
 
-    public TblFacturasCompra(Integer id, String nro, String nroTimbrado, Date vencimientoTimbrado, Boolean condicionContado, Date fechahora, String razonSocial, String ruc, int montoExentas, int montoIva5, int montoIva10, int iva5, int iva10) {
+    public TblFacturasCompra(Integer id, String nro, String nroTimbrado, LocalDate vencimientoTimbrado, Boolean condicionContado, LocalDate fechahora, String razonSocial, String ruc, int montoExentas, int montoIva5, int montoIva10, int iva5, int iva10) {
         this.id = id;
         this.nro = nro;
         this.nroTimbrado = nroTimbrado;
@@ -185,11 +186,11 @@ public class TblFacturasCompra implements Serializable {
         this.nroTimbrado = nroTimbrado;
     }
 
-    public Date getVencimientoTimbrado() {
+    public LocalDate getVencimientoTimbrado() {
         return vencimientoTimbrado;
     }
 
-    public void setVencimientoTimbrado(Date vencimientoTimbrado) {
+    public void setVencimientoTimbrado(LocalDate vencimientoTimbrado) {
         this.vencimientoTimbrado = vencimientoTimbrado;
     }
 
@@ -201,11 +202,11 @@ public class TblFacturasCompra implements Serializable {
         this.condicionContado = condicionContado;
     }
 
-    public Date getFechaVencimientoCredito() {
+    public LocalDate getFechaVencimientoCredito() {
         return fechaVencimientoCredito;
     }
 
-    public void setFechaVencimientoCredito(Date fechaVencimientoCredito) {
+    public void setFechaVencimientoCredito(LocalDate fechaVencimientoCredito) {
         this.fechaVencimientoCredito = fechaVencimientoCredito;
     }
 
@@ -217,11 +218,11 @@ public class TblFacturasCompra implements Serializable {
         this.cuotasCredito = cuotasCredito;
     }
 
-    public Date getFechahora() {
+    public LocalDate getFechahora() {
         return fechahora;
     }
 
-    public void setFechahora(Date fechahora) {
+    public void setFechahora(LocalDate fechahora) {
         this.fechahora = fechahora;
     }
 

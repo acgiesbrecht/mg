@@ -134,7 +134,6 @@ public class FrameAutofacturacion extends JInternalFrame {
         txtTimbrado = new javax.swing.JFormattedTextField();
         montoLabel1 = new javax.swing.JLabel();
         fecha1Label = new javax.swing.JLabel();
-        dtpFecha = new org.jdesktop.swingx.JXDatePicker();
         montoLabel2 = new javax.swing.JLabel();
         rucField = new javax.swing.JTextField();
         ctacteLabel3 = new javax.swing.JLabel();
@@ -157,6 +156,7 @@ public class FrameAutofacturacion extends JInternalFrame {
         txtConcepto = new javax.swing.JTextField();
         conceptoLabel = new javax.swing.JLabel();
         txtObservacion = new javax.swing.JTextField();
+        dtpFecha = new com.github.lgooddatepicker.components.DateTimePicker();
 
         FormListener formListener = new FormListener();
 
@@ -269,7 +269,6 @@ public class FrameAutofacturacion extends JInternalFrame {
                                             .addComponent(fecha1Label))))
                                 .addGap(34, 34, 34)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtDomicilio, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
@@ -277,7 +276,8 @@ public class FrameAutofacturacion extends JInternalFrame {
                                         .addComponent(txtRazonSocial))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(txtNro, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtTimbrado, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)))))
+                                        .addComponent(txtTimbrado, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
+                                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -301,8 +301,7 @@ public class FrameAutofacturacion extends JInternalFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(conceptoLabel)
                                 .addGap(8, 8, 8)
-                                .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -335,9 +334,9 @@ public class FrameAutofacturacion extends JInternalFrame {
                     .addComponent(montoLabel1)
                     .addComponent(txtNro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fecha1Label))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(fecha1Label)
+                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(montoLabel2)
@@ -385,7 +384,7 @@ public class FrameAutofacturacion extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(imprimirButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -480,7 +479,7 @@ public class FrameAutofacturacion extends JInternalFrame {
 
             factura.setNro(txtNro.getValue().toString());
             factura.setIdTimbrado(listTimbrados.get(0));
-            factura.setFechahora(dtpFecha.getDate());
+            factura.setFechahora(dtpFecha.getDateTime());
             factura.setNombre(txtRazonSocial.getText());
             factura.setCi(rucField.getText());
             factura.setDomicilio(txtDomicilio.getText());
@@ -583,7 +582,7 @@ public class FrameAutofacturacion extends JInternalFrame {
     private void addAsiento() {
         try {
             TblAsientos t = new TblAsientos();
-            t.setFechahora(dtpFecha.getDate());
+            t.setFechahora(dtpFecha.getDateTime());
             t.setIdUser(currentUser.getUser());
 
             t.setIdCentroDeCosto((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
@@ -615,7 +614,7 @@ public class FrameAutofacturacion extends JInternalFrame {
     private javax.swing.JButton cmdBorrarAsiento;
     private javax.swing.JLabel conceptoLabel;
     private javax.swing.JLabel ctacteLabel3;
-    private org.jdesktop.swingx.JXDatePicker dtpFecha;
+    private com.github.lgooddatepicker.components.DateTimePicker dtpFecha;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fecha1Label;
     private javax.swing.JButton imprimirButton;

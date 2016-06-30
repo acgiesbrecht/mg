@@ -10,8 +10,9 @@ import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,26 +48,18 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
 
             persistenceMap = Utils.getInstance().getPersistenceMap();
             initComponents();
-            Calendar c = Calendar.getInstance();
-            c.set(Calendar.DATE, 1);
-            c.set(Calendar.HOUR, 0);
-            c.set(Calendar.MINUTE, 0);
-            c.set(Calendar.SECOND, 0);
-            Date startDate = c.getTime();
-            c.set(Calendar.DATE, c.getActualMaximum(Calendar.DAY_OF_MONTH) - 1);
-            c.set(Calendar.HOUR, 23);
-            c.set(Calendar.MINUTE, 59);
-            c.set(Calendar.SECOND, 59);
-            Date endDate = c.getTime();
-            txtFechaInicioMayor.setValue(startDate);
-            txtFechaInicioDiario.setValue(startDate);
-            txtFechaInicioCompras.setValue(startDate);
-            txtFechaInicioVentas.setValue(startDate);
 
-            txtFechaFinMayor.setValue(endDate);
-            txtFechaFinDiario.setValue(endDate);
-            txtFechaFinCompras.setValue(endDate);
-            txtFechaFinVentas.setValue(endDate);
+            LocalDateTime startDate = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+            LocalDateTime endDate = LocalDateTime.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).withHour(59).withMinute(59).withSecond(59);
+            txtFechaInicioDiario.setDateTime(startDate);
+            txtFechaInicioMayor.setDateTime(startDate);
+            txtFechaInicioCompras.setDateTime(startDate);
+            txtFechaInicioVentas.setDateTime(startDate);
+
+            txtFechaFinMayor.setDateTime(endDate);
+            txtFechaFinDiario.setDateTime(endDate);
+            txtFechaFinCompras.setDateTime(endDate);
+            txtFechaFinVentas.setDateTime(endDate);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -94,27 +87,27 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         cmdLibroDiario = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        txtFechaInicioMayor = new javax.swing.JFormattedTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        txtFechaFinMayor = new javax.swing.JFormattedTextField();
         cmdLibroMayor = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        txtFechaFinDiario = new javax.swing.JFormattedTextField();
-        txtFechaInicioDiario = new javax.swing.JFormattedTextField();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        txtFechaFinCompras = new javax.swing.JFormattedTextField();
         cmdLibroMayor1 = new javax.swing.JButton();
-        txtFechaInicioCompras = new javax.swing.JFormattedTextField();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        txtFechaFinVentas = new javax.swing.JFormattedTextField();
         cmdLibroMayor2 = new javax.swing.JButton();
-        txtFechaInicioVentas = new javax.swing.JFormattedTextField();
+        txtFechaInicioDiario = new com.github.lgooddatepicker.components.DateTimePicker();
+        txtFechaFinDiario = new com.github.lgooddatepicker.components.DateTimePicker();
+        txtFechaInicioMayor = new com.github.lgooddatepicker.components.DateTimePicker();
+        txtFechaInicioCompras = new com.github.lgooddatepicker.components.DateTimePicker();
+        txtFechaInicioVentas = new com.github.lgooddatepicker.components.DateTimePicker();
+        txtFechaFinMayor = new com.github.lgooddatepicker.components.DateTimePicker();
+        txtFechaFinCompras = new com.github.lgooddatepicker.components.DateTimePicker();
+        txtFechaFinVentas = new com.github.lgooddatepicker.components.DateTimePicker();
 
         dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
 
@@ -150,13 +143,9 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
 
         jLabel10.setText("Libro Mayor");
 
-        txtFechaInicioMayor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
-
         jLabel11.setText("Desde");
 
         jLabel12.setText("Hasta");
-
-        txtFechaFinMayor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
 
         cmdLibroMayor.setText("Ver");
         cmdLibroMayor.addActionListener(new java.awt.event.ActionListener() {
@@ -169,17 +158,11 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
 
         jLabel14.setText("Hasta");
 
-        txtFechaFinDiario.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
-
-        txtFechaInicioDiario.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
-
         jLabel15.setText("Libro Compras");
 
         jLabel16.setText("Desde");
 
         jLabel17.setText("Hasta");
-
-        txtFechaFinCompras.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
 
         cmdLibroMayor1.setText("Ver");
         cmdLibroMayor1.addActionListener(new java.awt.event.ActionListener() {
@@ -188,15 +171,11 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             }
         });
 
-        txtFechaInicioCompras.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
-
         jLabel18.setText("Libro Ventas");
 
         jLabel19.setText("Desde");
 
         jLabel20.setText("Hasta");
-
-        txtFechaFinVentas.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
 
         cmdLibroMayor2.setText("Ver");
         cmdLibroMayor2.addActionListener(new java.awt.event.ActionListener() {
@@ -204,8 +183,6 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                 cmdLibroMayor2ActionPerformed(evt);
             }
         });
-
-        txtFechaInicioVentas.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -221,87 +198,95 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                             .addComponent(jLabel15))
                         .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel16)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtFechaInicioCompras, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel17)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtFechaFinCompras, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cmdLibroMayor1))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addComponent(jLabel13)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtFechaInicioDiario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtFechaInicioDiario, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
                                     .addComponent(jLabel14)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtFechaFinDiario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtFechaFinDiario, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
                                     .addComponent(cmdLibroDiario))
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel11)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtFechaInicioMayor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtFechaInicioMayor, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
                                     .addComponent(jLabel12)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtFechaFinMayor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtFechaFinMayor, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(cmdLibroMayor)))))
+                                    .addComponent(cmdLibroMayor)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel16)
+                                    .addComponent(jLabel19))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtFechaInicioVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel20)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtFechaFinVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtFechaInicioCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel17)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtFechaFinCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cmdLibroMayor1))))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel19)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFechaInicioVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFechaFinVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addComponent(cmdLibroMayor2)))
-                .addContainerGap(264, Short.MAX_VALUE))
+                .addContainerGap(117, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmdLibroDiario)
-                    .addComponent(jLabel5)
-                    .addComponent(txtFechaInicioDiario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13)
-                    .addComponent(txtFechaFinDiario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(cmdLibroDiario)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel13)
+                                .addComponent(jLabel14))
+                            .addComponent(txtFechaInicioDiario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFechaFinDiario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel10)
+                                .addComponent(jLabel11)
+                                .addComponent(jLabel12)
+                                .addComponent(cmdLibroMayor))
+                            .addComponent(txtFechaInicioMayor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFechaFinMayor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel15)
+                                .addComponent(jLabel16)
+                                .addComponent(jLabel17)
+                                .addComponent(cmdLibroMayor1))
+                            .addComponent(txtFechaInicioCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtFechaFinCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(txtFechaInicioMayor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11)
-                    .addComponent(txtFechaFinMayor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12)
-                    .addComponent(cmdLibroMayor))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15)
-                    .addComponent(txtFechaInicioCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16)
-                    .addComponent(txtFechaFinCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17)
-                    .addComponent(cmdLibroMayor1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel18)
+                        .addComponent(jLabel19)
+                        .addComponent(jLabel20)
+                        .addComponent(cmdLibroMayor2))
                     .addComponent(txtFechaInicioVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel19)
-                    .addComponent(txtFechaFinVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20)
-                    .addComponent(cmdLibroMayor2))
-                .addContainerGap(513, Short.MAX_VALUE))
+                    .addComponent(txtFechaFinVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(517, Short.MAX_VALUE))
         );
 
         pack();
@@ -338,8 +323,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private void cmdLibroMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayorActionPerformed
         try {
             Map parameters = new HashMap();
-            parameters.put("fechaDesde", (Date) txtFechaInicioMayor.getValue());
-            parameters.put("fechaHasta", (Date) txtFechaFinMayor.getValue());
+            parameters.put("fechaDesde", (LocalDateTime) txtFechaInicioMayor.getDateTime());
+            parameters.put("fechaHasta", (LocalDateTime) txtFechaFinMayor.getDateTime());
             //parameters.put("ctaContable", 101020100);
             Utils.getInstance().showReport("libro_mayor", "libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters, false);
             //Utils.getInstance().showReport("libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters);
@@ -438,13 +423,13 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private com.parah.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryMiembros;
-    private javax.swing.JFormattedTextField txtFechaFinCompras;
-    private javax.swing.JFormattedTextField txtFechaFinDiario;
-    private javax.swing.JFormattedTextField txtFechaFinMayor;
-    private javax.swing.JFormattedTextField txtFechaFinVentas;
-    private javax.swing.JFormattedTextField txtFechaInicioCompras;
-    private javax.swing.JFormattedTextField txtFechaInicioDiario;
-    private javax.swing.JFormattedTextField txtFechaInicioMayor;
-    private javax.swing.JFormattedTextField txtFechaInicioVentas;
+    private com.github.lgooddatepicker.components.DateTimePicker txtFechaFinCompras;
+    private com.github.lgooddatepicker.components.DateTimePicker txtFechaFinDiario;
+    private com.github.lgooddatepicker.components.DateTimePicker txtFechaFinMayor;
+    private com.github.lgooddatepicker.components.DateTimePicker txtFechaFinVentas;
+    private com.github.lgooddatepicker.components.DateTimePicker txtFechaInicioCompras;
+    private com.github.lgooddatepicker.components.DateTimePicker txtFechaInicioDiario;
+    private com.github.lgooddatepicker.components.DateTimePicker txtFechaInicioMayor;
+    private com.github.lgooddatepicker.components.DateTimePicker txtFechaInicioVentas;
     // End of variables declaration//GEN-END:variables
 }

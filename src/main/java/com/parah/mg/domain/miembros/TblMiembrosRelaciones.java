@@ -7,7 +7,7 @@ package com.parah.mg.domain.miembros;
 
 import com.parah.mg.domain.TblUsers;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,10 +45,10 @@ public class TblMiembrosRelaciones implements Serializable {
     private Integer id;
     @Column(name = "FECHA_INICIO")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaInicio;
+    private LocalDate fechaInicio;
     @Column(name = "FECHA_FIN")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaFin;
+    private LocalDate fechaFin;
     @JoinColumn(name = "ID_ENTIDAD_2", referencedColumnName = "ID")
     @ManyToOne
     private TblEntidades idEntidad2;
@@ -86,19 +86,19 @@ public class TblMiembrosRelaciones implements Serializable {
         this.id = id;
     }
 
-    public Date getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaFin() {
+    public LocalDate getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
 

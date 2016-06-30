@@ -31,7 +31,7 @@ import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -657,7 +657,7 @@ public class FrameDonacionesVariasDetalle extends JInternalFrame {
                             evd.setTblAsientosCollection((List) ts);
                         }
                         TblAsientos asientoAporte = new TblAsientos();
-                        asientoAporte.setFechahora(evd.getIdEvento().getFecha());
+                        asientoAporte.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
                         asientoAporte.setIdCentroDeCosto((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
                         asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
@@ -667,7 +667,7 @@ public class FrameDonacionesVariasDetalle extends JInternalFrame {
                         ts.add(asientoAporte);
 
                         TblAsientos asientoDonacion = new TblAsientos();
-                        asientoDonacion.setFechahora(evd.getIdEvento().getFecha());
+                        asientoDonacion.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
                         asientoDonacion.setIdCentroDeCosto((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
                         asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());

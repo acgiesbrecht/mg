@@ -28,9 +28,11 @@ import java.beans.PropertyChangeListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,7 +62,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
     Map<String, String> persistenceMap = new HashMap<>();
     List<TblEntidades> listEntidadesFiltered;
     TblEntidades selectedEntidad;
-    List<Date> listFechasCuotas;
+    List<LocalDate> listFechasCuotas;
     TblEventoCuotas remateCuotas;
     Integer saldoActual;
     Timer timer;
@@ -103,10 +105,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             AutoCompleteSupport support2 = AutoCompleteSupport.install(cboFechaRemate, eventListEventos);
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String s = sdf.format(new Date());
-            Date today = sdf.parse(s);
-            Optional<TblEventos> value = listEventos.stream().filter(a -> a.getFecha().equals(today))
+            Optional<TblEventos> value = listEventos.stream().filter(a -> a.getFecha().equals(LocalDateTime.now()))
                     .findFirst();
             if (value.isPresent()) {
                 cboFechaRemate.setSelectedItem(value.get());
@@ -269,7 +268,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventoDetalle, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha/Hora");
-        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setColumnClass(java.time.LocalDateTime.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCategoriaArticulo}"));
         columnBinding.setColumnName("Categoria Articulo");
@@ -713,9 +712,9 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             remateCuotas = entityManager.find(TblEventoCuotas.class, ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
             String fechas = "Las transferencias seran imprimidas con fechas de";
             listFechasCuotas = Utils.getInstance().getCuotasFechas(remateCuotas);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            for (Date fecha : listFechasCuotas) {
-                fechas += ", " + sdf.format(fecha);
+
+            for (LocalDate fecha : listFechasCuotas) {
+                fechas += ", " + fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             }
             fechas = fechas + ".";
             fechas = fechas.replaceFirst(",", " ");
@@ -842,8 +841,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             cmdProcesar.setEnabled(false);
             //Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
             Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
-            TblEventos currentEvento = (TblEventos) cboFechaRemate.getSelectedItem();
-            Date fecha = new Date();
+            LocalDate fecha = LocalDate.now();
             Integer t_id = 0;
             Integer r_id = 0;
             /*if (!StringUtils.isNumeric(txtTransferencia.getText())) {
@@ -966,7 +964,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 //Aporte
                 TblAsientosTemporales aT = new TblAsientosTemporales();
                 aT.setFacturado(false);
-                aT.setFechahora(recibo.getFechahora());
+                aT.setFechahora(recibo.getFechahora().atStartOfDay());
                 aT.setIdCentroDeCosto(listAsientos.get(0).getIdCentroDeCosto());
                 aT.setIdCuentaContableDebe(listAsientos.get(0).getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
                 aT.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaACobrar());
@@ -977,7 +975,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 //Donacion
                 aT = new TblAsientosTemporales();
                 aT.setFacturado(false);
-                aT.setFechahora(recibo.getFechahora());
+                aT.setFechahora(recibo.getFechahora().atStartOfDay());
                 aT.setIdCentroDeCosto(listAsientos.get(0).getIdCentroDeCosto());
                 aT.setIdCuentaContableDebe(listAsientos.get(0).getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
                 aT.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaACobrar());

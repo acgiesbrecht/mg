@@ -5,8 +5,8 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="subSubreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
 	<parameter name="ctaContable" class="java.lang.Integer"/>
-	<parameter name="fechaDesde" class="java.util.Date"/>
-	<parameter name="fechaHasta" class="java.util.Date"/>
+	<parameter name="fechaDesde" class="java.time.LocalDateTime"/>
+	<parameter name="fechaHasta" class="java.time.LocalDateTime"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT 'ASIENTO MANUAL' AS NRO, A.FECHAHORA, A.MONTO AS IMPORTE
 FROM TBL_ASIENTOS A

@@ -14,7 +14,7 @@ import java.awt.EventQueue;
 import java.beans.Beans;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,7 +116,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha");
-        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setColumnClass(java.time.LocalDateTime.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${razonSocial}"));
         columnBinding.setColumnName("Razon Social");
@@ -154,7 +154,6 @@ public class FrameFacturasAdmin extends JInternalFrame {
             masterTable.getColumnModel().getColumn(2).setResizable(false);
             masterTable.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer1);
             masterTable.getColumnModel().getColumn(4).setResizable(false);
-            masterTable.getColumnModel().getColumn(4).setCellRenderer(null);
             masterTable.getColumnModel().getColumn(5).setCellRenderer(numberCellRenderer1);
             masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
             masterTable.getColumnModel().getColumn(7).setCellRenderer(numberCellRenderer1);
@@ -257,8 +256,6 @@ public class FrameFacturasAdmin extends JInternalFrame {
                 t.setAnulado(true);
                 Calendar calendar = Calendar.getInstance();
                 for (TblAsientos asiento : t.getTblAsientosCollection()) {
-                    Calendar calendarAsiento = Calendar.getInstance();
-                    calendarAsiento.setTime(asiento.getFechahora());
 
                     for (TblAsientosTemporales at : asiento.getTblAsientosTemporalesCollection()) {
                         at.setFacturado(false);
@@ -267,7 +264,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
 
                     TblAsientos asientoInverso = new TblAsientos();
                     entityManager.persist(asientoInverso);
-                    asientoInverso.setFechahora(new Date());
+                    asientoInverso.setFechahora(LocalDateTime.now());
                     asientoInverso.setIdCentroDeCosto(asiento.getIdCentroDeCosto());
                     asientoInverso.setIdCuentaContableDebe(asiento.getIdCuentaContableHaber());
                     asientoInverso.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
