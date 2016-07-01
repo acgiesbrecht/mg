@@ -87,10 +87,10 @@ public class FrameTimbradosAutofacturasAdmin extends JInternalFrame {
         columnBinding.setColumnClass(Integer.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaInicio}"));
         columnBinding.setColumnName("Fecha Inicio");
-        columnBinding.setColumnClass(java.time.LocalDateTime.class);
+        columnBinding.setColumnClass(java.time.LocalDate.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaVencimiento}"));
         columnBinding.setColumnName("Fecha Vencimiento");
-        columnBinding.setColumnClass(java.time.LocalDateTime.class);
+        columnBinding.setColumnClass(java.time.LocalDate.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nroFacturaIncio}"));
         columnBinding.setColumnName("Nro. Factura Inicio");
         columnBinding.setColumnClass(Integer.class);

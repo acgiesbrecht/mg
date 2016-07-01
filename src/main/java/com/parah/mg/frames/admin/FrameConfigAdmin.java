@@ -82,16 +82,16 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                     }
                 }
             }
-            CurrentUser currentUser = CurrentUser.getInstance();
+            /*CurrentUser currentUser = CurrentUser.getInstance();
             if (currentUser.getUser().getId() == 9999) {
                 cmdReset.setEnabled(true);
                 jButton3.setEnabled(true);
             } else {
                 cmdReset.setEnabled(false);
                 jButton3.setEnabled(false);
-            }
+            }*/
 
-            /*
+ /*
             File[] files = (new File(getClass().getResource("/sql").toURI())).listFiles();
             for (File f : files) {
                 cboSqlFiles.addItem(f.getName());
@@ -269,7 +269,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
         jButton3.setBackground(new java.awt.Color(255, 0, 153));
         jButton3.setText("Actualizar Asientos");
-        jButton3.setEnabled(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -550,8 +549,17 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
             TblCuentasContablesPorDefecto cuentasContablesPorDefecto = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
             for (TblEventoDetalle evd : listEventoDetalle) {
                 if (evd.getTblAsientosCollection().size() == 2) {
-                    ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
-                    ((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getMonto());
+                    Integer indexAsientoAporte = -1;
+                    Integer indexAsientoDonacion = -1;
+                    if (((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
+                        indexAsientoAporte = 0;
+                        indexAsientoDonacion = 1;
+                    } else if (((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
+                        indexAsientoAporte = 1;
+                        indexAsientoDonacion = 0;
+                    }
+                    ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                    ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoDonacion).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).getMonto());
                     entityManager.merge(evd);
                 } else if (evd.getTblAsientosCollection().isEmpty()) {
 

@@ -6,7 +6,7 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -64,12 +64,12 @@ public class TblTimbradosAutofacturas implements Serializable {
     @NotNull
     @Column(name = "FECHA_INICIO")
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime fechaInicio;
+    private LocalDate fechaInicio;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_VENCIMIENTO")
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime fechaVencimiento;
+    private LocalDate fechaVencimiento;
     @Basic(optional = false)
     @NotNull
     @Column(name = "NRO_FACTURA_INCIO")
@@ -93,7 +93,7 @@ public class TblTimbradosAutofacturas implements Serializable {
         this.id = id;
     }
 
-    public TblTimbradosAutofacturas(Integer id, String nro, LocalDateTime fechaInicio, LocalDateTime fechaVencimiento, int nroFacturaIncio, int nroFacturaFin, Boolean activo) {
+    public TblTimbradosAutofacturas(Integer id, String nro, LocalDate fechaInicio, LocalDate fechaVencimiento, int nroFacturaIncio, int nroFacturaFin, Boolean activo) {
         this.id = id;
         this.nro = nro;
         this.fechaInicio = fechaInicio;
@@ -119,19 +119,19 @@ public class TblTimbradosAutofacturas implements Serializable {
         this.nro = nro;
     }
 
-    public LocalDateTime getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(LocalDateTime fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public LocalDateTime getFechaVencimiento() {
+    public LocalDate getFechaVencimiento() {
         return fechaVencimiento;
     }
 
-    public void setFechaVencimiento(LocalDateTime fechaVencimiento) {
+    public void setFechaVencimiento(LocalDate fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
     }
 

@@ -5,6 +5,7 @@
  */
 package com.parah.mg.frames.admin;
 
+import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -53,6 +54,13 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         initComponents();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
+        }
+
+        CurrentUser currentUser = CurrentUser.getInstance();
+        if (currentUser.getUser().getId() == 9999) {
+            printButton1.setEnabled(true);
+        } else {
+            printButton1.setEnabled(false);
         }
 
         //MUY LENTO--------------------------------------------------
@@ -106,6 +114,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         masterTable = new javax.swing.JTable();
         deleteButton = new javax.swing.JButton();
         printButton = new javax.swing.JButton();
+        printButton1 = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -145,6 +154,12 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         columnBinding.setColumnName("Concepto");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoAporte}"));
+        columnBinding.setColumnName("Monto Aporte");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoDonacion}"));
+        columnBinding.setColumnName("Monto Donacion");
+        columnBinding.setColumnClass(Integer.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoTotal}"));
         columnBinding.setColumnName("Monto");
         columnBinding.setColumnClass(Integer.class);
@@ -162,6 +177,8 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             masterTable.getColumnModel().getColumn(3).setResizable(false);
             masterTable.getColumnModel().getColumn(3).setCellRenderer(ctaCteTableCellRenderer1);
             masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(7).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(8).setCellRenderer(numberCellRenderer1);
         }
 
         deleteButton.setText("Eliminar");
@@ -174,6 +191,9 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         printButton.setText("Imprimir");
         printButton.addActionListener(formListener);
 
+        printButton1.setText("Marcar como no facturado");
+        printButton1.addActionListener(formListener);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -183,7 +203,8 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1003, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(printButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(printButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteButton)))
@@ -193,11 +214,12 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteButton)
-                    .addComponent(printButton))
+                    .addComponent(printButton)
+                    .addComponent(printButton1))
                 .addContainerGap())
         );
 
@@ -214,6 +236,9 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             }
             else if (evt.getSource() == printButton) {
                 FrameTransferenciasAdmin.this.printButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == printButton1) {
+                FrameTransferenciasAdmin.this.printButton1ActionPerformed(evt);
             }
         }
 
@@ -339,6 +364,26 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
 
     }//GEN-LAST:event_formInternalFrameActivated
 
+    private void printButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButton1ActionPerformed
+        try {
+            int[] selected = masterTable.getSelectedRows();
+            for (int idx = 0; idx < selected.length; idx++) {
+                int index = masterTable.convertRowIndexToModel(selected[idx]);
+                TblTransferencias t = list.get(index);
+                List<TblAsientosTemporales> l = (List<TblAsientosTemporales>) t.getTblAsientosTemporalesCollection();
+                for (TblAsientosTemporales at : l) {
+                    at.setFacturado(false);
+                    entityManager.merge(at);
+                }
+            }
+            entityManager.getTransaction().commit();
+            entityManager.getTransaction().begin();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_printButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.parah.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
     private com.parah.mg.utils.DateTableCellRenderer dateTableCellRenderer2;
@@ -350,6 +395,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
     private javax.swing.JTable masterTable;
     private com.parah.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.swing.JButton printButton;
+    private javax.swing.JButton printButton1;
     private javax.persistence.Query query;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables

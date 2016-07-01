@@ -10,8 +10,6 @@ import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
 import java.beans.Beans;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +63,7 @@ public class FrameTimbradosAdmin extends JInternalFrame {
         listGrupos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryGrupos.getResultList());
         queryEventoTipos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoTipos t");
         listEventoTipos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoTipos.getResultList());
+        dateTableCellRenderer1 = new com.parah.mg.utils.DateTableCellRenderer();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         fechaLabel = new javax.swing.JLabel();
@@ -84,6 +83,8 @@ public class FrameTimbradosAdmin extends JInternalFrame {
 
         FormListener formListener = new FormListener();
 
+        dateTableCellRenderer1.setText("dateTableCellRenderer1");
+
         masterTable.setAutoCreateRowSorter(true);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
@@ -92,10 +93,10 @@ public class FrameTimbradosAdmin extends JInternalFrame {
         columnBinding.setColumnClass(Integer.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaInicio}"));
         columnBinding.setColumnName("Fecha Inicio");
-        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setColumnClass(java.time.LocalDate.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaVencimiento}"));
         columnBinding.setColumnName("Fecha Vencimiento");
-        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setColumnClass(java.time.LocalDate.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nroFacturaIncio}"));
         columnBinding.setColumnName("Nro. Factura Inicio");
         columnBinding.setColumnClass(Integer.class);
@@ -110,7 +111,9 @@ public class FrameTimbradosAdmin extends JInternalFrame {
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(0).setResizable(false);
+            masterTable.getColumnModel().getColumn(1).setCellRenderer(dateTableCellRenderer1);
             masterTable.getColumnModel().getColumn(2).setResizable(false);
+            masterTable.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer1);
         }
 
         fechaLabel.setText("Fecha Incio:");
@@ -203,7 +206,7 @@ public class FrameTimbradosAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(descripcionLabel7)
@@ -316,6 +319,7 @@ public class FrameTimbradosAdmin extends JInternalFrame {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.parah.mg.utils.DateTableCellRenderer dateTableCellRenderer1;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField descripcionField;
     private javax.swing.JTextField descripcionField1;
