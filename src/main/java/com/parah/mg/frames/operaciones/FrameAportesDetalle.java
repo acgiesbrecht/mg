@@ -153,6 +153,7 @@ public class FrameAportesDetalle extends JInternalFrame {
         tblCategoriasArticulosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(tblCategoriasArticulosQuery.getResultList());
         tblFormasDePagoQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblFormasDePago t ORDER BY t.id");
         tblFormasDePagoList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(tblFormasDePagoQuery.getResultList());
+        ctaCteTableCellRenderer1 = new com.parah.mg.utils.CtaCteTableCellRenderer();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         montoLabel = new javax.swing.JLabel();
@@ -189,6 +190,8 @@ public class FrameAportesDetalle extends JInternalFrame {
         numberCellRenderer1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         numberCellRenderer1.setText("numberCellRenderer1");
 
+        ctaCteTableCellRenderer1.setText("ctaCteTableCellRenderer1");
+
         addInternalFrameListener(formListener);
 
         masterTable.setAutoCreateRowSorter(true);
@@ -196,7 +199,10 @@ public class FrameAportesDetalle extends JInternalFrame {
         masterTable.setRowHeight(20);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventoDetalle, masterTable);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad.ctacte}"));
+        columnBinding.setColumnName("Cta. Cte.");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
         columnBinding.setColumnName("Miembro");
         columnBinding.setColumnClass(com.parah.mg.domain.miembros.TblEntidades.class);
         columnBinding.setEditable(false);
@@ -210,9 +216,12 @@ public class FrameAportesDetalle extends JInternalFrame {
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
-            masterTable.getColumnModel().getColumn(0).setPreferredWidth(80);
-            masterTable.getColumnModel().getColumn(2).setPreferredWidth(20);
-            masterTable.getColumnModel().getColumn(2).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+            masterTable.getColumnModel().getColumn(0).setCellRenderer(ctaCteTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(1).setPreferredWidth(80);
+            masterTable.getColumnModel().getColumn(2).setPreferredWidth(60);
+            masterTable.getColumnModel().getColumn(3).setPreferredWidth(20);
+            masterTable.getColumnModel().getColumn(3).setCellRenderer(numberCellRenderer1);
         }
 
         montoLabel.setDisplayedMnemonic('M');
@@ -443,14 +452,15 @@ public class FrameAportesDetalle extends JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idMiembroLabel)
-                    .addComponent(idMiembroLabel1)
-                    .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idMiembroLabel2)
-                    .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2)
-                    .addComponent(lblCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblCtaCte, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(idMiembroLabel)
+                        .addComponent(idMiembroLabel1)
+                        .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(idMiembroLabel2)
+                        .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton2)))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(montoLabel1)
@@ -543,14 +553,14 @@ public class FrameAportesDetalle extends JInternalFrame {
             if (evt.getSource() == txtCtaCte) {
                 FrameAportesDetalle.this.txtCtaCteKeyReleased(evt);
             }
+            else if (evt.getSource() == cboEntidad) {
+                FrameAportesDetalle.this.cboEntidadKeyReleased(evt);
+            }
             else if (evt.getSource() == montoField) {
                 FrameAportesDetalle.this.montoFieldKeyReleased(evt);
             }
             else if (evt.getSource() == cboForma) {
                 FrameAportesDetalle.this.cboFormaKeyReleased(evt);
-            }
-            else if (evt.getSource() == cboEntidad) {
-                FrameAportesDetalle.this.cboEntidadKeyReleased(evt);
             }
         }
 
@@ -833,7 +843,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                     montoField.requestFocus();
                 }*/
                 List<TblEntidades> valueList = list.stream()
-                        .filter(a -> String.valueOf(a.getCtacte()).contains(txtCtaCte.getText()))
+                        .filter(a -> String.valueOf(a.getCtacte()).contains(Integer.valueOf(txtCtaCte.getText()).toString()))
                         .collect(Collectors.toList());
                 if (valueList.size() == 1) {
                     cboEntidad.setSelectedItem(valueList.get(0));
@@ -1036,6 +1046,7 @@ public class FrameAportesDetalle extends JInternalFrame {
     private javax.swing.JComboBox cboFechaAporte;
     private javax.swing.JComboBox cboForma;
     private javax.swing.JButton cmdGenerar;
+    private com.parah.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
     private com.parah.mg.utils.DateTimeToStringConverter dateTimeToStringConverter1;

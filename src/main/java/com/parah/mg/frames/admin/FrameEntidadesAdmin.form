@@ -234,9 +234,9 @@
                               <Component id="idCategoriaLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                               <Component id="cboFormaDePago" min="-2" pref="197" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="201" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="56" pref="56" max="-2" attributes="0"/>
@@ -523,6 +523,11 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
               </TableColumnModel>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
@@ -562,6 +567,10 @@
               <Subbinding sourcePath="${idFormaDePagoPreferida}">
                 <BindingParameter name="NAME" value="Form de Pago pref."/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblFormasDePago.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${idEntidadPaganteAportes}">
+                <BindingParameter name="NAME" value="Pagante"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.miembros.TblEntidades.class"/>
               </Subbinding>
             </BindingProperty>
           </BindingProperties>

@@ -264,6 +264,9 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idFormaDePagoPreferida}"));
         columnBinding.setColumnName("Form de Pago pref.");
         columnBinding.setColumnClass(com.parah.mg.domain.TblFormasDePago.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidadPaganteAportes}"));
+        columnBinding.setColumnName("Pagante");
+        columnBinding.setColumnClass(com.parah.mg.domain.miembros.TblEntidades.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
@@ -557,8 +560,8 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(idCategoriaLabel)
                                 .addGap(25, 25, 25)
-                                .addComponent(cboFormaDePago, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(201, 201, 201)))
+                                .addComponent(cboFormaDePago, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(56, 56, 56)

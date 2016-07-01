@@ -156,6 +156,11 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblCategoriasArticulos&gt;"/>
       </AuxValues>
     </Component>
+    <Component class="com.parah.mg.utils.CtaCteTableCellRenderer" name="ctaCteTableCellRenderer1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="ctaCteTableCellRenderer1"/>
+      </Properties>
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -258,14 +263,16 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="masterScrollPane" min="-2" pref="371" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblCtaCte" alignment="1" min="-2" pref="25" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -315,12 +322,19 @@
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="30" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
+                    <ComponentRef name="ctaCteTableCellRenderer1"/>
+                  </Renderer>
+                </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="80" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="60" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -341,6 +355,10 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="elements" source="listEventoDetalle" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
+              <Subbinding sourcePath="${idEntidad.ctacte}">
+                <BindingParameter name="NAME" value="Cta. Cte."/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+              </Subbinding>
               <Subbinding sourcePath="${idEntidad}">
                 <BindingParameter name="NAME" value="Miembro"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.miembros.TblEntidades.class"/>
