@@ -87,6 +87,11 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
+    <Component class="com.parah.mg.utils.DateTableCellRenderer" name="dateTableCellRenderer1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="dateTableCellRenderer1"/>
+      </Properties>
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -149,7 +154,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="152" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" pref="156" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="descripcionLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -213,12 +218,16 @@
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
-                  <Renderer/>
+                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
+                    <ComponentRef name="dateTableCellRenderer1"/>
+                  </Renderer>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                   <Title/>
                   <Editor/>
-                  <Renderer/>
+                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
+                    <ComponentRef name="dateTableCellRenderer1"/>
+                  </Renderer>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
@@ -249,11 +258,11 @@
               </Subbinding>
               <Subbinding sourcePath="${fechaInicio}">
                 <BindingParameter name="NAME" value="Fecha Inicio"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDate.class"/>
               </Subbinding>
               <Subbinding sourcePath="${fechaVencimiento}">
                 <BindingParameter name="NAME" value="Fecha Vencimiento"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDate.class"/>
               </Subbinding>
               <Subbinding sourcePath="${nroFacturaIncio}">
                 <BindingParameter name="NAME" value="Nro. Factura Inicio"/>

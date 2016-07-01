@@ -323,37 +323,43 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             queryE.setParameter("fechaHasta", dtpFechaHasta.getDate());
             List<TblEntidades> listE = (List<TblEntidades>) queryE.getResultList();
 
-            for (TblEntidades e : listE) {
-                Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
-                queryT.setParameter("fecha", dtpFechaHasta.getDate());
-                queryT.setParameter("entidad", e);
-                List<TblTransferencias> listT = (List<TblTransferencias>) queryT.getResultList();
-                if (listT.size() > 0) {
-                    PagosRealizados p = new PagosRealizados();
-                    p.setEntidad(e);
-                    Integer montoAporte = 0;
-                    Integer montoDonacion = 0;
-                    Collection<TblAsientosTemporales> ts = p.getAsientosTemporalesList();
-                    if (ts == null) {
-                        ts = new LinkedList<>();
-                        p.setAsientosTemporalesList((List) ts);
-                    }
-                    for (TblTransferencias t : listT) {
+            Integer facturaNroInicial = siguienteFacturaNro;
 
-                        ts.addAll(t.getTblAsientosTemporalesCollection());
-                        for (TblAsientosTemporales at : t.getTblAsientosTemporalesCollection()) {
-                            if (at.getEsAporte()) {
-                                montoAporte += at.getMonto();
-                            } else {
-                                montoDonacion += at.getMonto();
-                            }
-                            at.setFacturado(true);
-                            entityManager.merge(at);
+            for (TblEntidades e : listE) {
+                if (siguienteFacturaNro <= listTimbrados.get(0).getNroFacturaFin()) {
+                    Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
+                    queryT.setParameter("fecha", dtpFechaHasta.getDate());
+                    queryT.setParameter("entidad", e);
+                    List<TblTransferencias> listT = (List<TblTransferencias>) queryT.getResultList();
+                    if (listT.size() > 0) {
+                        PagosRealizados p = new PagosRealizados();
+                        p.setEntidad(e);
+                        Integer montoAporte = 0;
+                        Integer montoDonacion = 0;
+                        Collection<TblAsientosTemporales> ts = p.getAsientosTemporalesList();
+                        if (ts == null) {
+                            ts = new LinkedList<>();
+                            p.setAsientosTemporalesList((List) ts);
                         }
+                        for (TblTransferencias t : listT) {
+
+                            ts.addAll(t.getTblAsientosTemporalesCollection());
+                            for (TblAsientosTemporales at : t.getTblAsientosTemporalesCollection()) {
+                                if (at.getEsAporte()) {
+                                    montoAporte += at.getMonto();
+                                } else {
+                                    montoDonacion += at.getMonto();
+                                }
+                                at.setFacturado(true);
+                                entityManager.merge(at);
+                            }
+                        }
+                        p.setMontoAporte(montoAporte);
+                        p.setMontoDonacion(montoDonacion);
+                        pagosList.add(p);
+                        siguienteFacturaNro++;
                     }
-                    p.setMontoAporte(montoAporte);
-                    p.setMontoDonacion(montoDonacion);
-                    pagosList.add(p);
+
                 }
             }
 
@@ -362,37 +368,42 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             listE = (List<TblEntidades>) queryE.getResultList();
 
             for (TblEntidades e : listE) {
-                Query queryRecibos = entityManager.createQuery("SELECT distinct t FROM TblRecibos t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
-                queryRecibos.setParameter("fecha", dtpFechaHasta.getDate());
-                queryRecibos.setParameter("entidad", e);
-                List<TblRecibos> listR = (List<TblRecibos>) queryRecibos.getResultList();
-                if (listR.size() > 0) {
-                    PagosRealizados p = new PagosRealizados();
-                    p.setEntidad(e);
-                    Integer montoAporte = 0;
-                    Integer montoDonacion = 0;
-                    Collection<TblAsientosTemporales> ts = p.getAsientosTemporalesList();
-                    if (ts == null) {
-                        ts = new LinkedList<>();
-                        p.setAsientosTemporalesList((List) ts);
-                    }
-                    for (TblRecibos r : listR) {
-                        ts.addAll(r.getTblAsientosTemporalesCollection());
-                        for (TblAsientosTemporales at : r.getTblAsientosTemporalesCollection()) {
-                            if (at.getEsAporte()) {
-                                montoAporte += at.getMonto();
-                            } else {
-                                montoDonacion += at.getMonto();
-                            }
-                            at.setFacturado(true);
-                            entityManager.merge(at);
+                if (siguienteFacturaNro <= listTimbrados.get(0).getNroFacturaFin()) {
+                    Query queryRecibos = entityManager.createQuery("SELECT distinct t FROM TblRecibos t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
+                    queryRecibos.setParameter("fecha", dtpFechaHasta.getDate());
+                    queryRecibos.setParameter("entidad", e);
+                    List<TblRecibos> listR = (List<TblRecibos>) queryRecibos.getResultList();
+                    if (listR.size() > 0) {
+                        PagosRealizados p = new PagosRealizados();
+                        p.setEntidad(e);
+                        Integer montoAporte = 0;
+                        Integer montoDonacion = 0;
+                        Collection<TblAsientosTemporales> ts = p.getAsientosTemporalesList();
+                        if (ts == null) {
+                            ts = new LinkedList<>();
+                            p.setAsientosTemporalesList((List) ts);
                         }
+                        for (TblRecibos r : listR) {
+                            ts.addAll(r.getTblAsientosTemporalesCollection());
+                            for (TblAsientosTemporales at : r.getTblAsientosTemporalesCollection()) {
+                                if (at.getEsAporte()) {
+                                    montoAporte += at.getMonto();
+                                } else {
+                                    montoDonacion += at.getMonto();
+                                }
+                                at.setFacturado(true);
+                                entityManager.merge(at);
+                            }
+                        }
+                        p.setMontoAporte(montoAporte);
+                        p.setMontoDonacion(montoDonacion);
+                        pagosList.add(p);
+                        siguienteFacturaNro++;
                     }
-                    p.setMontoAporte(montoAporte);
-                    p.setMontoDonacion(montoDonacion);
-                    pagosList.add(p);
                 }
             }
+
+            siguienteFacturaNro = facturaNroInicial;
 
             list.clear();
             for (PagosRealizados pago : pagosList) {

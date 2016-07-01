@@ -192,11 +192,11 @@
               </Subbinding>
               <Subbinding sourcePath="${fechaInicio}">
                 <BindingParameter name="NAME" value="Fecha Inicio"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDate.class"/>
               </Subbinding>
               <Subbinding sourcePath="${fechaVencimiento}">
                 <BindingParameter name="NAME" value="Fecha Vencimiento"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDate.class"/>
               </Subbinding>
               <Subbinding sourcePath="${nroFacturaIncio}">
                 <BindingParameter name="NAME" value="Nro. Factura Inicio"/>

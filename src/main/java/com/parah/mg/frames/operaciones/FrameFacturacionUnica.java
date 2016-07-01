@@ -740,8 +740,17 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     p.getAsientosTemporalesList().addAll(t.getTblAsientosTemporalesCollection());
                     p.setEntidad(t.getIdEntidad());
                     p.setFecha(t.getFechahora());
-                    p.setMontoAporte(t.getMontoAporte());
-                    p.setMontoDonacion(t.getMontoDonacion());
+                    int montoAporte = 0;
+                    int montoDonacion = 0;
+                    for (TblAsientosTemporales at : p.getAsientosTemporalesList()) {
+                        if (at.getEsAporte()) {
+                            montoAporte += at.getMonto();
+                        } else {
+                            montoDonacion += at.getMonto();
+                        }
+                    }
+                    p.setMontoAporte(montoAporte);
+                    p.setMontoDonacion(montoDonacion);
                     p.setEventoTipo(t.getIdEventoTipo());
                     listPagos.add(p);
                 }
@@ -762,8 +771,17 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     p.getAsientosTemporalesList().addAll(r.getTblAsientosTemporalesCollection());
                     p.setEntidad(r.getIdEntidad());
                     p.setFecha(r.getFechahora());
-                    p.setMontoAporte(r.getMontoAporte());
-                    p.setMontoDonacion(r.getMontoDonacion());
+                    int montoAporte = 0;
+                    int montoDonacion = 0;
+                    for (TblAsientosTemporales at : p.getAsientosTemporalesList()) {
+                        if (at.getEsAporte()) {
+                            montoAporte += at.getMonto();
+                        } else {
+                            montoDonacion += at.getMonto();
+                        }
+                    }
+                    p.setMontoAporte(montoAporte);
+                    p.setMontoDonacion(montoDonacion);
                     p.setEventoTipo(r.getIdEventoTipo());
                     listPagos.add(p);
                 }
