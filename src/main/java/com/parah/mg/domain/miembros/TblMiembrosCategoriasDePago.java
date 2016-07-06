@@ -77,7 +77,7 @@ public class TblMiembrosCategoriasDePago implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }

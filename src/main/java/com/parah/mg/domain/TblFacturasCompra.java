@@ -110,23 +110,23 @@ public class TblFacturasCompra implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "MONTO_EXENTAS")
-    private int montoExentas;
+    private Integer montoExentas;
     @Basic(optional = false)
     @NotNull
     @Column(name = "MONTO_IVA5")
-    private int montoIva5;
+    private Integer montoIva5;
     @Basic(optional = false)
     @NotNull
     @Column(name = "MONTO_IVA10")
-    private int montoIva10;
+    private Integer montoIva10;
     @Basic(optional = false)
     @NotNull
     @Column(name = "IVA5")
-    private int iva5;
+    private Integer iva5;
     @Basic(optional = false)
     @NotNull
     @Column(name = "IVA10")
-    private int iva10;
+    private Integer iva10;
     @Size(max = 255)
     @Column(name = "OBSERVACION")
     private String observacion;
@@ -146,7 +146,7 @@ public class TblFacturasCompra implements Serializable {
         this.id = id;
     }
 
-    public TblFacturasCompra(Integer id, String nro, String nroTimbrado, LocalDate vencimientoTimbrado, Boolean condicionContado, LocalDate fechahora, String razonSocial, String ruc, int montoExentas, int montoIva5, int montoIva10, int iva5, int iva10) {
+    public TblFacturasCompra(Integer id, String nro, String nroTimbrado, LocalDate vencimientoTimbrado, Boolean condicionContado, LocalDate fechahora, String razonSocial, String ruc, Integer montoExentas, Integer montoIva5, Integer montoIva10, Integer iva5, Integer iva10) {
         this.id = id;
         this.nro = nro;
         this.nroTimbrado = nroTimbrado;
@@ -242,43 +242,43 @@ public class TblFacturasCompra implements Serializable {
         this.ruc = ruc;
     }
 
-    public int getMontoExentas() {
+    public Integer getMontoExentas() {
         return montoExentas;
     }
 
-    public void setMontoExentas(int montoExentas) {
+    public void setMontoExentas(Integer montoExentas) {
         this.montoExentas = montoExentas;
     }
 
-    public int getMontoIva5() {
+    public Integer getMontoIva5() {
         return montoIva5;
     }
 
-    public void setMontoIva5(int montoIva5) {
+    public void setMontoIva5(Integer montoIva5) {
         this.montoIva5 = montoIva5;
     }
 
-    public int getMontoIva10() {
+    public Integer getMontoIva10() {
         return montoIva10;
     }
 
-    public void setMontoIva10(int montoIva10) {
+    public void setMontoIva10(Integer montoIva10) {
         this.montoIva10 = montoIva10;
     }
 
-    public int getIva5() {
+    public Integer getIva5() {
         return iva5;
     }
 
-    public void setIva5(int iva5) {
+    public void setIva5(Integer iva5) {
         this.iva5 = iva5;
     }
 
-    public int getIva10() {
+    public Integer getIva10() {
         return iva10;
     }
 
-    public void setIva10(int iva10) {
+    public void setIva10(Integer iva10) {
         this.iva10 = iva10;
     }
 
@@ -309,7 +309,7 @@ public class TblFacturasCompra implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }

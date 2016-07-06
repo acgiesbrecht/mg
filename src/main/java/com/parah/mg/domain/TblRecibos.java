@@ -66,11 +66,11 @@ public class TblRecibos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "MONTO_APORTE")
-    private int montoAporte;
+    private Integer montoAporte;
     @Basic(optional = false)
     @NotNull
     @Column(name = "MONTO_DONACION")
-    private int montoDonacion;
+    private Integer montoDonacion;
     @JoinTable(name = "TBL_RECIBOS_ASIENTOS_TEMPORALES", joinColumns = {
         @JoinColumn(name = "ID_RECIBO", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO_TEMPORAL", referencedColumnName = "ID")})
@@ -96,7 +96,7 @@ public class TblRecibos implements Serializable {
         this.id = id;
     }
 
-    public TblRecibos(Integer id, LocalDate fechahora, int montoAporte, int montoDonacion) {
+    public TblRecibos(Integer id, LocalDate fechahora, Integer montoAporte, Integer montoDonacion) {
         this.id = id;
         this.fechahora = fechahora;
         this.montoAporte = montoAporte;
@@ -135,19 +135,19 @@ public class TblRecibos implements Serializable {
         this.concepto = concepto;
     }
 
-    public int getMontoAporte() {
+    public Integer getMontoAporte() {
         return montoAporte;
     }
 
-    public void setMontoAporte(int montoAporte) {
+    public void setMontoAporte(Integer montoAporte) {
         this.montoAporte = montoAporte;
     }
 
-    public int getMontoDonacion() {
+    public Integer getMontoDonacion() {
         return montoDonacion;
     }
 
-    public void setMontoDonacion(int montoDonacion) {
+    public void setMontoDonacion(Integer montoDonacion) {
         this.montoDonacion = montoDonacion;
     }
 
@@ -194,7 +194,7 @@ public class TblRecibos implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }

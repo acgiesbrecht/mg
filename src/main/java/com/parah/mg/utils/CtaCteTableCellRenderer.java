@@ -15,6 +15,6 @@ public class CtaCteTableCellRenderer extends NormalTableCellRenderer {
 
     @Override
     public void setValue(Object value) {
-        setText((value == null) ? "" : FormatCtaCte.format((int) value));
+        setText((value == null) ? "" : FormatCtaCte.format((Integer) value));
     }
 }

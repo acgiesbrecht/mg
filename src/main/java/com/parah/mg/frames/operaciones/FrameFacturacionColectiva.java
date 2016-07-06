@@ -47,7 +47,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
-    int siguienteFacturaNro;
+    Integer siguienteFacturaNro;
     DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.getDefault());
     DatePickerSettings datePickerSettings1 = new DatePickerSettings(Locale.getDefault());
 
@@ -467,7 +467,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                         ts.add(asiento);
                     }
                     list.add(f);
-                    int row = list.size() - 1;
+                    Integer row = list.size() - 1;
 
                     masterTable.setRowSelectionInterval(row, row);
 
@@ -539,7 +539,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                         f.setImporteDonacion(pr.getRDonacion() + pr.getTDonacion() - pr.getFDonacion());
                         f.setIdUser(currentUser.getUser());
                         list.add(f);
-                        int row = list.size() - 1;
+                        Integer row = list.size() - 1;
                         masterTable.setRowSelectionInterval(row, row);
                         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
                         siguienteFacturaNro++;

@@ -13,6 +13,6 @@ public class DonacionTableCellRenderer extends NormalTableCellRenderer {
 
     @Override
     public void setValue(Object value) {
-        setText((value == null) ? "" : String.valueOf(100 - (int) value));
+        setText((value == null) ? "" : String.valueOf(100 - (Integer) value));
     }
 }

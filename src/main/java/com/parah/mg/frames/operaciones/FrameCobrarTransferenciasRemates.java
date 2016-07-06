@@ -356,7 +356,7 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
     private void cboMarcarSeleccionadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMarcarSeleccionadosActionPerformed
         try {
             int[] selectedRows = masterTable.getSelectedRows();
-            for (int i = 0; i < selectedRows.length; i++) {
+            for (Integer i = 0; i < selectedRows.length; i++) {
                 //list.get(i).setCobrado(true);
                 masterTable.setValueAt(true, selectedRows[i], 5);
             }

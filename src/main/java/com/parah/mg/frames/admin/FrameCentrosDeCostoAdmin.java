@@ -326,7 +326,7 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         try {
             int[] selected = masterTable.getSelectedRows();
             List<com.parah.mg.domain.TblCentrosDeCosto> toRemove = new ArrayList<>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
+            for (Integer idx = 0; idx < selected.length; idx++) {
                 com.parah.mg.domain.TblCentrosDeCosto t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
                 entityManager.remove(t);
@@ -343,7 +343,7 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
             com.parah.mg.domain.TblCentrosDeCosto t = new com.parah.mg.domain.TblCentrosDeCosto();
             entityManager.persist(t);
             list.add(t);
-            int row = list.size() - 1;
+            Integer row = list.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
         } catch (Exception ex) {

@@ -101,7 +101,7 @@ public class TblEntidades implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "APORTE_MENSUAL")
-    private int aporteMensual;
+    private Integer aporteMensual;
     @Column(name = "FECHA_NACIMIENTO")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDate fechaNacimiento;
@@ -157,7 +157,7 @@ public class TblEntidades implements Serializable {
         this.id = id;
     }
 
-    public TblEntidades(Integer id, String nombres, String apellidos, String razonSocial, String rucSinDv, int ctacte, Boolean isMiembroActivo, int aporteMensual) {
+    public TblEntidades(Integer id, String nombres, String apellidos, String razonSocial, String rucSinDv, Integer ctacte, Boolean isMiembroActivo, Integer aporteMensual) {
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -240,11 +240,11 @@ public class TblEntidades implements Serializable {
         this.isMiembroActivo = isMiembroActivo;
     }
 
-    public int getAporteMensual() {
+    public Integer getAporteMensual() {
         return aporteMensual;
     }
 
-    public void setAporteMensual(int aporteMensual) {
+    public void setAporteMensual(Integer aporteMensual) {
         this.aporteMensual = aporteMensual;
     }
 
@@ -401,7 +401,7 @@ public class TblEntidades implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }

@@ -57,7 +57,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
                     jlistRoles.getSelectionModel().clearSelection();
                     List<TblRoles> selectedUserRoles = (List) list.get(masterTable.getSelectedRow()).getTblRolesList();
                     for (TblRoles role : selectedUserRoles) {
-                        int index = Utils.getInstance().getIndexOfModel(jlistRoles.getModel(), role);
+                        Integer index = Utils.getInstance().getIndexOfModel(jlistRoles.getModel(), role);
                         if (index >= 0) {
                             jlistRoles.addSelectionInterval(index, index);
                         }
@@ -65,7 +65,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
                     jlistGrupos.getSelectionModel().clearSelection();
                     List<TblGrupos> selectedUserGrupos = (List) list.get(masterTable.getSelectedRow()).getTblGruposList();
                     for (TblGrupos grupo : selectedUserGrupos) {
-                        int index = Utils.getInstance().getIndexOfModel(jlistGrupos.getModel(), grupo);
+                        Integer index = Utils.getInstance().getIndexOfModel(jlistGrupos.getModel(), grupo);
                         if (index >= 0) {
                             jlistGrupos.addSelectionInterval(index, index);
                         }
@@ -407,7 +407,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int[] selected = masterTable.getSelectedRows();
         List<com.parah.mg.domain.TblUsers> toRemove = new ArrayList<>(selected.length);
-        for (int idx = 0; idx < selected.length; idx++) {
+        for (Integer idx = 0; idx < selected.length; idx++) {
             com.parah.mg.domain.TblUsers t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
             toRemove.add(t);
             entityManager.remove(t);
@@ -419,7 +419,7 @@ public class FrameUsuariosAdmin extends JInternalFrame {
         com.parah.mg.domain.TblUsers t = new com.parah.mg.domain.TblUsers();
         entityManager.persist(t);
         list.add(t);
-        int row = list.size() - 1;
+        Integer row = list.size() - 1;
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed

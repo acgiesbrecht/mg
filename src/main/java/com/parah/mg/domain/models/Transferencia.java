@@ -37,7 +37,7 @@ public class Transferencia implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "ID")
-    private int id;
+    private Integer id;
     @Basic(optional = false)
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
@@ -49,16 +49,16 @@ public class Transferencia implements Serializable {
     private String concepto;
     @Basic(optional = false)
     @Column(name = "MONTO")
-    private int monto;
+    private Integer monto;
 
     public Transferencia() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -86,11 +86,11 @@ public class Transferencia implements Serializable {
         this.concepto = concepto;
     }
 
-    public int getMonto() {
+    public Integer getMonto() {
         return monto;
     }
 
-    public void setMonto(int monto) {
+    public void setMonto(Integer monto) {
         this.monto = monto;
     }
     

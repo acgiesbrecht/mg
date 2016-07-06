@@ -15,11 +15,11 @@ public class MesTableCellRenderer extends NormalTableCellRenderer {
 
     @Override
     public void setValue(Object value) {
-        setText((value == null) ? "" : getMes((int) value));
+        setText((value == null) ? "" : getMes((Integer) value));
         setHorizontalAlignment(SwingConstants.CENTER);
     }
 
-    String getMes(int mes) {
+    String getMes(Integer mes) {
         switch (mes) {
             case 1:
                 return "Enero";

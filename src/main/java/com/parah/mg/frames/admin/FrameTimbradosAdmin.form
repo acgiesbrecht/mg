@@ -390,11 +390,17 @@
       <BindingProperties>
         <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fechaInicio}" target="dtpInicio" targetPath="date" updateStrategy="0" immediately="false"/>
       </BindingProperties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DatePicker(datePickerSettings);"/>
+      </AuxValues>
     </Component>
     <Component class="com.github.lgooddatepicker.components.DatePicker" name="dtpFin">
       <BindingProperties>
         <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fechaVencimiento}" target="dtpFin" targetPath="date" updateStrategy="0" immediately="false"/>
       </BindingProperties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DatePicker(datePickerSettings1);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

@@ -18,10 +18,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +43,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bouncycastle.util.Strings;
+import org.springframework.util.StringUtils;
 
 /**
  *
@@ -204,14 +205,14 @@ public class Utils extends Component {
         }
     }
 
-    public int getIndexOfModel(ListModel model, Object value) {
+    public Integer getIndexOfModel(ListModel model, Object value) {
         if (value == null) {
             return -1;
         }
         if (model instanceof DefaultListModel) {
             return ((DefaultListModel) model).indexOf(value);
         }
-        for (int i = 0; i < model.getSize(); i++) {
+        for (Integer i = 0; i < model.getSize(); i++) {
             if (value.equals(model.getElementAt(i))) {
                 return i;
             }
@@ -225,7 +226,7 @@ public class Utils extends Component {
 
     public Boolean executeUpdateSQL(String filename, Boolean hasBackedUp) {
         if (!hasBackedUp) {
-            int reply = JOptionPane.showConfirmDialog(null, "Se encuentró una actualización de la base de datos. Se procederá a hacer un BackUp de sus base de datos existente. Desea proceder?", "Seguridad", JOptionPane.YES_NO_OPTION);
+            Integer reply = JOptionPane.showConfirmDialog(null, "Se encuentró una actualización de la base de datos. Se procederá a hacer un BackUp de sus base de datos existente. Desea proceder?", "Seguridad", JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
                 hasBackedUp = exectueBackUp(getPersistenceMap().get("backUpDir"));
                 executeSQL(filename);
@@ -382,5 +383,14 @@ public class Utils extends Component {
             default:
                 return "Error";
         }
+    }
+
+    public static String generateFacturaNroFull(Integer nro) {
+        return String.format("001-001-%07d", nro);
+    }
+
+    public static String generateNextFacturaNroFull(String nro) {
+        Integer i = Integer.parseInt(StringUtils.replace(nro, "001-001-", "")) + 1;
+        return String.format("001-001-%07d", i);
     }
 }

@@ -39,11 +39,6 @@
     </Component>
     <Component class="com.parah.mg.utils.DateToStringConverter" name="dateToStringConverter1">
     </Component>
-    <Component class="com.parah.mg.utils.DateTimeTableCellRenderer" name="dateTableCellRenderer1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="dateTableCellRenderer1"/>
-      </Properties>
-    </Component>
     <Component class="javax.persistence.Query" name="queryGrupos">
       <Properties>
         <Property name="query" type="java.lang.String" value="SELECT t FROM TblGrupos t"/>
@@ -113,6 +108,11 @@
       <Properties>
         <Property name="horizontalAlignment" type="int" value="4"/>
         <Property name="text" type="java.lang.String" value="numberCellRenderer1"/>
+      </Properties>
+    </Component>
+    <Component class="com.parah.mg.utils.DateTimeTableCellRenderer" name="dateTimeTableCellRenderer1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="dateTimeTableCellRenderer1"/>
       </Properties>
     </Component>
   </NonVisualComponents>
@@ -196,7 +196,7 @@
                   <Title/>
                   <Editor/>
                   <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="dateTableCellRenderer1"/>
+                    <ComponentRef name="dateTimeTableCellRenderer1"/>
                   </Renderer>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
@@ -243,7 +243,7 @@
               </Subbinding>
               <Subbinding sourcePath="${fechahora}">
                 <BindingParameter name="NAME" value="Fecha"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDateTime.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${nombre}">

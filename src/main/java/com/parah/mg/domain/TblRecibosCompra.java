@@ -72,14 +72,14 @@ public class TblRecibosCompra implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "MONTO")
-    private int monto;
+    private Integer monto;
     @Size(max = 255)
     @Column(name = "OBSERVACION")
     private String observacion;
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID_USER")
-    private int idUser;
+    private Integer idUser;
     @JoinTable(name = "TBL_RECIBOS_COMPRA_ASIENTOS", joinColumns = {
         @JoinColumn(name = "ID_RECIBO", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
@@ -93,7 +93,7 @@ public class TblRecibosCompra implements Serializable {
         this.id = id;
     }
 
-    public TblRecibosCompra(Integer id, LocalDateTime fechahora, String razonSocial, String ruc, int monto, int idUser) {
+    public TblRecibosCompra(Integer id, LocalDateTime fechahora, String razonSocial, String ruc, Integer monto, Integer idUser) {
         this.id = id;
         this.fechahora = fechahora;
         this.razonSocial = razonSocial;
@@ -134,11 +134,11 @@ public class TblRecibosCompra implements Serializable {
         this.ruc = ruc;
     }
 
-    public int getMonto() {
+    public Integer getMonto() {
         return monto;
     }
 
-    public void setMonto(int monto) {
+    public void setMonto(Integer monto) {
         this.monto = monto;
     }
 
@@ -150,11 +150,11 @@ public class TblRecibosCompra implements Serializable {
         this.observacion = observacion;
     }
 
-    public int getIdUser() {
+    public Integer getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(Integer idUser) {
         this.idUser = idUser;
     }
 
@@ -169,7 +169,7 @@ public class TblRecibosCompra implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }

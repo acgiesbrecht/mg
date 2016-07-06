@@ -60,7 +60,7 @@ public class TblCentrosDeCosto implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CTA_CTE")
-    private int ctaCte;
+    private Integer ctaCte;
     @Basic(optional = false)
     @NotNull
     @Column(name = "PREFERIDO")
@@ -81,7 +81,7 @@ public class TblCentrosDeCosto implements Serializable {
         this.id = id;
     }
 
-    public TblCentrosDeCosto(Integer id, String descripcion, int ctaCte, Boolean preferido) {
+    public TblCentrosDeCosto(Integer id, String descripcion, Integer ctaCte, Boolean preferido) {
         this.id = id;
         this.descripcion = descripcion;
         this.ctaCte = ctaCte;
@@ -104,11 +104,11 @@ public class TblCentrosDeCosto implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public int getCtaCte() {
+    public Integer getCtaCte() {
         return ctaCte;
     }
 
-    public void setCtaCte(int ctaCte) {
+    public void setCtaCte(Integer ctaCte) {
         this.ctaCte = ctaCte;
     }
 
@@ -147,7 +147,7 @@ public class TblCentrosDeCosto implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }

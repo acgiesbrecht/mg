@@ -258,14 +258,16 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="masterScrollPane" min="-2" pref="371" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblCtaCte" alignment="1" min="-2" pref="25" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">

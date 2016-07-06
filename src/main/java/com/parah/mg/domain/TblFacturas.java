@@ -72,11 +72,11 @@ public class TblFacturas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "IMPORTE_DONACION")
-    private int importeDonacion;
+    private Integer importeDonacion;
     @Basic(optional = false)
     @NotNull
     @Column(name = "IMPORTE_APORTE")
-    private int importeAporte;
+    private Integer importeAporte;
     @Basic(optional = false)
     @NotNull
     @Column(name = "ANULADO")
@@ -108,7 +108,7 @@ public class TblFacturas implements Serializable {
         this.nro = nro;
     }
 
-    public TblFacturas(Integer nro, LocalDateTime fechahora, String razonSocial, String ruc, int importeDonacion, int importeAporte, Boolean anulado) {
+    public TblFacturas(Integer nro, LocalDateTime fechahora, String razonSocial, String ruc, Integer importeDonacion, Integer importeAporte, Boolean anulado) {
         this.nro = nro;
         this.fechahora = fechahora;
         this.razonSocial = razonSocial;
@@ -150,19 +150,19 @@ public class TblFacturas implements Serializable {
         this.ruc = ruc;
     }
 
-    public int getImporteDonacion() {
+    public Integer getImporteDonacion() {
         return importeDonacion;
     }
 
-    public void setImporteDonacion(int importeDonacion) {
+    public void setImporteDonacion(Integer importeDonacion) {
         this.importeDonacion = importeDonacion;
     }
 
-    public int getImporteAporte() {
+    public Integer getImporteAporte() {
         return importeAporte;
     }
 
-    public void setImporteAporte(int importeAporte) {
+    public void setImporteAporte(Integer importeAporte) {
         this.importeAporte = importeAporte;
     }
 
@@ -225,7 +225,7 @@ public class TblFacturas implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (nro != null ? nro.hashCode() : 0);
         return hash;
     }

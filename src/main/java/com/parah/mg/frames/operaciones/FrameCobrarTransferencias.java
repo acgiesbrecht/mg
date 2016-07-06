@@ -543,7 +543,7 @@ public class FrameCobrarTransferencias extends JInternalFrame {
         try {
             int[] selected = masterTable.getSelectedRows();
             List<com.parah.mg.domain.TblTransferencias> toRemove = new ArrayList<>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
+            for (Integer idx = 0; idx < selected.length; idx++) {
                 com.parah.mg.domain.TblTransferencias t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
                 entityManager.remove(t);
@@ -562,7 +562,7 @@ public class FrameCobrarTransferencias extends JInternalFrame {
 
             t.setIdUser(currentUser.getUser());
             list.add(t);
-            int row = list.size() - 1;
+            Integer row = list.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
         } catch (Exception ex) {

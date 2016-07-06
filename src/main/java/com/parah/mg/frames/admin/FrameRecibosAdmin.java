@@ -232,12 +232,12 @@ public class FrameRecibosAdmin extends JInternalFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
-            int reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar los registros seleccionados?", title, JOptionPane.YES_NO_OPTION);
+            Integer reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar los registros seleccionados?", title, JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
 
                 int[] selected = masterTable.getSelectedRows();
                 List<com.parah.mg.domain.TblRecibos> toRemove = new ArrayList<>(selected.length);
-                for (int idx = 0; idx < selected.length; idx++) {
+                for (Integer idx = 0; idx < selected.length; idx++) {
                     com.parah.mg.domain.TblRecibos t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
                     toRemove.add(t);
                     entityManager.remove(t);

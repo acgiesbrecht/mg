@@ -63,7 +63,7 @@ public class TblAsientos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "MONTO")
-    private int monto;
+    private Integer monto;
     @JoinTable(name = "TBL_ASIENTOS_ASIENTOS_TEMPORALES", joinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO_TEMPORAL", referencedColumnName = "ID")})
@@ -89,7 +89,7 @@ public class TblAsientos implements Serializable {
         this.id = id;
     }
 
-    public TblAsientos(Integer id, LocalDateTime fechahora, int monto) {
+    public TblAsientos(Integer id, LocalDateTime fechahora, Integer monto) {
         this.id = id;
         this.fechahora = fechahora;
         this.monto = monto;
@@ -119,11 +119,11 @@ public class TblAsientos implements Serializable {
         this.observacion = observacion;
     }
 
-    public int getMonto() {
+    public Integer getMonto() {
         return monto;
     }
 
-    public void setMonto(int monto) {
+    public void setMonto(Integer monto) {
         this.monto = monto;
     }
 
@@ -170,7 +170,7 @@ public class TblAsientos implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }

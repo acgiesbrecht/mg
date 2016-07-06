@@ -287,12 +287,12 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
-            int reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar los registros seleccionados?", title, JOptionPane.YES_NO_OPTION);
+            Integer reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar los registros seleccionados?", title, JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
                 int[] selected = masterTable.getSelectedRows();
                 List<com.parah.mg.domain.TblTransferencias> toRemove = new ArrayList<>(selected.length);
-                for (int idx = 0; idx < selected.length; idx++) {
-                    int index = masterTable.convertRowIndexToModel(selected[idx]);
+                for (Integer idx = 0; idx < selected.length; idx++) {
+                    Integer index = masterTable.convertRowIndexToModel(selected[idx]);
                     TblTransferencias t = list.get(index);
                     toRemove.add(t);
                     entityManager.remove(t);
@@ -367,8 +367,8 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
     private void printButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButton1ActionPerformed
         try {
             int[] selected = masterTable.getSelectedRows();
-            for (int idx = 0; idx < selected.length; idx++) {
-                int index = masterTable.convertRowIndexToModel(selected[idx]);
+            for (Integer idx = 0; idx < selected.length; idx++) {
+                Integer index = masterTable.convertRowIndexToModel(selected[idx]);
                 TblTransferencias t = list.get(index);
                 List<TblAsientosTemporales> l = (List<TblAsientosTemporales>) t.getTblAsientosTemporalesCollection();
                 for (TblAsientosTemporales at : l) {

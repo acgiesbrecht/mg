@@ -24,6 +24,7 @@ import java.awt.KeyboardFocusManager;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +57,7 @@ public class FrameAutofacturacion extends JInternalFrame {
     TimePickerSettings tps = new TimePickerSettings();
 
     public FrameAutofacturacion() {
-        super("Facturacion Unica",
+        super("Auto Facturacion",
                 true, //resizable
                 true, //closable
                 true, //maximizable
@@ -85,8 +86,21 @@ public class FrameAutofacturacion extends JInternalFrame {
             AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaHaber, GlazedLists.eventListOf(listCuentasContables.toArray()));
             support4.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            txtTimbrado.setText(listTimbrados.get(0).getNro());
-            //txtNro.setValue((Integer) entityManager.createQuery("select max(t.nro) + 1 from TblAutofacturas t").getSingleResult());
+            if (listTimbrados.size() > 0) {
+                txtTimbrado.setText(listTimbrados.get(0).getNro());
+                imprimirButton.setEnabled(true);
+                if (list.size() > 0) {
+                    txtNro.setValue(Utils.generateNextFacturaNroFull(list.get(list.size() - 1).getNro()));
+                } else {
+                    txtNro.setValue(Utils.generateFacturaNroFull(listTimbrados.get(0).getNroFacturaIncio()));
+                }
+
+                dtpFecha.setDateTime(LocalDateTime.now());
+                txtCantidad.setValue(1);
+            } else {
+                JOptionPane.showMessageDialog(null, "Debe tener un timbrado activo para poder facturar.");
+                imprimirButton.setEnabled(false);
+            }
 
             KeyboardFocusManager.getCurrentKeyboardFocusManager()
                     .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
@@ -452,7 +466,7 @@ public class FrameAutofacturacion extends JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     Boolean validar() {
-        /*if ((int) txtNro.getValue() < 1) {
+        /*if ((Integer) txtNro.getValue() < 1) {
             txtNro.setBackground(Color.red);
             return false;
         }*/
@@ -575,7 +589,7 @@ public class FrameAutofacturacion extends JInternalFrame {
         try {
             int[] selected = asientosTable.getSelectedRows();
             List<TblAsientos> toRemove = new ArrayList<>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
+            for (Integer idx = 0; idx < selected.length; idx++) {
                 TblAsientos t = listAsientos.get(asientosTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
             }
@@ -602,7 +616,7 @@ public class FrameAutofacturacion extends JInternalFrame {
             t.setIdCuentaContableHaber(t.getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
             t.setMonto(0);
             listAsientos.add(t);
-            int row = listAsientos.size() - 1;
+            Integer row = listAsientos.size() - 1;
             asientosTable.setRowSelectionInterval(row, row);
             asientosTable.scrollRectToVisible(asientosTable.getCellRect(row, 0, true));
             if (asientosTable.getColumnModel().getColumnCount() > 0 && asientosTable.getRowCount() == 1) {

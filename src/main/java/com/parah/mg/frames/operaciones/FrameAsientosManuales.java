@@ -480,7 +480,7 @@ public class FrameAsientosManuales extends JInternalFrame {
         try {
             int[] selected = masterTable.getSelectedRows();
             List<com.parah.mg.domain.TblAsientos> toRemove = new ArrayList<>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
+            for (Integer idx = 0; idx < selected.length; idx++) {
                 com.parah.mg.domain.TblAsientos t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
 
@@ -499,7 +499,7 @@ public class FrameAsientosManuales extends JInternalFrame {
             entityManager.persist(t);
             t.setIdUser(currentUser.getUser());
             list.add(t);
-            int row = list.size() - 1;
+            Integer row = list.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
         } catch (Exception ex) {

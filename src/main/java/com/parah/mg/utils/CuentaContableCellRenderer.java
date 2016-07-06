@@ -20,9 +20,9 @@ public class CuentaContableCellRenderer extends NormalTableCellRenderer {
         //setHorizontalAlignment(SwingConstants.RIGHT);
     }
 
-    private int getSpaces(String s) {
-        int c = 0;
-        int i = s.length() - 1;
+    private Integer getSpaces(String s) {
+        Integer c = 0;
+        Integer i = s.length() - 1;
 
         while (s.charAt(i) == '0') {
             i--;
@@ -32,7 +32,7 @@ public class CuentaContableCellRenderer extends NormalTableCellRenderer {
     }
     /*
      @Override
-     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, Integer row, Integer column) {
      super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
      //System.out.println(String.valueOf(column) + " - " + table.getValueAt(row, column).toString());
 
