@@ -94,6 +94,11 @@
     </Component>
     <Component class="com.parah.mg.utils.IntegerLongConverter" name="integerLongConverter1">
     </Component>
+    <Component class="com.parah.mg.utils.DateTableCellRenderer" name="dateTableCellRenderer2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="dateTableCellRenderer2"/>
+      </Properties>
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -168,7 +173,7 @@
                   <Title/>
                   <Editor/>
                   <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="dateTableCellRenderer1"/>
+                    <ComponentRef name="dateTableCellRenderer2"/>
                   </Renderer>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
@@ -202,8 +207,9 @@
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${fechahora}">
-                <BindingParameter name="NAME" value="Fecha/Hora"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                <BindingParameter name="NAME" value="Fecha"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDate.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${idEntidad}">
                 <BindingParameter name="NAME" value="Razon Social"/>
@@ -213,9 +219,11 @@
               <Subbinding sourcePath="${concepto}">
                 <BindingParameter name="NAME" value="Concepto"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${montoAporte+montoDonacion}">
                 <BindingParameter name="NAME" value="Monto"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
             </BindingProperty>
           </BindingProperties>
