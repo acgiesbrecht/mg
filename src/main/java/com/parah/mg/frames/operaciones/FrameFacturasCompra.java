@@ -999,7 +999,7 @@ public class FrameFacturasCompra extends JInternalFrame {
         try {
             int[] selected = masterTable.getSelectedRows();
             List<com.parah.mg.domain.TblFacturasCompra> toRemove = new ArrayList<>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
+            for (Integer idx = 0; idx < selected.length; idx++) {
                 com.parah.mg.domain.TblFacturasCompra t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
                 entityManager.remove(t);
@@ -1020,7 +1020,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                 t.setCondicionContado(true);
                 list.add(t);
 
-                int row = list.size() - 1;
+                Integer row = list.size() - 1;
                 masterTable.setRowSelectionInterval(row, row);
                 masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
                 createAsientoInicial();
@@ -1154,14 +1154,14 @@ public class FrameFacturasCompra extends JInternalFrame {
 
     private void cmdBorrarAsientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdBorrarAsientoActionPerformed
         try {
-            int index = masterTable.getSelectedRow();
+            Integer index = masterTable.getSelectedRow();
             TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
             List<TblAsientos> ts = T.getTblAsientosList();
             int[] selected = asientosTable.getSelectedRows();
             List<TblAsientos> toRemove = new ArrayList<>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
+            for (Integer idx = 0; idx < selected.length; idx++) {
                 selected[idx] = asientosTable.convertRowIndexToModel(selected[idx]);
-                int count = 0;
+                Integer count = 0;
                 Iterator<TblAsientos> iter = ts.iterator();
                 while (count++ < selected[idx]) {
                     iter.next();
@@ -1205,7 +1205,7 @@ public class FrameFacturasCompra extends JInternalFrame {
 
     private void addAsiento() {
         try {
-            int index = masterTable.getSelectedRow();
+            Integer index = masterTable.getSelectedRow();
             TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
             Collection<TblAsientos> ts = T.getTblAsientosList();
             if (ts == null) {
@@ -1234,7 +1234,7 @@ public class FrameFacturasCompra extends JInternalFrame {
             entityManager.merge(T);
             masterTable.clearSelection();
             masterTable.setRowSelectionInterval(index, index);
-            int row = T.getTblAsientosList().size() - 1;
+            Integer row = T.getTblAsientosList().size() - 1;
             asientosTable.setRowSelectionInterval(row, row);
             asientosTable.scrollRectToVisible(asientosTable.getCellRect(row, 0, true));
             if (asientosTable.getColumnModel().getColumnCount() > 0 && asientosTable.getRowCount() == 1) {
@@ -1261,7 +1261,7 @@ public class FrameFacturasCompra extends JInternalFrame {
     private void updateAsientoInicial() {
         try {
             if (masterTable.getSelectedRow() > -1) {
-                int index = masterTable.getSelectedRow();
+                Integer index = masterTable.getSelectedRow();
                 TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
                 List<TblAsientos> ts = (List) T.getTblAsientosList();
                 if (ts != null) {
@@ -1283,7 +1283,7 @@ public class FrameFacturasCompra extends JInternalFrame {
 
     private Boolean checkDatosFactura() {
         try {
-            int index = masterTable.getSelectedRow();
+            Integer index = masterTable.getSelectedRow();
             if (index != -1) {
                 if (!((String) txtNro.getValue()).matches("^\\d{3}-\\d{3}-\\d{7}")) {
                     JOptionPane.showMessageDialog(null, "El nro de factura no es valido.");

@@ -21,41 +21,41 @@ public class TblRecibosCompraFacturasCompraPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID_RECIBO")
-    private int idRecibo;
+    private Integer idRecibo;
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID_FACTURA_COMPRA")
-    private int idFacturaCompra;
+    private Integer idFacturaCompra;
 
     public TblRecibosCompraFacturasCompraPK() {
     }
 
-    public TblRecibosCompraFacturasCompraPK(int idRecibo, int idFacturaCompra) {
+    public TblRecibosCompraFacturasCompraPK(Integer idRecibo, Integer idFacturaCompra) {
         this.idRecibo = idRecibo;
         this.idFacturaCompra = idFacturaCompra;
     }
 
-    public int getIdRecibo() {
+    public Integer getIdRecibo() {
         return idRecibo;
     }
 
-    public void setIdRecibo(int idRecibo) {
+    public void setIdRecibo(Integer idRecibo) {
         this.idRecibo = idRecibo;
     }
 
-    public int getIdFacturaCompra() {
+    public Integer getIdFacturaCompra() {
         return idFacturaCompra;
     }
 
-    public void setIdFacturaCompra(int idFacturaCompra) {
+    public void setIdFacturaCompra(Integer idFacturaCompra) {
         this.idFacturaCompra = idFacturaCompra;
     }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (int) idRecibo;
-        hash += (int) idFacturaCompra;
+        Integer hash = 0;
+        hash += (Integer) idRecibo;
+        hash += (Integer) idFacturaCompra;
         return hash;
     }
 

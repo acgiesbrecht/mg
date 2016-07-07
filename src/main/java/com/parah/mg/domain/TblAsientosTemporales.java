@@ -56,7 +56,7 @@ public class TblAsientosTemporales implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "MONTO")
-    private int monto;
+    private Integer monto;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FACTURADO")
@@ -82,7 +82,7 @@ public class TblAsientosTemporales implements Serializable {
         this.id = id;
     }
 
-    public TblAsientosTemporales(Integer id, LocalDateTime fechahora, int monto, Boolean facturado) {
+    public TblAsientosTemporales(Integer id, LocalDateTime fechahora, Integer monto, Boolean facturado) {
         this.id = id;
         this.fechahora = fechahora;
         this.monto = monto;
@@ -105,11 +105,11 @@ public class TblAsientosTemporales implements Serializable {
         this.fechahora = fechahora;
     }
 
-    public int getMonto() {
+    public Integer getMonto() {
         return monto;
     }
 
-    public void setMonto(int monto) {
+    public void setMonto(Integer monto) {
         this.monto = monto;
     }
 
@@ -164,7 +164,7 @@ public class TblAsientosTemporales implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }

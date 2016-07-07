@@ -7,7 +7,6 @@ package com.parah.mg.frames.operaciones;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
-import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblAsientos;
@@ -16,7 +15,6 @@ import com.parah.mg.domain.TblCentrosDeCosto;
 import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.domain.TblEventoDetalle;
 import com.parah.mg.domain.TblEventoTipos;
-import com.parah.mg.domain.TblEventos;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -28,10 +26,8 @@ import java.awt.event.KeyEvent;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -595,7 +591,7 @@ public class FrameDonacionesVariasDetalle extends JInternalFrame {
         try {
             int[] selected = masterTable.getSelectedRows();
             List<TblEventoDetalle> toRemove = new ArrayList<>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
+            for (Integer idx = 0; idx < selected.length; idx++) {
                 TblEventoDetalle t = listEventoDetalle.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
                 entityManager.remove(t);
@@ -616,7 +612,7 @@ public class FrameDonacionesVariasDetalle extends JInternalFrame {
 
             entityManager.persist(t);
             listEventoDetalle.add(t);
-            int row = listEventoDetalle.size() - 1;
+            Integer row = listEventoDetalle.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
             cboForma.setSelectedIndex(0);
@@ -646,7 +642,7 @@ public class FrameDonacionesVariasDetalle extends JInternalFrame {
             for (TblEventoDetalle evd : listEventoDetalle) {
                 if (entityManager.contains(evd)) {
                     if (evd.getTblAsientosCollection().size() == 2) {
-                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
                         ((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getMonto());
                         entityManager.merge(evd);
                     } else if (evd.getTblAsientosCollection().isEmpty()) {
@@ -661,7 +657,7 @@ public class FrameDonacionesVariasDetalle extends JInternalFrame {
                         asientoAporte.setIdCentroDeCosto((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
                         asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
-                        asientoAporte.setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                        asientoAporte.setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
                         asientoAporte.setIdUser(currentUser.getUser());
 
                         ts.add(asientoAporte);
@@ -806,7 +802,7 @@ public class FrameDonacionesVariasDetalle extends JInternalFrame {
                     return;
                 }
                 save();
-                int reply = JOptionPane.showConfirmDialog(null, "Desea crear un nuevo registro?", title, JOptionPane.YES_NO_OPTION);
+                Integer reply = JOptionPane.showConfirmDialog(null, "Desea crear un nuevo registro?", title, JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
                     newDetalle();
                 }

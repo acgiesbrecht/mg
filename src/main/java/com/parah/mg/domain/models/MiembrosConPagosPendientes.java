@@ -38,7 +38,7 @@ public class MiembrosConPagosPendientes implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
-    private int id;
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -55,11 +55,11 @@ public class MiembrosConPagosPendientes implements Serializable {
     public MiembrosConPagosPendientes() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

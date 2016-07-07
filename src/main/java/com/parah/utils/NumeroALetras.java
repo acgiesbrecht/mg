@@ -80,7 +80,7 @@ public abstract class NumeroALetras {
                     .split("#");
 
             // Descompone el trio de millones
-            int millon = Integer.parseInt(String.valueOf(getDigitAt(splitNumber[0],
+            Integer millon = Integer.parseInt(String.valueOf(getDigitAt(splitNumber[0],
                     8))
                     + String.valueOf(getDigitAt(splitNumber[0], 7))
                     + String.valueOf(getDigitAt(splitNumber[0], 6)));
@@ -92,7 +92,7 @@ public abstract class NumeroALetras {
             }
 
             // Descompone el trio de miles
-            int miles = Integer.parseInt(String.valueOf(getDigitAt(splitNumber[0],
+            Integer miles = Integer.parseInt(String.valueOf(getDigitAt(splitNumber[0],
                     5))
                     + String.valueOf(getDigitAt(splitNumber[0], 4))
                     + String.valueOf(getDigitAt(splitNumber[0], 3)));
@@ -103,7 +103,7 @@ public abstract class NumeroALetras {
             }
 
             // Descompone el ultimo trio de unidades
-            int cientos = Integer.parseInt(String.valueOf(getDigitAt(
+            Integer cientos = Integer.parseInt(String.valueOf(getDigitAt(
                     splitNumber[0], 2))
                     + String.valueOf(getDigitAt(splitNumber[0], 1))
                     + String.valueOf(getDigitAt(splitNumber[0], 0)));
@@ -150,7 +150,7 @@ public abstract class NumeroALetras {
                 output.append(CENTENAS[getDigitAt(number, 2) - 1]);
             }
 
-            int k = Integer.parseInt(String.valueOf(getDigitAt(number, 1))
+            Integer k = Integer.parseInt(String.valueOf(getDigitAt(number, 1))
                     + String.valueOf(getDigitAt(number, 0)));
 
             if (k <= 20) {
@@ -178,7 +178,7 @@ public abstract class NumeroALetras {
      * @param position Posicion de derecha a izquierda a retornar
      * @return Digito ubicado en la posicion indicada
      */
-    private static int getDigitAt(String origin, int position) {
+    private static Integer getDigitAt(String origin, Integer position) {
         if (origin.length() > position && position >= 0) {
             return origin.charAt(origin.length() - position - 1) - 48;
         }

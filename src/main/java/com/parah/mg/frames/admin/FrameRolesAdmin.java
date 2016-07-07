@@ -213,7 +213,7 @@ public class FrameRolesAdmin extends JInternalFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int[] selected = masterTable.getSelectedRows();
         List<com.parah.mg.domain.TblRoles> toRemove = new ArrayList<com.parah.mg.domain.TblRoles>(selected.length);
-        for (int idx = 0; idx < selected.length; idx++) {
+        for (Integer idx = 0; idx < selected.length; idx++) {
             com.parah.mg.domain.TblRoles t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
             toRemove.add(t);
             entityManager.remove(t);
@@ -225,7 +225,7 @@ public class FrameRolesAdmin extends JInternalFrame {
         com.parah.mg.domain.TblRoles t = new com.parah.mg.domain.TblRoles();
         entityManager.persist(t);
         list.add(t);
-        int row = list.size() - 1;
+        Integer row = list.size() - 1;
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed

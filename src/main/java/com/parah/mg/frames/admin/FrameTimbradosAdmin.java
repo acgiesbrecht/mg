@@ -5,6 +5,8 @@
  */
 package com.parah.mg.frames.admin;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
@@ -12,6 +14,7 @@ import java.beans.Beans;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
@@ -30,6 +33,8 @@ public class FrameTimbradosAdmin extends JInternalFrame {
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
+    DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.getDefault());
+    DatePickerSettings datePickerSettings1 = new DatePickerSettings(Locale.getDefault());
 
     public FrameTimbradosAdmin() {
         super("Administrar Timnbrados",
@@ -40,7 +45,10 @@ public class FrameTimbradosAdmin extends JInternalFrame {
         persistenceMap = Utils.getInstance().getPersistenceMap();
 
         //System.out.print(currentUser.getUser().getTblGruposList().size());
+        datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
+        datePickerSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");
         initComponents();
+
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
@@ -78,8 +86,8 @@ public class FrameTimbradosAdmin extends JInternalFrame {
         descripcionField1 = new javax.swing.JTextField();
         descripcionLabel7 = new javax.swing.JLabel();
         descripcionField2 = new javax.swing.JTextField();
-        dtpInicio = new com.github.lgooddatepicker.components.DatePicker();
-        dtpFin = new com.github.lgooddatepicker.components.DatePicker();
+        dtpInicio = new DatePicker(datePickerSettings);
+        dtpFin = new DatePicker(datePickerSettings1);
 
         FormListener formListener = new FormListener();
 
@@ -278,7 +286,7 @@ public class FrameTimbradosAdmin extends JInternalFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int[] selected = masterTable.getSelectedRows();
         List<com.parah.mg.domain.TblTimbrados> toRemove = new ArrayList<>(selected.length);
-        for (int idx = 0; idx < selected.length; idx++) {
+        for (Integer idx = 0; idx < selected.length; idx++) {
             com.parah.mg.domain.TblTimbrados t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
             toRemove.add(t);
             entityManager.remove(t);
@@ -291,7 +299,7 @@ public class FrameTimbradosAdmin extends JInternalFrame {
         t.setIdUser(currentUser.getUser());
         entityManager.persist(t);
         list.add(t);
-        int row = list.size() - 1;
+        Integer row = list.size() - 1;
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed

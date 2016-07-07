@@ -11,9 +11,9 @@ import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
 import java.beans.Beans;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +72,6 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblAutofacturas t ORDER BY t.nro");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         dateToStringConverter1 = new com.parah.mg.utils.DateToStringConverter();
-        dateTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
         queryGrupos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblGrupos t");
         listGrupos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryGrupos.getResultList());
         queryEventoTipos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoTipos t");
@@ -81,6 +80,7 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
         rucTableCellRenderer1 = new com.parah.mg.utils.RucTableCellRenderer();
         facturaNroTableCellRenderer1 = new com.parah.mg.utils.FacturaNroTableCellRenderer();
         numberCellRenderer1 = new com.parah.mg.utils.NumberCellRenderer();
+        dateTimeTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         anularButton = new javax.swing.JButton();
@@ -90,8 +90,6 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
 
         FormListener formListener = new FormListener();
 
-        dateTableCellRenderer1.setText("dateTableCellRenderer1");
-
         donacionTableCellRenderer1.setText("donacionTableCellRenderer1");
 
         rucTableCellRenderer1.setText("rucTableCellRenderer1");
@@ -100,6 +98,8 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
 
         numberCellRenderer1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         numberCellRenderer1.setText("numberCellRenderer1");
+
+        dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
 
         masterTable.setAutoCreateRowSorter(true);
         masterTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -114,7 +114,7 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha");
-        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setColumnClass(java.time.LocalDateTime.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
         columnBinding.setColumnName("Nombre");
@@ -137,7 +137,7 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(2).setResizable(false);
-            masterTable.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(2).setCellRenderer(dateTimeTableCellRenderer1);
             masterTable.getColumnModel().getColumn(4).setResizable(false);
             masterTable.getColumnModel().getColumn(5).setCellRenderer(numberCellRenderer1);
         }
@@ -279,7 +279,7 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anularButton;
     private javax.swing.JCheckBox chkAnulado;
-    private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
+    private com.parah.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
     private com.parah.mg.utils.DonacionTableCellRenderer donacionTableCellRenderer1;
     private javax.persistence.EntityManager entityManager;

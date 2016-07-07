@@ -557,8 +557,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
                 ts = new LinkedList<>();
                 factura.setTblAsientosCollection((List) ts);
             }
-            int montoAporte = 0;
-            int montoDonacion = 0;
+            Integer montoAporte = 0;
+            Integer montoDonacion = 0;
             for (PagosRealizados pago : listPagos) {
                 if (pago.getFacturado()) {
                     montoAporte += pago.getMontoAporte();
@@ -740,8 +740,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     p.getAsientosTemporalesList().addAll(t.getTblAsientosTemporalesCollection());
                     p.setEntidad(t.getIdEntidad());
                     p.setFecha(t.getFechahora());
-                    int montoAporte = 0;
-                    int montoDonacion = 0;
+                    Integer montoAporte = 0;
+                    Integer montoDonacion = 0;
                     for (TblAsientosTemporales at : p.getAsientosTemporalesList()) {
                         if (at.getEsAporte()) {
                             montoAporte += at.getMonto();
@@ -771,8 +771,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     p.getAsientosTemporalesList().addAll(r.getTblAsientosTemporalesCollection());
                     p.setEntidad(r.getIdEntidad());
                     p.setFecha(r.getFechahora());
-                    int montoAporte = 0;
-                    int montoDonacion = 0;
+                    Integer montoAporte = 0;
+                    Integer montoDonacion = 0;
                     for (TblAsientosTemporales at : p.getAsientosTemporalesList()) {
                         if (at.getEsAporte()) {
                             montoAporte += at.getMonto();

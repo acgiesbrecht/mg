@@ -11,11 +11,11 @@ package com.parah.utils;
  */
 public class CalcDV {
 
-    public static int Pa_Calcular_Dv_11_A(String p_numero, int p_basemax) {
-        int v_total, v_resto, k, v_numero_aux, v_digit;
+    public static Integer Pa_Calcular_Dv_11_A(String p_numero, Integer p_basemax) {
+        Integer v_total, v_resto, k, v_numero_aux, v_digit;
         String v_numero_al = "";
 
-        for (int i = 0; i < p_numero.length(); i++) {
+        for (Integer i = 0; i < p_numero.length(); i++) {
             char c = p_numero.charAt(i);
             if (Character.isDigit(c)) {
                 v_numero_al += c;
@@ -27,7 +27,7 @@ public class CalcDV {
         k = 2;
         v_total = 0;
 
-        for (int i = v_numero_al.length() - 1; i >= 0; i--) {
+        for (Integer i = v_numero_al.length() - 1; i >= 0; i--) {
             k = k > p_basemax ? 2 : k;
             v_numero_aux = v_numero_al.charAt(i) - 48;
             v_total += v_numero_aux * k++;

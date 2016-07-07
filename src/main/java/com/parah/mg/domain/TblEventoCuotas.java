@@ -127,7 +127,7 @@ public class TblEventoCuotas implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (idEvento != null ? idEvento.hashCode() : 0);
         return hash;
     }

@@ -21,9 +21,9 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -877,7 +877,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             int[] selected = masterTable.getSelectedRows();
             List<TblEntidades> toRemove = new ArrayList<>(selected.length);
             TblEntidades t;
-            for (int idx = 0; idx < selected.length; idx++) {
+            for (Integer idx = 0; idx < selected.length; idx++) {
                 t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
                 if ((Long) (entityManager.createQuery("select count(evd) from TblEventoDetalle evd where evd.idEntidad.id = " + t.getId().toString()).getSingleResult()) == 0L) {
                     toRemove.add(t);
@@ -903,7 +903,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             t.setAporteMensual(0);
             t.setIdFormaDePagoPreferida(listFormasDePago.get(0));
             list.add(t);
-            int row = list.size() - 1;
+            Integer row = list.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
         } catch (Exception ex) {
@@ -967,7 +967,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
             JFileChooser fc = new JFileChooser();
-            int returnVal = fc.showOpenDialog(this);
+            Integer returnVal = fc.showOpenDialog(this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
 
@@ -978,14 +978,14 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                 HSSFRow row;
                 HSSFCell cell;
 
-                int rows; // No of rows
+                Integer rows; // No of rows
                 rows = sheet.getPhysicalNumberOfRows();
 
-                int cols = 0; // No of columns
-                int tmp = 0;
+                Integer cols = 0; // No of columns
+                Integer tmp = 0;
 
                 // This trick ensures that we get the data properly even if it doesn't start from first few rows
-                for (int i = 0; i < 10 || i < rows; i++) {
+                for (Integer i = 0; i < 10 || i < rows; i++) {
                     row = sheet.getRow(i);
                     if (row != null) {
                         tmp = sheet.getRow(i).getPhysicalNumberOfCells();
@@ -995,7 +995,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                     }
                 }
 
-                for (int r = 1; r <= rows; r++) {
+                for (Integer r = 1; r <= rows; r++) {
                     row = sheet.getRow(r);
                     if (row != null) {
 
@@ -1077,9 +1077,9 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         try {
             if (((Number) txtAporteBase.getValue()).intValue() > -1) {
-                int reply = JOptionPane.showConfirmDialog(null, "Esta seguro que desea actualizar el valor del aporte base para todos los miembros a " + txtAporteBase.getValue().toString() + "Gs?", title, JOptionPane.YES_NO_OPTION);
+                Integer reply = JOptionPane.showConfirmDialog(null, "Esta seguro que desea actualizar el valor del aporte base para todos los miembros a " + txtAporteBase.getValue().toString() + "Gs?", title, JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
-                    int val = ((Number) txtAporteBase.getValue()).intValue();
+                    Integer val = ((Number) txtAporteBase.getValue()).intValue();
                     list.stream().forEach((miembro) -> {
                         miembro.setAporteMensual(val);
                     });

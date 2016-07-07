@@ -111,6 +111,7 @@ public class FrameRecibosAdmin extends JInternalFrame {
         queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
         integerLongConverter1 = new com.parah.mg.utils.IntegerLongConverter();
+        dateTableCellRenderer2 = new com.parah.mg.utils.DateTableCellRenderer();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         deleteButton = new javax.swing.JButton();
@@ -123,6 +124,8 @@ public class FrameRecibosAdmin extends JInternalFrame {
         numberCellRenderer1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         numberCellRenderer1.setText("numberCellRenderer1");
 
+        dateTableCellRenderer2.setText("dateTableCellRenderer2");
+
         addInternalFrameListener(formListener);
 
         masterTable.setAutoCreateRowSorter(true);
@@ -133,8 +136,9 @@ public class FrameRecibosAdmin extends JInternalFrame {
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
-        columnBinding.setColumnName("Fecha/Hora");
-        columnBinding.setColumnClass(java.time.LocalDateTime.class);
+        columnBinding.setColumnName("Fecha");
+        columnBinding.setColumnClass(java.time.LocalDate.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidad}"));
         columnBinding.setColumnName("Razon Social");
         columnBinding.setColumnClass(com.parah.mg.domain.miembros.TblEntidades.class);
@@ -142,13 +146,15 @@ public class FrameRecibosAdmin extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${concepto}"));
         columnBinding.setColumnName("Concepto");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoAporte+montoDonacion}"));
         columnBinding.setColumnName("Monto");
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
-            masterTable.getColumnModel().getColumn(1).setCellRenderer(dateTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(1).setCellRenderer(dateTableCellRenderer2);
             masterTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
         }
 
@@ -232,12 +238,12 @@ public class FrameRecibosAdmin extends JInternalFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
-            int reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar los registros seleccionados?", title, JOptionPane.YES_NO_OPTION);
+            Integer reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar los registros seleccionados?", title, JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
 
                 int[] selected = masterTable.getSelectedRows();
                 List<com.parah.mg.domain.TblRecibos> toRemove = new ArrayList<>(selected.length);
-                for (int idx = 0; idx < selected.length; idx++) {
+                for (Integer idx = 0; idx < selected.length; idx++) {
                     com.parah.mg.domain.TblRecibos t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
                     toRemove.add(t);
                     entityManager.remove(t);
@@ -283,6 +289,7 @@ public class FrameRecibosAdmin extends JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
+    private com.parah.mg.utils.DateTableCellRenderer dateTableCellRenderer2;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.swing.JButton deleteButton;
     private javax.persistence.EntityManager entityManager;

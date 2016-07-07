@@ -470,7 +470,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
     private void cmdResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdResetActionPerformed
         try {
 
-            int reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar todos los datos y limpiar la base de datos?", title, JOptionPane.YES_NO_OPTION);
+            Integer reply = JOptionPane.showConfirmDialog(null, "Realmente desea borrar todos los datos y limpiar la base de datos?", title, JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
                 Utils.getInstance().executeSQL(cboSqlFiles.getSelectedItem().toString());
             }
@@ -561,7 +561,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                         indexAsientoAporte = 1;
                         indexAsientoDonacion = 0;
                     }
-                    ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                    ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
                     ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoDonacion).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).getMonto());
                     entityManager.merge(evd);
                 } else if (evd.getTblAsientosCollection().isEmpty()) {
@@ -576,7 +576,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                     asientoAporte.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
                     asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                     asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
-                    asientoAporte.setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                    asientoAporte.setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
                     asientoAporte.setIdUser(currentUser.getUser());
 
                     ts.add(asientoAporte);
@@ -700,7 +700,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                 String temp = "";
                 Integer count = 0;
                 entityManager.createQuery("delete from TblContribuyentes t").executeUpdate();
-                for (int i = 0; i <= 9; i++) {
+                for (Integer i = 0; i <= 9; i++) {
                     URL url = new URL("http://www.set.gov.py/rest/contents/download/collaboration/sites/PARAGUAY-SET/documents/informes-periodicos/ruc/ruc" + String.valueOf(i) + ".zip");
                     ZipInputStream zipStream = new ZipInputStream(url.openStream(), StandardCharsets.UTF_8);
                     zipStream.getNextEntry();

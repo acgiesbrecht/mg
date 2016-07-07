@@ -88,7 +88,7 @@ public class TblContribuyentes implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (rucSinDv != null ? rucSinDv.hashCode() : 0);
         return hash;
     }

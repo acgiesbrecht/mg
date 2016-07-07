@@ -30,76 +30,76 @@ public class PagosRealizados_bak implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
-    private int id;
+    private Integer id;
     @Column(name = "T_APORTE")
-    private int tAporte;
+    private Integer tAporte;
     @Column(name = "T_DONACION")
-    private int tDonacion;
+    private Integer tDonacion;
     @Column(name = "R_APORTE")
-    private int rAporte;
+    private Integer rAporte;
     @Column(name = "R_DONACION")
-    private int rDonacion;
+    private Integer rDonacion;
     @Column(name = "F_APORTE")
-    private int fAporte;
+    private Integer fAporte;
     @Column(name = "F_DONACION")
-    private int fDonacion;
+    private Integer fDonacion;
 
     public PagosRealizados_bak() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getTAporte() {
+    public Integer getTAporte() {
         return tAporte;
     }
 
-    public void setTAporte(int tAporte) {
+    public void setTAporte(Integer tAporte) {
         this.tAporte = tAporte;
     }
 
-    public int getTDonacion() {
+    public Integer getTDonacion() {
         return tDonacion;
     }
 
-    public void setTDonacion(int tDonacion) {
+    public void setTDonacion(Integer tDonacion) {
         this.tDonacion = tDonacion;
     }
 
-    public int getRAporte() {
+    public Integer getRAporte() {
         return rAporte;
     }
 
-    public void setRAporte(int rAporte) {
+    public void setRAporte(Integer rAporte) {
         this.rAporte = rAporte;
     }
 
-    public int getRDonacion() {
+    public Integer getRDonacion() {
         return rDonacion;
     }
 
-    public void setRDonacion(int rDonacion) {
+    public void setRDonacion(Integer rDonacion) {
         this.rDonacion = rDonacion;
     }
 
-    public int getFAporte() {
+    public Integer getFAporte() {
         return fAporte;
     }
 
-    public void setFAporte(int fAporte) {
+    public void setFAporte(Integer fAporte) {
         this.fAporte = fAporte;
     }
 
-    public int getFDonacion() {
+    public Integer getFDonacion() {
         return fDonacion;
     }
 
-    public void setFDonacion(int fDonacion) {
+    public void setFDonacion(Integer fDonacion) {
         this.fDonacion = fDonacion;
     }
 

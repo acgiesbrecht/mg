@@ -92,7 +92,7 @@ public class TblAutofacturas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CANTIDAD")
-    private int cantidad;
+    private Integer cantidad;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -101,11 +101,11 @@ public class TblAutofacturas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "PRECIO_UNITARIO")
-    private int precioUnitario;
+    private Integer precioUnitario;
     @Basic(optional = false)
     @NotNull
     @Column(name = "MONTO")
-    private int monto;
+    private Integer monto;
     @Size(max = 255)
     @Column(name = "OBSERVACION")
     private String observacion;
@@ -132,7 +132,7 @@ public class TblAutofacturas implements Serializable {
         this.id = id;
     }
 
-    public TblAutofacturas(Integer id, String nro, LocalDateTime fechahora, String nombre, String domicilio, String direccionDeTransaccion, String ci, int cantidad, String concepto, int precioUnitario, int monto, Boolean anulado) {
+    public TblAutofacturas(Integer id, String nro, LocalDateTime fechahora, String nombre, String domicilio, String direccionDeTransaccion, String ci, Integer cantidad, String concepto, Integer precioUnitario, Integer monto, Boolean anulado) {
         this.id = id;
         this.nro = nro;
         this.fechahora = fechahora;
@@ -203,11 +203,11 @@ public class TblAutofacturas implements Serializable {
         this.ci = ci;
     }
 
-    public int getCantidad() {
+    public Integer getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
 
@@ -219,19 +219,19 @@ public class TblAutofacturas implements Serializable {
         this.concepto = concepto;
     }
 
-    public int getPrecioUnitario() {
+    public Integer getPrecioUnitario() {
         return precioUnitario;
     }
 
-    public void setPrecioUnitario(int precioUnitario) {
+    public void setPrecioUnitario(Integer precioUnitario) {
         this.precioUnitario = precioUnitario;
     }
 
-    public int getMonto() {
+    public Integer getMonto() {
         return monto;
     }
 
-    public void setMonto(int monto) {
+    public void setMonto(Integer monto) {
         this.monto = monto;
     }
 
@@ -278,7 +278,7 @@ public class TblAutofacturas implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }

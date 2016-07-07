@@ -61,11 +61,11 @@ public class TblTimbrados implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "NRO_FACTURA_INCIO")
-    private int nroFacturaIncio;
+    private Integer nroFacturaIncio;
     @Basic(optional = false)
     @NotNull
     @Column(name = "NRO_FACTURA_FIN")
-    private int nroFacturaFin;
+    private Integer nroFacturaFin;
     @Basic(optional = false)
     @NotNull
     @Column(name = "ACTIVO")
@@ -83,7 +83,7 @@ public class TblTimbrados implements Serializable {
         this.nro = nro;
     }
 
-    public TblTimbrados(Integer nro, LocalDate fechaInicio, LocalDate fechaVencimiento, int nroFacturaIncio, int nroFacturaFin, Boolean activo) {
+    public TblTimbrados(Integer nro, LocalDate fechaInicio, LocalDate fechaVencimiento, Integer nroFacturaIncio, Integer nroFacturaFin, Boolean activo) {
         this.nro = nro;
         this.fechaInicio = fechaInicio;
         this.fechaVencimiento = fechaVencimiento;
@@ -116,19 +116,19 @@ public class TblTimbrados implements Serializable {
         this.fechaVencimiento = fechaVencimiento;
     }
 
-    public int getNroFacturaIncio() {
+    public Integer getNroFacturaIncio() {
         return nroFacturaIncio;
     }
 
-    public void setNroFacturaIncio(int nroFacturaIncio) {
+    public void setNroFacturaIncio(Integer nroFacturaIncio) {
         this.nroFacturaIncio = nroFacturaIncio;
     }
 
-    public int getNroFacturaFin() {
+    public Integer getNroFacturaFin() {
         return nroFacturaFin;
     }
 
-    public void setNroFacturaFin(int nroFacturaFin) {
+    public void setNroFacturaFin(Integer nroFacturaFin) {
         this.nroFacturaFin = nroFacturaFin;
     }
 
@@ -159,7 +159,7 @@ public class TblTimbrados implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (nro != null ? nro.hashCode() : 0);
         return hash;
     }

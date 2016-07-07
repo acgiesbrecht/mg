@@ -38,7 +38,7 @@ public class TblRecibosCompraFacturasCompra implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "MONTO")
-    private int monto;
+    private Integer monto;
     @JoinColumn(name = "ID_FACTURA_COMPRA", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private TblFacturasCompra tblFacturasCompra;
@@ -53,12 +53,12 @@ public class TblRecibosCompraFacturasCompra implements Serializable {
         this.tblRecibosCompraFacturasCompraPK = tblRecibosCompraFacturasCompraPK;
     }
 
-    public TblRecibosCompraFacturasCompra(TblRecibosCompraFacturasCompraPK tblRecibosCompraFacturasCompraPK, int monto) {
+    public TblRecibosCompraFacturasCompra(TblRecibosCompraFacturasCompraPK tblRecibosCompraFacturasCompraPK, Integer monto) {
         this.tblRecibosCompraFacturasCompraPK = tblRecibosCompraFacturasCompraPK;
         this.monto = monto;
     }
 
-    public TblRecibosCompraFacturasCompra(int idRecibo, int idFacturaCompra) {
+    public TblRecibosCompraFacturasCompra(Integer idRecibo, Integer idFacturaCompra) {
         this.tblRecibosCompraFacturasCompraPK = new TblRecibosCompraFacturasCompraPK(idRecibo, idFacturaCompra);
     }
 
@@ -70,11 +70,11 @@ public class TblRecibosCompraFacturasCompra implements Serializable {
         this.tblRecibosCompraFacturasCompraPK = tblRecibosCompraFacturasCompraPK;
     }
 
-    public int getMonto() {
+    public Integer getMonto() {
         return monto;
     }
 
-    public void setMonto(int monto) {
+    public void setMonto(Integer monto) {
         this.monto = monto;
     }
 
@@ -96,7 +96,7 @@ public class TblRecibosCompraFacturasCompra implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (tblRecibosCompraFacturasCompraPK != null ? tblRecibosCompraFacturasCompraPK.hashCode() : 0);
         return hash;
     }

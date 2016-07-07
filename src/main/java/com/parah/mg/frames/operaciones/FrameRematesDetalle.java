@@ -32,9 +32,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -703,7 +703,7 @@ public class FrameRematesDetalle extends JInternalFrame {
         try {
             int[] selected = masterTable.getSelectedRows();
             List<TblEventoDetalle> toRemove = new ArrayList<>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
+            for (Integer idx = 0; idx < selected.length; idx++) {
                 TblEventoDetalle t = listEventosDetalle.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
                 entityManager.remove(t);
@@ -722,7 +722,7 @@ public class FrameRematesDetalle extends JInternalFrame {
             t.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
             t.setIdUser(currentUser.getUser());
             listEventosDetalle.add(t);
-            int row = listEventosDetalle.size() - 1;
+            Integer row = listEventosDetalle.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
 
@@ -756,8 +756,19 @@ public class FrameRematesDetalle extends JInternalFrame {
             for (TblEventoDetalle evd : listEventosDetalle) {
                 if (entityManager.contains(evd)) {
                     if (evd.getTblAsientosCollection().size() == 2) {
-                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
-                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getMonto());
+                        Integer indexAsientoAporte = -1;
+                        Integer indexAsientoDonacion = -1;
+
+                        if (((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
+                            indexAsientoAporte = 0;
+                            indexAsientoDonacion = 1;
+                        } else if (((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
+                            indexAsientoAporte = 1;
+                            indexAsientoDonacion = 0;
+                        }
+
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
+                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoDonacion).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).getMonto());
                         entityManager.merge(evd);
                     } else if (evd.getTblAsientosCollection().isEmpty()) {
 
@@ -771,7 +782,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                         asientoAporte.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
                         asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
-                        asientoAporte.setMonto(evd.getMonto() * evd.getIdEvento().getPorcentajeAporte() / 100);
+                        asientoAporte.setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
                         asientoAporte.setIdUser(currentUser.getUser());
 
                         ts.add(asientoAporte);
@@ -939,7 +950,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                     transferencia.setFechahoraCompromiso(cuota.getFecha());
                     transferencia.setIdEntidad((TblEntidades) cboEntidad.getSelectedItem());
                     transferencia.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
-                    transferencia.setMontoAporte(cuota.getMonto() * ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte() / 100);
+                    transferencia.setMontoAporte(cuota.getMonto() / 100 * ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte());
                     transferencia.setMontoDonacion(cuota.getMonto() - transferencia.getMontoAporte());
                     transferencia.setIdEventoTipo(((TblEventos) cboFechaRemate.getSelectedItem()).getIdEventoTipo());
                     transferencia.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
@@ -965,7 +976,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
                             JasperPrintManager.printReport(jasperPrint, false);
                         } else {
-                            for (int x = 1; x == 3; x++) {
+                            for (Integer x = 1; x == 3; x++) {
                                 JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/transferencia_simple.jrxml"));
                                 JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, conn);
                                 JasperPrintManager.printReport(jasperPrint, false);

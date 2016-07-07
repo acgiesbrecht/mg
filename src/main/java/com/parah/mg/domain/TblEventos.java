@@ -70,7 +70,7 @@ public class TblEventos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "PORCENTAJE_APORTE")
-    private int porcentajeAporte;
+    private Integer porcentajeAporte;
     @JoinColumn(name = "ID_CENTRO_DE_COSTO", referencedColumnName = "ID")
     @ManyToOne
     private TblCentrosDeCosto idCentroDeCosto;
@@ -91,7 +91,7 @@ public class TblEventos implements Serializable {
         this.id = id;
     }
 
-    public TblEventos(Integer id, LocalDate fecha, int porcentajeAporte) {
+    public TblEventos(Integer id, LocalDate fecha, Integer porcentajeAporte) {
         this.id = id;
         this.fecha = fecha;
         this.porcentajeAporte = porcentajeAporte;
@@ -121,11 +121,11 @@ public class TblEventos implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public int getPorcentajeAporte() {
+    public Integer getPorcentajeAporte() {
         return porcentajeAporte;
     }
 
-    public void setPorcentajeAporte(int porcentajeAporte) {
+    public void setPorcentajeAporte(Integer porcentajeAporte) {
         this.porcentajeAporte = porcentajeAporte;
     }
 
@@ -163,7 +163,7 @@ public class TblEventos implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        Integer hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }

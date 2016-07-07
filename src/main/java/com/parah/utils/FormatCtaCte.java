@@ -17,7 +17,7 @@ public class FormatCtaCte {
 
     private static final Logger LOGGER = LogManager.getLogger(FormatCtaCte.class);
 
-    public static String format(int ctaCte) {
+    public static String format(Integer ctaCte) {
         try {
             String sCta = String.valueOf(ctaCte);
             if (sCta.length() == 5 || sCta.length() == 7) {

@@ -40,11 +40,11 @@ public class FormLogin extends javax.swing.JDialog {
      */
     CurrentUser currentUser = CurrentUser.getInstance();
 
-    public static final int RET_CANCEL = 0;
+    public static final Integer RET_CANCEL = 0;
     /**
      * A return status code - returned if OK button has been pressed
      */
-    public static final int RET_OK = 1;
+    public static final Integer RET_OK = 1;
 
     /**
      * Creates new form FormLogin
@@ -82,7 +82,7 @@ public class FormLogin extends javax.swing.JDialog {
     /**
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
-    public int getReturnStatus() {
+    public Integer getReturnStatus() {
         return returnStatus;
     }
 
@@ -226,7 +226,7 @@ public class FormLogin extends javax.swing.JDialog {
         txtPass.setText("");
     }//GEN-LAST:event_txtPassFocusGained
 
-    private void doClose(int retStatus) {
+    private void doClose(Integer retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
@@ -291,5 +291,5 @@ public class FormLogin extends javax.swing.JDialog {
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 
-    private int returnStatus = RET_CANCEL;
+    private Integer returnStatus = RET_CANCEL;
 }

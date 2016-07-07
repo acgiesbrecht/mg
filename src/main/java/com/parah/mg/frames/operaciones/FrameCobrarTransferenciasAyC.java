@@ -100,7 +100,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
     @Override
     public void tableChanged(TableModelEvent e) {
         try {
-            int suma = 0;
+            Integer suma = 0;
             for (PagosMensualesPendientes pago : list) {
                 if (pago.getCobrado()) {
                     suma += pago.getMontoTotal();
@@ -427,7 +427,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
     private void cboMarcarSeleccionadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMarcarSeleccionadosActionPerformed
         try {
             int[] selectedRows = masterTable.getSelectedRows();
-            for (int i = 0; i < selectedRows.length; i++) {
+            for (Integer i = 0; i < selectedRows.length; i++) {
                 //list.get(i).setCobrado(true);
                 masterTable.setValueAt(true, selectedRows[i], 5);
             }
