@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.prefs.Preferences;
@@ -32,6 +33,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -147,10 +149,18 @@ public class Utils extends Component {
             parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
             parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
             parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
+
+            parameters.put(JRParameter.REPORT_LOCALE, Locale.forLanguageTag("es"));
+
             //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
-            String reportFactura = Preferences.userRoot().node("MG").get("formatoFactura", "Preimpreso sin rejilla").equals("Preimpreso sin rejilla")
-                    ? "factura_con_rejilla"
-                    : "factura";
+            String reportFactura = Preferences.userRoot().node("MG").get("formatoFactura", "Preimpreso sin rejilla");
+            if (reportFactura.equals("Preimpreso sin rejilla")) {
+                reportFactura = "factura_con_rejilla";
+            } else if (reportFactura.equals("Preimpreso con rejilla")) {
+                reportFactura = "factura";
+            } else if (reportFactura.equals("Preimpreso con rejilla modelo especial Bethel Theodor")) {
+                reportFactura = "factura_bethel";
+            }
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFactura + ".jrxml"));
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());

@@ -951,11 +951,11 @@ public class FrameAportesDetalle extends JInternalFrame {
         try {
             if (cboFechaAporte.getSelectedItem() != null) {
                 TblEventos currEvento = (TblEventos) cboFechaAporte.getSelectedItem();
-                listEventoDetalle.stream().forEach((aporte) -> {
+                /*listEventoDetalle.stream().forEach((aporte) -> {
                     entityManager.remove(aporte);
 
                 });
-                listEventoDetalle.clear();
+                listEventoDetalle.clear();*/
                 listEntidades.stream().forEach((miembro) -> {
                     if (miembro.getAporteMensual() > 0) {
                         TblEventoDetalle t = new TblEventoDetalle();

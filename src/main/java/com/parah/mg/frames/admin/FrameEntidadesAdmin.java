@@ -879,8 +879,12 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             TblEntidades t;
             for (int idx = 0; idx < selected.length; idx++) {
                 t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-                toRemove.add(t);
-                entityManager.remove(t);
+                if ((Long) (entityManager.createQuery("select count(evd) from TblEventoDetalle evd where evd.idEntidad.id = " + t.getId().toString()).getSingleResult()) == 0L) {
+                    toRemove.add(t);
+                    entityManager.remove(t);
+                } else {
+                    JOptionPane.showMessageDialog(null, "El miembro seleccionado tiene registros.");
+                }
             }
             //list.removeAll(toRemove);
             list.removeAll(new HashSet<>(toRemove));
