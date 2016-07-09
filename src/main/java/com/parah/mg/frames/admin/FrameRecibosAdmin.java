@@ -251,7 +251,7 @@ public class FrameRecibosAdmin extends JInternalFrame {
                 //list.removeAll(toRemove);
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
-                java.util.Collection data = query.getResultList();
+                java.util.List data = query.getResultList();
                 data.stream().forEach((entity) -> {
                     entityManager.refresh(entity);
                 });

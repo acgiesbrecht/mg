@@ -6,7 +6,7 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,10 +41,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TblCentrosDeCosto implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCosto")
-    private Collection<TblAsientos> tblAsientosCollection;
+    private List<TblAsientos> tblAsientosList;
 
     @OneToMany(mappedBy = "idCentroDeCosto")
-    private Collection<TblEventos> tblEventosCollection;
+    private List<TblEventos> tblEventosList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -66,7 +66,7 @@ public class TblCentrosDeCosto implements Serializable {
     @Column(name = "PREFERIDO")
     private Boolean preferido = false;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCosto")
-    private Collection<TblAsientosTemporales> tblAsientosTemporalesCollection;
+    private List<TblAsientosTemporales> tblAsientosTemporalesList;
     @JoinColumn(name = "ID_CUENTA_CONTABLE_CTA_CTE_POR_DEFECTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCuentasContables idCuentaContableCtaCtePorDefecto;
@@ -121,12 +121,12 @@ public class TblCentrosDeCosto implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblAsientosTemporales> getTblAsientosTemporalesCollection() {
-        return tblAsientosTemporalesCollection;
+    public List<TblAsientosTemporales> getTblAsientosTemporalesList() {
+        return tblAsientosTemporalesList;
     }
 
-    public void setTblAsientosTemporalesCollection(Collection<TblAsientosTemporales> tblAsientosTemporalesCollection) {
-        this.tblAsientosTemporalesCollection = tblAsientosTemporalesCollection;
+    public void setTblAsientosTemporalesList(List<TblAsientosTemporales> tblAsientosTemporalesList) {
+        this.tblAsientosTemporalesList = tblAsientosTemporalesList;
     }
 
     public TblCuentasContables getIdCuentaContableCtaCtePorDefecto() {
@@ -171,21 +171,21 @@ public class TblCentrosDeCosto implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblEventos> getTblEventosCollection() {
-        return tblEventosCollection;
+    public List<TblEventos> getTblEventosList() {
+        return tblEventosList;
     }
 
-    public void setTblEventosCollection(Collection<TblEventos> tblEventosCollection) {
-        this.tblEventosCollection = tblEventosCollection;
+    public void setTblEventosList(List<TblEventos> tblEventosList) {
+        this.tblEventosList = tblEventosList;
     }
 
     @XmlTransient
-    public Collection<TblAsientos> getTblAsientosCollection() {
-        return tblAsientosCollection;
+    public List<TblAsientos> getTblAsientosList() {
+        return tblAsientosList;
     }
 
-    public void setTblAsientosCollection(Collection<TblAsientos> tblAsientosCollection) {
-        this.tblAsientosCollection = tblAsientosCollection;
+    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList = tblAsientosList;
     }
 
 }

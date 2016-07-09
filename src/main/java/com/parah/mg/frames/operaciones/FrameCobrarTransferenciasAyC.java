@@ -25,7 +25,7 @@ import java.beans.Beans;
 import java.time.LocalDate;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -375,13 +375,13 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                     List<TblEventoDetalle> listEvd = (List<TblEventoDetalle>) queryEvd.getResultList();
                     List<TblAsientos> listAsientos = new ArrayList<>();
                     for (TblEventoDetalle evd : listEvd) {
-                        listAsientos.addAll(evd.getTblAsientosCollection());
+                        listAsientos.addAll(evd.getTblAsientosList());
                     }
 
-                    Collection<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesCollection();
+                    List<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesList();
                     if (listAsientosTemporales == null) {
                         listAsientosTemporales = new LinkedList<>();
-                        t.setTblAsientosTemporalesCollection(listAsientosTemporales);
+                        t.setTblAsientosTemporalesList(listAsientosTemporales);
                     }
 
                     for (TblAsientos asiento : listAsientos) {

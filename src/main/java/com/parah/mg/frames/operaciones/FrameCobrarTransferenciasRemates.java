@@ -24,7 +24,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.Beans;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -312,13 +312,13 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
                     List<TblEventoDetalle> listEvd = (List<TblEventoDetalle>) queryEvd.getResultList();
                     List<TblAsientos> listAsientos = new ArrayList<>();
                     for (TblEventoDetalle evd : listEvd) {
-                        listAsientos.addAll(evd.getTblAsientosCollection());
+                        listAsientos.addAll(evd.getTblAsientosList());
                     }
 
-                    Collection<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesCollection();
+                    List<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesList();
                     if (listAsientosTemporales == null) {
                         listAsientosTemporales = new LinkedList<>();
-                        t.setTblAsientosTemporalesCollection(listAsientosTemporales);
+                        t.setTblAsientosTemporalesList(listAsientosTemporales);
                     }
 
                     for (TblAsientos asiento : listAsientos) {
@@ -376,7 +376,7 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
                 entityManager.getTransaction().rollback();
                 entityManager.getTransaction().begin();
                 query.setParameter("eventoId", (TblEventos) cboFechaRemate.getSelectedItem());
-                java.util.Collection data = query.getResultList();
+                java.util.List data = query.getResultList();
                 for (Object entity : data) {
                     entityManager.refresh(entity);
                 }

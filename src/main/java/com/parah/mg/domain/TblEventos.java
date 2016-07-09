@@ -7,7 +7,7 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.List;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.persistence.Basic;
@@ -46,12 +46,12 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TblEventos implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvento")
-    private Collection<TblEventoDetalle> tblEventoDetalleCollection;
+    private List<TblEventoDetalle> tblEventoDetalleList;
 
     @OneToMany(mappedBy = "idEvento")
-    private Collection<TblRecibos> tblRecibosCollection;
+    private List<TblRecibos> tblRecibosList;
     @OneToMany(mappedBy = "idEvento")
-    private Collection<TblTransferencias> tblTransferenciasCollection;
+    private List<TblTransferencias> tblTransferenciasList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -187,30 +187,30 @@ public class TblEventos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblRecibos> getTblRecibosCollection() {
-        return tblRecibosCollection;
+    public List<TblRecibos> getTblRecibosList() {
+        return tblRecibosList;
     }
 
-    public void setTblRecibosCollection(Collection<TblRecibos> tblRecibosCollection) {
-        this.tblRecibosCollection = tblRecibosCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblTransferencias> getTblTransferenciasCollection() {
-        return tblTransferenciasCollection;
-    }
-
-    public void setTblTransferenciasCollection(Collection<TblTransferencias> tblTransferenciasCollection) {
-        this.tblTransferenciasCollection = tblTransferenciasCollection;
+    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
+        this.tblRecibosList = tblRecibosList;
     }
 
     @XmlTransient
-    public Collection<TblEventoDetalle> getTblEventoDetalleCollection() {
-        return tblEventoDetalleCollection;
+    public List<TblTransferencias> getTblTransferenciasList() {
+        return tblTransferenciasList;
     }
 
-    public void setTblEventoDetalleCollection(Collection<TblEventoDetalle> tblEventoDetalleCollection) {
-        this.tblEventoDetalleCollection = tblEventoDetalleCollection;
+    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
+        this.tblTransferenciasList = tblTransferenciasList;
+    }
+
+    @XmlTransient
+    public List<TblEventoDetalle> getTblEventoDetalleList() {
+        return tblEventoDetalleList;
+    }
+
+    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
+        this.tblEventoDetalleList = tblEventoDetalleList;
     }
 
 }

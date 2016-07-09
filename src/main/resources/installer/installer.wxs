@@ -66,8 +66,8 @@
                             <Component Id="COMMONS_CODEC_1.9.JAR" DiskId="1" Guid="1B4DB4FD-64E3-4E78-9E1C-EDD1FE4C0BFE">
                                 <File Id="COMMONS_CODEC_1.9.JAR" Name="commons-codec-1.9.jar" Source="C:\Users\adriang\Documents\NetBeansProjects\MG\target\getdown\lib\commons-codec-1.9.jar" />
                             </Component>
-                            <Component Id="COMMONS_COLLECTIONS_3.2.1.JAR" DiskId="1" Guid="0D8684A0-37AC-435A-A0F3-2F00D726D4E4">
-                                <File Id="COMMONS_COLLECTIONS_3.2.1.JAR" Name="commons-collections-3.2.1.jar" Source="C:\Users\adriang\Documents\NetBeansProjects\MG\target\getdown\lib\commons-collections-3.2.1.jar" />
+                            <Component Id="COMMONS_ListS_3.2.1.JAR" DiskId="1" Guid="0D8684A0-37AC-435A-A0F3-2F00D726D4E4">
+                                <File Id="COMMONS_ListS_3.2.1.JAR" Name="commons-Collections-3.2.1.jar" Source="C:\Users\adriang\Documents\NetBeansProjects\MG\target\getdown\lib\commons-Collections-3.2.1.jar" />
                             </Component>
                             <Component Id="COMMONS_DIGESTER_2.1.JAR" DiskId="1" Guid="A6E8F234-7DB5-4296-9A53-65507A4B783E">
                                 <File Id="COMMONS_DIGESTER_2.1.JAR" Name="commons-digester-2.1.jar" Source="C:\Users\adriang\Documents\NetBeansProjects\MG\target\getdown\lib\commons-digester-2.1.jar" />
@@ -244,7 +244,7 @@
             <ComponentRef Id="COMMONJ.SDO_2.1.1.JAR" />
             <ComponentRef Id="COMMONS_BEANUTILS_1.9.0.JAR" />
             <ComponentRef Id="COMMONS_CODEC_1.9.JAR" />
-            <ComponentRef Id="COMMONS_COLLECTIONS_3.2.1.JAR" />
+            <ComponentRef Id="COMMONS_ListS_3.2.1.JAR" />
             <ComponentRef Id="COMMONS_DIGESTER_2.1.JAR" />
             <ComponentRef Id="COMMONS_IO_2.4.JAR" />
             <ComponentRef Id="COMMONS_LANG_2.6.JAR" />

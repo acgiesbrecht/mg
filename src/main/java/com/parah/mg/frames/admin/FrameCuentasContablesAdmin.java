@@ -411,7 +411,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
         try {
             entityManager.getTransaction().rollback();
             entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
+            java.util.List data = query.getResultList();
             for (Object entity : data) {
                 entityManager.refresh(entity);
             }
@@ -460,7 +460,7 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
             entityManager.merge(cuentasPorDefecto);
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
+            java.util.List data = query.getResultList();
             for (Object entity : data) {
                 entityManager.refresh(entity);
             }

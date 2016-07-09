@@ -8,7 +8,7 @@ package com.parah.mg.domain;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -60,7 +60,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TblFacturasCompra implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tblFacturasCompra")
-    private Collection<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraCollection;
+    private List<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -333,12 +333,12 @@ public class TblFacturasCompra implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblRecibosCompraFacturasCompra> getTblRecibosCompraFacturasCompraCollection() {
-        return tblRecibosCompraFacturasCompraCollection;
+    public List<TblRecibosCompraFacturasCompra> getTblRecibosCompraFacturasCompraList() {
+        return tblRecibosCompraFacturasCompraList;
     }
 
-    public void setTblRecibosCompraFacturasCompraCollection(Collection<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraCollection) {
-        this.tblRecibosCompraFacturasCompraCollection = tblRecibosCompraFacturasCompraCollection;
+    public void setTblRecibosCompraFacturasCompraList(List<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraList) {
+        this.tblRecibosCompraFacturasCompraList = tblRecibosCompraFacturasCompraList;
     }
 
 }

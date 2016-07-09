@@ -25,7 +25,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -969,7 +969,7 @@ public class FrameFacturasCompra extends JInternalFrame {
         try {
             entityManager.getTransaction().rollback();
             entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
+            java.util.List data = query.getResultList();
             data.stream().forEach((entity) -> {
                 entityManager.refresh(entity);
             });
@@ -1018,8 +1018,11 @@ public class FrameFacturasCompra extends JInternalFrame {
                 entityManager.persist(t);
                 t.setIdUser(currentUser.getUser());
                 t.setCondicionContado(true);
+                t.setMontoIva5(0);
+                t.setMontoIva10(0);
+                t.setMontoExentas(0);
                 list.add(t);
-
+                
                 Integer row = list.size() - 1;
                 masterTable.setRowSelectionInterval(row, row);
                 masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
@@ -1036,7 +1039,7 @@ public class FrameFacturasCompra extends JInternalFrame {
             if (checkDatosFactura()) {
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
-                java.util.Collection data = query.getResultList();
+                java.util.List data = query.getResultList();
                 data.stream().forEach((entity) -> {
                     entityManager.refresh(entity);
                 });
@@ -1207,7 +1210,7 @@ public class FrameFacturasCompra extends JInternalFrame {
         try {
             Integer index = masterTable.getSelectedRow();
             TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
-            Collection<TblAsientos> ts = T.getTblAsientosList();
+            List<TblAsientos> ts = T.getTblAsientosList();
             if (ts == null) {
                 ts = new LinkedList<>();
                 T.setTblAsientosList((List) ts);

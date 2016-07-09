@@ -275,7 +275,7 @@ public class FrameTimbradosAdmin extends JInternalFrame {
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
+        java.util.List data = query.getResultList();
         for (Object entity : data) {
             entityManager.refresh(entity);
         }
@@ -308,7 +308,7 @@ public class FrameTimbradosAdmin extends JInternalFrame {
         try {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
+            java.util.List data = query.getResultList();
             for (Object entity : data) {
                 entityManager.refresh(entity);
             }

@@ -255,9 +255,9 @@ public class FrameFacturasAdmin extends JInternalFrame {
 
                 t.setAnulado(true);
                 Calendar calendar = Calendar.getInstance();
-                for (TblAsientos asiento : t.getTblAsientosCollection()) {
+                for (TblAsientos asiento : t.getTblAsientosList()) {
 
-                    for (TblAsientosTemporales at : asiento.getTblAsientosTemporalesCollection()) {
+                    for (TblAsientosTemporales at : asiento.getTblAsientosTemporalesList()) {
                         at.setFacturado(false);
                         entityManager.merge(at);
                     }
@@ -277,7 +277,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
                 //chkAnulado.setSelected(true);
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
-                java.util.Collection data = query.getResultList();
+                java.util.List data = query.getResultList();
                 for (Object entity : data) {
                     entityManager.refresh(entity);
                 }

@@ -34,7 +34,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -662,7 +662,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                 entityManager.getTransaction().rollback();
                 entityManager.getTransaction().begin();
                 queryEventosDetalle.setParameter("eventoId", ((TblEventos) cboFechaRemate.getSelectedItem()));
-                java.util.Collection data = queryEventosDetalle.getResultList();
+                java.util.List data = queryEventosDetalle.getResultList();
                 data.stream().forEach((entity) -> {
                     entityManager.refresh(entity);
                 });
@@ -755,27 +755,27 @@ public class FrameRematesDetalle extends JInternalFrame {
 
             for (TblEventoDetalle evd : listEventosDetalle) {
                 if (entityManager.contains(evd)) {
-                    if (evd.getTblAsientosCollection().size() == 2) {
+                    if (evd.getTblAsientosList().size() == 2) {
                         Integer indexAsientoAporte = -1;
                         Integer indexAsientoDonacion = -1;
 
-                        if (((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
+                        if (((List<TblAsientos>) evd.getTblAsientosList()).get(0).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
                             indexAsientoAporte = 0;
                             indexAsientoDonacion = 1;
-                        } else if (((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
+                        } else if (((List<TblAsientos>) evd.getTblAsientosList()).get(1).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
                             indexAsientoAporte = 1;
                             indexAsientoDonacion = 0;
                         }
 
-                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
-                        ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoDonacion).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).getMonto());
+                        ((List<TblAsientos>) evd.getTblAsientosList()).get(indexAsientoAporte).setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
+                        ((List<TblAsientos>) evd.getTblAsientosList()).get(indexAsientoDonacion).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosList()).get(indexAsientoAporte).getMonto());
                         entityManager.merge(evd);
-                    } else if (evd.getTblAsientosCollection().isEmpty()) {
+                    } else if (evd.getTblAsientosList().isEmpty()) {
 
-                        Collection<TblAsientos> ts = evd.getTblAsientosCollection();
+                        List<TblAsientos> ts = evd.getTblAsientosList();
                         if (ts == null) {
                             ts = new LinkedList<>();
-                            evd.setTblAsientosCollection((List) ts);
+                            evd.setTblAsientosList((List) ts);
                         }
                         TblAsientos asientoAporte = new TblAsientos();
                         asientoAporte.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
@@ -897,7 +897,7 @@ public class FrameRematesDetalle extends JInternalFrame {
     }//GEN-LAST:event_montoFieldActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Collection data = tblCategoriasArticulosQuery.getResultList();
+        List data = tblCategoriasArticulosQuery.getResultList();
         data.stream().forEach((entity) -> {
             entityManager1.refresh(entity);
         });
@@ -909,7 +909,7 @@ public class FrameRematesDetalle extends JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        Collection data = queryEntidades.getResultList();
+        List data = queryEntidades.getResultList();
         data.stream().forEach((entity) -> {
             entityManager1.refresh(entity);
         });

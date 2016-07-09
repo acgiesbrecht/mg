@@ -7,7 +7,7 @@ package com.parah.mg.domain;
 
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,32 +43,32 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TblUsers implements Serializable {
 
     @OneToMany(mappedBy = "idUser")
-    private Collection<TblEventoDetalle> tblEventoDetalleCollection;
+    private List<TblEventoDetalle> tblEventoDetalleList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private Collection<TblRecibos> tblRecibosCollection;
+    private List<TblRecibos> tblRecibosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private Collection<TblEventos> tblEventosCollection;
+    private List<TblEventos> tblEventosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private Collection<TblTransferencias> tblTransferenciasCollection;
+    private List<TblTransferencias> tblTransferenciasList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private Collection<TblTimbrados> tblTimbradosCollection;
+    private List<TblTimbrados> tblTimbradosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private Collection<TblFacturas> tblFacturasCollection;
+    private List<TblFacturas> tblFacturasList;
     @OneToMany(mappedBy = "idUser")
-    private Collection<TblEntidades> tblEntidadesCollection;
+    private List<TblEntidades> tblEntidadesList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private Collection<TblTimbradosAutofacturas> tblTimbradosAutofacturasCollection;
+    private List<TblTimbradosAutofacturas> tblTimbradosAutofacturasList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private Collection<TblFacturasCompra> tblFacturasCompraCollection;
+    private List<TblFacturasCompra> tblFacturasCompraList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private Collection<TblAutofacturas> tblAutofacturasCollection;
+    private List<TblAutofacturas> tblAutofacturasList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private Collection<TblAsientos> tblAsientosCollection;
+    private List<TblAsientos> tblAsientosList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -95,12 +95,12 @@ public class TblUsers implements Serializable {
         @JoinColumn(name = "ID_USER", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_GRUPO", referencedColumnName = "ID")})
     @ManyToMany
-    private Collection<TblGrupos> tblGruposList;
+    private List<TblGrupos> tblGruposList;
     @JoinTable(name = "TBL_ROLES_USERS", joinColumns = {
         @JoinColumn(name = "ID_USER", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ROLE", referencedColumnName = "ID")})
     @ManyToMany
-    private Collection<TblRoles> tblRolesList;
+    private List<TblRoles> tblRolesList;
 
     public TblUsers() {
     }
@@ -149,20 +149,20 @@ public class TblUsers implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblGrupos> getTblGruposList() {
+    public List<TblGrupos> getTblGruposList() {
         return tblGruposList;
     }
 
-    public void setTblGruposList(Collection<TblGrupos> tblGruposList) {
+    public void setTblGruposList(List<TblGrupos> tblGruposList) {
         this.tblGruposList = tblGruposList;
     }
 
     @XmlTransient
-    public Collection<TblRoles> getTblRolesList() {
+    public List<TblRoles> getTblRolesList() {
         return tblRolesList;
     }
 
-    public void setTblRolesList(Collection<TblRoles> tblRolesList) {
+    public void setTblRolesList(List<TblRoles> tblRolesList) {
         this.tblRolesList = tblRolesList;
     }
 
@@ -192,102 +192,102 @@ public class TblUsers implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblAsientos> getTblAsientosCollection() {
-        return tblAsientosCollection;
+    public List<TblAsientos> getTblAsientosList() {
+        return tblAsientosList;
     }
 
-    public void setTblAsientosCollection(Collection<TblAsientos> tblAsientosCollection) {
-        this.tblAsientosCollection = tblAsientosCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblFacturasCompra> getTblFacturasCompraCollection() {
-        return tblFacturasCompraCollection;
-    }
-
-    public void setTblFacturasCompraCollection(Collection<TblFacturasCompra> tblFacturasCompraCollection) {
-        this.tblFacturasCompraCollection = tblFacturasCompraCollection;
+    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList = tblAsientosList;
     }
 
     @XmlTransient
-    public Collection<TblAutofacturas> getTblAutofacturasCollection() {
-        return tblAutofacturasCollection;
+    public List<TblFacturasCompra> getTblFacturasCompraList() {
+        return tblFacturasCompraList;
     }
 
-    public void setTblAutofacturasCollection(Collection<TblAutofacturas> tblAutofacturasCollection) {
-        this.tblAutofacturasCollection = tblAutofacturasCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblTimbradosAutofacturas> getTblTimbradosAutofacturasCollection() {
-        return tblTimbradosAutofacturasCollection;
-    }
-
-    public void setTblTimbradosAutofacturasCollection(Collection<TblTimbradosAutofacturas> tblTimbradosAutofacturasCollection) {
-        this.tblTimbradosAutofacturasCollection = tblTimbradosAutofacturasCollection;
+    public void setTblFacturasCompraList(List<TblFacturasCompra> tblFacturasCompraList) {
+        this.tblFacturasCompraList = tblFacturasCompraList;
     }
 
     @XmlTransient
-    public Collection<TblTimbrados> getTblTimbradosCollection() {
-        return tblTimbradosCollection;
+    public List<TblAutofacturas> getTblAutofacturasList() {
+        return tblAutofacturasList;
     }
 
-    public void setTblTimbradosCollection(Collection<TblTimbrados> tblTimbradosCollection) {
-        this.tblTimbradosCollection = tblTimbradosCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblFacturas> getTblFacturasCollection() {
-        return tblFacturasCollection;
-    }
-
-    public void setTblFacturasCollection(Collection<TblFacturas> tblFacturasCollection) {
-        this.tblFacturasCollection = tblFacturasCollection;
+    public void setTblAutofacturasList(List<TblAutofacturas> tblAutofacturasList) {
+        this.tblAutofacturasList = tblAutofacturasList;
     }
 
     @XmlTransient
-    public Collection<TblEntidades> getTblEntidadesCollection() {
-        return tblEntidadesCollection;
+    public List<TblTimbradosAutofacturas> getTblTimbradosAutofacturasList() {
+        return tblTimbradosAutofacturasList;
     }
 
-    public void setTblEntidadesCollection(Collection<TblEntidades> tblEntidadesCollection) {
-        this.tblEntidadesCollection = tblEntidadesCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblRecibos> getTblRecibosCollection() {
-        return tblRecibosCollection;
-    }
-
-    public void setTblRecibosCollection(Collection<TblRecibos> tblRecibosCollection) {
-        this.tblRecibosCollection = tblRecibosCollection;
+    public void setTblTimbradosAutofacturasList(List<TblTimbradosAutofacturas> tblTimbradosAutofacturasList) {
+        this.tblTimbradosAutofacturasList = tblTimbradosAutofacturasList;
     }
 
     @XmlTransient
-    public Collection<TblEventos> getTblEventosCollection() {
-        return tblEventosCollection;
+    public List<TblTimbrados> getTblTimbradosList() {
+        return tblTimbradosList;
     }
 
-    public void setTblEventosCollection(Collection<TblEventos> tblEventosCollection) {
-        this.tblEventosCollection = tblEventosCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblTransferencias> getTblTransferenciasCollection() {
-        return tblTransferenciasCollection;
-    }
-
-    public void setTblTransferenciasCollection(Collection<TblTransferencias> tblTransferenciasCollection) {
-        this.tblTransferenciasCollection = tblTransferenciasCollection;
+    public void setTblTimbradosList(List<TblTimbrados> tblTimbradosList) {
+        this.tblTimbradosList = tblTimbradosList;
     }
 
     @XmlTransient
-    public Collection<TblEventoDetalle> getTblEventoDetalleCollection() {
-        return tblEventoDetalleCollection;
+    public List<TblFacturas> getTblFacturasList() {
+        return tblFacturasList;
     }
 
-    public void setTblEventoDetalleCollection(Collection<TblEventoDetalle> tblEventoDetalleCollection) {
-        this.tblEventoDetalleCollection = tblEventoDetalleCollection;
+    public void setTblFacturasList(List<TblFacturas> tblFacturasList) {
+        this.tblFacturasList = tblFacturasList;
+    }
+
+    @XmlTransient
+    public List<TblEntidades> getTblEntidadesList() {
+        return tblEntidadesList;
+    }
+
+    public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
+        this.tblEntidadesList = tblEntidadesList;
+    }
+
+    @XmlTransient
+    public List<TblRecibos> getTblRecibosList() {
+        return tblRecibosList;
+    }
+
+    public void setTblRecibosList(List<TblRecibos> tblRecibosList) {
+        this.tblRecibosList = tblRecibosList;
+    }
+
+    @XmlTransient
+    public List<TblEventos> getTblEventosList() {
+        return tblEventosList;
+    }
+
+    public void setTblEventosList(List<TblEventos> tblEventosList) {
+        this.tblEventosList = tblEventosList;
+    }
+
+    @XmlTransient
+    public List<TblTransferencias> getTblTransferenciasList() {
+        return tblTransferenciasList;
+    }
+
+    public void setTblTransferenciasList(List<TblTransferencias> tblTransferenciasList) {
+        this.tblTransferenciasList = tblTransferenciasList;
+    }
+
+    @XmlTransient
+    public List<TblEventoDetalle> getTblEventoDetalleList() {
+        return tblEventoDetalleList;
+    }
+
+    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
+        this.tblEventoDetalleList = tblEventoDetalleList;
     }
 
 }

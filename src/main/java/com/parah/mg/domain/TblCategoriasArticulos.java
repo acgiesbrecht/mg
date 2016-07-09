@@ -6,7 +6,7 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -45,7 +45,7 @@ public class TblCategoriasArticulos implements Serializable {
     @Column(name = "DESCRIPCION")
     private String descripcion;
     //@OneToMany(cascade = CascadeType.ALL, mappedBy = "idCategoriaArticulo")
-    //private Collection<TblEventoDetalle> tblEventoDetalleCollection;
+    //private List<TblEventoDetalle> tblEventoDetalleList;
 
     public TblCategoriasArticulos() {
     }
@@ -71,12 +71,12 @@ public class TblCategoriasArticulos implements Serializable {
     }
 
     /*@XmlTransient
-    public Collection<TblEventoDetalle> getTblEventoDetalleCollection() {
-        return tblEventoDetalleCollection;
+    public List<TblEventoDetalle> getTblEventoDetalleList() {
+        return tblEventoDetalleList;
     }
 
-    public void setTblEventoDetalleCollection(Collection<TblEventoDetalle> tblEventoDetalleCollection) {
-        this.tblEventoDetalleCollection = tblEventoDetalleCollection;
+    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
+        this.tblEventoDetalleList = tblEventoDetalleList;
     }*/
     @Override
     public int hashCode() {

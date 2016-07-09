@@ -6,7 +6,7 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,18 +38,18 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TblCuentasContables implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaContableHaber")
-    private Collection<TblAsientos> tblAsientosCollection;
+    private List<TblAsientos> tblAsientosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaContableDebe")
-    private Collection<TblAsientos> tblAsientosCollection1;
+    private List<TblAsientos> tblAsientosList1;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaContableHaber")
-    private Collection<TblAsientosTemporales> tblAsientosTemporalesCollection;
+    private List<TblAsientosTemporales> tblAsientosTemporalesList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaContableDebe")
-    private Collection<TblAsientosTemporales> tblAsientosTemporalesCollection1;
+    private List<TblAsientosTemporales> tblAsientosTemporalesList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaContableCtaCtePorDefecto")
-    private Collection<TblCentrosDeCosto> tblCentrosDeCostoCollection;
+    private List<TblCentrosDeCosto> tblCentrosDeCostoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCuentaContableEfectivoPorDefecto")
-    private Collection<TblCentrosDeCosto> tblCentrosDeCostoCollection1;
+    private List<TblCentrosDeCosto> tblCentrosDeCostoList1;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -65,7 +65,7 @@ public class TblCuentasContables implements Serializable {
     @Column(name = "IMPUTABLE")
     private Boolean imputable;
     @OneToMany(mappedBy = "idCuentaMadre")
-    private Collection<TblCuentasContables> tblCuentasContablesCollection;
+    private List<TblCuentasContables> tblCuentasContablesList;
     @JoinColumn(name = "ID_CUENTA_MADRE", referencedColumnName = "ID")
     @ManyToOne
     private TblCuentasContables idCuentaMadre;
@@ -107,12 +107,12 @@ public class TblCuentasContables implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblCuentasContables> getTblCuentasContablesCollection() {
-        return tblCuentasContablesCollection;
+    public List<TblCuentasContables> getTblCuentasContablesList() {
+        return tblCuentasContablesList;
     }
 
-    public void setTblCuentasContablesCollection(Collection<TblCuentasContables> tblCuentasContablesCollection) {
-        this.tblCuentasContablesCollection = tblCuentasContablesCollection;
+    public void setTblCuentasContablesList(List<TblCuentasContables> tblCuentasContablesList) {
+        this.tblCuentasContablesList = tblCuentasContablesList;
     }
 
     public TblCuentasContables getIdCuentaMadre() {
@@ -149,57 +149,57 @@ public class TblCuentasContables implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblAsientosTemporales> getTblAsientosTemporalesCollection() {
-        return tblAsientosTemporalesCollection;
+    public List<TblAsientosTemporales> getTblAsientosTemporalesList() {
+        return tblAsientosTemporalesList;
     }
 
-    public void setTblAsientosTemporalesCollection(Collection<TblAsientosTemporales> tblAsientosTemporalesCollection) {
-        this.tblAsientosTemporalesCollection = tblAsientosTemporalesCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblAsientosTemporales> getTblAsientosTemporalesCollection1() {
-        return tblAsientosTemporalesCollection1;
-    }
-
-    public void setTblAsientosTemporalesCollection1(Collection<TblAsientosTemporales> tblAsientosTemporalesCollection1) {
-        this.tblAsientosTemporalesCollection1 = tblAsientosTemporalesCollection1;
+    public void setTblAsientosTemporalesList(List<TblAsientosTemporales> tblAsientosTemporalesList) {
+        this.tblAsientosTemporalesList = tblAsientosTemporalesList;
     }
 
     @XmlTransient
-    public Collection<TblCentrosDeCosto> getTblCentrosDeCostoCollection() {
-        return tblCentrosDeCostoCollection;
+    public List<TblAsientosTemporales> getTblAsientosTemporalesList1() {
+        return tblAsientosTemporalesList1;
     }
 
-    public void setTblCentrosDeCostoCollection(Collection<TblCentrosDeCosto> tblCentrosDeCostoCollection) {
-        this.tblCentrosDeCostoCollection = tblCentrosDeCostoCollection;
-    }
-
-    @XmlTransient
-    public Collection<TblCentrosDeCosto> getTblCentrosDeCostoCollection1() {
-        return tblCentrosDeCostoCollection1;
-    }
-
-    public void setTblCentrosDeCostoCollection1(Collection<TblCentrosDeCosto> tblCentrosDeCostoCollection1) {
-        this.tblCentrosDeCostoCollection1 = tblCentrosDeCostoCollection1;
+    public void setTblAsientosTemporalesList1(List<TblAsientosTemporales> tblAsientosTemporalesList1) {
+        this.tblAsientosTemporalesList1 = tblAsientosTemporalesList1;
     }
 
     @XmlTransient
-    public Collection<TblAsientos> getTblAsientosCollection() {
-        return tblAsientosCollection;
+    public List<TblCentrosDeCosto> getTblCentrosDeCostoList() {
+        return tblCentrosDeCostoList;
     }
 
-    public void setTblAsientosCollection(Collection<TblAsientos> tblAsientosCollection) {
-        this.tblAsientosCollection = tblAsientosCollection;
+    public void setTblCentrosDeCostoList(List<TblCentrosDeCosto> tblCentrosDeCostoList) {
+        this.tblCentrosDeCostoList = tblCentrosDeCostoList;
     }
 
     @XmlTransient
-    public Collection<TblAsientos> getTblAsientosCollection1() {
-        return tblAsientosCollection1;
+    public List<TblCentrosDeCosto> getTblCentrosDeCostoList1() {
+        return tblCentrosDeCostoList1;
     }
 
-    public void setTblAsientosCollection1(Collection<TblAsientos> tblAsientosCollection1) {
-        this.tblAsientosCollection1 = tblAsientosCollection1;
+    public void setTblCentrosDeCostoList1(List<TblCentrosDeCosto> tblCentrosDeCostoList1) {
+        this.tblCentrosDeCostoList1 = tblCentrosDeCostoList1;
+    }
+
+    @XmlTransient
+    public List<TblAsientos> getTblAsientosList() {
+        return tblAsientosList;
+    }
+
+    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList = tblAsientosList;
+    }
+
+    @XmlTransient
+    public List<TblAsientos> getTblAsientosList1() {
+        return tblAsientosList1;
+    }
+
+    public void setTblAsientosList1(List<TblAsientos> tblAsientosList1) {
+        this.tblAsientosList1 = tblAsientosList1;
     }
 
 }

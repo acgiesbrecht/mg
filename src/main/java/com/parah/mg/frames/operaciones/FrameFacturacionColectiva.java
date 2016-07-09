@@ -21,7 +21,7 @@ import java.awt.EventQueue;
 import java.beans.Beans;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -283,7 +283,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 Utils.getInstance().printFactura(factura);
 
             });
-            java.util.Collection data = query.getResultList();
+            java.util.List data = query.getResultList();
             data.stream().forEach((entity) -> {
                 entityManager.refresh(entity);
             });
@@ -316,7 +316,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
             List<PagosRealizados> pagosList = new ArrayList<>();
 
-            Query queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblTransferenciasCollection t WHERE t.fechahora >= :fechaDesde AND t.fechahora <= :fechaHasta");
+            Query queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblTransferenciasList t WHERE t.fechahora >= :fechaDesde AND t.fechahora <= :fechaHasta");
 
             queryE.setParameter("fechaDesde", dtpFechaDesde.getDate());
 
@@ -327,7 +327,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
             for (TblEntidades e : listE) {
                 if (siguienteFacturaNro <= listTimbrados.get(0).getNroFacturaFin()) {
-                    Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
+                    Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesList a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
                     queryT.setParameter("fecha", dtpFechaHasta.getDate());
                     queryT.setParameter("entidad", e);
                     List<TblTransferencias> listT = (List<TblTransferencias>) queryT.getResultList();
@@ -336,15 +336,15 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                         p.setEntidad(e);
                         Integer montoAporte = 0;
                         Integer montoDonacion = 0;
-                        Collection<TblAsientosTemporales> ts = p.getAsientosTemporalesList();
+                        List<TblAsientosTemporales> ts = p.getAsientosTemporalesList();
                         if (ts == null) {
                             ts = new LinkedList<>();
                             p.setAsientosTemporalesList((List) ts);
                         }
                         for (TblTransferencias t : listT) {
 
-                            ts.addAll(t.getTblAsientosTemporalesCollection());
-                            for (TblAsientosTemporales at : t.getTblAsientosTemporalesCollection()) {
+                            ts.addAll(t.getTblAsientosTemporalesList());
+                            for (TblAsientosTemporales at : t.getTblAsientosTemporalesList()) {
                                 if (at.getEsAporte()) {
                                     montoAporte += at.getMonto();
                                 } else {
@@ -363,13 +363,13 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 }
             }
 
-            queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblRecibosCollection t WHERE t.fechahora <= :fecha");
+            queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblRecibosList t WHERE t.fechahora <= :fecha");
             queryE.setParameter("fecha", dtpFechaHasta.getDate());
             listE = (List<TblEntidades>) queryE.getResultList();
 
             for (TblEntidades e : listE) {
                 if (siguienteFacturaNro <= listTimbrados.get(0).getNroFacturaFin()) {
-                    Query queryRecibos = entityManager.createQuery("SELECT distinct t FROM TblRecibos t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
+                    Query queryRecibos = entityManager.createQuery("SELECT distinct t FROM TblRecibos t JOIN t.tblAsientosTemporalesList a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
                     queryRecibos.setParameter("fecha", dtpFechaHasta.getDate());
                     queryRecibos.setParameter("entidad", e);
                     List<TblRecibos> listR = (List<TblRecibos>) queryRecibos.getResultList();
@@ -378,14 +378,14 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                         p.setEntidad(e);
                         Integer montoAporte = 0;
                         Integer montoDonacion = 0;
-                        Collection<TblAsientosTemporales> ts = p.getAsientosTemporalesList();
+                        List<TblAsientosTemporales> ts = p.getAsientosTemporalesList();
                         if (ts == null) {
                             ts = new LinkedList<>();
                             p.setAsientosTemporalesList((List) ts);
                         }
                         for (TblRecibos r : listR) {
-                            ts.addAll(r.getTblAsientosTemporalesCollection());
-                            for (TblAsientosTemporales at : r.getTblAsientosTemporalesCollection()) {
+                            ts.addAll(r.getTblAsientosTemporalesList());
+                            for (TblAsientosTemporales at : r.getTblAsientosTemporalesList()) {
                                 if (at.getEsAporte()) {
                                     montoAporte += at.getMonto();
                                 } else {
@@ -443,10 +443,10 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     f.setImporteDonacion(pago.getMontoDonacion());
                     f.setIdUser(currentUser.getUser());
 
-                    Collection<TblAsientos> ts = f.getTblAsientosCollection();
+                    List<TblAsientos> ts = f.getTblAsientosList();
                     if (ts == null) {
                         ts = new LinkedList<>();
-                        f.setTblAsientosCollection((List) ts);
+                        f.setTblAsientosList((List) ts);
                     }
                     for (TblAsientosTemporales aT : pago.getAsientosTemporalesList()) {
                         TblAsientos asiento = new TblAsientos();
@@ -457,10 +457,10 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                         asiento.setMonto(aT.getMonto());
                         asiento.setIdUser(currentUser.getUser());
 
-                        Collection<TblAsientosTemporales> asientosT = asiento.getTblAsientosTemporalesCollection();
+                        List<TblAsientosTemporales> asientosT = asiento.getTblAsientosTemporalesList();
                         if (asientosT == null) {
                             asientosT = new LinkedList<>();
-                            asiento.setTblAsientosTemporalesCollection((List) asientosT);
+                            asiento.setTblAsientosTemporalesList((List) asientosT);
                         }
                         asientosT.add(aT);
 

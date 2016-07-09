@@ -464,7 +464,7 @@ public class FrameAsientosManuales extends JInternalFrame {
         try {
             entityManager.getTransaction().rollback();
             entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
+            java.util.List data = query.getResultList();
             for (Object entity : data) {
                 entityManager.refresh(entity);
             }
@@ -513,7 +513,7 @@ public class FrameAsientosManuales extends JInternalFrame {
         try {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
+            java.util.List data = query.getResultList();
             for (Object entity : data) {
                 entityManager.refresh(entity);
             }

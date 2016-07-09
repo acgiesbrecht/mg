@@ -9,7 +9,7 @@ import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblEventoTipos;
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -26,7 +26,7 @@ public class PagosRealizados implements Serializable {
     @Id
     private TblEntidades entidad;
     private LocalDate fecha;
-    private Collection<TblAsientosTemporales> asientosTemporalesList;
+    private List<TblAsientosTemporales> asientosTemporalesList;
     private TblEventoTipos eventoTipo;
     private Integer montoAporte;
     private Integer montoDonacion;
@@ -49,14 +49,14 @@ public class PagosRealizados implements Serializable {
     /**
      * @return the asientosTemporalesList
      */
-    public Collection<TblAsientosTemporales> getAsientosTemporalesList() {
+    public List<TblAsientosTemporales> getAsientosTemporalesList() {
         return asientosTemporalesList;
     }
 
     /**
      * @param asientosTemporalesList the asientosTemporalesList to set
      */
-    public void setAsientosTemporalesList(Collection<TblAsientosTemporales> asientosTemporalesList) {
+    public void setAsientosTemporalesList(List<TblAsientosTemporales> asientosTemporalesList) {
         this.asientosTemporalesList = asientosTemporalesList;
     }
 

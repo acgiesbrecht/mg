@@ -30,7 +30,7 @@ import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -552,10 +552,10 @@ public class FrameFacturacionUnica extends JInternalFrame {
             if (txtCdC.getValue() != null) {
                 factura.setCasillaDeCorreo(((Number) txtCdC.getValue()).intValue());
             }
-            Collection<TblAsientos> ts = factura.getTblAsientosCollection();
+            List<TblAsientos> ts = factura.getTblAsientosList();
             if (ts == null) {
                 ts = new LinkedList<>();
-                factura.setTblAsientosCollection((List) ts);
+                factura.setTblAsientosList((List) ts);
             }
             Integer montoAporte = 0;
             Integer montoDonacion = 0;
@@ -574,10 +574,10 @@ public class FrameFacturacionUnica extends JInternalFrame {
                         asiento.setMonto(at.getMonto());
                         asiento.setIdUser(currentUser.getUser());
 
-                        Collection<TblAsientosTemporales> asientosT = asiento.getTblAsientosTemporalesCollection();
+                        List<TblAsientosTemporales> asientosT = asiento.getTblAsientosTemporalesList();
                         if (asientosT == null) {
                             asientosT = new LinkedList<>();
-                            asiento.setTblAsientosTemporalesCollection((List) asientosT);
+                            asiento.setTblAsientosTemporalesList((List) asientosT);
                         }
                         asientosT.add(at);
 
@@ -724,7 +724,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
             listPagos.clear();
             TblEntidades selectedEntidad = (TblEntidades) cboEntidad.getSelectedItem();
 
-            Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
+            Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesList a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
             queryT.setParameter("fecha", dtpFecha.getDateTime().toLocalDate());
             queryT.setParameter("entidad", selectedEntidad);
             List<TblTransferencias> listT = (List<TblTransferencias>) queryT.getResultList();
@@ -732,12 +732,12 @@ public class FrameFacturacionUnica extends JInternalFrame {
                 imprimirButton.setEnabled(true);
                 for (TblTransferencias t : listT) {
                     PagosRealizados p = new PagosRealizados();
-                    Collection<TblAsientosTemporales> pagosATList = p.getAsientosTemporalesList();
+                    List<TblAsientosTemporales> pagosATList = p.getAsientosTemporalesList();
                     if (pagosATList == null) {
                         pagosATList = new LinkedList<>();
                         p.setAsientosTemporalesList((List) pagosATList);
                     }
-                    p.getAsientosTemporalesList().addAll(t.getTblAsientosTemporalesCollection());
+                    p.getAsientosTemporalesList().addAll(t.getTblAsientosTemporalesList());
                     p.setEntidad(t.getIdEntidad());
                     p.setFecha(t.getFechahora());
                     Integer montoAporte = 0;
@@ -755,7 +755,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     listPagos.add(p);
                 }
             }
-            Query queryR = entityManager.createQuery("SELECT distinct t FROM TblRecibos t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
+            Query queryR = entityManager.createQuery("SELECT distinct t FROM TblRecibos t JOIN t.tblAsientosTemporalesList a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
             queryR.setParameter("fecha", dtpFecha.getDateTime().toLocalDate());
             queryR.setParameter("entidad", selectedEntidad);
             List<TblRecibos> listR = (List<TblRecibos>) queryR.getResultList();
@@ -763,12 +763,12 @@ public class FrameFacturacionUnica extends JInternalFrame {
                 imprimirButton.setEnabled(true);
                 for (TblRecibos r : listR) {
                     PagosRealizados p = new PagosRealizados();
-                    Collection<TblAsientosTemporales> pagosATList = p.getAsientosTemporalesList();
+                    List<TblAsientosTemporales> pagosATList = p.getAsientosTemporalesList();
                     if (pagosATList == null) {
                         pagosATList = new LinkedList<>();
                         p.setAsientosTemporalesList((List) pagosATList);
                     }
-                    p.getAsientosTemporalesList().addAll(r.getTblAsientosTemporalesCollection());
+                    p.getAsientosTemporalesList().addAll(r.getTblAsientosTemporalesList());
                     p.setEntidad(r.getIdEntidad());
                     p.setFecha(r.getFechahora());
                     Integer montoAporte = 0;

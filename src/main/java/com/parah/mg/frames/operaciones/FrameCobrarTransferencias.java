@@ -575,7 +575,7 @@ public class FrameCobrarTransferencias extends JInternalFrame {
         try {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
+            java.util.List data = query.getResultList();
             data.stream().forEach((entity) -> {
                 entityManager.refresh(entity);
             });
@@ -720,7 +720,7 @@ public class FrameCobrarTransferencias extends JInternalFrame {
                 entityManager.getTransaction().rollback();
                 entityManager.getTransaction().begin();
                 query.setParameter("tipoEventoId", ((TblEventoTipos) cboEventoTipo.getSelectedItem()));
-                java.util.Collection data = query.getResultList();
+                java.util.List data = query.getResultList();
                 data.stream().forEach((entity) -> {
                     entityManager.refresh(entity);
                 });

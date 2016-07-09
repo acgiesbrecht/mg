@@ -6,7 +6,7 @@
 package com.parah.mg.domain.miembros;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,9 +47,9 @@ public class TblMiembrosRelacionesRoles implements Serializable {
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(mappedBy = "idMiembrosRelacionesRol2")
-    private Collection<TblMiembrosRelaciones> tblMiembrosRelacionesCollection;
+    private List<TblMiembrosRelaciones> tblMiembrosRelacionesList;
     @OneToMany(mappedBy = "idMiembrosRelacionesRol1")
-    private Collection<TblMiembrosRelaciones> tblMiembrosRelacionesCollection1;
+    private List<TblMiembrosRelaciones> tblMiembrosRelacionesList1;
 
     public TblMiembrosRelacionesRoles() {
     }
@@ -80,21 +80,21 @@ public class TblMiembrosRelacionesRoles implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblMiembrosRelaciones> getTblMiembrosRelacionesCollection() {
-        return tblMiembrosRelacionesCollection;
+    public List<TblMiembrosRelaciones> getTblMiembrosRelacionesList() {
+        return tblMiembrosRelacionesList;
     }
 
-    public void setTblMiembrosRelacionesCollection(Collection<TblMiembrosRelaciones> tblMiembrosRelacionesCollection) {
-        this.tblMiembrosRelacionesCollection = tblMiembrosRelacionesCollection;
+    public void setTblMiembrosRelacionesList(List<TblMiembrosRelaciones> tblMiembrosRelacionesList) {
+        this.tblMiembrosRelacionesList = tblMiembrosRelacionesList;
     }
 
     @XmlTransient
-    public Collection<TblMiembrosRelaciones> getTblMiembrosRelacionesCollection1() {
-        return tblMiembrosRelacionesCollection1;
+    public List<TblMiembrosRelaciones> getTblMiembrosRelacionesList1() {
+        return tblMiembrosRelacionesList1;
     }
 
-    public void setTblMiembrosRelacionesCollection1(Collection<TblMiembrosRelaciones> tblMiembrosRelacionesCollection1) {
-        this.tblMiembrosRelacionesCollection1 = tblMiembrosRelacionesCollection1;
+    public void setTblMiembrosRelacionesList1(List<TblMiembrosRelaciones> tblMiembrosRelacionesList1) {
+        this.tblMiembrosRelacionesList1 = tblMiembrosRelacionesList1;
     }
 
     @Override

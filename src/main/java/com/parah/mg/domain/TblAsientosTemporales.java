@@ -6,7 +6,7 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -63,8 +63,8 @@ public class TblAsientosTemporales implements Serializable {
     private Boolean facturado;
     @Column(name = "ES_APORTE")
     private Boolean esAporte;
-    @ManyToMany(mappedBy = "tblAsientosTemporalesCollection")
-    private Collection<TblAsientos> tblAsientosCollection;
+    @ManyToMany(mappedBy = "tblAsientosTemporalesList")
+    private List<TblAsientos> tblAsientosList;
     @JoinColumn(name = "ID_CENTRO_DE_COSTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCentrosDeCosto idCentroDeCosto;
@@ -130,12 +130,12 @@ public class TblAsientosTemporales implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblAsientos> getTblAsientosCollection() {
-        return tblAsientosCollection;
+    public List<TblAsientos> getTblAsientosList() {
+        return tblAsientosList;
     }
 
-    public void setTblAsientosCollection(Collection<TblAsientos> tblAsientosCollection) {
-        this.tblAsientosCollection = tblAsientosCollection;
+    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList = tblAsientosList;
     }
 
     public TblCentrosDeCosto getIdCentroDeCosto() {

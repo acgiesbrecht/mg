@@ -31,7 +31,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -905,13 +905,13 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                         /*--------ASIENTOS TEMPROALES RECIEN SE GENERAN AL COBRAR LA TRANSFERENCIA-----------
                     List<TblAsientos> listAsientos = new ArrayList<>();
                     for (TblEventoDetalle evd : listEventoDetalle) {
-                        listAsientos.addAll(evd.getTblAsientosCollection());
+                        listAsientos.addAll(evd.getTblAsientosList());
                     }
 
-                    Collection<TblAsientosTemporales> listAsientosTemporales = transferencia.getTblAsientosTemporalesCollection();
+                    List<TblAsientosTemporales> listAsientosTemporales = transferencia.getTblAsientosTemporalesList();
                     if (listAsientosTemporales == null) {
                         listAsientosTemporales = new LinkedList<>();
-                        transferencia.setTblAsientosTemporalesCollection(listAsientosTemporales);
+                        transferencia.setTblAsientosTemporalesList(listAsientosTemporales);
                     }
 
                     //Aporte
@@ -1019,13 +1019,13 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
 
                 List<TblAsientos> listAsientos = new ArrayList<>();
                 for (TblEventoDetalle evd : listEventoDetalle) {
-                    listAsientos.addAll(evd.getTblAsientosCollection());
+                    listAsientos.addAll(evd.getTblAsientosList());
                 }
 
-                Collection<TblAsientosTemporales> listAsientosTemporales = recibo.getTblAsientosTemporalesCollection();
+                List<TblAsientosTemporales> listAsientosTemporales = recibo.getTblAsientosTemporalesList();
                 if (listAsientosTemporales == null) {
                     listAsientosTemporales = new LinkedList<>();
-                    recibo.setTblAsientosTemporalesCollection(listAsientosTemporales);
+                    recibo.setTblAsientosTemporalesList(listAsientosTemporales);
                 }
 
                 //Aporte

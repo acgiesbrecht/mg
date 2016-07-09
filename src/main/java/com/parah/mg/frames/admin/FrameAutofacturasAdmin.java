@@ -238,7 +238,7 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
 
                 t.setAnulado(true);
                 Calendar calendar = Calendar.getInstance();
-                for (TblAsientos asiento : t.getTblAsientosCollection()) {
+                for (TblAsientos asiento : t.getTblAsientosList()) {
                     if (asiento.getFechahora().getMonth().getValue() < LocalDateTime.now().getMonth().getValue()) {
                         TblAsientos asientoInverso = new TblAsientos();
                         entityManager.persist(asientoInverso);
@@ -257,7 +257,7 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
                 //chkAnulado.setSelected(true);
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
-                java.util.Collection data = query.getResultList();
+                java.util.List data = query.getResultList();
                 for (Object entity : data) {
                     entityManager.refresh(entity);
                 }

@@ -7,7 +7,7 @@ package com.parah.mg.domain;
 
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,9 +48,9 @@ public class TblFormasDePago implements Serializable {
     private String descripcion;
 
     /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "idFormaDePagoPreferida")
-    private Collection<TblEventoDetalle> tblEventoDetalleCollection;
+    private List<TblEventoDetalle> tblEventoDetalleList;
     @OneToMany(mappedBy = "idFormaDePagoPreferida")
-    private Collection<TblEntidades> tblEntidadesCollection;
+    private List<TblEntidades> tblEntidadesList;
      */
     public TblFormasDePago() {
     }
@@ -81,21 +81,21 @@ public class TblFormasDePago implements Serializable {
     }
 
     /*@XmlTransient
-    public Collection<TblEventoDetalle> getTblEventoDetalleCollection() {
-        return tblEventoDetalleCollection;
+    public List<TblEventoDetalle> getTblEventoDetalleList() {
+        return tblEventoDetalleList;
     }
 
-    public void setTblEventoDetalleCollection(Collection<TblEventoDetalle> tblEventoDetalleCollection) {
-        this.tblEventoDetalleCollection = tblEventoDetalleCollection;
+    public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
+        this.tblEventoDetalleList = tblEventoDetalleList;
     }
 
     @XmlTransient
-    public Collection<TblEntidades> getTblEntidadesCollection() {
-        return tblEntidadesCollection;
+    public List<TblEntidades> getTblEntidadesList() {
+        return tblEntidadesList;
     }
 
-    public void setTblEntidadesCollection(Collection<TblEntidades> tblEntidadesCollection) {
-        this.tblEntidadesCollection = tblEntidadesCollection;
+    public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
+        this.tblEntidadesList = tblEntidadesList;
     }*/
     @Override
     public int hashCode() {

@@ -7,7 +7,7 @@ package com.parah.mg.domain;
 
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.time.LocalDate;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -81,7 +81,7 @@ public class TblTransferencias implements Serializable {
         @JoinColumn(name = "ID_TRANSFERENCIA", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO_TEMPORAL", referencedColumnName = "ID")})
     @ManyToMany(cascade = CascadeType.ALL)
-    private Collection<TblAsientosTemporales> tblAsientosTemporalesCollection;
+    private List<TblAsientosTemporales> tblAsientosTemporalesList;
     @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblEntidades idEntidad;
@@ -167,12 +167,12 @@ public class TblTransferencias implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblAsientosTemporales> getTblAsientosTemporalesCollection() {
-        return tblAsientosTemporalesCollection;
+    public List<TblAsientosTemporales> getTblAsientosTemporalesList() {
+        return tblAsientosTemporalesList;
     }
 
-    public void setTblAsientosTemporalesCollection(Collection<TblAsientosTemporales> tblAsientosTemporalesCollection) {
-        this.tblAsientosTemporalesCollection = tblAsientosTemporalesCollection;
+    public void setTblAsientosTemporalesList(List<TblAsientosTemporales> tblAsientosTemporalesList) {
+        this.tblAsientosTemporalesList = tblAsientosTemporalesList;
     }
 
     public TblEntidades getIdEntidad() {

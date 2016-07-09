@@ -7,7 +7,7 @@ package com.parah.mg.domain;
 
 import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -90,7 +90,7 @@ public class TblFacturas implements Serializable {
         @JoinColumn(name = "NRO_FACTURA", referencedColumnName = "NRO")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
     @ManyToMany(cascade = CascadeType.ALL)
-    private Collection<TblAsientos> tblAsientosCollection;
+    private List<TblAsientos> tblAsientosList;
     @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEntidades idEntidad;
@@ -191,12 +191,12 @@ public class TblFacturas implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblAsientos> getTblAsientosCollection() {
-        return tblAsientosCollection;
+    public List<TblAsientos> getTblAsientosList() {
+        return tblAsientosList;
     }
 
-    public void setTblAsientosCollection(Collection<TblAsientos> tblAsientosCollection) {
-        this.tblAsientosCollection = tblAsientosCollection;
+    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList = tblAsientosList;
     }
 
     public TblEntidades getIdEntidad() {

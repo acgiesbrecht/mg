@@ -522,7 +522,7 @@ public class FrameAutofacturacion extends JInternalFrame {
                 a.setIdUser(factura.getIdUser());
             }
 
-            factura.setTblAsientosCollection(listAsientos);
+            factura.setTblAsientosList(listAsientos);
 
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();

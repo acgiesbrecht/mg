@@ -20,7 +20,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -551,25 +551,25 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
             List<TblEventoDetalle> listEventoDetalle = org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoDetalle.getResultList());
             TblCuentasContablesPorDefecto cuentasContablesPorDefecto = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
             for (TblEventoDetalle evd : listEventoDetalle) {
-                if (evd.getTblAsientosCollection().size() == 2) {
+                if (evd.getTblAsientosList().size() == 2) {
                     Integer indexAsientoAporte = -1;
                     Integer indexAsientoDonacion = -1;
-                    if (((List<TblAsientos>) evd.getTblAsientosCollection()).get(0).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
+                    if (((List<TblAsientos>) evd.getTblAsientosList()).get(0).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
                         indexAsientoAporte = 0;
                         indexAsientoDonacion = 1;
-                    } else if (((List<TblAsientos>) evd.getTblAsientosCollection()).get(1).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
+                    } else if (((List<TblAsientos>) evd.getTblAsientosList()).get(1).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
                         indexAsientoAporte = 1;
                         indexAsientoDonacion = 0;
                     }
-                    ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
-                    ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoDonacion).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosCollection()).get(indexAsientoAporte).getMonto());
+                    ((List<TblAsientos>) evd.getTblAsientosList()).get(indexAsientoAporte).setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
+                    ((List<TblAsientos>) evd.getTblAsientosList()).get(indexAsientoDonacion).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosList()).get(indexAsientoAporte).getMonto());
                     entityManager.merge(evd);
-                } else if (evd.getTblAsientosCollection().isEmpty()) {
+                } else if (evd.getTblAsientosList().isEmpty()) {
 
-                    Collection<TblAsientos> ts = evd.getTblAsientosCollection();
+                    List<TblAsientos> ts = evd.getTblAsientosList();
                     if (ts == null) {
                         ts = new LinkedList<>();
-                        evd.setTblAsientosCollection((List) ts);
+                        evd.setTblAsientosList((List) ts);
                     }
                     TblAsientos asientoAporte = new TblAsientos();
                     asientoAporte.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
@@ -608,14 +608,14 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                 List<TblEventoDetalle> listEvd = queryEvd.getResultList();
                 List<TblAsientos> listAsientos = new ArrayList<>();
                 for (TblEventoDetalle evd : listEvd) {
-                    listAsientos.addAll(evd.getTblAsientosCollection());
+                    listAsientos.addAll(evd.getTblAsientosList());
                 }
-                Collection<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesCollection();
+                List<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesList();
                 if (listAsientosTemporales == null) {
                     listAsientosTemporales = new LinkedList<>();
-                    t.setTblAsientosTemporalesCollection(listAsientosTemporales);
+                    t.setTblAsientosTemporalesList(listAsientosTemporales);
                 }
-                if (t.getTblAsientosTemporalesCollection().isEmpty()) {
+                if (t.getTblAsientosTemporalesList().isEmpty()) {
                     for (TblAsientos asiento : listAsientos) {
                         TblAsientosTemporales aT = new TblAsientosTemporales();
                         entityManager.persist(aT);

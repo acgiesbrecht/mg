@@ -7,7 +7,7 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -117,7 +117,7 @@ public class TblAutofacturas implements Serializable {
         @JoinColumn(name = "ID_AUTOFACTURA", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
     @ManyToMany(cascade = CascadeType.ALL)
-    private Collection<TblAsientos> tblAsientosCollection;
+    private List<TblAsientos> tblAsientosList;
     @JoinColumn(name = "ID_TIMBRADO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblTimbradosAutofacturas idTimbrado;
@@ -252,12 +252,12 @@ public class TblAutofacturas implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblAsientos> getTblAsientosCollection() {
-        return tblAsientosCollection;
+    public List<TblAsientos> getTblAsientosList() {
+        return tblAsientosList;
     }
 
-    public void setTblAsientosCollection(Collection<TblAsientos> tblAsientosCollection) {
-        this.tblAsientosCollection = tblAsientosCollection;
+    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList = tblAsientosList;
     }
 
     public TblTimbradosAutofacturas getIdTimbrado() {

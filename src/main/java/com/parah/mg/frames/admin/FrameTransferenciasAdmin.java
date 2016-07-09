@@ -271,7 +271,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         try {
             entityManager.getTransaction().rollback();
             entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
+            java.util.List data = query.getResultList();
             data.stream().forEach((entity) -> {
                 entityManager.refresh(entity);
             });
@@ -300,7 +300,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
                 }
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
-                java.util.Collection data = query.getResultList();
+                java.util.List data = query.getResultList();
                 data.stream().forEach((entity) -> {
                     entityManager.refresh(entity);
                 });
@@ -370,7 +370,7 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
             for (Integer idx = 0; idx < selected.length; idx++) {
                 Integer index = masterTable.convertRowIndexToModel(selected[idx]);
                 TblTransferencias t = list.get(index);
-                List<TblAsientosTemporales> l = (List<TblAsientosTemporales>) t.getTblAsientosTemporalesCollection();
+                List<TblAsientosTemporales> l = (List<TblAsientosTemporales>) t.getTblAsientosTemporalesList();
                 for (TblAsientosTemporales at : l) {
                     at.setFacturado(false);
                     entityManager.merge(at);

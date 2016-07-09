@@ -7,7 +7,7 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -46,7 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TblRecibosCompra implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tblRecibosCompra")
-    private Collection<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraCollection;
+    private List<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -84,7 +84,7 @@ public class TblRecibosCompra implements Serializable {
         @JoinColumn(name = "ID_RECIBO", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
     @ManyToMany(cascade = CascadeType.ALL)
-    private Collection<TblAsientos> tblAsientosCollection;
+    private List<TblAsientos> tblAsientosList;
 
     public TblRecibosCompra() {
     }
@@ -159,12 +159,12 @@ public class TblRecibosCompra implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblAsientos> getTblAsientosCollection() {
-        return tblAsientosCollection;
+    public List<TblAsientos> getTblAsientosList() {
+        return tblAsientosList;
     }
 
-    public void setTblAsientosCollection(Collection<TblAsientos> tblAsientosCollection) {
-        this.tblAsientosCollection = tblAsientosCollection;
+    public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList = tblAsientosList;
     }
 
     @Override
@@ -193,12 +193,12 @@ public class TblRecibosCompra implements Serializable {
     }
 
     @XmlTransient
-    public Collection<TblRecibosCompraFacturasCompra> getTblRecibosCompraFacturasCompraCollection() {
-        return tblRecibosCompraFacturasCompraCollection;
+    public List<TblRecibosCompraFacturasCompra> getTblRecibosCompraFacturasCompraList() {
+        return tblRecibosCompraFacturasCompraList;
     }
 
-    public void setTblRecibosCompraFacturasCompraCollection(Collection<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraCollection) {
-        this.tblRecibosCompraFacturasCompraCollection = tblRecibosCompraFacturasCompraCollection;
+    public void setTblRecibosCompraFacturasCompraList(List<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraList) {
+        this.tblRecibosCompraFacturasCompraList = tblRecibosCompraFacturasCompraList;
     }
 
 }
