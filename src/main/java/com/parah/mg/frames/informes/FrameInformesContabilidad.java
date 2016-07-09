@@ -11,7 +11,6 @@ import com.parah.mg.utils.Utils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -51,15 +50,15 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
 
             LocalDateTime startDate = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
             LocalDateTime endDate = LocalDateTime.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).withHour(59).withMinute(59).withSecond(59);
-            txtFechaInicioDiario.setDateTime(startDate);
-            txtFechaInicioMayor.setDateTime(startDate);
-            txtFechaInicioCompras.setDateTime(startDate);
-            txtFechaInicioVentas.setDateTime(startDate);
+            txtFechaInicioDiario.setDateTimeStrict(startDate);
+            txtFechaInicioMayor.setDateTimeStrict(startDate);
+            txtFechaInicioCompras.setDateTimeStrict(startDate);
+            txtFechaInicioVentas.setDateTimeStrict(startDate);
 
-            txtFechaFinMayor.setDateTime(endDate);
-            txtFechaFinDiario.setDateTime(endDate);
-            txtFechaFinCompras.setDateTime(endDate);
-            txtFechaFinVentas.setDateTime(endDate);
+            txtFechaFinMayor.setDateTimeStrict(endDate);
+            txtFechaFinDiario.setDateTimeStrict(endDate);
+            txtFechaFinCompras.setDateTimeStrict(endDate);
+            txtFechaFinVentas.setDateTimeStrict(endDate);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -323,8 +322,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private void cmdLibroMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayorActionPerformed
         try {
             Map parameters = new HashMap();
-            parameters.put("fechaDesde", (LocalDateTime) txtFechaInicioMayor.getDateTime());
-            parameters.put("fechaHasta", (LocalDateTime) txtFechaFinMayor.getDateTime());
+            parameters.put("fechaDesde", (LocalDateTime) txtFechaInicioMayor.getDateTimeStrict());
+            parameters.put("fechaHasta", (LocalDateTime) txtFechaFinMayor.getDateTimeStrict());
             //parameters.put("ctaContable", 101020100);
             Utils.getInstance().showReport("libro_mayor", "libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters, false);
             //Utils.getInstance().showReport("libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters);
