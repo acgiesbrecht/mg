@@ -9,6 +9,12 @@ import java.util.regex.Pattern;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -21,6 +27,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JTable;
+import javax.swing.UIDefaults;
+import javax.swing.table.TableCellEditor;
 
 /**
  * InternalUtilities, This class contains static functions that are used by the date picker or the
@@ -173,6 +183,69 @@ public class InternalUtilities {
         } catch (Exception ex) {
             return "";
         }
+    }
+
+    /**
+     * getScreenInsets, This returns the insets of the screen, which are defined by any task bars
+     * that have been set up by the user. This function accounts for multi-monitor setups. If a
+     * window is supplied, then the the monitor that contains the window will be used. If a window
+     * is not supplied, then the primary monitor will be used.
+     */
+    static public Insets getScreenInsets(Window windowOrNull) {
+        Insets insets;
+        if (windowOrNull == null) {
+            insets = Toolkit.getDefaultToolkit().getScreenInsets(GraphicsEnvironment
+                    .getLocalGraphicsEnvironment().getDefaultScreenDevice()
+                    .getDefaultConfiguration());
+        } else {
+            insets = windowOrNull.getToolkit().getScreenInsets(
+                    windowOrNull.getGraphicsConfiguration());
+        }
+        return insets;
+    }
+
+    /**
+     * getScreenTotalArea, This returns the total area of the screen. (The total area includes any
+     * task bars.) This function accounts for multi-monitor setups. If a window is supplied, then
+     * the the monitor that contains the window will be used. If a window is not supplied, then the
+     * primary monitor will be used.
+     */
+    static public Rectangle getScreenTotalArea(Window windowOrNull) {
+        Rectangle bounds;
+        if (windowOrNull == null) {
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            bounds = ge.getDefaultScreenDevice().getDefaultConfiguration().getBounds();
+        } else {
+            GraphicsConfiguration gc = windowOrNull.getGraphicsConfiguration();
+            bounds = gc.getBounds();
+        }
+        return bounds;
+    }
+
+    /**
+     * getScreenWorkingArea, This returns the working area of the screen. (The working area excludes
+     * any task bars.) This function accounts for multi-monitor setups. If a window is supplied,
+     * then the the monitor that contains the window will be used. If a window is not supplied, then
+     * the primary monitor will be used.
+     */
+    static public Rectangle getScreenWorkingArea(Window windowOrNull) {
+        Insets insets;
+        Rectangle bounds;
+        if (windowOrNull == null) {
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            insets = Toolkit.getDefaultToolkit().getScreenInsets(ge.getDefaultScreenDevice()
+                    .getDefaultConfiguration());
+            bounds = ge.getDefaultScreenDevice().getDefaultConfiguration().getBounds();
+        } else {
+            GraphicsConfiguration gc = windowOrNull.getGraphicsConfiguration();
+            insets = windowOrNull.getToolkit().getScreenInsets(gc);
+            bounds = gc.getBounds();
+        }
+        bounds.x += insets.left;
+        bounds.y += insets.top;
+        bounds.width -= (insets.left + insets.right);
+        bounds.height -= (insets.top + insets.bottom);
+        return bounds;
     }
 
     /**
@@ -361,6 +434,36 @@ public class InternalUtilities {
     }
 
     /**
+     * safeSubstring, This is a version of the substring function which is guaranteed to never throw
+     * an exception. If the supplied string is null then this will return null. If the beginIndex or
+     * endIndexExclusive are out of range for the string, then the indexes will be compressed to fit
+     * within the bounds of the supplied string. If the beginIndex is greater than or equal to
+     * endIndexExclusive, then this will return an empty string.
+     */
+    static public String safeSubstring(String text, int beginIndex, int endIndexExclusive) {
+        if (text == null) {
+            return null;
+        }
+        int textLength = text.length();
+        if (beginIndex < 0) {
+            beginIndex = 0;
+        }
+        if (endIndexExclusive < 0) {
+            endIndexExclusive = 0;
+        }
+        if (endIndexExclusive > textLength) {
+            endIndexExclusive = textLength;
+        }
+        if (beginIndex > endIndexExclusive) {
+            beginIndex = endIndexExclusive;
+        }
+        if (beginIndex == endIndexExclusive) {
+            return "";
+        }
+        return text.substring(beginIndex, endIndexExclusive);
+    }
+
+    /**
      * getCompiledJavaVersionFromJavaClassFile, Given an input stream to a Java class file, this
      * will return the major or minor version of Java that was used to compile the file. In a Maven
      * POM file, this is known as the "target" version of Java that was used to compile the file.
@@ -402,6 +505,31 @@ public class InternalUtilities {
                 return "Java 8";
             default:
                 return "Could not find version string for major version: " + majorVersion;
+        }
+    }
+
+    /**
+     * setDefaultTableEditorsClicks, This sets the number of clicks required to start the default
+     * table editors in the supplied table. Typically you would set the table editors to start after
+     * 1 click or 2 clicks, as desired.
+     *
+     * The default table editors of the table editors that are supplied by the JTable class, for
+     * Objects, Numbers, and Booleans. Note, the editor which is used to edit Objects, is the same
+     * editor used for editing Strings.
+     */
+    public static void setDefaultTableEditorsClicks(JTable table, int clickCountToStart) {
+        TableCellEditor editor;
+        editor = table.getDefaultEditor(Object.class);
+        if (editor instanceof DefaultCellEditor) {
+            ((DefaultCellEditor) editor).setClickCountToStart(clickCountToStart);
+        }
+        editor = table.getDefaultEditor(Number.class);
+        if (editor instanceof DefaultCellEditor) {
+            ((DefaultCellEditor) editor).setClickCountToStart(clickCountToStart);
+        }
+        editor = table.getDefaultEditor(Boolean.class);
+        if (editor instanceof DefaultCellEditor) {
+            ((DefaultCellEditor) editor).setClickCountToStart(clickCountToStart);
         }
     }
 

@@ -95,7 +95,7 @@ public class FrameAutofacturacion extends JInternalFrame {
                     txtNro.setValue(Utils.generateFacturaNroFull(listTimbrados.get(0).getNroFacturaIncio()));
                 }
 
-                dtpFecha.setDateTime(LocalDateTime.now());
+                dtpFecha.setDateTimeStrict(LocalDateTime.now());
                 txtCantidad.setValue(1);
             } else {
                 JOptionPane.showMessageDialog(null, "Debe tener un timbrado activo para poder facturar.");
@@ -504,7 +504,7 @@ public class FrameAutofacturacion extends JInternalFrame {
 
             factura.setNro(txtNro.getValue().toString());
             factura.setIdTimbrado(listTimbrados.get(0));
-            factura.setFechahora(dtpFecha.getDateTime());
+            factura.setFechahora(dtpFecha.getDateTimeStrict());
             factura.setNombre(txtRazonSocial.getText());
             factura.setCi(rucField.getText());
             factura.setDomicilio(txtDomicilio.getText());
@@ -607,7 +607,7 @@ public class FrameAutofacturacion extends JInternalFrame {
     private void addAsiento() {
         try {
             TblAsientos t = new TblAsientos();
-            t.setFechahora(dtpFecha.getDateTime());
+            t.setFechahora(dtpFecha.getDateTimeStrict());
             t.setIdUser(currentUser.getUser());
 
             t.setIdCentroDeCosto((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());

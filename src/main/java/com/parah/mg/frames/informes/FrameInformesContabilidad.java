@@ -5,18 +5,17 @@
  */
 package com.parah.mg.frames.informes;
 
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
 import org.apache.logging.log4j.LogManager;
@@ -33,6 +32,25 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     List<TblEntidades> listMiembrosFiltered;
     TblEntidades selectedMiembro;
     CurrentUser currentUser = CurrentUser.getInstance();
+    DatePickerSettings datePickerSettings = new DatePickerSettings();
+    DatePickerSettings datePickerSettings1 = new DatePickerSettings();
+    DatePickerSettings datePickerSettings2 = new DatePickerSettings();
+    DatePickerSettings datePickerSettings3 = new DatePickerSettings();
+    DatePickerSettings datePickerSettings4 = new DatePickerSettings();
+    DatePickerSettings datePickerSettings5 = new DatePickerSettings();
+    DatePickerSettings datePickerSettings6 = new DatePickerSettings();
+    DatePickerSettings datePickerSettings7 = new DatePickerSettings();
+    DatePickerSettings datePickerSettings8 = new DatePickerSettings();
+
+    TimePickerSettings timePickerSettings = new TimePickerSettings();
+    TimePickerSettings timePickerSettings1 = new TimePickerSettings();
+    TimePickerSettings timePickerSettings2 = new TimePickerSettings();
+    TimePickerSettings timePickerSettings3 = new TimePickerSettings();
+    TimePickerSettings timePickerSettings4 = new TimePickerSettings();
+    TimePickerSettings timePickerSettings5 = new TimePickerSettings();
+    TimePickerSettings timePickerSettings6 = new TimePickerSettings();
+    TimePickerSettings timePickerSettings7 = new TimePickerSettings();
+    TimePickerSettings timePickerSettings8 = new TimePickerSettings();
 
     /**
      * Creates new form FramePagos
@@ -47,19 +65,38 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         try {
 
             persistenceMap = Utils.getInstance().getPersistenceMap();
+
+            datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
+            datePickerSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");
+            datePickerSettings2.setFormatForDatesCommonEra("dd/MM/yyyy");
+            datePickerSettings3.setFormatForDatesCommonEra("dd/MM/yyyy");
+            datePickerSettings4.setFormatForDatesCommonEra("dd/MM/yyyy");
+            datePickerSettings5.setFormatForDatesCommonEra("dd/MM/yyyy");
+            datePickerSettings6.setFormatForDatesCommonEra("dd/MM/yyyy");
+            datePickerSettings7.setFormatForDatesCommonEra("dd/MM/yyyy");
+
+            timePickerSettings.setFormatForDisplayTime("HH:mm:ss");
+            timePickerSettings1.setFormatForDisplayTime("HH:mm:ss");
+            timePickerSettings2.setFormatForDisplayTime("HH:mm:ss");
+            timePickerSettings3.setFormatForDisplayTime("HH:mm:ss");
+            timePickerSettings4.setFormatForDisplayTime("HH:mm:ss");
+            timePickerSettings5.setFormatForDisplayTime("HH:mm:ss");
+            timePickerSettings6.setFormatForDisplayTime("HH:mm:ss");
+            timePickerSettings7.setFormatForDisplayTime("HH:mm:ss");
+
             initComponents();
 
             LocalDateTime startDate = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
-            LocalDateTime endDate = LocalDateTime.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).withHour(59).withMinute(59).withSecond(59);
-            txtFechaInicioDiario.setDateTime(startDate);
-            txtFechaInicioMayor.setDateTime(startDate);
-            txtFechaInicioCompras.setDateTime(startDate);
-            txtFechaInicioVentas.setDateTime(startDate);
+            LocalDateTime endDate = LocalDateTime.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).withHour(23).withMinute(59).withSecond(59);
+            txtFechaInicioDiario.setDateTimeStrict(startDate);
+            txtFechaInicioMayor.setDateTimeStrict(startDate);
+            txtFechaInicioCompras.setDateTimeStrict(startDate);
+            txtFechaInicioVentas.setDateTimeStrict(startDate);
 
-            txtFechaFinMayor.setDateTime(endDate);
-            txtFechaFinDiario.setDateTime(endDate);
-            txtFechaFinCompras.setDateTime(endDate);
-            txtFechaFinVentas.setDateTime(endDate);
+            txtFechaFinMayor.setDateTimeStrict(endDate);
+            txtFechaFinDiario.setDateTimeStrict(endDate);
+            txtFechaFinCompras.setDateTimeStrict(endDate);
+            txtFechaFinVentas.setDateTimeStrict(endDate);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -99,15 +136,15 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        cmdLibroMayor2 = new javax.swing.JButton();
-        txtFechaInicioDiario = new com.github.lgooddatepicker.components.DateTimePicker();
-        txtFechaFinDiario = new com.github.lgooddatepicker.components.DateTimePicker();
-        txtFechaInicioMayor = new com.github.lgooddatepicker.components.DateTimePicker();
-        txtFechaInicioCompras = new com.github.lgooddatepicker.components.DateTimePicker();
-        txtFechaInicioVentas = new com.github.lgooddatepicker.components.DateTimePicker();
-        txtFechaFinMayor = new com.github.lgooddatepicker.components.DateTimePicker();
-        txtFechaFinCompras = new com.github.lgooddatepicker.components.DateTimePicker();
-        txtFechaFinVentas = new com.github.lgooddatepicker.components.DateTimePicker();
+        cmdLibroVentas = new javax.swing.JButton();
+        txtFechaInicioDiario = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings, timePickerSettings);
+        txtFechaFinDiario = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings1, timePickerSettings1);
+        txtFechaInicioMayor = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings2, timePickerSettings2);
+        txtFechaInicioCompras = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings4, timePickerSettings4);
+        txtFechaInicioVentas = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings6, timePickerSettings6);
+        txtFechaFinMayor = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings3, timePickerSettings3);
+        txtFechaFinCompras = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings5, timePickerSettings5);
+        txtFechaFinVentas = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings7, timePickerSettings7);
 
         dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
 
@@ -135,6 +172,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         jLabel5.setText("Libro Diario");
 
         cmdLibroDiario.setText("Ver");
+        cmdLibroDiario.setEnabled(false);
         cmdLibroDiario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdLibroDiarioActionPerformed(evt);
@@ -165,6 +203,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         jLabel17.setText("Hasta");
 
         cmdLibroMayor1.setText("Ver");
+        cmdLibroMayor1.setEnabled(false);
         cmdLibroMayor1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdLibroMayor1ActionPerformed(evt);
@@ -177,10 +216,10 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
 
         jLabel20.setText("Hasta");
 
-        cmdLibroMayor2.setText("Ver");
-        cmdLibroMayor2.addActionListener(new java.awt.event.ActionListener() {
+        cmdLibroVentas.setText("Ver");
+        cmdLibroVentas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdLibroMayor2ActionPerformed(evt);
+                cmdLibroVentasActionPerformed(evt);
             }
         });
 
@@ -242,7 +281,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmdLibroMayor2)))
+                        .addComponent(cmdLibroVentas)))
                 .addContainerGap(117, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -283,7 +322,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                         .addComponent(jLabel18)
                         .addComponent(jLabel19)
                         .addComponent(jLabel20)
-                        .addComponent(cmdLibroMayor2))
+                        .addComponent(cmdLibroVentas))
                     .addComponent(txtFechaInicioVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtFechaFinVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(517, Short.MAX_VALUE))
@@ -294,20 +333,6 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
     }//GEN-LAST:event_formInternalFrameActivated
-
-    private Connection getConnection() {
-        try {
-            EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-            String url = persistenceMap.get("javax.persistence.jdbc.url");
-            String user = persistenceMap.get("javax.persistence.jdbc.user");
-            String pass = persistenceMap.get("javax.persistence.jdbc.password");
-            return DriverManager.getConnection(url, user, pass);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-            return null;
-        }
-    }
 
     private void cmdLibroDiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroDiarioActionPerformed
 
@@ -323,8 +348,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private void cmdLibroMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayorActionPerformed
         try {
             Map parameters = new HashMap();
-            parameters.put("fechaDesde", (LocalDateTime) txtFechaInicioMayor.getDateTime());
-            parameters.put("fechaHasta", (LocalDateTime) txtFechaFinMayor.getDateTime());
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaInicioMayor.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaFinMayor.getDateTimeStrict()));
             //parameters.put("ctaContable", 101020100);
             Utils.getInstance().showReport("libro_mayor", "libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters, false);
             //Utils.getInstance().showReport("libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters);
@@ -339,9 +364,19 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmdLibroMayor1ActionPerformed
 
-    private void cmdLibroMayor2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayor2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmdLibroMayor2ActionPerformed
+    private void cmdLibroVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroVentasActionPerformed
+        try {
+            Map parameters = new HashMap();
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaInicioVentas.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaFinVentas.getDateTimeStrict()));
+
+            Utils.getInstance().showReport("libro_ventas", parameters, true);
+
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdLibroVentasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -402,7 +437,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private javax.swing.JButton cmdLibroDiario;
     private javax.swing.JButton cmdLibroMayor;
     private javax.swing.JButton cmdLibroMayor1;
-    private javax.swing.JButton cmdLibroMayor2;
+    private javax.swing.JButton cmdLibroVentas;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.persistence.EntityManager entityManager;

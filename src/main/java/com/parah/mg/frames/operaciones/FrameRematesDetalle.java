@@ -726,7 +726,7 @@ public class FrameRematesDetalle extends JInternalFrame {
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
 
-            fechahoraField.setDateTime(LocalDateTime.now());
+            fechahoraField.setDateTimeStrict(LocalDateTime.now());
             if (tblCategoriasArticulosList.size() > 0) {
                 cboCategoria.setSelectedItem(tblCategoriasArticulosList.get(tblCategoriasArticulosList.size() - 1));
             }

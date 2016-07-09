@@ -159,7 +159,7 @@
                   <Group type="102" attributes="0">
                       <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="cmdLibroMayor2" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmdLibroVentas" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="117" max="32767" attributes="0"/>
@@ -212,7 +212,7 @@
                       <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel20" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cmdLibroMayor2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmdLibroVentas" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="txtFechaInicioVentas" min="-2" max="-2" attributes="0"/>
                   <Component id="txtFechaFinVentas" min="-2" max="-2" attributes="0"/>
@@ -231,6 +231,7 @@
     <Component class="javax.swing.JButton" name="cmdLibroDiario">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ver"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdLibroDiarioActionPerformed"/>
@@ -287,6 +288,7 @@
     <Component class="javax.swing.JButton" name="cmdLibroMayor1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ver"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdLibroMayor1ActionPerformed"/>
@@ -307,29 +309,53 @@
         <Property name="text" type="java.lang.String" value="Hasta"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="cmdLibroMayor2">
+    <Component class="javax.swing.JButton" name="cmdLibroVentas">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ver"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdLibroMayor2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdLibroVentasActionPerformed"/>
       </Events>
     </Component>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaInicioDiario">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings, timePickerSettings);"/>
+      </AuxValues>
     </Component>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaFinDiario">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings1, timePickerSettings1);"/>
+      </AuxValues>
     </Component>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaInicioMayor">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings2, timePickerSettings2);"/>
+      </AuxValues>
     </Component>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaInicioCompras">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings4, timePickerSettings4);"/>
+      </AuxValues>
     </Component>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaInicioVentas">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings6, timePickerSettings6);"/>
+      </AuxValues>
     </Component>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaFinMayor">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings3, timePickerSettings3);"/>
+      </AuxValues>
     </Component>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaFinCompras">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings5, timePickerSettings5);"/>
+      </AuxValues>
     </Component>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaFinVentas">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings7, timePickerSettings7);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
