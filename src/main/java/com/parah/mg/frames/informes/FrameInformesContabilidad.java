@@ -132,7 +132,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        cmdLibroMayor1 = new javax.swing.JButton();
+        cmdLibroCompras = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
@@ -202,11 +202,10 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
 
         jLabel17.setText("Hasta");
 
-        cmdLibroMayor1.setText("Ver");
-        cmdLibroMayor1.setEnabled(false);
-        cmdLibroMayor1.addActionListener(new java.awt.event.ActionListener() {
+        cmdLibroCompras.setText("Ver");
+        cmdLibroCompras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdLibroMayor1ActionPerformed(evt);
+                cmdLibroComprasActionPerformed(evt);
             }
         });
 
@@ -277,7 +276,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(txtFechaFinCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cmdLibroMayor1))))))
+                                        .addComponent(cmdLibroCompras))))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -313,7 +312,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel15)
                                 .addComponent(jLabel16)
                                 .addComponent(jLabel17)
-                                .addComponent(cmdLibroMayor1))
+                                .addComponent(cmdLibroCompras))
                             .addComponent(txtFechaInicioCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(txtFechaFinCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -360,9 +359,19 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_cmdLibroMayorActionPerformed
 
-    private void cmdLibroMayor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayor1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmdLibroMayor1ActionPerformed
+    private void cmdLibroComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroComprasActionPerformed
+        try {
+            Map parameters = new HashMap();
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaInicioCompras.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaFinCompras.getDateTimeStrict()));
+
+            Utils.getInstance().showReport("libro_compras", parameters, true);
+
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdLibroComprasActionPerformed
 
     private void cmdLibroVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroVentasActionPerformed
         try {
@@ -434,9 +443,9 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cmdLibroCompras;
     private javax.swing.JButton cmdLibroDiario;
     private javax.swing.JButton cmdLibroMayor;
-    private javax.swing.JButton cmdLibroMayor1;
     private javax.swing.JButton cmdLibroVentas;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;

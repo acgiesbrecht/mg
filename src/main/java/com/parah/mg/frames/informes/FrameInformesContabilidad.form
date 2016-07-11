@@ -150,7 +150,7 @@
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="txtFechaFinCompras" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="cmdLibroMayor1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cmdLibroCompras" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -199,7 +199,7 @@
                               <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="cmdLibroMayor1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cmdLibroCompras" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="txtFechaInicioCompras" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -285,13 +285,12 @@
         <Property name="text" type="java.lang.String" value="Hasta"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="cmdLibroMayor1">
+    <Component class="javax.swing.JButton" name="cmdLibroCompras">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ver"/>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdLibroMayor1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdLibroComprasActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel18">
