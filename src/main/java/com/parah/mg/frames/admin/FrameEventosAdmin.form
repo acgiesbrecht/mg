@@ -535,11 +535,7 @@
     <Component class="com.github.lgooddatepicker.components.DatePicker" name="datePicker1">
       <BindingProperties>
         <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fecha}" target="datePicker1" targetPath="date" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="datePicker1" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
-      <Events>
-        <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="datePicker1PropertyChange"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DatePicker(datePickerSettings);"/>
       </AuxValues>

@@ -248,10 +248,6 @@ public class FrameEventosAdmin extends JInternalFrame {
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fecha}"), datePicker1, org.jdesktop.beansbinding.BeanProperty.create("date"));
         bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), datePicker1, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        datePicker1.addPropertyChangeListener(formListener);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -360,7 +356,7 @@ public class FrameEventosAdmin extends JInternalFrame {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.beans.PropertyChangeListener, javax.swing.event.ChangeListener {
+    private class FormListener implements java.awt.event.ActionListener, javax.swing.event.ChangeListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -377,12 +373,6 @@ public class FrameEventosAdmin extends JInternalFrame {
             }
             else if (evt.getSource() == cboEventoTipo) {
                 FrameEventosAdmin.this.cboEventoTipoActionPerformed(evt);
-            }
-        }
-
-        public void propertyChange(java.beans.PropertyChangeEvent evt) {
-            if (evt.getSource() == datePicker1) {
-                FrameEventosAdmin.this.datePicker1PropertyChange(evt);
             }
         }
 
