@@ -396,11 +396,35 @@ public class Utils extends Component {
     }
 
     public static String generateFacturaNroFull(Integer nro) {
-        return String.format("001-001-%07d", nro);
+        try {
+            return String.format("001-001-%07d", nro);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            return "";
+        }
     }
 
     public static String generateNextFacturaNroFull(String nro) {
-        Integer i = Integer.parseInt(StringUtils.replace(nro, "001-001-", "")) + 1;
-        return String.format("001-001-%07d", i);
+        try {
+            Integer i = Integer.parseInt(StringUtils.replace(nro, "001-001-", "")) + 1;
+            return String.format("001-001-%07d", i);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            return "";
+        }
+    }
+
+    public static String completarNroFactura(String nro) {
+        try {
+            nro = nro.replace("_", "");
+            String[] partes = nro.split("-");
+            return partes[0] + "-" + partes[1] + "-" + String.format("%07d", Integer.parseInt(partes[2]));
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            return "";
+        }
     }
 }

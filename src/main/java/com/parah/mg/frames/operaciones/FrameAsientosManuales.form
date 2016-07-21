@@ -148,16 +148,29 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="conceptoLabel2" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="40" max="32767" attributes="0"/>
-                                  <Component id="cboCuentaDebe" min="-2" pref="185" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="conceptoLabel3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="montoLabel" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="conceptoLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="conceptoLabel1" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                                  <Component id="cboCentroDeCosto" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="conceptoField" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="montoField" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
+                                          <Component id="cboCuentaHaber" alignment="0" min="-2" pref="185" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -165,28 +178,21 @@
                                   <Component id="fechahoraLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="idLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="dtpFecha" min="-2" max="-2" attributes="0"/>
                                   <Component id="idField" min="-2" pref="69" max="-2" attributes="0"/>
-                                  <Component id="dtpFecha" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="conceptoLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
-                                  <Component id="conceptoField" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="conceptoLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="conceptoLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="conceptoLabel3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="montoLabel" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="montoField" min="-2" pref="124" max="-2" attributes="0"/>
-                                      <Component id="cboCuentaHaber" alignment="0" min="-2" pref="185" max="-2" attributes="0"/>
-                                  </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="cboCuentaDebe" min="-2" pref="185" max="-2" attributes="0"/>
+                                  <Component id="cboCentroDeCosto" min="-2" pref="182" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -200,7 +206,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="169" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" pref="173" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="idField" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -498,7 +504,7 @@
     </Component>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dtpFecha">
       <BindingProperties>
-        <BindingProperty name="dateTime" source="masterTable" sourcePath="${selectedElement.fechahora}" target="dtpFecha" targetPath="dateTime" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="dateTimeStrict" source="masterTable" sourcePath="${selectedElement.fechahora}" target="dtpFecha" targetPath="dateTimeStrict" updateStrategy="0" immediately="false"/>
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="dtpFecha" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <AuxValues>

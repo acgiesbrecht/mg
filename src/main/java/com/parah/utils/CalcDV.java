@@ -48,4 +48,12 @@ public class CalcDV {
     public static String getRucEntero(String rucSinDv) {
         return rucSinDv + "-" + String.valueOf(Pa_Calcular_Dv_11_A(rucSinDv, 11));
     }
+
+    public static String getDVfromRUC(String ruc) {
+        return ruc.substring(ruc.length() - 1, ruc.length());
+    }
+
+    public static String getRUCsinDVfromRUC(String ruc) {
+        return ruc.substring(0, ruc.length() - 2);
+    }
 }

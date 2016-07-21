@@ -150,6 +150,31 @@
     </Component>
     <Component class="com.parah.mg.utils.InverseBooleanConverter" name="inverseBooleanConverter1">
     </Component>
+    <Component class="javax.persistence.Query" name="queryTimbrados">
+      <Properties>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblTimbradosCompras t"/>
+        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
+          <ComponentRef name="entityManager"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
+      </AuxValues>
+    </Component>
+    <Component class="java.util.List" name="listTimbrados">
+      <Properties>
+        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
+          <ComponentRef name="queryTimbrados"/>
+        </Property>
+        <Property name="observable" type="boolean" value="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblFacturasCompra&gt;"/>
+        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
+      </AuxValues>
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -207,35 +232,32 @@
                                   <Component id="idLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="txtNro" min="-2" pref="121" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="idLabel1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtTimbrado" min="-2" pref="95" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="fechahoraLabel1" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
                                       <Component id="dtpFecha" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                                       <Component id="rbContado" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="rbCredito" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
+                                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                                       <Component id="idLabel2" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="dtpVencimientoTimbrado" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="txtCuotas" min="-2" pref="95" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="fechahoraLabel2" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="dtpVencimientoFactura" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="txtNro" min="-2" pref="116" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="idLabel1" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="txtTimbrado" min="-2" pref="116" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="fechahoraLabel1" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="dtpVencimientoTimbrado" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -299,14 +321,12 @@
               <Component id="masterScrollPane" min="-2" pref="137" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtNro" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="idLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="idLabel" min="-2" max="-2" attributes="0"/>
                   <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                      <Component id="txtTimbrado" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="fechahoraLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="idLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtNro" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtTimbrado" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="dtpVencimientoTimbrado" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -627,10 +647,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="idMiembroLabel2">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Razon Social: "/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Razon Social: "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="txtMontoExentas">
@@ -658,36 +678,11 @@
     </Component>
     <Component class="javax.swing.JLabel" name="idMiembroLabel3">
       <Properties>
+        <Property name="text" type="java.lang.String" value="RUC:"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="RUC:"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JFormattedTextField" name="txtNro">
-      <Properties>
-        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-          <Format format="###-###-#######" subtype="-1" type="5"/>
-        </Property>
-      </Properties>
-      <BindingProperties>
-        <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.nro}" target="txtNro" targetPath="value" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="txtNro" targetPath="enabled" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
-    </Component>
-    <Component class="javax.swing.JFormattedTextField" name="txtTimbrado">
-      <Properties>
-        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-          <Format format="########" subtype="-1" type="5"/>
-        </Property>
-      </Properties>
-      <BindingProperties>
-        <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.nroTimbrado}" target="txtTimbrado" targetPath="value" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="txtTimbrado" targetPath="enabled" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="idLabel1">
       <Properties>
@@ -1009,6 +1004,34 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DatePicker(datePickerSettings2);"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="txtNro">
+      <BindingProperties>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="txtNro" targetPath="enabled" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.nro}" target="txtNro" targetPath="text" updateStrategy="0" immediately="false">
+          <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+        </BindingProperty>
+      </BindingProperties>
+      <Events>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtNroFocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="txtTimbrado">
+      <Properties>
+        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+          <Format format="#" subtype="-1" type="0"/>
+        </Property>
+      </Properties>
+      <BindingProperties>
+        <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.nroTimbrado}" target="txtTimbrado" targetPath="value" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="txtTimbrado" targetPath="enabled" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.nroTimbrado}" target="txtTimbrado" targetPath="text" updateStrategy="0" immediately="false">
+          <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+        </BindingProperty>
+      </BindingProperties>
+      <Events>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtTimbradoFocusLost"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
