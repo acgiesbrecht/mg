@@ -6,10 +6,12 @@
 package com.parah.mg.frames.admin;
 
 import com.parah.mg.domain.TblAsientos;
+import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblContribuyentes;
 import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.domain.TblEventoDetalle;
 import com.parah.mg.domain.TblFacturas;
+import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -20,7 +22,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -137,6 +138,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         updateSETbutton = new javax.swing.JButton();
         lblStatusSET = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -291,6 +293,14 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
             }
         });
 
+        jButton5.setBackground(new java.awt.Color(255, 0, 153));
+        jButton5.setText("Corregir Asientos Pagos");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -349,9 +359,12 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                         .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton5)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -399,7 +412,8 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(jButton3)
+                    .addComponent(jButton5))
                 .addContainerGap())
         );
 
@@ -683,6 +697,88 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
+        EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
+        entityManager.getTransaction().begin();
+        int suma = 0;
+        List<TblTransferencias> listT = (List<TblTransferencias>) entityManager.createQuery("select t from TblTransferencias t").getResultList();
+        for (TblTransferencias t : listT) {
+            Integer sumAtAporte = t.getTblAsientosTemporalesList().stream().filter(x -> x.getEsAporte().equals(true)).mapToInt(l -> l.getMonto()).sum();
+            Integer sumAtDonacion = t.getTblAsientosTemporalesList().stream().filter(x -> x.getEsAporte().equals(false)).mapToInt(l -> l.getMonto()).sum();
+            if (t.getMontoAporte() < sumAtAporte) {
+                for (int i = 0; i < t.getTblAsientosTemporalesList().size(); i++) {
+                    if (t.getTblAsientosTemporalesList().get(i).getEsAporte()) {
+                        if (sumAtAporte - t.getTblAsientosTemporalesList().get(i).getMonto() - t.getMontoAporte() == 0) {
+                            System.out.println(t.getTblAsientosTemporalesList().get(i).getId());
+                            suma += t.getTblAsientosTemporalesList().get(i).getMonto();
+                            t.getTblAsientosTemporalesList().get(i).setMonto(0);
+                            sumAtAporte = t.getTblAsientosTemporalesList().stream().filter(x -> x.getEsAporte().equals(true)).mapToInt(l -> l.getMonto()).sum();
+                            System.out.println(suma);
+                            entityManager.merge(t);
+                        }
+                    }
+                }
+            }
+            if (t.getMontoDonacion() < sumAtDonacion) {
+                for (int i = 0; i < t.getTblAsientosTemporalesList().size(); i++) {
+                    if (!t.getTblAsientosTemporalesList().get(i).getEsAporte()) {
+                        if (sumAtDonacion - t.getTblAsientosTemporalesList().get(i).getMonto() - t.getMontoDonacion() == 0) {
+                            System.out.println(t.getTblAsientosTemporalesList().get(i).getId());
+                            suma += t.getTblAsientosTemporalesList().get(i).getMonto();
+                            t.getTblAsientosTemporalesList().get(i).setMonto(0);
+                            sumAtDonacion = t.getTblAsientosTemporalesList().stream().filter(x -> x.getEsAporte().equals(false)).mapToInt(l -> l.getMonto()).sum();
+                            System.out.println(suma);
+                            entityManager.merge(t);
+                        }
+                    }
+                }
+            }
+
+        }
+        for (TblTransferencias t : listT) {
+            Integer sumAtAporte = t.getTblAsientosTemporalesList().stream().filter(x -> x.getEsAporte().equals(true)).mapToInt(l -> l.getMonto()).sum();
+            Integer sumAtDonacion = t.getTblAsientosTemporalesList().stream().filter(x -> x.getEsAporte().equals(false)).mapToInt(l -> l.getMonto()).sum();
+            if (t.getMontoAporte() < sumAtAporte) {
+                int asientoValido = -1;
+                for (int i = 0; i < t.getTblAsientosTemporalesList().size(); i++) {
+                    if (t.getTblAsientosTemporalesList().get(i).getEsAporte()) {
+                        if (t.getTblAsientosTemporalesList().get(i).getMonto().equals(t.getMontoAporte())) {
+                            asientoValido = t.getTblAsientosTemporalesList().get(i).getId();
+                            for (int ii = 0; ii < t.getTblAsientosTemporalesList().size(); ii++) {
+                                if (t.getTblAsientosTemporalesList().get(ii).getEsAporte() && t.getTblAsientosTemporalesList().get(ii).getId() != asientoValido) {
+                                    suma += t.getTblAsientosTemporalesList().get(ii).getMonto();
+                                    t.getTblAsientosTemporalesList().get(ii).setMonto(0);
+                                }
+                            }
+                            entityManager.merge(t);
+                        }
+                    }
+                }
+            }
+            if (t.getMontoDonacion() < sumAtDonacion) {
+                int asientoValido = -1;
+                for (int i = 0; i < t.getTblAsientosTemporalesList().size(); i++) {
+                    if (!t.getTblAsientosTemporalesList().get(i).getEsAporte()) {
+                        if (t.getTblAsientosTemporalesList().get(i).getMonto().equals(t.getMontoDonacion())) {
+                            asientoValido = t.getTblAsientosTemporalesList().get(i).getId();
+                            for (int ii = 0; ii < t.getTblAsientosTemporalesList().size(); ii++) {
+                                if (!t.getTblAsientosTemporalesList().get(ii).getEsAporte() && t.getTblAsientosTemporalesList().get(ii).getId() != asientoValido) {
+                                    suma += t.getTblAsientosTemporalesList().get(ii).getMonto();
+                                    t.getTblAsientosTemporalesList().get(ii).setMonto(0);
+                                }
+                            }
+                            entityManager.merge(t);
+                        }
+                    }
+                }
+            }
+        }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        JOptionPane.showMessageDialog(null, suma);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     public void propertyChange(PropertyChangeEvent evt) {
         if ("statusUpdate".equals(evt.getPropertyName())) {
             lblStatusSET.setText(taskUpdate.getStatus());
@@ -807,6 +903,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

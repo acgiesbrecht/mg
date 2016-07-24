@@ -510,10 +510,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="descripcionLabel6">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Observacion: Cambios en la categoria tributaria solo tendr&#xe1;n efectivo en pagos realizados a partir de ese cambio."/>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="99" green="99" red="99" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Observacion: Cambios en la categoria tributaria solo tendr&#xe1;n efectivo en pagos realizados a partir de ese cambio."/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cboCentroDeCosto">

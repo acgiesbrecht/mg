@@ -422,6 +422,7 @@ public class FrameEventosAdmin extends JInternalFrame {
             listCentrosDeCosto.stream().filter((c) -> (c.getPreferido())).forEach((c) -> {
                 t.setIdCentroDeCosto(c);
             });
+            t.setPorcentajeAporte(0);
             t.setIdUser(currentUser.getUser());
             entityManager.persist(t);
             list.add(t);
