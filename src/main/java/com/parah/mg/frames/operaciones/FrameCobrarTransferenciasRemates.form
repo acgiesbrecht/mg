@@ -238,7 +238,7 @@
             <BindingProperty name="elements" source="list" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${fechahoraCompromiso}">
                 <BindingParameter name="NAME" value="Fecha"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDateTime.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDate.class"/>
               </Subbinding>
               <Subbinding sourcePath="${idEntidad.ctacte}">
                 <BindingParameter name="NAME" value="Cta Cte"/>

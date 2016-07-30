@@ -724,7 +724,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
             listPagos.clear();
             TblEntidades selectedEntidad = (TblEntidades) cboEntidad.getSelectedItem();
 
-            Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
+            Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesList a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
             queryT.setParameter("fecha", dtpFecha.getDateTimeStrict().toLocalDate());
             queryT.setParameter("entidad", selectedEntidad);
             List<TblTransferencias> listT = (List<TblTransferencias>) queryT.getResultList();
@@ -755,7 +755,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                     listPagos.add(p);
                 }
             }
-            Query queryR = entityManager.createQuery("SELECT distinct t FROM TblRecibos t JOIN t.tblAsientosTemporalesCollection a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
+            Query queryR = entityManager.createQuery("SELECT distinct t FROM TblRecibos t JOIN t.tblAsientosTemporalesList a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
             queryR.setParameter("fecha", dtpFecha.getDateTimeStrict().toLocalDate());
             queryR.setParameter("entidad", selectedEntidad);
             List<TblRecibos> listR = (List<TblRecibos>) queryR.getResultList();

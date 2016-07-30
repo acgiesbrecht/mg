@@ -15,20 +15,20 @@
                 group by MONTH(ev.FECHA), YEAR(ev.FECHA), ed.id_entidad
 UNION ALL
 SELECT p.id_entidad,
-                 MONTH(p.fechahora) AS mes,
-                 YEAR(p.fechahora) AS ano,
+                 MONTH(p.fechahora_COMPROMISO) AS mes,
+                 YEAR(p.fechahora_COMPROMISO) AS ano,
                  -SUM(p.MONTO_APORTE) AS montoAporte,
                  -SUM(p.MONTO_DONACION) AS montoDonacion
                  FROM MG.TBL_TRANSFERENCIAS p WHERE ID_EVENTO_TIPO = 2
-                 group by YEAR(p.FECHAHORA), MONTH(p.FECHAHORA), p.id_entidad
+                 group by YEAR(p.FECHAHORA_COMPROMISO), MONTH(p.FECHAHORA_COMPROMISO), p.id_entidad
 UNION ALL
 SELECT p.id_entidad,
-        MONTH(p.fechahora) AS mes,
-        YEAR(p.fechahora) AS ano,
+        MONTH(p.fechahora_COMPROMISO) AS mes,
+        YEAR(p.fechahora_COMPROMISO) AS ano,
         -SUM(p.MONTO_APORTE) AS montoAporte,
         -SUM(p.MONTO_DONACION) AS montoDonacion
         FROM MG.TBL_RECIBOS p WHERE ID_EVENTO_TIPO = 2
-        group by YEAR(p.FECHAHORA), MONTH(p.FECHAHORA), p.id_entidad) DETALLE LEFT JOIN MG.TBL_ENTIDADES e ON DETALLE.ID_ENTIDAD = e.ID
+        group by YEAR(p.FECHAHORA_COMPROMISO), MONTH(p.FECHAHORA_COMPROMISO), p.id_entidad) DETALLE LEFT JOIN MG.TBL_ENTIDADES e ON DETALLE.ID_ENTIDAD = e.ID
 GROUP BY e.ID, e.CTACTE, e.APELLIDOS, e.NOMBRES, DETALLE.ano, DETALLE.mes) d
 WHERE MONTODONACION + MONTOAPORTE > 0
 ORDER BY CTACTE]]>
