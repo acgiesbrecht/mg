@@ -31,7 +31,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     List<TblEntidades> listMiembrosFiltered;
     TblEntidades selectedMiembro;
     CurrentUser currentUser = CurrentUser.getInstance();
-
+    
     /**
      * Creates new form FramePagos
      */

@@ -4,17 +4,20 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libro_mayor_saldo_anterior" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96688">
 	<parameter name="ctaContable" class="java.lang.Integer"/>
 	<parameter name="fechaDesde" class="java.sql.Timestamp"/>
+        <parameter name="centroDeCosto" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT COALESCE(SUM(S.SALDO_ANTERIOR),0) AS SALDO_ANTERIOR_SUMA FROM (
         SELECT A.MONTO AS SALDO_ANTERIOR
         FROM TBL_ASIENTOS A
         WHERE ID_CUENTA_CONTABLE_DEBE =  $P{ctaContable}
         AND A.FECHAHORA < $P{fechaDesde}
+        AND A.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
         UNION ALL
         SELECT -A.MONTO AS SALDO_ANTERIOR
         FROM TBL_ASIENTOS A
         WHERE ID_CUENTA_CONTABLE_HABER =  $P{ctaContable}
         AND A.FECHAHORA < $P{fechaDesde}
+        AND A.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
         ) AS S]]>
 	</queryString>
 	<field name="SALDO_ANTERIOR_SUMA" class="java.lang.Integer"/>

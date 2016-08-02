@@ -7,6 +7,7 @@
 	<parameter name="ctaContable" class="java.lang.Integer"/>
 	<parameter name="fechaDesde" class="java.sql.Timestamp"/>
 	<parameter name="fechaHasta" class="java.sql.Timestamp"/>
+        <parameter name="centroDeCosto" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT 'ASIENTO MANUAL' AS NRO, A.FECHAHORA, A.MONTO AS IMPORTE
 FROM TBL_ASIENTOS A
@@ -18,6 +19,7 @@ WHERE A.ID NOT IN (SELECT ID_ASIENTO FROM TBL_FACTURAS_COMPRA_ASIENTOS)
 AND A.ID_CUENTA_CONTABLE_DEBE =  $P{ctaContable}
 AND A.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
 AND A.MONTO > 0
+AND A.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
 UNION ALL
 SELECT 'ASIENTO MANUAL' AS NRO, A.FECHAHORA, -A.MONTO AS IMPORTE
 FROM TBL_ASIENTOS A
@@ -29,6 +31,7 @@ WHERE A.ID NOT IN (SELECT ID_ASIENTO FROM TBL_FACTURAS_COMPRA_ASIENTOS)
 AND A.ID_CUENTA_CONTABLE_HABER =  $P{ctaContable}
 AND A.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
 AND A.MONTO > 0
+AND A.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
 UNION ALL
 SELECT 'Factura Compra - ' || C.NRO AS NRO, A.FECHAHORA, A.MONTO AS IMPORTE
 FROM TBL_ASIENTOS A, TBL_FACTURAS_COMPRA_ASIENTOS CA, TBL_FACTURAS_COMPRA C
@@ -36,6 +39,7 @@ WHERE C.ID = CA.ID_FACTURA_COMPRA AND A.ID = CA.ID_ASIENTO
 AND ID_CUENTA_CONTABLE_DEBE =  $P{ctaContable}
 AND A.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
 AND A.MONTO > 0
+AND A.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
 UNION ALL
 SELECT 'Factura Compra - ' || C.NRO AS NRO, A.FECHAHORA, -A.MONTO AS IMPORTE
 FROM TBL_ASIENTOS A, TBL_FACTURAS_COMPRA_ASIENTOS CA, TBL_FACTURAS_COMPRA C
@@ -43,6 +47,7 @@ WHERE C.ID = CA.ID_FACTURA_COMPRA AND A.ID = CA.ID_ASIENTO
 AND ID_CUENTA_CONTABLE_HABER =  $P{ctaContable}
 AND A.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
 AND A.MONTO > 0
+AND A.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
 UNION ALL
 SELECT 'Factura Venta - ' || CAST(C.NRO AS CHAR(10)) AS NRO, A.FECHAHORA, A.MONTO AS IMPORTE
 FROM TBL_ASIENTOS A, TBL_FACTURAS_ASIENTOS FA, TBL_FACTURAS C
@@ -50,6 +55,7 @@ WHERE C.NRO = FA.NRO_FACTURA AND A.ID = FA.ID_ASIENTO
 AND ID_CUENTA_CONTABLE_DEBE =  $P{ctaContable}
 AND A.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
 AND A.MONTO > 0
+AND A.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
 UNION ALL
 SELECT 'Factura Venta - ' || CAST(C.NRO AS CHAR(10)) AS NRO, A.FECHAHORA, -A.MONTO AS IMPORTE
 FROM TBL_ASIENTOS A, TBL_FACTURAS_ASIENTOS FA, TBL_FACTURAS C
@@ -57,6 +63,7 @@ WHERE C.NRO = FA.NRO_FACTURA AND A.ID = FA.ID_ASIENTO
 AND ID_CUENTA_CONTABLE_HABER =  $P{ctaContable}
 AND A.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
 AND A.MONTO > 0
+AND A.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
 UNION ALL
 SELECT 'Aportes, Colectas y Remates - ' || CAST(C.ID AS CHAR(10)) AS NRO, A.FECHAHORA, A.MONTO AS IMPORTE
 FROM TBL_ASIENTOS A, TBL_EVENTO_DETALLE_ASIENTOS FA, TBL_EVENTO_DETALLE C
@@ -64,6 +71,7 @@ WHERE C.ID = FA.ID_EVENTO_DETALLE AND A.ID = FA.ID_ASIENTO
 AND ID_CUENTA_CONTABLE_DEBE =  $P{ctaContable}
 AND A.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
 AND A.MONTO > 0
+AND A.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
 UNION ALL
 SELECT 'Aportes, Colectas y Remates - ' || CAST(C.ID AS CHAR(10)) AS NRO, A.FECHAHORA, -A.MONTO AS IMPORTE
 FROM TBL_ASIENTOS A, TBL_EVENTO_DETALLE_ASIENTOS FA, TBL_EVENTO_DETALLE C
@@ -71,6 +79,7 @@ WHERE C.ID = FA.ID_EVENTO_DETALLE AND A.ID = FA.ID_ASIENTO
 AND ID_CUENTA_CONTABLE_HABER =  $P{ctaContable}
 AND A.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
 AND A.MONTO > 0
+AND A.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
 ORDER BY FECHAHORA, NRO]]>
 	</queryString>
 	<field name="NRO" class="java.lang.String">
@@ -107,6 +116,9 @@ ORDER BY FECHAHORA, NRO]]>
 					</subreportParameter>
 					<subreportParameter name="fechaDesde">
 						<subreportParameterExpression><![CDATA[$P{fechaDesde}]]></subreportParameterExpression>
+					</subreportParameter>
+                                        <subreportParameter name="centroDeCosto">
+						<subreportParameterExpression><![CDATA[$P{centroDeCosto}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<returnValue subreportVariable="SALDO_ANTERIOR_SUMA" toVariable="SALDO_ANTERIOR" calculation="First"/>
