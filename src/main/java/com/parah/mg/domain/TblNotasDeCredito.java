@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -30,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adrian Giesbrecht
+ * @author AdminLocal
  */
 @Entity
 @Table(name = "TBL_NOTAS_DE_CREDITO")
@@ -39,18 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblNotasDeCredito.findAll", query = "SELECT t FROM TblNotasDeCredito t"),
     @NamedQuery(name = "TblNotasDeCredito.findById", query = "SELECT t FROM TblNotasDeCredito t WHERE t.id = :id"),
     @NamedQuery(name = "TblNotasDeCredito.findByNro", query = "SELECT t FROM TblNotasDeCredito t WHERE t.nro = :nro"),
-    @NamedQuery(name = "TblNotasDeCredito.findByNroTimbrado", query = "SELECT t FROM TblNotasDeCredito t WHERE t.nroTimbrado = :nroTimbrado"),
-    @NamedQuery(name = "TblNotasDeCredito.findByVencimientoTimbrado", query = "SELECT t FROM TblNotasDeCredito t WHERE t.vencimientoTimbrado = :vencimientoTimbrado"),
-    @NamedQuery(name = "TblNotasDeCredito.findByFechahora", query = "SELECT t FROM TblNotasDeCredito t WHERE t.fechahora = :fechahora"),
-    @NamedQuery(name = "TblNotasDeCredito.findByRazonSocial", query = "SELECT t FROM TblNotasDeCredito t WHERE t.razonSocial = :razonSocial"),
-    @NamedQuery(name = "TblNotasDeCredito.findByRuc", query = "SELECT t FROM TblNotasDeCredito t WHERE t.ruc = :ruc"),
-    @NamedQuery(name = "TblNotasDeCredito.findByMontoExentas", query = "SELECT t FROM TblNotasDeCredito t WHERE t.montoExentas = :montoExentas"),
-    @NamedQuery(name = "TblNotasDeCredito.findByMontoIva5", query = "SELECT t FROM TblNotasDeCredito t WHERE t.montoIva5 = :montoIva5"),
-    @NamedQuery(name = "TblNotasDeCredito.findByMontoIva10", query = "SELECT t FROM TblNotasDeCredito t WHERE t.montoIva10 = :montoIva10"),
-    @NamedQuery(name = "TblNotasDeCredito.findByIva5", query = "SELECT t FROM TblNotasDeCredito t WHERE t.iva5 = :iva5"),
-    @NamedQuery(name = "TblNotasDeCredito.findByIva10", query = "SELECT t FROM TblNotasDeCredito t WHERE t.iva10 = :iva10"),
-    @NamedQuery(name = "TblNotasDeCredito.findByObservacion", query = "SELECT t FROM TblNotasDeCredito t WHERE t.observacion = :observacion"),
-    @NamedQuery(name = "TblNotasDeCredito.findByIdUser", query = "SELECT t FROM TblNotasDeCredito t WHERE t.idUser = :idUser")})
+    @NamedQuery(name = "TblNotasDeCredito.findByFechahora", query = "SELECT t FROM TblNotasDeCredito t WHERE t.fechahora = :fechahora")})
 public class TblNotasDeCredito implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -66,56 +56,20 @@ public class TblNotasDeCredito implements Serializable {
     private String nro;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 8)
-    @Column(name = "NRO_TIMBRADO")
-    private String nroTimbrado;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "VENCIMIENTO_TIMBRADO")
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime vencimientoTimbrado;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime fechahora;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "RAZON_SOCIAL")
-    private String razonSocial;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "RUC")
-    private String ruc;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "MONTO_EXENTAS")
-    private Integer montoExentas;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "MONTO_IVA5")
-    private Integer montoIva5;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "MONTO_IVA10")
-    private Integer montoIva10;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "IVA5")
-    private Integer iva5;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "IVA10")
-    private Integer iva10;
-    @Size(max = 255)
-    @Column(name = "OBSERVACION")
-    private String observacion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_USER")
-    private Integer idUser;
+    @JoinColumn(name = "NRO_FACTURA", referencedColumnName = "NRO")
+    @ManyToOne(optional = false)
+    private TblFacturas nroFactura;
+    @JoinColumn(name = "ID_TIMBRADO", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblTimbradosNotasDeCredito idTimbrado;
+    @Column(name = "ANULADO")
+    private Boolean anulado;
+    @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblUsers idUser;
     @JoinTable(name = "TBL_NOTAS_DE_CREDITO_ASIENTOS", joinColumns = {
         @JoinColumn(name = "ID_NOTA_DE_CREDITO", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
@@ -129,20 +83,10 @@ public class TblNotasDeCredito implements Serializable {
         this.id = id;
     }
 
-    public TblNotasDeCredito(Integer id, String nro, String nroTimbrado, LocalDateTime vencimientoTimbrado, LocalDateTime fechahora, String razonSocial, String ruc, Integer montoExentas, Integer montoIva5, Integer montoIva10, Integer iva5, Integer iva10, Integer idUser) {
+    public TblNotasDeCredito(Integer id, String nro, LocalDateTime fechahora) {
         this.id = id;
         this.nro = nro;
-        this.nroTimbrado = nroTimbrado;
-        this.vencimientoTimbrado = vencimientoTimbrado;
         this.fechahora = fechahora;
-        this.razonSocial = razonSocial;
-        this.ruc = ruc;
-        this.montoExentas = montoExentas;
-        this.montoIva5 = montoIva5;
-        this.montoIva10 = montoIva10;
-        this.iva5 = iva5;
-        this.iva10 = iva10;
-        this.idUser = idUser;
     }
 
     public Integer getId() {
@@ -161,22 +105,6 @@ public class TblNotasDeCredito implements Serializable {
         this.nro = nro;
     }
 
-    public String getNroTimbrado() {
-        return nroTimbrado;
-    }
-
-    public void setNroTimbrado(String nroTimbrado) {
-        this.nroTimbrado = nroTimbrado;
-    }
-
-    public LocalDateTime getVencimientoTimbrado() {
-        return vencimientoTimbrado;
-    }
-
-    public void setVencimientoTimbrado(LocalDateTime vencimientoTimbrado) {
-        this.vencimientoTimbrado = vencimientoTimbrado;
-    }
-
     public LocalDateTime getFechahora() {
         return fechahora;
     }
@@ -185,76 +113,36 @@ public class TblNotasDeCredito implements Serializable {
         this.fechahora = fechahora;
     }
 
-    public String getRazonSocial() {
-        return razonSocial;
+    public TblFacturas getNroFactura() {
+        return nroFactura;
     }
 
-    public void setRazonSocial(String razonSocial) {
-        this.razonSocial = razonSocial;
+    public void setNroFactura(TblFacturas nroFactura) {
+        this.nroFactura = nroFactura;
     }
 
-    public String getRuc() {
-        return ruc;
+    public TblTimbradosNotasDeCredito getIdTimbrado() {
+        return idTimbrado;
     }
 
-    public void setRuc(String ruc) {
-        this.ruc = ruc;
+    public void setIdTimbrado(TblTimbradosNotasDeCredito idTimbrado) {
+        this.idTimbrado = idTimbrado;
     }
 
-    public Integer getMontoExentas() {
-        return montoExentas;
-    }
-
-    public void setMontoExentas(Integer montoExentas) {
-        this.montoExentas = montoExentas;
-    }
-
-    public Integer getMontoIva5() {
-        return montoIva5;
-    }
-
-    public void setMontoIva5(Integer montoIva5) {
-        this.montoIva5 = montoIva5;
-    }
-
-    public Integer getMontoIva10() {
-        return montoIva10;
-    }
-
-    public void setMontoIva10(Integer montoIva10) {
-        this.montoIva10 = montoIva10;
-    }
-
-    public Integer getIva5() {
-        return iva5;
-    }
-
-    public void setIva5(Integer iva5) {
-        this.iva5 = iva5;
-    }
-
-    public Integer getIva10() {
-        return iva10;
-    }
-
-    public void setIva10(Integer iva10) {
-        this.iva10 = iva10;
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-
-    public Integer getIdUser() {
+    public TblUsers getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(Integer idUser) {
+    public void setIdUser(TblUsers idUser) {
         this.idUser = idUser;
+    }
+
+    public Boolean getAnulado() {
+        return anulado;
+    }
+
+    public void setAnulado(Boolean anulado) {
+        this.anulado = anulado;
     }
 
     @XmlTransient
@@ -268,7 +156,7 @@ public class TblNotasDeCredito implements Serializable {
 
     @Override
     public int hashCode() {
-        Integer hash = 0;
+        int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }

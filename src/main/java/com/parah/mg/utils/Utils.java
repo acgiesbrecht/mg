@@ -8,6 +8,7 @@ package com.parah.mg.utils;
 import com.parah.mg.domain.TblAutofacturas;
 import com.parah.mg.domain.TblEventoCuotas;
 import com.parah.mg.domain.TblFacturas;
+import com.parah.mg.domain.TblNotasDeCredito;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.models.CuotaModel;
 import java.awt.Component;
@@ -198,6 +199,40 @@ public class Utils extends Component {
             String reportFactura = Preferences.userRoot().node("MG").get("formateFactura", "Preimpreso sin rejilla").equals("Preimpreso sin rejilla")
                     ? "autofactura_con_rejilla"
                     : "autofactura";
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFactura + ".jrxml"));
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
+            jasperPrint.setLeftMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0")));
+            jasperPrint.setTopMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaTopMargin", "0")));
+
+            //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
+            //jReportsViewer.setVisible(true);
+            jasperPrint.setLeftMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0")));
+            jasperPrint.setTopMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaTopMargin", "0")));
+            JasperPrintManager.printReport(jasperPrint, false);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }
+
+    public void printNotaDeCredito(TblNotasDeCredito notaDeCredito) {
+        try {
+
+            Map parameters = new HashMap();
+            parameters.put("nota_de_credito_nro", notaDeCredito.getNro());
+            parameters.put("fechahora", java.sql.Date.valueOf(notaDeCredito.getFechahora().toLocalDate()));
+            parameters.put("razon_social", notaDeCredito.getNroFactura().getRazonSocial());
+            parameters.put("ruc", notaDeCredito.getNroFactura().getRuc());
+            parameters.put("domicilio", notaDeCredito.getNroFactura().getDomicilio());
+            parameters.put("box", notaDeCredito.getNroFactura().getCasillaDeCorreo() == null ? "" : notaDeCredito.getNroFactura().getCasillaDeCorreo().toString());
+            parameters.put("importe_aporte", notaDeCredito.getNroFactura().getImporteAporte());
+            parameters.put("importe_donacion", notaDeCredito.getNroFactura().getImporteDonacion());
+            parameters.put("usuario", notaDeCredito.getIdUser().getNombrecompleto());
+
+            String reportFactura = Preferences.userRoot().node("MG").get("formateFactura", "Preimpreso sin rejilla").equals("Preimpreso sin rejilla")
+                    ? "nota_de_credito_con_rejilla"
+                    : "nota_de_credito";
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFactura + ".jrxml"));
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
@@ -409,6 +444,27 @@ public class Utils extends Component {
         try {
             Integer i = Integer.parseInt(StringUtils.replace(nro, "001-001-", "")) + 1;
             return String.format("001-001-%07d", i);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            return "";
+        }
+    }
+
+    public static String generateFacturaNroConEstPtoExp(String est, String ptoExp, Integer nro) {
+        try {
+            return est + "-" + ptoExp + "-" + String.format("%07d", nro);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            return "";
+        }
+    }
+
+    public static String generateNextFacturaNroConEstPtoExp(String est, String ptoExp, String nro) {
+        try {
+            Integer i = Integer.parseInt(StringUtils.split(nro, "-")[2]) + 1;
+            return String.format(est + "-" + ptoExp + "-%07d", i);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());

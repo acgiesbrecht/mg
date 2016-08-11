@@ -9,7 +9,6 @@ import com.parah.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,31 +42,34 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TblUsers implements Serializable {
 
     @OneToMany(mappedBy = "idUser")
+    private List<TblTimbradosNotasDeCredito> tblTimbradosNotasDeCreditoList;
+
+    @OneToMany(mappedBy = "idUser")
     private List<TblEventoDetalle> tblEventoDetalleList;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    @OneToMany(mappedBy = "idUser")
     private List<TblRecibos> tblRecibosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    @OneToMany(mappedBy = "idUser")
     private List<TblEventos> tblEventosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    @OneToMany(mappedBy = "idUser")
     private List<TblTransferencias> tblTransferenciasList;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    @OneToMany(mappedBy = "idUser")
     private List<TblTimbrados> tblTimbradosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    @OneToMany(mappedBy = "idUser")
     private List<TblFacturas> tblFacturasList;
     @OneToMany(mappedBy = "idUser")
     private List<TblEntidades> tblEntidadesList;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    @OneToMany(mappedBy = "idUser")
     private List<TblTimbradosAutofacturas> tblTimbradosAutofacturasList;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    @OneToMany(mappedBy = "idUser")
     private List<TblFacturasCompra> tblFacturasCompraList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    @OneToMany(mappedBy = "idUser")
     private List<TblAutofacturas> tblAutofacturasList;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    @OneToMany(mappedBy = "idUser")
     private List<TblAsientos> tblAsientosList;
 
     private static final long serialVersionUID = 1L;
@@ -288,6 +290,15 @@ public class TblUsers implements Serializable {
 
     public void setTblEventoDetalleList(List<TblEventoDetalle> tblEventoDetalleList) {
         this.tblEventoDetalleList = tblEventoDetalleList;
+    }
+
+    @XmlTransient
+    public List<TblTimbradosNotasDeCredito> getTblTimbradosNotasDeCreditoList() {
+        return tblTimbradosNotasDeCreditoList;
+    }
+
+    public void setTblTimbradosNotasDeCreditoList(List<TblTimbradosNotasDeCredito> tblTimbradosNotasDeCreditoList) {
+        this.tblTimbradosNotasDeCreditoList = tblTimbradosNotasDeCreditoList;
     }
 
 }

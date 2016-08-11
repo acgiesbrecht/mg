@@ -271,7 +271,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventoDetalle, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha/Hora");
-        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setColumnClass(java.time.LocalDateTime.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCategoriaArticulo}"));
         columnBinding.setColumnName("Categoria Articulo");
@@ -700,7 +700,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                     + "    WHERE eventodetalle.id = transferencias.id AND eventodetalle.id = recibos.id AND (eventodetalle.monto - transferencias.monto - recibos.monto) > 0 "
                     + "    ORDER BY eventodetalle.ctacte", TblEntidades.class);
              */
-            queryEntidades = entityManager.createNativeQuery("SELECT entidades.* FROM TBL_ENTIDADES entidades, (SELECT ID FROM (SELECT e.ID, e.CTACTE, SUM(DETALLE.MONTOAPORTE) AS MONTOAPORTE, SUM(DETALLE.MONTODONACION) AS MONTODONACION FROM"
+ /*queryEntidades = entityManager.createNativeQuery("SELECT entidades.* FROM TBL_ENTIDADES entidades, (SELECT ID FROM (SELECT e.ID, e.CTACTE, SUM(DETALLE.MONTOAPORTE) AS MONTOAPORTE, SUM(DETALLE.MONTODONACION) AS MONTODONACION FROM"
                     + " (SELECT ed.id_entidad,"
                     + "                SUM(ed.monto*(ev.PORCENTAJE_APORTE/100)) AS montoAporte,"
                     + "                SUM(ed.monto*((100-ev.PORCENTAJE_APORTE)/100)) AS montoDonacion"
@@ -721,7 +721,30 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                     + " GROUP BY e.ID, e.CTACTE, e.APELLIDOS, e.NOMBRES) d"
                     + " WHERE MONTODONACION + MONTOAPORTE > 0) e"
                     + " WHERE entidades.ID = e.ID"
+                    + " ORDER BY CTACTE", TblEntidades.class);*/
+            String eventoId = ((TblEventos) cboFechaRemate.getSelectedItem()).getId().toString();
+            queryEntidades = entityManager.createNativeQuery(""
+                    + "SELECT entidades.* FROM TBL_ENTIDADES entidades, "
+                    + "                         (SELECT ID FROM (SELECT e.ID, e.CTACTE, SUM(DETALLE.MONTO) AS MONTO FROM"
+                    + " (SELECT ed.id_entidad,"
+                    + "                SUM(COALESCE(ed.monto,0)) AS monto"
+                    + "              FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID = " + eventoId
+                    + "                group by ed.id_entidad"
+                    + " UNION ALL  "
+                    + " SELECT p.id_entidad,"
+                    + "                 -SUM(COALESCE(p.MONTO_APORTE,0) + COALESCE(p.MONTO_DONACION,0)) AS monto"
+                    + "                 FROM MG.TBL_TRANSFERENCIAS p WHERE p.ID_EVENTO = " + eventoId
+                    + "                 group by p.id_entidad"
+                    + " UNION ALL "
+                    + " SELECT p.id_entidad,"
+                    + "        -SUM(COALESCE(p.MONTO_APORTE,0) + COALESCE(p.MONTO_DONACION,0)) AS monto"
+                    + "        FROM MG.TBL_RECIBOS p WHERE p.ID_EVENTO = " + eventoId
+                    + "        group by p.id_entidad) DETALLE LEFT JOIN MG.TBL_ENTIDADES e ON DETALLE.ID_ENTIDAD = e.ID"
+                    + " GROUP BY e.ID, e.CTACTE, e.APELLIDOS, e.NOMBRES) d"
+                    + " WHERE MONTO > 0) e"
+                    + " WHERE entidades.ID = e.ID"
                     + " ORDER BY CTACTE", TblEntidades.class);
+
             listEntidades.clear();
             listEntidades.addAll(queryEntidades.getResultList());
             eventListEntidades.clear();
@@ -895,7 +918,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                         transferencia.setFechahoraCompromiso(cuota.getFecha());
                         transferencia.setIdEntidad(selectedEntidad);
                         transferencia.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
-                        transferencia.setMontoAporte(cuota.getMonto() / 100 * ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte());
+                        transferencia.setMontoAporte(((Long) (cuota.getMonto().longValue() * ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte().longValue() / 100)).intValue());
                         transferencia.setMontoDonacion(cuota.getMonto() - transferencia.getMontoAporte());
                         transferencia.setIdEventoTipo(((TblEventos) cboFechaRemate.getSelectedItem()).getIdEventoTipo());
                         transferencia.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
@@ -967,7 +990,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                     transferencia.setFechahoraCompromiso(dtpFechaPago.getDate());
                     transferencia.setIdEntidad(selectedEntidad);
                     transferencia.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
-                    transferencia.setMontoAporte(transferenciaMonto / 100 * ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte());
+                    transferencia.setMontoAporte(((Long) (transferenciaMonto.longValue() * ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte().longValue() / 100)).intValue());
                     transferencia.setMontoDonacion(transferenciaMonto - transferencia.getMontoAporte());
                     transferencia.setIdEventoTipo(((TblEventos) cboFechaRemate.getSelectedItem()).getIdEventoTipo());
                     transferencia.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
@@ -1011,7 +1034,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 recibo.setFechahoraCompromiso(fecha);
                 recibo.setIdEntidad(selectedEntidad);
                 recibo.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
-                recibo.setMontoAporte(reciboMonto / 100 * ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte());
+                recibo.setMontoAporte(((Long) (reciboMonto.longValue() * ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte().longValue() / 100)).intValue());
                 recibo.setMontoDonacion(reciboMonto - recibo.getMontoAporte());
                 recibo.setIdEventoTipo(((TblEventos) cboFechaRemate.getSelectedItem()).getIdEventoTipo());
                 recibo.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());

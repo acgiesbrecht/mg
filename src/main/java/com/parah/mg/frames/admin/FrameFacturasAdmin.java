@@ -254,7 +254,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
                 TblFacturas t = list.get(masterTable.convertRowIndexToModel(selected[0]));
 
                 t.setAnulado(true);
-                Calendar calendar = Calendar.getInstance();
+
                 for (TblAsientos asiento : t.getTblAsientosList()) {
 
                     for (TblAsientosTemporales at : asiento.getTblAsientosTemporalesList()) {

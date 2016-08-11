@@ -35,6 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblAreasServicioEnIglesia.findByDescripcion", query = "SELECT t FROM TblAreasServicioEnIglesia t WHERE t.descripcion = :descripcion")})
 public class TblAreasServicioEnIglesia implements Serializable {
 
+    @OneToMany(mappedBy = "idAreaServicioEnIglesia")
+    private List<TblEntidades> tblEntidadesList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -98,6 +101,15 @@ public class TblAreasServicioEnIglesia implements Serializable {
     @Override
     public String toString() {
         return "com.parah.mg.domain.TblAreasServicioEnIglesia[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public List<TblEntidades> getTblEntidadesList() {
+        return tblEntidadesList;
+    }
+
+    public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
+        this.tblEntidadesList = tblEntidadesList;
     }
 
 }
