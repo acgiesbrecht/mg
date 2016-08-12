@@ -19,6 +19,7 @@ import com.parah.mg.frames.admin.FrameEventosAdmin;
 import com.parah.mg.frames.admin.FrameFacturasAdmin;
 import com.parah.mg.frames.admin.FrameGruposAdmin;
 import com.parah.mg.frames.admin.FrameIglesiaAdmin;
+import com.parah.mg.frames.admin.FrameNotasDeCreditoAdmin;
 import com.parah.mg.frames.admin.FrameRecibosAdmin;
 import com.parah.mg.frames.admin.FrameTimbradosAdmin;
 import com.parah.mg.frames.admin.FrameTimbradosAutofacturasAdmin;
@@ -163,7 +164,7 @@ public class MdiFrame extends javax.swing.JFrame {
                             mnuAdAutofacturas.setEnabled(currentUser.hasRole(2));
 
                             mnuAdTimbradosNotasDeCredito.setEnabled(currentUser.hasRole(3));
-                            //mnuAdNotasDeCredito.setEnabled(currentUser.hasRole(2));
+                            mnuAdNotasDeCredito.setEnabled(currentUser.hasRole(2));
 
                             mnuAdCentrosDeCosto.setEnabled(currentUser.hasRole(3));
                             mnuAdCuentasContables.setEnabled(currentUser.hasRole(3));
@@ -1259,7 +1260,18 @@ public class MdiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuAdTimbradosNotasDeCreditoActionPerformed
 
     private void mnuAdNotasDeCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdNotasDeCreditoActionPerformed
-        // TODO add your handling code here:
+        try {
+            FrameNotasDeCreditoAdmin frame = new FrameNotasDeCreditoAdmin();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }//GEN-LAST:event_mnuAdNotasDeCreditoActionPerformed
 
     private void mnuEgRecibosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuEgRecibosActionPerformed

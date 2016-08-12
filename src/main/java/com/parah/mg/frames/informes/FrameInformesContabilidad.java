@@ -90,14 +90,14 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             timePickerSettings7.setFormatForDisplayTime("HH:mm:ss");
 
             initComponents();
-            
+
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
             }
 
             AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
-            
+
             LocalDateTime startDate = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
             LocalDateTime endDate = LocalDateTime.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).withHour(23).withMinute(59).withSecond(59);
             txtFechaInicioDiario.setDateTimeStrict(startDate);
@@ -109,8 +109,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             txtFechaFinDiario.setDateTimeStrict(endDate);
             txtFechaFinCompras.setDateTimeStrict(endDate);
             txtFechaFinVentas.setDateTimeStrict(endDate);
-            
-            
+
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -217,7 +216,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
 
         jLabel14.setText("Hasta");
 
-        jLabel15.setText("Libro Compras");
+        jLabel15.setText("Libro Egresos");
 
         jLabel16.setText("Desde");
 
@@ -230,7 +229,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel18.setText("Libro Ventas");
+        jLabel18.setText("Libro Ingresos");
 
         jLabel19.setText("Desde");
 
@@ -361,13 +360,13 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                     .addComponent(txtFechaInicioMayor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtFechaFinMayor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cmdLibroMayorCC)
+                        .addComponent(cmdLibroMayorSoloTotalesCC))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cmdLibroMayor)
                         .addComponent(cmdLibroMayorSoloTotales)
                         .addComponent(cboCentroDeCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmdLibroMayorCC)
-                            .addComponent(cmdLibroMayorSoloTotalesCC))))
+                        .addComponent(jLabel1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -427,7 +426,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaInicioCompras.getDateTimeStrict()));
             parameters.put("fechaHasta", Timestamp.valueOf(txtFechaFinCompras.getDateTimeStrict()));
 
-            Utils.getInstance().showReport("libro_compras", parameters, true);
+            Utils.getInstance().showReport("libro_egresos", parameters, true);
 
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -441,7 +440,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaInicioVentas.getDateTimeStrict()));
             parameters.put("fechaHasta", Timestamp.valueOf(txtFechaFinVentas.getDateTimeStrict()));
 
-            Utils.getInstance().showReport("libro_ventas", parameters, true);
+            Utils.getInstance().showReport("libro_ingresos", parameters, true);
 
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -450,7 +449,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cmdLibroVentasActionPerformed
 
     private void cmdLibroMayorSoloTotalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayorSoloTotalesActionPerformed
-                try {
+        try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaInicioMayor.getDateTimeStrict()));
             parameters.put("fechaHasta", Timestamp.valueOf(txtFechaFinMayor.getDateTimeStrict()));
@@ -464,12 +463,12 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cmdLibroMayorSoloTotalesActionPerformed
 
     private void cmdLibroMayorSoloTotalesCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayorSoloTotalesCCActionPerformed
-        try{            
+        try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaInicioMayor.getDateTimeStrict()));
             parameters.put("fechaHasta", Timestamp.valueOf(txtFechaFinMayor.getDateTimeStrict()));
-            parameters.put("centroDeCosto", ((TblCentrosDeCosto)cboCentroDeCosto.getSelectedItem()).getId());
-            parameters.put("centroDeCostoNombre", ((TblCentrosDeCosto)cboCentroDeCosto.getSelectedItem()).getDescripcion());
+            parameters.put("centroDeCosto", ((TblCentrosDeCosto) cboCentroDeCosto.getSelectedItem()).getId());
+            parameters.put("centroDeCostoNombre", ((TblCentrosDeCosto) cboCentroDeCosto.getSelectedItem()).getDescripcion());
             //parameters.put("ctaContable", 101020100);
             Utils.getInstance().showReport("libro_mayor_cc", "libro_mayor_solo_totales_subreport_cc", "libro_mayor_subreport_saldo_anterior_cc", parameters, false);
             //Utils.getInstance().showReport("libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters);
@@ -480,12 +479,12 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cmdLibroMayorSoloTotalesCCActionPerformed
 
     private void cmdLibroMayorCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayorCCActionPerformed
-        try{            
+        try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaInicioMayor.getDateTimeStrict()));
             parameters.put("fechaHasta", Timestamp.valueOf(txtFechaFinMayor.getDateTimeStrict()));
-            parameters.put("centroDeCosto", ((TblCentrosDeCosto)cboCentroDeCosto.getSelectedItem()).getId());
-            parameters.put("centroDeCostoNombre", ((TblCentrosDeCosto)cboCentroDeCosto.getSelectedItem()).getDescripcion());
+            parameters.put("centroDeCosto", ((TblCentrosDeCosto) cboCentroDeCosto.getSelectedItem()).getId());
+            parameters.put("centroDeCostoNombre", ((TblCentrosDeCosto) cboCentroDeCosto.getSelectedItem()).getDescripcion());
             //parameters.put("ctaContable", 101020100);
             Utils.getInstance().showReport("libro_mayor_cc", "libro_mayor_subreport_cc", "libro_mayor_subreport_saldo_anterior_cc", parameters, false);
             //Utils.getInstance().showReport("libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters);

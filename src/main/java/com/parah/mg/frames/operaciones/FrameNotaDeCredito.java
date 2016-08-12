@@ -396,7 +396,7 @@ public class FrameNotaDeCredito extends JInternalFrame {
 
             for (TblAsientos asientoFactura : factura.getTblAsientosList()) {
                 TblAsientos asientoNota = new TblAsientos();
-                asientoNota.setFechahora(asientoFactura.getFechahora());
+                asientoNota.setFechahora(notaDeCredito.getFechahora());
                 asientoNota.setIdCentroDeCosto(asientoFactura.getIdCentroDeCosto());
                 asientoNota.setIdCuentaContableDebe(asientoFactura.getIdCuentaContableHaber());
                 asientoNota.setIdCuentaContableHaber(asientoFactura.getIdCuentaContableDebe());
