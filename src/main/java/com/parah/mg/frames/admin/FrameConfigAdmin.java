@@ -509,28 +509,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
             Utils.getInstance().printFactura(testF);
 
-            /*
-             Map parameters = new HashMap();
-             parameters.put("factura_id", 1324567);
-             parameters.put("fechahora", new java.sql.Date((new Date()).getTime()));
-             parameters.put("razon_social", "Empresa SA");
-             parameters.put("ruc", 88888888);
-             parameters.put("importe_aporte", 1250000);
-             parameters.put("importe_donacion", 10000000);
-
-             parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
-             parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
-             parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
-             //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
-             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/factura.jrxml"));
-
-             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
-             //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
-             //jReportsViewer.setVisible(true);
-             jasperPrint.setLeftMargin(Integer.getInteger(txtFacturaX.getText()));
-             jasperPrint.setTopMargin(Integer.getInteger(txtFacturaY.getText()));
-             JasperPrintManager.printReport(jasperPrint, false);
-             */
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);

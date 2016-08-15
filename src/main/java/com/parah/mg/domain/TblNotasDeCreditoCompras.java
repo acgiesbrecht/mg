@@ -6,6 +6,7 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Basic;
@@ -18,6 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -73,12 +75,12 @@ public class TblNotasDeCreditoCompras implements Serializable {
     @NotNull
     @Column(name = "VENCIMIENTO_TIMBRADO")
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime vencimientoTimbrado;
+    private LocalDate vencimientoTimbrado;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime fechahora;
+    private LocalDate fechahora;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -112,10 +114,9 @@ public class TblNotasDeCreditoCompras implements Serializable {
     @Size(max = 255)
     @Column(name = "OBSERVACION")
     private String observacion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_USER")
-    private Integer idUser;
+    @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblUsers idUser;
     @JoinTable(name = "TBL_NOTAS_DE_CREDITO_COMPRAS_ASIENTOS", joinColumns = {
         @JoinColumn(name = "ID_NOTA_DE_CREDITO", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
@@ -129,7 +130,7 @@ public class TblNotasDeCreditoCompras implements Serializable {
         this.id = id;
     }
 
-    public TblNotasDeCreditoCompras(Integer id, String nro, String nroTimbrado, LocalDateTime vencimientoTimbrado, LocalDateTime fechahora, String razonSocial, String ruc, Integer montoExentas, Integer montoIva5, Integer montoIva10, Integer iva5, Integer iva10, Integer idUser) {
+    public TblNotasDeCreditoCompras(Integer id, String nro, String nroTimbrado, LocalDate vencimientoTimbrado, LocalDate fechahora, String razonSocial, String ruc, Integer montoExentas, Integer montoIva5, Integer montoIva10, Integer iva5, Integer iva10, TblUsers idUser) {
         this.id = id;
         this.nro = nro;
         this.nroTimbrado = nroTimbrado;
@@ -169,19 +170,19 @@ public class TblNotasDeCreditoCompras implements Serializable {
         this.nroTimbrado = nroTimbrado;
     }
 
-    public LocalDateTime getVencimientoTimbrado() {
+    public LocalDate getVencimientoTimbrado() {
         return vencimientoTimbrado;
     }
 
-    public void setVencimientoTimbrado(LocalDateTime vencimientoTimbrado) {
+    public void setVencimientoTimbrado(LocalDate vencimientoTimbrado) {
         this.vencimientoTimbrado = vencimientoTimbrado;
     }
 
-    public LocalDateTime getFechahora() {
+    public LocalDate getFechahora() {
         return fechahora;
     }
 
-    public void setFechahora(LocalDateTime fechahora) {
+    public void setFechahora(LocalDate fechahora) {
         this.fechahora = fechahora;
     }
 
@@ -249,11 +250,11 @@ public class TblNotasDeCreditoCompras implements Serializable {
         this.observacion = observacion;
     }
 
-    public Integer getIdUser() {
+    public TblUsers getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(Integer idUser) {
+    public void setIdUser(TblUsers idUser) {
         this.idUser = idUser;
     }
 

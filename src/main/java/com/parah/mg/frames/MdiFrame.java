@@ -29,18 +29,20 @@ import com.parah.mg.frames.admin.FrameUsuariosAdmin;
 import com.parah.mg.frames.informes.FrameInformesContabilidad;
 import com.parah.mg.frames.informes.FrameInformesCyA;
 import com.parah.mg.frames.informes.FrameInformesRemates;
-import com.parah.mg.frames.operaciones.FrameAportesDetalle;
-import com.parah.mg.frames.operaciones.FrameAsientosManuales;
-import com.parah.mg.frames.operaciones.FrameAutofacturacion;
-import com.parah.mg.frames.operaciones.FrameCobrarTransferenciasAyC;
-import com.parah.mg.frames.operaciones.FrameCobrarTransferenciasRemates;
-import com.parah.mg.frames.operaciones.FrameColectasDetalle;
-import com.parah.mg.frames.operaciones.FrameFacturacionColectiva;
-import com.parah.mg.frames.operaciones.FrameFacturacionUnica;
-import com.parah.mg.frames.operaciones.FrameFacturasCompra;
-import com.parah.mg.frames.operaciones.FrameNotaDeCredito;
-import com.parah.mg.frames.operaciones.FrameRematesDetalle;
-import com.parah.mg.frames.operaciones.FrameRematesPagos;
+import com.parah.mg.frames.operaciones.ingresos.FrameAportesDetalle;
+import com.parah.mg.frames.operaciones.egresos.FrameAsientosManuales;
+import com.parah.mg.frames.operaciones.egresos.FrameAutofacturacion;
+import com.parah.mg.frames.operaciones.ingresos.FrameCobrarTransferenciasAyC;
+import com.parah.mg.frames.operaciones.ingresos.FrameCobrarTransferenciasRemates;
+import com.parah.mg.frames.operaciones.ingresos.FrameColectasDetalle;
+import com.parah.mg.frames.operaciones.ingresos.FrameFacturacionColectiva;
+import com.parah.mg.frames.operaciones.ingresos.FrameFacturacionUnica;
+import com.parah.mg.frames.operaciones.egresos.FrameFacturasCompra;
+import com.parah.mg.frames.operaciones.egresos.FrameNotaDeCredito;
+import com.parah.mg.frames.operaciones.egresos.FrameNotasDeCreditoCompra;
+import com.parah.mg.frames.operaciones.egresos.FrameRecibosCompra;
+import com.parah.mg.frames.operaciones.ingresos.FrameRematesDetalle;
+import com.parah.mg.frames.operaciones.ingresos.FrameRematesPagos;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.Color;
@@ -247,6 +249,9 @@ public class MdiFrame extends javax.swing.JFrame {
             }
             if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20160810.sql") == null) {
                 hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20160810.sql", hasBackedUp);
+            }
+            if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20160815.sql") == null) {
+                hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20160815.sql", hasBackedUp);
             }
 
             List<TblUsers> list = entityManager.createQuery("SELECT t FROM TblUsers t").getResultList();
@@ -481,6 +486,11 @@ public class MdiFrame extends javax.swing.JFrame {
 
         mnuEgNotasDeCredito.setText("Notas de Credito Compra");
         mnuEgNotasDeCredito.setEnabled(false);
+        mnuEgNotasDeCredito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuEgNotasDeCreditoActionPerformed(evt);
+            }
+        });
         jMenu5.add(mnuEgNotasDeCredito);
 
         mnuEgRecibos.setText("Recibos Compra");
@@ -1275,7 +1285,18 @@ public class MdiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuAdNotasDeCreditoActionPerformed
 
     private void mnuEgRecibosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuEgRecibosActionPerformed
-        // TODO add your handling code here:
+        try {
+            FrameRecibosCompra frame = new FrameRecibosCompra();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }//GEN-LAST:event_mnuEgRecibosActionPerformed
 
     private void mnuOpNotaDeCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpNotaDeCreditoActionPerformed
@@ -1292,6 +1313,21 @@ public class MdiFrame extends javax.swing.JFrame {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_mnuOpNotaDeCreditoActionPerformed
+
+    private void mnuEgNotasDeCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuEgNotasDeCreditoActionPerformed
+        try {
+            FrameNotasDeCreditoCompra frame = new FrameNotasDeCreditoCompra();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_mnuEgNotasDeCreditoActionPerformed
 
     /**
      * @param args the command line arguments
