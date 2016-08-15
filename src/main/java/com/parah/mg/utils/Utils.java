@@ -482,4 +482,12 @@ public class Utils extends Component {
             return "";
         }
     }
+
+    public static String formatFacturaNroLibroIngresos(String nro) {
+        if (!nro.contains("-")) {
+            return generateFacturaNroFull(Integer.parseInt(nro.trim()));
+        } else {
+            return nro;
+        }
+    }
 }
