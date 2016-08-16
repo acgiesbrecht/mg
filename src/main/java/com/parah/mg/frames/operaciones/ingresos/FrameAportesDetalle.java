@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.parah.mg.frames.operaciones;
+package com.parah.mg.frames.operaciones.ingresos;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
@@ -249,9 +249,9 @@ public class FrameAportesDetalle extends JInternalFrame {
         newButton.addFocusListener(formListener);
         newButton.addActionListener(formListener);
 
-        deleteButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         deleteButton.setMnemonic('E');
         deleteButton.setText("Eliminar");
+        deleteButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);

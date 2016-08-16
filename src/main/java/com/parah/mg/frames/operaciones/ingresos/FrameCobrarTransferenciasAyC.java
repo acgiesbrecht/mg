@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.parah.mg.frames.operaciones;
+package com.parah.mg.frames.operaciones.ingresos;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
@@ -223,10 +223,10 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
 
         descripcionLabel4.setText("Fecha de Cobro:");
 
-        lblTotal.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        lblTotal.setForeground(new java.awt.Color(102, 102, 102));
         lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         lblTotal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        lblTotal.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        lblTotal.setForeground(new java.awt.Color(102, 102, 102));
 
         descripcionLabel5.setText("Importe total de Registros marcados:");
 

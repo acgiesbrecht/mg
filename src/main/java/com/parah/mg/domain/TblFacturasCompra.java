@@ -7,8 +7,6 @@ package com.parah.mg.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;

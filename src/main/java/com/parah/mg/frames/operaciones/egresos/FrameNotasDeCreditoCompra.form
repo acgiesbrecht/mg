@@ -12,7 +12,7 @@
     </Component>
     <Component class="javax.persistence.Query" name="query">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblFacturasCompra t"/>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblNotasDeCreditoCompras t"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="entityManager"/>
         </Property>
@@ -30,7 +30,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblFacturasCompra&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblNotasDeCreditoCompras&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -170,7 +170,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblFacturasCompra&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblNotasDeCreditoCompras&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -201,18 +201,6 @@
                       <Component id="fechahoraLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="dtpFecha" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-                      <Component id="rbContado" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="rbCredito" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                      <Component id="idLabel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="txtCuotas" min="-2" pref="95" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="fechahoraLabel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="dtpVencimientoFactura" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Component id="masterScrollPane" alignment="0" max="32767" attributes="0"/>
@@ -336,16 +324,8 @@
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                      <Component id="fechahoraLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="rbContado" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="rbCredito" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="idLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtCuotas" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="fechahoraLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="fechahoraLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="dtpFecha" min="-2" max="-2" attributes="0"/>
-                  <Component id="dtpVencimientoFactura" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
@@ -462,13 +442,6 @@
                     <ComponentRef name="numberCellRenderer1"/>
                   </Renderer>
                 </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="condicionFacturaTableCellRenderer1"/>
-                  </Renderer>
-                </Column>
               </TableColumnModel>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
@@ -485,6 +458,7 @@
               <Subbinding sourcePath="${nroTimbrado}">
                 <BindingParameter name="NAME" value="Timbrado"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${fechahora}">
                 <BindingParameter name="NAME" value="Fecha"/>
@@ -514,11 +488,6 @@
               <Subbinding sourcePath="${montoIva10}">
                 <BindingParameter name="NAME" value="Importe IVA 10%"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
-              </Subbinding>
-              <Subbinding sourcePath="${condicionContado}">
-                <BindingParameter name="NAME" value="Condicion"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Boolean.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
             </BindingProperty>
@@ -899,72 +868,6 @@
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="txtRazonSocial" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="rbContado">
-      <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="buttonGroup1"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Contado"/>
-      </Properties>
-      <BindingProperties>
-        <BindingProperty name="selected" source="masterTable" sourcePath="${selectedElement.condicionContado}" target="rbContado" targetPath="selected" updateStrategy="0" immediately="false">
-          <Property name="nullValue" type="boolean" value="false"/>
-          <Property name="incompletePathValue" type="boolean" value="false"/>
-        </BindingProperty>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="rbContado" targetPath="enabled" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="rbCredito">
-      <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="buttonGroup1"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Credito"/>
-      </Properties>
-      <BindingProperties>
-        <BindingProperty name="selected" source="masterTable" sourcePath="${selectedElement.condicionContado}" target="rbCredito" targetPath="selected" updateStrategy="0" immediately="false">
-          <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.ComponentChooserEditor">
-            <ComponentRef name="inverseBooleanConverter1"/>
-          </Property>
-        </BindingProperty>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="rbCredito" targetPath="enabled" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbCreditoActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="idLabel2">
-      <Properties>
-        <Property name="displayedMnemonic" type="int" value="78"/>
-        <Property name="text" type="java.lang.String" value="Catidad de Cuotas:"/>
-      </Properties>
-      <BindingProperties>
-        <BindingProperty name="enabled" source="rbCredito" sourcePath="${selected}" target="idLabel2" targetPath="enabled" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
-    </Component>
-    <Component class="javax.swing.JFormattedTextField" name="txtCuotas">
-      <Properties>
-        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format format="#0" subtype="-1" type="0"/>
-        </Property>
-      </Properties>
-      <BindingProperties>
-        <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.cuotasCredito}" target="txtCuotas" targetPath="value" updateStrategy="0" immediately="false">
-          <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.ComponentChooserEditor">
-            <ComponentRef name="integerLongConverter1"/>
-          </Property>
-        </BindingProperty>
-        <BindingProperty name="enabled" source="rbCredito" sourcePath="${selected}" target="txtCuotas" targetPath="enabled" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="fechahoraLabel2">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Vencimiento de Factura:"/>
-      </Properties>
-      <BindingProperties>
-        <BindingProperty name="enabled" source="rbCredito" sourcePath="${selected}" target="fechahoraLabel2" targetPath="enabled" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
-    </Component>
     <Component class="javax.swing.JLabel" name="montoLabel6">
       <Properties>
         <Property name="text" type="java.lang.String" value="Asientos"/>
@@ -988,21 +891,10 @@
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DatePicker(datePickerSettings);"/>
       </AuxValues>
     </Component>
-    <Component class="com.github.lgooddatepicker.components.DatePicker" name="dtpVencimientoFactura">
-      <BindingProperties>
-        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fechaVencimientoCredito}" target="dtpVencimientoFactura" targetPath="date" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="enabled" source="rbCredito" sourcePath="${selected}" target="dtpVencimientoFactura" targetPath="enabled" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DatePicker(datePickerSettings2);"/>
-      </AuxValues>
-    </Component>
     <Component class="javax.swing.JFormattedTextField" name="txtNro">
       <BindingProperties>
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="txtNro" targetPath="enabled" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.nro}" target="txtNro" targetPath="text" updateStrategy="0" immediately="false">
-          <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
-        </BindingProperty>
+        <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.nro}" target="txtNro" targetPath="text" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
         <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtNroFocusLost"/>

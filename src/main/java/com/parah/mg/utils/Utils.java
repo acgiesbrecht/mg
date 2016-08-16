@@ -221,6 +221,7 @@ public class Utils extends Component {
 
             Map parameters = new HashMap();
             parameters.put("nota_de_credito_nro", notaDeCredito.getNro());
+            parameters.put("factura_nro", notaDeCredito.getNroFactura().getNro());
             parameters.put("fechahora", java.sql.Date.valueOf(notaDeCredito.getFechahora().toLocalDate()));
             parameters.put("razon_social", notaDeCredito.getNroFactura().getRazonSocial());
             parameters.put("ruc", notaDeCredito.getNroFactura().getRuc());
@@ -230,14 +231,12 @@ public class Utils extends Component {
             parameters.put("importe_donacion", notaDeCredito.getNroFactura().getImporteDonacion());
             parameters.put("usuario", notaDeCredito.getIdUser().getNombrecompleto());
 
-            String reportFactura = Preferences.userRoot().node("MG").get("formateFactura", "Preimpreso sin rejilla").equals("Preimpreso sin rejilla")
+            /*String reportFactura = Preferences.userRoot().node("MG").get("formateFactura", "Preimpreso sin rejilla").equals("Preimpreso sin rejilla")
                     ? "nota_de_credito_con_rejilla"
-                    : "nota_de_credito";
-            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFactura + ".jrxml"));
+                    : "nota_de_credito";*/
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/nota_de_credito_con_rejilla.jrxml"));
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
-            jasperPrint.setLeftMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0")));
-            jasperPrint.setTopMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaTopMargin", "0")));
 
             //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
             //jReportsViewer.setVisible(true);
@@ -481,6 +480,14 @@ public class Utils extends Component {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             return "";
+        }
+    }
+
+    public static String formatFacturaNroLibroIngresos(String nro) {
+        if (!nro.contains("-")) {
+            return generateFacturaNroFull(Integer.parseInt(nro.trim()));
+        } else {
+            return nro;
         }
     }
 }

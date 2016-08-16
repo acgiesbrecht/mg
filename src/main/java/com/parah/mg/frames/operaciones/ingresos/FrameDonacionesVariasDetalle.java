@@ -3,23 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.parah.mg.frames.operaciones;
+package com.parah.mg.frames.operaciones.ingresos;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
-import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblCategoriasArticulos;
+import com.parah.mg.domain.TblCentrosDeCosto;
 import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.domain.TblEventoDetalle;
 import com.parah.mg.domain.TblEventoTipos;
-import com.parah.mg.domain.TblEventos;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
-import com.parah.utils.FormatCtaCte;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
@@ -28,9 +26,6 @@ import java.awt.event.KeyEvent;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
@@ -42,7 +37,6 @@ import java.util.Optional;
 import java.util.Set;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
-import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -51,19 +45,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Cell;
 
 /**
  *
  * @author user
  */
-public class FrameColectasDetalle extends JInternalFrame {
+public class FrameDonacionesVariasDetalle extends JInternalFrame {
 
-    private static final Logger LOGGER = LogManager.getLogger(FrameColectasDetalle.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameDonacionesVariasDetalle.class);
     Map<String, String> persistenceMap = new HashMap<>();
     EventList<TblEntidades> eventListMiembros = new BasicEventList<>();
     CurrentUser currentUser = CurrentUser.getInstance();
@@ -74,7 +63,7 @@ public class FrameColectasDetalle extends JInternalFrame {
 
     TblCuentasContablesPorDefecto cuentasContablesPorDefecto;
 
-    public FrameColectasDetalle() {
+    public FrameDonacionesVariasDetalle() {
         super("Colectas",
                 true, //resizable
                 true, //closable
@@ -117,9 +106,8 @@ public class FrameColectasDetalle extends JInternalFrame {
 
             //AutoCompleteDecorator.decorate(cboFechaRemate);
             //AutoCompleteDecorator.decorate(cboCategoria);
-            AutoCompleteSupport support = AutoCompleteSupport.install(cboFechaColecta, GlazedLists.eventListOf(listEventos.toArray()));
-            support.setFilterMode(TextMatcherEditor.CONTAINS);
-
+            //AutoCompleteSupport support = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            //support.setFilterMode(TextMatcherEditor.CONTAINS);
             eventListMiembros.clear();
 
             eventListMiembros.addAll(listMiembros);
@@ -127,16 +115,7 @@ public class FrameColectasDetalle extends JInternalFrame {
 
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            Optional<TblEventos> value = listEventos.stream().filter(a -> a.getFecha().equals(LocalDate.now().atStartOfDay()))
-                    .findFirst();
-
-            if (value.isPresent()) {
-                cboFechaColecta.setSelectedItem(value.get());
-            } else {
-                cboFechaColecta.setSelectedIndex(-1);
-            }
-
-            idEventoTipo = entityManager.find(TblEventoTipos.class, 2);
+            idEventoTipo = entityManager.find(TblEventoTipos.class, 4);
 
             KeyboardFocusManager.getCurrentKeyboardFocusManager()
                     .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
@@ -176,9 +155,6 @@ public class FrameColectasDetalle extends JInternalFrame {
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
         normalTableCellRenderer1 = new com.parah.mg.utils.NormalTableCellRenderer();
         categoriasConverter1 = new com.parah.mg.utils.CategoriasConverter();
-        queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 2 AND t.idGrupo IN :grupos ORDER BY t.fecha");
-        queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
-        listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
         queryEventoDetalle = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoDetalle t WHERE t.idEvento = :eventoId ORDER BY t.idEntidad.ctacte, t.id");
         queryEventoDetalle.setParameter("eventoId", null) ;
         listEventoDetalle = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoDetalle.getResultList());
@@ -192,6 +168,8 @@ public class FrameColectasDetalle extends JInternalFrame {
         tblFormasDePagoQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblFormasDePago t ORDER BY t.id");
         tblFormasDePagoList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(tblFormasDePagoQuery.getResultList());
         ctaCteTableCellRenderer1 = new com.parah.mg.utils.CtaCteTableCellRenderer();
+        queryCentrosDeCosto = java.beans.Beans.isDesignTime() ? null : ((javax.persistence.EntityManager)null).createQuery("SELECT t FROM TblCentrosDeCosto t");
+        listCentrosDeCosto = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(((javax.persistence.Query)null).getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         montoLabel = new javax.swing.JLabel();
@@ -205,18 +183,14 @@ public class FrameColectasDetalle extends JInternalFrame {
         idMiembroLabel2 = new javax.swing.JLabel();
         dateTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
         cboMiembro = new javax.swing.JComboBox();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        lblTotal = new javax.swing.JLabel();
-        lblTotalOperaciones = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        cboFechaColecta = new javax.swing.JComboBox();
         montoField = new javax.swing.JFormattedTextField();
         jButton2 = new javax.swing.JButton();
         montoLabel1 = new javax.swing.JLabel();
         cboForma = new javax.swing.JComboBox();
-        jButton1 = new javax.swing.JButton();
+        fechahoraLabel = new javax.swing.JLabel();
+        dtpFecha = new org.jdesktop.swingx.JXDatePicker();
+        txtObservacion = new javax.swing.JTextField();
+        descripcionLabel = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
@@ -274,16 +248,12 @@ public class FrameColectasDetalle extends JInternalFrame {
 
         newButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         newButton.setText("Nuevo");
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventos, org.jdesktop.beansbinding.ELProperty.create("${size!=null}"), newButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
         newButton.addActionListener(formListener);
 
-        deleteButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         deleteButton.setText("Eliminar");
+        deleteButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         deleteButton.addActionListener(formListener);
@@ -314,62 +284,6 @@ public class FrameColectasDetalle extends JInternalFrame {
         cboMiembro.addPopupMenuListener(formListener);
         cboMiembro.addActionListener(formListener);
         cboMiembro.addKeyListener(formListener);
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setText("Total Operaciones:");
-
-        lblTotal.setBackground(new java.awt.Color(204, 255, 204));
-        lblTotal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblTotal.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-        lblTotalOperaciones.setBackground(new java.awt.Color(204, 255, 204));
-        lblTotalOperaciones.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblTotalOperaciones.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel3.setText("Total Guaranies:");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTotalOperaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
-                        .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTotalOperaciones, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        jLabel2.setText("Fecha de Colecta:");
-
-        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventos, cboFechaColecta);
-        bindingGroup.addBinding(jComboBoxBinding);
-
-        cboFechaColecta.addActionListener(formListener);
 
         montoField.setColumns(9);
         montoField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
@@ -405,8 +319,20 @@ public class FrameColectasDetalle extends JInternalFrame {
         cboForma.addActionListener(formListener);
         cboForma.addKeyListener(formListener);
 
-        jButton1.setText("Importar de Excel (CtaCte / Importe)");
-        jButton1.addActionListener(formListener);
+        fechahoraLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        fechahoraLabel.setText("Fecha:");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("date"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.observacion}"), txtObservacion, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtObservacion, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        descripcionLabel.setText("Observación:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -417,47 +343,47 @@ public class FrameColectasDetalle extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(masterScrollPane)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(idMiembroLabel)
+                            .addComponent(fechahoraLabel)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(332, 332, 332)
+                                .addGap(342, 342, 342)
                                 .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addGap(112, 112, 112)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(idMiembroLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(12, 12, 12)
+                                        .addComponent(idMiembroLabel2))
+                                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cboFechaColecta, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(montoLabel)
-                        .addGap(65, 65, 65)
-                        .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(idMiembroLabel)
-                        .addGap(54, 54, 54)
-                        .addComponent(idMiembroLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(idMiembroLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(montoLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(cboForma, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                                .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(refreshButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(deleteButton, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(deleteButton, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(montoLabel1)
+                            .addComponent(montoLabel)
+                            .addComponent(descripcionLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cboForma, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(346, 346, 346)))
                 .addContainerGap())
         );
 
@@ -466,14 +392,13 @@ public class FrameColectasDetalle extends JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(cboFechaColecta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap()
                 .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fechahoraLabel)
+                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idMiembroLabel)
                     .addComponent(idMiembroLabel1)
@@ -481,28 +406,30 @@ public class FrameColectasDetalle extends JInternalFrame {
                     .addComponent(idMiembroLabel2)
                     .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(montoLabel1)
-                    .addComponent(cboForma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboForma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(montoLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(montoLabel))
-                .addGap(41, 41, 41)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(deleteButton)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(refreshButton))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(descripcionLabel))
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(deleteButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshButton)))
                 .addGap(131, 131, 131)
                 .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -514,43 +441,37 @@ public class FrameColectasDetalle extends JInternalFrame {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                FrameColectasDetalle.this.saveButtonActionPerformed(evt);
+                FrameDonacionesVariasDetalle.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                FrameColectasDetalle.this.refreshButtonActionPerformed(evt);
+                FrameDonacionesVariasDetalle.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                FrameColectasDetalle.this.newButtonActionPerformed(evt);
+                FrameDonacionesVariasDetalle.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                FrameColectasDetalle.this.deleteButtonActionPerformed(evt);
+                FrameDonacionesVariasDetalle.this.deleteButtonActionPerformed(evt);
             }
             else if (evt.getSource() == cboMiembro) {
-                FrameColectasDetalle.this.cboMiembroActionPerformed(evt);
-            }
-            else if (evt.getSource() == cboFechaColecta) {
-                FrameColectasDetalle.this.cboFechaColectaActionPerformed(evt);
+                FrameDonacionesVariasDetalle.this.cboMiembroActionPerformed(evt);
             }
             else if (evt.getSource() == montoField) {
-                FrameColectasDetalle.this.montoFieldActionPerformed(evt);
+                FrameDonacionesVariasDetalle.this.montoFieldActionPerformed(evt);
             }
             else if (evt.getSource() == jButton2) {
-                FrameColectasDetalle.this.jButton2ActionPerformed(evt);
+                FrameDonacionesVariasDetalle.this.jButton2ActionPerformed(evt);
             }
             else if (evt.getSource() == cboForma) {
-                FrameColectasDetalle.this.cboFormaActionPerformed(evt);
-            }
-            else if (evt.getSource() == jButton1) {
-                FrameColectasDetalle.this.jButton1ActionPerformed(evt);
+                FrameDonacionesVariasDetalle.this.cboFormaActionPerformed(evt);
             }
         }
 
         public void focusGained(java.awt.event.FocusEvent evt) {
             if (evt.getSource() == txtCtaCte) {
-                FrameColectasDetalle.this.txtCtaCteFocusGained(evt);
+                FrameDonacionesVariasDetalle.this.txtCtaCteFocusGained(evt);
             }
             else if (evt.getSource() == montoField) {
-                FrameColectasDetalle.this.montoFieldFocusGained(evt);
+                FrameDonacionesVariasDetalle.this.montoFieldFocusGained(evt);
             }
         }
 
@@ -562,16 +483,16 @@ public class FrameColectasDetalle extends JInternalFrame {
 
         public void keyReleased(java.awt.event.KeyEvent evt) {
             if (evt.getSource() == txtCtaCte) {
-                FrameColectasDetalle.this.txtCtaCteKeyReleased(evt);
+                FrameDonacionesVariasDetalle.this.txtCtaCteKeyReleased(evt);
             }
             else if (evt.getSource() == cboMiembro) {
-                FrameColectasDetalle.this.cboMiembroKeyReleased(evt);
+                FrameDonacionesVariasDetalle.this.cboMiembroKeyReleased(evt);
             }
             else if (evt.getSource() == montoField) {
-                FrameColectasDetalle.this.montoFieldKeyReleased(evt);
+                FrameDonacionesVariasDetalle.this.montoFieldKeyReleased(evt);
             }
             else if (evt.getSource() == cboForma) {
-                FrameColectasDetalle.this.cboFormaKeyReleased(evt);
+                FrameDonacionesVariasDetalle.this.cboFormaKeyReleased(evt);
             }
         }
 
@@ -580,7 +501,7 @@ public class FrameColectasDetalle extends JInternalFrame {
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             if (evt.getSource() == montoField) {
-                FrameColectasDetalle.this.montoFieldMouseClicked(evt);
+                FrameDonacionesVariasDetalle.this.montoFieldMouseClicked(evt);
             }
         }
 
@@ -597,8 +518,8 @@ public class FrameColectasDetalle extends JInternalFrame {
         }
 
         public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            if (evt.getSource() == FrameColectasDetalle.this) {
-                FrameColectasDetalle.this.formInternalFrameActivated(evt);
+            if (evt.getSource() == FrameDonacionesVariasDetalle.this) {
+                FrameDonacionesVariasDetalle.this.formInternalFrameActivated(evt);
             }
         }
 
@@ -625,7 +546,7 @@ public class FrameColectasDetalle extends JInternalFrame {
 
         public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
             if (evt.getSource() == cboMiembro) {
-                FrameColectasDetalle.this.cboMiembroPopupMenuWillBecomeInvisible(evt);
+                FrameDonacionesVariasDetalle.this.cboMiembroPopupMenuWillBecomeInvisible(evt);
             }
         }
 
@@ -636,32 +557,30 @@ public class FrameColectasDetalle extends JInternalFrame {
     @SuppressWarnings("unchecked")
     void refresh() {
         try {
-            if (cboFechaColecta.getSelectedItem() != null && entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-                entityManager.getTransaction().begin();
-                queryEventoDetalle.setParameter("eventoId", ((TblEventos) cboFechaColecta.getSelectedItem()));
-                java.util.List data = queryEventoDetalle.getResultList();
-                data.stream().forEach((entity) -> {
-                    entityManager.refresh(entity);
-                });
-                listEventoDetalle.clear();
-                listEventoDetalle.addAll(data);
 
-                entityManager1.getTransaction().rollback();
-                entityManager1.getTransaction().begin();
-                data = queryMiembros.getResultList();
-                data.stream().forEach((entity) -> {
-                    entityManager1.refresh(entity);
-                });
-                listMiembros.clear();
-                listMiembros.addAll(data);
-                eventListMiembros.clear();
-                eventListMiembros.addAll(data);
+            entityManager.getTransaction().rollback();
+            entityManager.getTransaction().begin();
 
-                lblTotal.setText(String.format("%,d", listEventoDetalle.stream().mapToInt(a -> a.getMonto()).sum()));
-                lblTotalOperaciones.setText(String.format("%,d", listEventoDetalle.stream().mapToInt(a -> a.getMonto()).count()));
-                txtCtaCte.setText("");
-            }
+            java.util.List data = queryEventoDetalle.getResultList();
+            data.stream().forEach((entity) -> {
+                entityManager.refresh(entity);
+            });
+            listEventoDetalle.clear();
+            listEventoDetalle.addAll(data);
+
+            entityManager1.getTransaction().rollback();
+            entityManager1.getTransaction().begin();
+            data = queryMiembros.getResultList();
+            data.stream().forEach((entity) -> {
+                entityManager1.refresh(entity);
+            });
+            listMiembros.clear();
+            listMiembros.addAll(data);
+            eventListMiembros.clear();
+            eventListMiembros.addAll(data);
+
+            txtCtaCte.setText("");
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -687,10 +606,8 @@ public class FrameColectasDetalle extends JInternalFrame {
     private void newDetalle() {
         try {
             TblEventoDetalle t = new TblEventoDetalle();
-            TblEventos currEvento = (TblEventos) cboFechaColecta.getSelectedItem();
-            t.setFechahora(currEvento.getFecha().atStartOfDay());
             t.setIdCategoriaArticulo(entityManager.find(TblCategoriasArticulos.class, 1));
-            t.setIdEvento(currEvento);
+
             t.setIdUser(currentUser.getUser());
 
             entityManager.persist(t);
@@ -722,58 +639,11 @@ public class FrameColectasDetalle extends JInternalFrame {
                 montoField.requestFocusInWindow();
                 return;
             }
-            /*TblEventos currentEvento = (TblEventos) cboFechaColecta.getSelectedItem();
-
-            actialuazr transferencias y recibos
-             if ((Integer) (long) entityManager.createQuery("SELECT COUNT(t) FROM TblTransferencias t WHERE t.cobrado = true AND t.idEvento.id = " + String.valueOf(currentEvento.getId())).getSingleResult() > 0) {
-             JOptionPane.showMessageDialog(null, "Los cambios realizados a este evento no tendrán efecto sobre los pagos realizados porque ya hay transferencias cobradas para este evento. Deberá modificar las transferencias y los recibos manualmente.");
-             } else {
-             Integer executeUpdate = entityManager.createQuery("DELETE FROM TblTransferencias t WHERE t.idEvento.id = " + String.valueOf(currentEvento.getId())).executeUpdate();
-             executeUpdate = entityManager.createQuery("DELETE FROM TblRecibos t WHERE t.idEvento.id = " + String.valueOf(currentEvento.getId())).executeUpdate();
-
-             for (TblEventoDetalle t : listEventoDetalle) {
-             if (t.getIdFormaDePagoPreferida().getId().equals(1)) {
-             TblTransferencias transf = new TblTransferencias();
-             transf.setFechahora(t.getFechahora());
-             transf.setConcepto(currentEvento.getDescripcion());
-             transf.setIdEntidad(t.getIdEntidad());
-             transf.setIdEvento(currentEvento);
-             transf.setMonto(t.getMonto());
-             transf.setPorcentajeAporte(currentEvento.getPorcentajeAporte());
-             transf.setCobrado(false);
-             transf.setIdUser(t.getIdUser());
-             entityManager.persist(transf);
-             } else {
-             TblRecibos recibo = new TblRecibos();
-             recibo.setFechahora(t.getFechahora());
-             recibo.setConcepto(currentEvento.getDescripcion());
-             recibo.setIdEntidad(t.getIdEntidad());
-             recibo.setIdEvento(currentEvento);
-             recibo.setMonto(t.getMonto());
-             recibo.setPorcentajeAporte(currentEvento.getPorcentajeAporte());
-             recibo.setIdUser(t.getIdUser());
-             entityManager.persist(recibo);
-             }
-             }
-             }
-             //------------------------------------*/
-
             for (TblEventoDetalle evd : listEventoDetalle) {
                 if (entityManager.contains(evd)) {
                     if (evd.getTblAsientosList().size() == 2) {
-                        Integer indexAsientoAporte = -1;
-                        Integer indexAsientoDonacion = -1;
-
-                        if (((List<TblAsientos>) evd.getTblAsientosList()).get(0).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
-                            indexAsientoAporte = 0;
-                            indexAsientoDonacion = 1;
-                        } else if (((List<TblAsientos>) evd.getTblAsientosList()).get(1).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
-                            indexAsientoAporte = 1;
-                            indexAsientoDonacion = 0;
-                        }
-
-                        ((List<TblAsientos>) evd.getTblAsientosList()).get(indexAsientoAporte).setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
-                        ((List<TblAsientos>) evd.getTblAsientosList()).get(indexAsientoDonacion).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosList()).get(indexAsientoAporte).getMonto());
+                        ((List<TblAsientos>) evd.getTblAsientosList()).get(0).setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
+                        ((List<TblAsientos>) evd.getTblAsientosList()).get(1).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosList()).get(0).getMonto());
                         entityManager.merge(evd);
                     } else if (evd.getTblAsientosList().isEmpty()) {
 
@@ -784,7 +654,7 @@ public class FrameColectasDetalle extends JInternalFrame {
                         }
                         TblAsientos asientoAporte = new TblAsientos();
                         asientoAporte.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
-                        asientoAporte.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
+                        asientoAporte.setIdCentroDeCosto((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
                         asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
                         asientoAporte.setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
@@ -794,7 +664,7 @@ public class FrameColectasDetalle extends JInternalFrame {
 
                         TblAsientos asientoDonacion = new TblAsientos();
                         asientoDonacion.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
-                        asientoDonacion.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
+                        asientoDonacion.setIdCentroDeCosto((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
                         asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
                         asientoDonacion.setMonto(evd.getMonto() - asientoAporte.getMonto());
@@ -871,16 +741,6 @@ public class FrameColectasDetalle extends JInternalFrame {
 
         refresh();
     }//GEN-LAST:event_refreshButtonActionPerformed
-
-    private void cboFechaColectaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFechaColectaActionPerformed
-        try {
-            refresh();
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_cboFechaColectaActionPerformed
 
     private void montoFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_montoFieldFocusGained
         montoField.selectAll();
@@ -972,85 +832,8 @@ public class FrameColectasDetalle extends JInternalFrame {
 
     }//GEN-LAST:event_cboMiembroPopupMenuWillBecomeInvisible
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            JFileChooser fc = new JFileChooser();
-            Integer returnVal = fc.showOpenDialog(this);
-
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-
-                File file = fc.getSelectedFile();
-                POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(file));
-                HSSFWorkbook wb = new HSSFWorkbook(fs);
-                HSSFSheet sheet = wb.getSheetAt(0);
-                HSSFRow row;
-
-                Integer rows; // No of rows
-                rows = sheet.getPhysicalNumberOfRows();
-
-                Integer cols = 0; // No of columns
-                Integer tmp = 0;
-
-                // This trick ensures that we get the data properly even if it doesn't start from first few rows
-                for (Integer i = 0; i < 10 || i < rows; i++) {
-                    row = sheet.getRow(i);
-                    if (row != null) {
-                        tmp = sheet.getRow(i).getPhysicalNumberOfCells();
-                        if (tmp > cols) {
-                            cols = tmp;
-                        }
-                    }
-                }
-
-                for (Integer r = 1; r <= rows; r++) {
-                    row = sheet.getRow(r);
-                    if (row != null) {
-
-                        TblEventoDetalle t = new TblEventoDetalle();
-                        TblEventos currEvento = (TblEventos) cboFechaColecta.getSelectedItem();
-                        t.setFechahora(currEvento.getFecha().atStartOfDay());
-                        t.setIdCategoriaArticulo(entityManager.find(TblCategoriasArticulos.class, 1));
-                        t.setIdEvento(currEvento);
-                        t.setIdUser(currentUser.getUser());
-
-                        Integer ctaCte = 0;
-                        if (row.getCell(0).getCellType() == Cell.CELL_TYPE_STRING) {
-                            if (!row.getCell(0).getStringCellValue().replaceAll("[^\\d.]", "").equals("")) {
-                                ctaCte = Integer.valueOf(row.getCell(0).getStringCellValue().replaceAll("[^\\d.]", ""));
-                            }
-                        } else if (row.getCell(0).getCellType() == Cell.CELL_TYPE_NUMERIC) {
-                            ctaCte = (int) (row.getCell(0).getNumericCellValue());
-                        }
-                        if (ctaCte != 0) {
-                            final Integer cc = ctaCte;
-                            List<TblEntidades> list = listMiembros;
-                            Optional<TblEntidades> value = list.stream().filter(a -> a.getCtacte().equals(cc))
-                                    .findFirst();
-                            if (value.isPresent()) {
-                                t.setIdEntidad(value.get());
-                                t.setIdFormaDePagoPreferida(tblFormasDePagoList.get(0));
-                                if (row.getCell(1).getCellType() == Cell.CELL_TYPE_NUMERIC) {
-                                    t.setMonto((int) (row.getCell(1).getNumericCellValue()));
-                                    entityManager.persist(t);
-                                    listEventoDetalle.add(t);
-                                }
-                            } else {
-                                JOptionPane.showMessageDialog(null, "No hay entidad registrada con Cta.Cte N° " + FormatCtaCte.format(ctaCte));
-                            }
-                        }
-                    }
-                }
-
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.parah.mg.utils.CategoriasConverter categoriasConverter1;
-    private javax.swing.JComboBox cboFechaColecta;
     private javax.swing.JComboBox cboForma;
     private javax.swing.JComboBox cboMiembro;
     private com.parah.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
@@ -1058,23 +841,19 @@ public class FrameColectasDetalle extends JInternalFrame {
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
     private com.parah.mg.utils.DateTimeToStringConverter dateTimeToStringConverter1;
     private javax.swing.JButton deleteButton;
+    private javax.swing.JLabel descripcionLabel;
+    private org.jdesktop.swingx.JXDatePicker dtpFecha;
     private javax.persistence.EntityManager entityManager;
     private javax.persistence.EntityManager entityManager1;
+    private javax.swing.JLabel fechahoraLabel;
     private javax.swing.JLabel idMiembroLabel;
     private javax.swing.JLabel idMiembroLabel1;
     private javax.swing.JLabel idMiembroLabel2;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
-    private javax.swing.JLabel lblTotal;
-    private javax.swing.JLabel lblTotalOperaciones;
+    private java.util.List<com.parah.mg.domain.TblCentrosDeCosto> listCentrosDeCosto;
     private java.util.List<com.parah.mg.domain.TblEventoDetalle> listEventoDetalle;
-    private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
     private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
@@ -1084,16 +863,17 @@ public class FrameColectasDetalle extends JInternalFrame {
     private javax.swing.JButton newButton;
     private com.parah.mg.utils.NormalTableCellRenderer normalTableCellRenderer1;
     private com.parah.mg.utils.NumberCellRenderer numberCellRenderer1;
+    private javax.persistence.Query queryCentrosDeCosto;
     private javax.persistence.Query queryEventoDetalle;
-    private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryMiembros;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;
     private java.util.List<com.parah.mg.domain.TblCategoriasArticulos> tblCategoriasArticulosList;
     private javax.persistence.Query tblCategoriasArticulosQuery;
-    private java.util.List<com.parah.mg.domain.TblFormasDePago> tblFormasDePagoList;
+    private java.util.List<com.parah.mg.domain.TblCategoriasArticulos> tblFormasDePagoList;
     private javax.persistence.Query tblFormasDePagoQuery;
     private javax.swing.JTextField txtCtaCte;
+    private javax.swing.JTextField txtObservacion;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
@@ -1113,14 +893,30 @@ public class FrameColectasDetalle extends JInternalFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameColectasDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameDonacionesVariasDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameColectasDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameDonacionesVariasDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameColectasDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameDonacionesVariasDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameColectasDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameDonacionesVariasDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -1142,7 +938,7 @@ public class FrameColectasDetalle extends JInternalFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new FrameColectasDetalle());
+                frame.setContentPane(new FrameDonacionesVariasDetalle());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

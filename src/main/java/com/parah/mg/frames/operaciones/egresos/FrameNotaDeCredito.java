@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.parah.mg.frames.operaciones;
+package com.parah.mg.frames.operaciones.egresos;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
@@ -396,7 +396,7 @@ public class FrameNotaDeCredito extends JInternalFrame {
 
             for (TblAsientos asientoFactura : factura.getTblAsientosList()) {
                 TblAsientos asientoNota = new TblAsientos();
-                asientoNota.setFechahora(asientoFactura.getFechahora());
+                asientoNota.setFechahora(notaDeCredito.getFechahora());
                 asientoNota.setIdCentroDeCosto(asientoFactura.getIdCentroDeCosto());
                 asientoNota.setIdCuentaContableDebe(asientoFactura.getIdCuentaContableHaber());
                 asientoNota.setIdCuentaContableHaber(asientoFactura.getIdCuentaContableDebe());

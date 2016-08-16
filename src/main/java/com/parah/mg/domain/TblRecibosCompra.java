@@ -6,16 +6,19 @@
 package com.parah.mg.domain;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -45,20 +48,23 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblRecibosCompra.findByIdUser", query = "SELECT t FROM TblRecibosCompra t WHERE t.idUser = :idUser")})
 public class TblRecibosCompra implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tblRecibosCompra")
-    private List<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraList;
-
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 30)
+    @Column(name = "NRO")
+    private String nro;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "FECHAHORA")
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime fechahora;
+    private LocalDate fechahora;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -76,15 +82,17 @@ public class TblRecibosCompra implements Serializable {
     @Size(max = 255)
     @Column(name = "OBSERVACION")
     private String observacion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_USER")
-    private Integer idUser;
+    @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblUsers idUser;
     @JoinTable(name = "TBL_RECIBOS_COMPRA_ASIENTOS", joinColumns = {
         @JoinColumn(name = "ID_RECIBO", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")})
     @ManyToMany(cascade = CascadeType.ALL)
     private List<TblAsientos> tblAsientosList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tblRecibosCompra")
+    private List<TblRecibosCompraFacturasCompra> tblRecibosCompraFacturasCompraList;
 
     public TblRecibosCompra() {
     }
@@ -93,8 +101,9 @@ public class TblRecibosCompra implements Serializable {
         this.id = id;
     }
 
-    public TblRecibosCompra(Integer id, LocalDateTime fechahora, String razonSocial, String ruc, Integer monto, Integer idUser) {
+    public TblRecibosCompra(Integer id, String nro, LocalDate fechahora, String razonSocial, String ruc, Integer monto, TblUsers idUser) {
         this.id = id;
+        this.nro = nro;
         this.fechahora = fechahora;
         this.razonSocial = razonSocial;
         this.ruc = ruc;
@@ -110,11 +119,19 @@ public class TblRecibosCompra implements Serializable {
         this.id = id;
     }
 
-    public LocalDateTime getFechahora() {
+    public String getNro() {
+        return nro;
+    }
+
+    public void setNro(String nro) {
+        this.nro = nro;
+    }
+
+    public LocalDate getFechahora() {
         return fechahora;
     }
 
-    public void setFechahora(LocalDateTime fechahora) {
+    public void setFechahora(LocalDate fechahora) {
         this.fechahora = fechahora;
     }
 
@@ -150,11 +167,11 @@ public class TblRecibosCompra implements Serializable {
         this.observacion = observacion;
     }
 
-    public Integer getIdUser() {
+    public TblUsers getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(Integer idUser) {
+    public void setIdUser(TblUsers idUser) {
         this.idUser = idUser;
     }
 

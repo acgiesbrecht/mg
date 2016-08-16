@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.parah.mg.frames.operaciones;
+package com.parah.mg.frames.operaciones.egresos;
 
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
@@ -14,7 +14,7 @@ import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblCentrosDeCosto;
 import com.parah.mg.domain.TblContribuyentes;
 import com.parah.mg.domain.TblCuentasContables;
-import com.parah.mg.domain.TblFacturasCompra;
+import com.parah.mg.domain.TblNotasDeCreditoCompras;
 import com.parah.mg.domain.TblTimbradosCompras;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -55,9 +55,9 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Industria
  */
-public class FrameFacturasCompra extends JInternalFrame {
+public class FrameNotasDeCreditoCompra extends JInternalFrame {
 
-    private static final Logger LOGGER = LogManager.getLogger(FrameFacturasCompra.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameNotasDeCreditoCompra.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
@@ -70,7 +70,7 @@ public class FrameFacturasCompra extends JInternalFrame {
     DatePickerSettings datePickerSettings2 = new DatePickerSettings(Locale.getDefault());
     TblTimbradosCompras timbradoCompras;
 
-    public FrameFacturasCompra() {
+    public FrameNotasDeCreditoCompra() {
         super("Facturas Compras",
                 true, //resizable
                 true, //closable
@@ -289,7 +289,7 @@ public class FrameFacturasCompra extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblFacturasCompra t");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblNotasDeCreditoCompras t");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         queryContribuyentes = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
         listContribuyentes = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryContribuyentes.getResultList());
@@ -338,15 +338,9 @@ public class FrameFacturasCompra extends JInternalFrame {
         cmdBorrarAsiento = new javax.swing.JButton();
         cmdAddAsiento = new javax.swing.JButton();
         txtRazonSocial = new javax.swing.JTextField();
-        rbContado = new javax.swing.JRadioButton();
-        rbCredito = new javax.swing.JRadioButton();
-        idLabel2 = new javax.swing.JLabel();
-        txtCuotas = new javax.swing.JFormattedTextField();
-        fechahoraLabel2 = new javax.swing.JLabel();
         montoLabel6 = new javax.swing.JLabel();
         dtpFecha = new DatePicker(datePickerSettings1);
         dtpVencimientoTimbrado = new DatePicker(datePickerSettings);
-        dtpVencimientoFactura = new DatePicker(datePickerSettings2);
         txtNro = new javax.swing.JFormattedTextField();
         txtTimbrado = new javax.swing.JFormattedTextField();
 
@@ -368,6 +362,7 @@ public class FrameFacturasCompra extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nroTimbrado}"));
         columnBinding.setColumnName("Timbrado");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechahora}"));
         columnBinding.setColumnName("Fecha");
         columnBinding.setColumnClass(java.time.LocalDate.class);
@@ -392,10 +387,6 @@ public class FrameFacturasCompra extends JInternalFrame {
         columnBinding.setColumnName("Importe IVA 10%");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${condicionContado}"));
-        columnBinding.setColumnName("Condicion");
-        columnBinding.setColumnClass(Boolean.class);
-        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
@@ -403,7 +394,6 @@ public class FrameFacturasCompra extends JInternalFrame {
             masterTable.getColumnModel().getColumn(5).setCellRenderer(numberCellRenderer1);
             masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
             masterTable.getColumnModel().getColumn(7).setCellRenderer(numberCellRenderer1);
-            masterTable.getColumnModel().getColumn(8).setCellRenderer(condicionFacturaTableCellRenderer1);
         }
 
         fechahoraLabel.setText("Fecha:");
@@ -591,46 +581,6 @@ public class FrameFacturasCompra extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtRazonSocial, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        buttonGroup1.add(rbContado);
-        rbContado.setText("Contado");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.condicionContado}"), rbContado, org.jdesktop.beansbinding.BeanProperty.create("selected"));
-        binding.setSourceNullValue(false);
-        binding.setSourceUnreadableValue(false);
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), rbContado, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        buttonGroup1.add(rbCredito);
-        rbCredito.setText("Credito");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.condicionContado}"), rbCredito, org.jdesktop.beansbinding.BeanProperty.create("selected"));
-        binding.setConverter(inverseBooleanConverter1);
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), rbCredito, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        rbCredito.addActionListener(formListener);
-
-        idLabel2.setDisplayedMnemonic('N');
-        idLabel2.setText("Catidad de Cuotas:");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, rbCredito, org.jdesktop.beansbinding.ELProperty.create("${selected}"), idLabel2, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        txtCuotas.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.cuotasCredito}"), txtCuotas, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        binding.setConverter(integerLongConverter1);
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, rbCredito, org.jdesktop.beansbinding.ELProperty.create("${selected}"), txtCuotas, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        fechahoraLabel2.setText("Vencimiento de Factura:");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, rbCredito, org.jdesktop.beansbinding.ELProperty.create("${selected}"), fechahoraLabel2, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
         montoLabel6.setText("Asientos");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("date"));
@@ -641,11 +591,6 @@ public class FrameFacturasCompra extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.vencimientoTimbrado}"), dtpVencimientoTimbrado, org.jdesktop.beansbinding.BeanProperty.create("date"));
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), dtpVencimientoTimbrado, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechaVencimientoCredito}"), dtpVencimientoFactura, org.jdesktop.beansbinding.BeanProperty.create("date"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, rbCredito, org.jdesktop.beansbinding.ELProperty.create("${selected}"), dtpVencimientoFactura, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtNro, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
@@ -675,18 +620,6 @@ public class FrameFacturasCompra extends JInternalFrame {
                         .addComponent(fechahoraLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(52, 52, 52)
-                        .addComponent(rbContado)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(rbCredito)
-                        .addGap(8, 8, 8)
-                        .addComponent(idLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtCuotas, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fechahoraLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dtpVencimientoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(masterScrollPane)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -788,15 +721,8 @@ public class FrameFacturasCompra extends JInternalFrame {
                     .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(fechahoraLabel)
-                        .addComponent(rbContado)
-                        .addComponent(rbCredito)
-                        .addComponent(idLabel2)
-                        .addComponent(txtCuotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(fechahoraLabel2))
-                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dtpVencimientoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fechahoraLabel)
+                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -849,109 +775,106 @@ public class FrameFacturasCompra extends JInternalFrame {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                FrameFacturasCompra.this.saveButtonActionPerformed(evt);
+                FrameNotasDeCreditoCompra.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                FrameFacturasCompra.this.refreshButtonActionPerformed(evt);
+                FrameNotasDeCreditoCompra.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                FrameFacturasCompra.this.newButtonActionPerformed(evt);
+                FrameNotasDeCreditoCompra.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                FrameFacturasCompra.this.deleteButtonActionPerformed(evt);
+                FrameNotasDeCreditoCompra.this.deleteButtonActionPerformed(evt);
             }
             else if (evt.getSource() == rucField) {
-                FrameFacturasCompra.this.rucFieldActionPerformed(evt);
+                FrameNotasDeCreditoCompra.this.rucFieldActionPerformed(evt);
             }
             else if (evt.getSource() == txtMontoExentas) {
-                FrameFacturasCompra.this.txtMontoExentasActionPerformed(evt);
+                FrameNotasDeCreditoCompra.this.txtMontoExentasActionPerformed(evt);
             }
             else if (evt.getSource() == txtMontoIVA5) {
-                FrameFacturasCompra.this.txtMontoIVA5ActionPerformed(evt);
+                FrameNotasDeCreditoCompra.this.txtMontoIVA5ActionPerformed(evt);
             }
             else if (evt.getSource() == txtMontoIVA10) {
-                FrameFacturasCompra.this.txtMontoIVA10ActionPerformed(evt);
+                FrameNotasDeCreditoCompra.this.txtMontoIVA10ActionPerformed(evt);
             }
             else if (evt.getSource() == txtIVA5) {
-                FrameFacturasCompra.this.txtIVA5ActionPerformed(evt);
+                FrameNotasDeCreditoCompra.this.txtIVA5ActionPerformed(evt);
             }
             else if (evt.getSource() == txtIVA10) {
-                FrameFacturasCompra.this.txtIVA10ActionPerformed(evt);
+                FrameNotasDeCreditoCompra.this.txtIVA10ActionPerformed(evt);
             }
             else if (evt.getSource() == cmdBorrarAsiento) {
-                FrameFacturasCompra.this.cmdBorrarAsientoActionPerformed(evt);
+                FrameNotasDeCreditoCompra.this.cmdBorrarAsientoActionPerformed(evt);
             }
             else if (evt.getSource() == cmdAddAsiento) {
-                FrameFacturasCompra.this.cmdAddAsientoActionPerformed(evt);
-            }
-            else if (evt.getSource() == rbCredito) {
-                FrameFacturasCompra.this.rbCreditoActionPerformed(evt);
+                FrameNotasDeCreditoCompra.this.cmdAddAsientoActionPerformed(evt);
             }
         }
 
         public void focusGained(java.awt.event.FocusEvent evt) {
             if (evt.getSource() == rucField) {
-                FrameFacturasCompra.this.rucFieldFocusGained(evt);
+                FrameNotasDeCreditoCompra.this.rucFieldFocusGained(evt);
             }
             else if (evt.getSource() == txtMontoExentas) {
-                FrameFacturasCompra.this.txtMontoExentasFocusGained(evt);
+                FrameNotasDeCreditoCompra.this.txtMontoExentasFocusGained(evt);
             }
             else if (evt.getSource() == txtMontoIVA5) {
-                FrameFacturasCompra.this.txtMontoIVA5FocusGained(evt);
+                FrameNotasDeCreditoCompra.this.txtMontoIVA5FocusGained(evt);
             }
             else if (evt.getSource() == txtMontoIVA10) {
-                FrameFacturasCompra.this.txtMontoIVA10FocusGained(evt);
+                FrameNotasDeCreditoCompra.this.txtMontoIVA10FocusGained(evt);
             }
             else if (evt.getSource() == txtIVA5) {
-                FrameFacturasCompra.this.txtIVA5FocusGained(evt);
+                FrameNotasDeCreditoCompra.this.txtIVA5FocusGained(evt);
             }
             else if (evt.getSource() == txtIVA10) {
-                FrameFacturasCompra.this.txtIVA10FocusGained(evt);
+                FrameNotasDeCreditoCompra.this.txtIVA10FocusGained(evt);
             }
         }
 
         public void focusLost(java.awt.event.FocusEvent evt) {
             if (evt.getSource() == txtNro) {
-                FrameFacturasCompra.this.txtNroFocusLost(evt);
+                FrameNotasDeCreditoCompra.this.txtNroFocusLost(evt);
             }
             else if (evt.getSource() == txtTimbrado) {
-                FrameFacturasCompra.this.txtTimbradoFocusLost(evt);
+                FrameNotasDeCreditoCompra.this.txtTimbradoFocusLost(evt);
             }
         }
 
         public void keyPressed(java.awt.event.KeyEvent evt) {
             if (evt.getSource() == rucField) {
-                FrameFacturasCompra.this.rucFieldKeyPressed(evt);
+                FrameNotasDeCreditoCompra.this.rucFieldKeyPressed(evt);
             }
         }
 
         public void keyReleased(java.awt.event.KeyEvent evt) {
             if (evt.getSource() == rucField) {
-                FrameFacturasCompra.this.rucFieldKeyReleased(evt);
+                FrameNotasDeCreditoCompra.this.rucFieldKeyReleased(evt);
             }
         }
 
         public void keyTyped(java.awt.event.KeyEvent evt) {
             if (evt.getSource() == rucField) {
-                FrameFacturasCompra.this.rucFieldKeyTyped(evt);
+                FrameNotasDeCreditoCompra.this.rucFieldKeyTyped(evt);
             }
         }
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             if (evt.getSource() == txtMontoExentas) {
-                FrameFacturasCompra.this.txtMontoExentasMouseClicked(evt);
+                FrameNotasDeCreditoCompra.this.txtMontoExentasMouseClicked(evt);
             }
             else if (evt.getSource() == txtMontoIVA5) {
-                FrameFacturasCompra.this.txtMontoIVA5MouseClicked(evt);
+                FrameNotasDeCreditoCompra.this.txtMontoIVA5MouseClicked(evt);
             }
             else if (evt.getSource() == txtMontoIVA10) {
-                FrameFacturasCompra.this.txtMontoIVA10MouseClicked(evt);
+                FrameNotasDeCreditoCompra.this.txtMontoIVA10MouseClicked(evt);
             }
             else if (evt.getSource() == txtIVA5) {
-                FrameFacturasCompra.this.txtIVA5MouseClicked(evt);
+                FrameNotasDeCreditoCompra.this.txtIVA5MouseClicked(evt);
             }
             else if (evt.getSource() == txtIVA10) {
-                FrameFacturasCompra.this.txtIVA10MouseClicked(evt);
+                FrameNotasDeCreditoCompra.this.txtIVA10MouseClicked(evt);
             }
         }
 
@@ -1001,9 +924,9 @@ public class FrameFacturasCompra extends JInternalFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             int[] selected = masterTable.getSelectedRows();
-            List<com.parah.mg.domain.TblFacturasCompra> toRemove = new ArrayList<>(selected.length);
+            List<com.parah.mg.domain.TblNotasDeCreditoCompras> toRemove = new ArrayList<>(selected.length);
             for (Integer idx = 0; idx < selected.length; idx++) {
-                com.parah.mg.domain.TblFacturasCompra t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                com.parah.mg.domain.TblNotasDeCreditoCompras t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
                 entityManager.remove(t);
             }
@@ -1017,10 +940,9 @@ public class FrameFacturasCompra extends JInternalFrame {
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         try {
             if (checkDatosFactura()) {
-                TblFacturasCompra t = new TblFacturasCompra();
+                TblNotasDeCreditoCompras t = new TblNotasDeCreditoCompras();
                 entityManager.persist(t);
                 t.setIdUser(currentUser.getUser());
-                t.setCondicionContado(true);
                 t.setMontoIva5(0);
                 t.setMontoIva10(0);
                 t.setMontoExentas(0);
@@ -1062,7 +984,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                         c.setDv(CalcDV.getDVfromRUC(rucField.getText()));
                     }
                 }
-                for (TblFacturasCompra fc : list) {
+                for (TblNotasDeCreditoCompras fc : list) {
                     for (TblAsientos a : fc.getTblAsientosList()) {
                         a.setFechahora(fc.getFechahora().atStartOfDay());
                     }
@@ -1080,8 +1002,8 @@ public class FrameFacturasCompra extends JInternalFrame {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             entityManager.getTransaction().begin();
-            List<com.parah.mg.domain.TblFacturasCompra> merged = new ArrayList<>(list.size());
-            for (com.parah.mg.domain.TblFacturasCompra t : list) {
+            List<com.parah.mg.domain.TblNotasDeCreditoCompras> merged = new ArrayList<>(list.size());
+            for (com.parah.mg.domain.TblNotasDeCreditoCompras t : list) {
                 merged.add(entityManager.merge(t));
             }
             list.clear();
@@ -1188,7 +1110,7 @@ public class FrameFacturasCompra extends JInternalFrame {
     private void cmdBorrarAsientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdBorrarAsientoActionPerformed
         try {
             Integer index = masterTable.getSelectedRow();
-            TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
+            TblNotasDeCreditoCompras T = list.get(masterTable.convertRowIndexToModel(index));
             List<TblAsientos> ts = T.getTblAsientosList();
             int[] selected = asientosTable.getSelectedRows();
             List<TblAsientos> toRemove = new ArrayList<>(selected.length);
@@ -1221,21 +1143,6 @@ public class FrameFacturasCompra extends JInternalFrame {
         }
     }//GEN-LAST:event_cmdAddAsientoActionPerformed
 
-    private void rbCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCreditoActionPerformed
-        try {
-            if (rbCredito.isSelected()) {
-
-                if (dtpFecha.getDate() != null) {
-                    dtpVencimientoFactura.setDate(dtpFecha.getDate().withDayOfMonth(dtpFecha.getDate().lengthOfMonth()));
-                }
-                txtCuotas.setValue(1L);
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_rbCreditoActionPerformed
-
     private void txtNroFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNroFocusLost
         txtNro.setText(Utils.completarNroFactura(txtNro.getText()));
     }//GEN-LAST:event_txtNroFocusLost
@@ -1260,7 +1167,7 @@ public class FrameFacturasCompra extends JInternalFrame {
     private void addAsiento() {
         try {
             Integer index = masterTable.getSelectedRow();
-            TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
+            TblNotasDeCreditoCompras T = list.get(masterTable.convertRowIndexToModel(index));
             List<TblAsientos> ts = T.getTblAsientosList();
             if (ts == null) {
                 ts = new LinkedList<>();
@@ -1272,14 +1179,9 @@ public class FrameFacturasCompra extends JInternalFrame {
             t.setIdUser(currentUser.getUser());
 
             t.setIdCentroDeCosto(centroDeCostoPreferido);
-            t.setIdCuentaContableDebe(listCuentasContablesPorDefecto.get(0).getIdCuentaDebeCompras());
-            if (T.getCondicionContado()) {
-                //t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaContado());
-                t.setIdCuentaContableHaber(t.getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
-            } else {
-                //t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaCredito());
-                t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberComprasFacturaCredito());
-            }
+            t.setIdCuentaContableDebe(t.getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
+            t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaDebeCompras());
+
             if (ts.isEmpty()) {
                 t.setMonto(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10());
             }
@@ -1316,7 +1218,7 @@ public class FrameFacturasCompra extends JInternalFrame {
         try {
             if (masterTable.getSelectedRow() > -1) {
                 Integer index = masterTable.getSelectedRow();
-                TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
+                TblNotasDeCreditoCompras T = list.get(masterTable.convertRowIndexToModel(index));
                 List<TblAsientos> ts = (List) T.getTblAsientosList();
                 if (ts != null) {
                     if (asientosTable.getModel().getRowCount() == 1) {
@@ -1345,14 +1247,17 @@ public class FrameFacturasCompra extends JInternalFrame {
                 }*/
 
                 //Importe TOTAL cuadrar
-                TblFacturasCompra T = list.get(masterTable.convertRowIndexToModel(index));
+                TblNotasDeCreditoCompras T = list.get(masterTable.convertRowIndexToModel(index));
                 Integer sumaAsientos = 0;
                 sumaAsientos = T.getTblAsientosList().stream().map((a) -> a.getMonto()).reduce(sumaAsientos, Integer::sum);
                 if (T.getMontoExentas() + T.getMontoIva10() + T.getMontoIva5() - sumaAsientos != 0) {
                     JOptionPane.showMessageDialog(null, "El importe total de la factura debe coincidir con los asientos.");
                     return false;
                 }
-
+                if (T.getFechahora() == null) {
+                    JOptionPane.showMessageDialog(null, "Debe ingresar una facha valida.");
+                    return false;
+                }
             }
             return true;
         } catch (Exception ex) {
@@ -1372,27 +1277,24 @@ public class FrameFacturasCompra extends JInternalFrame {
     private com.parah.mg.utils.CondicionFacturaTableCellRenderer condicionFacturaTableCellRenderer1;
     private javax.swing.JButton deleteButton;
     private com.github.lgooddatepicker.components.DatePicker dtpFecha;
-    private com.github.lgooddatepicker.components.DatePicker dtpVencimientoFactura;
     private com.github.lgooddatepicker.components.DatePicker dtpVencimientoTimbrado;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fechahoraLabel;
     private javax.swing.JLabel fechahoraLabel1;
-    private javax.swing.JLabel fechahoraLabel2;
     private javax.swing.JLabel idLabel;
     private javax.swing.JLabel idLabel1;
-    private javax.swing.JLabel idLabel2;
     private javax.swing.JLabel idMiembroLabel;
     private javax.swing.JLabel idMiembroLabel2;
     private javax.swing.JLabel idMiembroLabel3;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private com.parah.mg.utils.InverseBooleanConverter inverseBooleanConverter1;
     private javax.swing.JScrollPane jScrollPane1;
-    private java.util.List<com.parah.mg.domain.TblFacturasCompra> list;
+    private java.util.List<com.parah.mg.domain.TblNotasDeCreditoCompras> list;
     private java.util.List<com.parah.mg.domain.TblCentrosDeCosto> listCentrosDeCosto;
     private java.util.List<com.parah.mg.domain.TblContribuyentes> listContribuyentes;
     private java.util.List<com.parah.mg.domain.TblCuentasContables> listCuentasContables;
     private java.util.List<com.parah.mg.domain.TblCuentasContablesPorDefecto> listCuentasContablesPorDefecto;
-    private java.util.List<com.parah.mg.domain.TblFacturasCompra> listTimbrados;
+    private java.util.List<com.parah.mg.domain.TblNotasDeCreditoCompras> listTimbrados;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JLabel montoLabel;
@@ -1409,13 +1311,10 @@ public class FrameFacturasCompra extends JInternalFrame {
     private javax.persistence.Query queryCuentasContables;
     private javax.persistence.Query queryCuentasContablesPorDefecto;
     private javax.persistence.Query queryTimbrados;
-    private javax.swing.JRadioButton rbContado;
-    private javax.swing.JRadioButton rbCredito;
     private javax.swing.JButton refreshButton;
     private javax.swing.JTextField rucField;
     private com.parah.mg.utils.RucTableCellRenderer rucTableCellRenderer1;
     private javax.swing.JButton saveButton;
-    private javax.swing.JFormattedTextField txtCuotas;
     private javax.swing.JFormattedTextField txtIVA10;
     private javax.swing.JFormattedTextField txtIVA5;
     private javax.swing.JFormattedTextField txtMontoExentas;
@@ -1441,14 +1340,38 @@ public class FrameFacturasCompra extends JInternalFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameFacturasCompra.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameNotasDeCreditoCompra.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameFacturasCompra.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameNotasDeCreditoCompra.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameFacturasCompra.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameNotasDeCreditoCompra.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameFacturasCompra.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameNotasDeCreditoCompra.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -1462,7 +1385,7 @@ public class FrameFacturasCompra extends JInternalFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new FrameFacturasCompra());
+                frame.setContentPane(new FrameNotasDeCreditoCompra());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

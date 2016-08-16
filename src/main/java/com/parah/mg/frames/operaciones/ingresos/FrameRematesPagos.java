@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.parah.mg.frames.operaciones;
+package com.parah.mg.frames.operaciones.ingresos;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
@@ -299,21 +299,21 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             masterTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
         }
 
-        lblDeuda.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblDeuda.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblDeuda.setText("1000000");
+        lblDeuda.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         idMiembroLabel7.setText("Pagos anteriores:");
 
-        lblPagos.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblPagos.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblPagos.setText("1000000");
+        lblPagos.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         idMiembroLabel8.setText("Saldo a pagar:");
 
-        lblSaldo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblSaldo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblSaldo.setText("1000000");
+        lblSaldo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
