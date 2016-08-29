@@ -24,7 +24,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.Beans;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +37,8 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 import org.apache.logging.log4j.LogManager;
@@ -47,7 +48,7 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Industria
  */
-public class FrameCobrarTransferenciasRemates extends JInternalFrame {
+public class FrameCobrarTransferenciasRemates extends JInternalFrame implements TableModelListener {
 
     private static final Logger LOGGER = LogManager.getLogger(FrameCobrarTransferenciasRemates.class);
     CurrentUser currentUser = CurrentUser.getInstance();
@@ -91,8 +92,26 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
                 "marcarCobrado");
         masterTable.getActionMap().put("marcarCobrado",
                 marcarCobrado);
+        
+        masterTable.getModel().addTableModelListener(this);
     }
 
+    @Override
+    public void tableChanged(TableModelEvent e) {
+        try {
+            Integer suma = 0;
+            for (TblTransferencias t : list) {
+                if (t.getCobrado()) {
+                    suma += t.getMontoTotal();
+                }
+            }
+            lblTotal.setText(String.format("%(,d", suma));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -127,6 +146,8 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         cboFechaRemate = new javax.swing.JComboBox();
         dtpFechaCobro = new DatePicker(datePickerSettings);
+        lblTotal = new javax.swing.JLabel();
+        descripcionLabel5 = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
@@ -189,6 +210,13 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
 
         cboFechaRemate.addActionListener(formListener);
 
+        lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblTotal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        lblTotal.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        lblTotal.setForeground(new java.awt.Color(102, 102, 102));
+
+        descripcionLabel5.setText("Importe total de Registros marcados:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -203,16 +231,22 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
                         .addComponent(saveButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(refreshButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(descripcionLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dtpFechaCobro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cboFechaRemate, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(descripcionLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dtpFechaCobro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(descripcionLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
 
@@ -226,18 +260,20 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
                     .addComponent(jLabel2)
                     .addComponent(cboFechaRemate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(descripcionLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(saveButton)
-                            .addComponent(refreshButton)
-                            .addComponent(cboMarcarSeleccionados)))
-                    .addComponent(dtpFechaCobro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(descripcionLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(dtpFechaCobro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(descripcionLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(saveButton)
+                    .addComponent(refreshButton)
+                    .addComponent(cboMarcarSeleccionados)))
         );
 
         bindingGroup.bind();
@@ -398,10 +434,12 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
     private com.parah.mg.utils.DateTableCellRenderer dateTableCellRenderer2;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.swing.JLabel descripcionLabel4;
+    private javax.swing.JLabel descripcionLabel5;
     private com.github.lgooddatepicker.components.DatePicker dtpFechaCobro;
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel lblTotal;
     private java.util.List<com.parah.mg.domain.TblTransferencias> list;
     private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
     private java.util.List listMiembros;
