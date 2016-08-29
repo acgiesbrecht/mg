@@ -323,7 +323,7 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
 
                     for (TblAsientos asiento : listAsientos) {
                         TblAsientosTemporales aT = new TblAsientosTemporales();
-                        //entityManager.persist(aT);
+                        entityManager.persist(aT);
                         aT.setFacturado(false);
                         aT.setFechahora(t.getFechahora().atStartOfDay());
                         aT.setIdCentroDeCosto(asiento.getIdCentroDeCosto());
@@ -337,8 +337,10 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
                         aT.setMonto(asiento.getMonto());
                         listAsientosTemporales.add(aT);
                     }
+                    
+                    entityManager.merge(t);                    
                 }
-                entityManager.merge(t);
+
             }
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
@@ -358,7 +360,7 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame {
             int[] selectedRows = masterTable.getSelectedRows();
             for (Integer i = 0; i < selectedRows.length; i++) {
                 //list.get(i).setCobrado(true);
-                masterTable.setValueAt(true, selectedRows[i], 5);
+                masterTable.setValueAt(true, selectedRows[i], 4);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
