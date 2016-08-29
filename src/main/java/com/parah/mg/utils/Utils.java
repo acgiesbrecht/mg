@@ -473,9 +473,13 @@ public class Utils extends Component {
 
     public static String completarNroFactura(String nro) {
         try {
-            nro = nro.replace("_", "");
-            String[] partes = nro.split("-");
-            return partes[0] + "-" + partes[1] + "-" + String.format("%07d", Integer.parseInt(partes[2]));
+            String temp = nro.replace("_", "");
+            String[] partes = temp.split("-");
+            if (partes.length > 0) {
+                return partes[0] + "-" + partes[1] + "-" + String.format("%07d", Integer.parseInt(partes[2]));
+            } else {
+                return nro;
+            }
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());

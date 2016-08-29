@@ -209,17 +209,21 @@ public class FrameIglesiaAdmin extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-
-            TblIglesia iglesia = new TblIglesia();
-            iglesia.setId(1);
+            entityManager.getTransaction().begin();
+            TblIglesia iglesia = entityManager.find(TblIglesia.class, 1);
+            if(iglesia == null){
+                iglesia = new TblIglesia();
+                iglesia.setId(1);
+                entityManager.persist(iglesia);
+            }            
             iglesia.setNombre(txtIglesiaNombre.getText());
             iglesia.setRucSinDv(txtIglesiaRuc.getText());
             iglesia.setCtacte(Integer.valueOf(txtIglesiaCtaCte.getText()));
             iglesia.setDomicilio(txtIglesiaDomicilio.getText());
             iglesia.setBox(Integer.valueOf(txtIglesiaBox.getText()));
-            entityManager.getTransaction().begin();
-            entityManager.persist(iglesia);
-            entityManager.flush();
+            entityManager.merge(iglesia);
+            
+            //entityManager.flush();
             entityManager.getTransaction().commit();
 
             this.setVisible(false);

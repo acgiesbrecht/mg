@@ -186,8 +186,9 @@ public class FrameFacturasCompra extends JInternalFrame {
                         if (txtMontoIVA5.getText().length() > 0 && txtMontoIVA5.getValue() != null) {
                             Integer i = ((Number) txtMontoIVA5.getValue()).intValue();
                             Integer x = ((Number) Math.round(i / 21.0)).intValue();
-                            txtIVA5.setValue(x);
+
                             updateAsientoInicial();
+                            txtIVA5.setValue(x);
                         }
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -217,8 +218,9 @@ public class FrameFacturasCompra extends JInternalFrame {
                         if (txtMontoIVA10.getText().length() > 0 && txtMontoIVA10.getValue() != null) {
                             Integer i = ((Number) txtMontoIVA10.getValue()).intValue();
                             Integer x = ((Number) Math.round(i / 11.0)).intValue();
-                            txtIVA10.setValue(x);
+
                             updateAsientoInicial();
+                            txtIVA10.setValue(x);
                         }
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -1024,15 +1026,17 @@ public class FrameFacturasCompra extends JInternalFrame {
                 t.setMontoIva5(0);
                 t.setMontoIva10(0);
                 t.setMontoExentas(0);
-                txtMontoExentas.setValue(0);
-                txtMontoIVA5.setValue(0);
-                txtMontoIVA10.setValue(0);
+
                 list.add(t);
 
                 Integer row = list.size() - 1;
                 masterTable.setRowSelectionInterval(row, row);
                 masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
                 createAsientoInicial();
+
+                txtMontoExentas.setValue(0);
+                txtMontoIVA5.setValue(0);
+                txtMontoIVA10.setValue(0);
                 txtNro.requestFocusInWindow();
             }
         } catch (Exception ex) {
