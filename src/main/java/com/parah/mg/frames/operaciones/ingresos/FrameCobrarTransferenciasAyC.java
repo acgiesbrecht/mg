@@ -12,6 +12,7 @@ import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.domain.TblEventoDetalle;
 import com.parah.mg.domain.TblEventoTipos;
+import com.parah.mg.domain.TblRecibos;
 import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.models.PagosMensualesPendientes;
@@ -25,7 +26,6 @@ import java.beans.Beans;
 import java.time.LocalDate;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -378,6 +378,15 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                         listAsientos.addAll(evd.getTblAsientosList());
                     }
 
+                    Query queryTransferenciasAnteriores = entityManager.createQuery("SELECT t FROM TblTransferencias t "
+                            + "WHERE t.idEntidad = :entidad"
+                            + " AND t.idEventoTipo = :eventoTipo"
+                            + " AND EXTRACT(MONTH FROM t.fechahoraCompromiso) = " + pago.getMes().toString()
+                            + " AND EXTRACT(YEAR FROM t.fechahoraCompromiso) = " + pago.getAno().toString());
+                    queryTransferenciasAnteriores.setParameter("entidad", pago.getEntidad());
+                    queryTransferenciasAnteriores.setParameter("eventoTipo", t.getIdEventoTipo());
+                    List<TblTransferencias> listTransferenciasAnteriores = (List<TblTransferencias>) queryTransferenciasAnteriores.getResultList();
+
                     List<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesList();
                     if (listAsientosTemporales == null) {
                         listAsientosTemporales = new LinkedList<>();
@@ -386,7 +395,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
 
                     for (TblAsientos asiento : listAsientos) {
                         TblAsientosTemporales aT = new TblAsientosTemporales();
-                        //entityManager.persist(aT);
+                        entityManager.persist(aT);
                         aT.setFacturado(false);
                         aT.setFechahora(t.getFechahora().atStartOfDay());
                         aT.setIdCentroDeCosto(asiento.getIdCentroDeCosto());
@@ -398,7 +407,29 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                             aT.setEsAporte(false);
                         }
                         aT.setMonto(asiento.getMonto());
+
                         listAsientosTemporales.add(aT);
+
+                    }
+
+                    for (TblTransferencias tAnterior : listTransferenciasAnteriores) {
+                        if (tAnterior != t) {
+                            for (TblAsientosTemporales atAnterior : tAnterior.getTblAsientosTemporalesList()) {
+                                for (TblAsientosTemporales atNuevo : listAsientosTemporales) {
+                                    if (atAnterior.getIdCentroDeCosto().equals(atNuevo.getIdCentroDeCosto())
+                                            && atAnterior.getIdCuentaContableDebe().equals(atNuevo.getIdCuentaContableDebe())
+                                            && atAnterior.getIdCuentaContableHaber().equals(atNuevo.getIdCuentaContableHaber())
+                                            && atAnterior.getMonto().equals(atNuevo.getMonto())) {
+                                        listAsientosTemporales.remove(atNuevo);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (t.getTblAsientosTemporalesList().stream().mapToInt(x -> x.getMonto()).sum() != t.getMontoTotal()) {
+                        JOptionPane.showMessageDialog(null, "Error de consistencia de importes. Transferencia no guardada.");
+                        entityManager.remove(t);
                     }
                 }
             }
@@ -410,6 +441,11 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    private Integer findAsientoTemporal(List<TblAsientosTemporales> listAsientosTemporales, TblAsientosTemporales at) {
+
+        return -1;
+    }
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
 
