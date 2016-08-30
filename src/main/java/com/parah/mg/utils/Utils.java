@@ -462,7 +462,8 @@ public class Utils extends Component {
 
     public static String generateNextFacturaNroConEstPtoExp(String est, String ptoExp, String nro) {
         try {
-            Integer i = Integer.parseInt(StringUtils.split(nro, "-")[2]) + 1;
+            String[] s = nro.split("-");
+            Integer i = Integer.parseInt(s[2]) + 1;
             return String.format(est + "-" + ptoExp + "-%07d", i);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
