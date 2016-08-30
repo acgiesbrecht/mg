@@ -351,6 +351,29 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame implements 
                         listAsientos.addAll(evd.getTblAsientosList());
                     }
 
+                    Query queryTransferenciasAnteriores = entityManager.createQuery("SELECT t FROM TblTransferencias t "
+                            + "WHERE t.idEntidad = :entidad"
+                            + " AND t.idEvento = :eventoId");
+                    queryTransferenciasAnteriores.setParameter("entidad", t.getIdEntidad());
+                    queryTransferenciasAnteriores.setParameter("eventoId", t.getIdEvento());
+                    List<TblTransferencias> listTransferenciasAnteriores = (List<TblTransferencias>) queryTransferenciasAnteriores.getResultList();
+
+                    for (TblTransferencias tAnterior : listTransferenciasAnteriores) {
+                        if (tAnterior != t) {
+                            for (TblAsientosTemporales atAnterior : tAnterior.getTblAsientosTemporalesList()) {
+                                for (TblAsientos asiento : listAsientos) {
+                                    if (atAnterior.getIdCentroDeCosto().equals(asiento.getIdCentroDeCosto())
+                                            && atAnterior.getIdCuentaContableDebe().equals(asiento.getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto())
+                                            && atAnterior.getIdCuentaContableHaber().equals(asiento.getIdCuentaContableDebe())
+                                            && atAnterior.getMonto().equals(asiento.getMonto())) {
+                                        listAsientos.remove(asiento);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     List<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesList();
                     if (listAsientosTemporales == null) {
                         listAsientosTemporales = new LinkedList<>();
@@ -373,8 +396,12 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame implements 
                         aT.setMonto(asiento.getMonto());
                         listAsientosTemporales.add(aT);
                     }
-                    
-                    entityManager.merge(t);                    
+                    if (t.getTblAsientosTemporalesList().stream().mapToInt(x -> x.getMonto()).sum() != t.getMontoTotal()) {
+                        JOptionPane.showMessageDialog(null, "Error de consistencia de importes. Transferencia no guardada.");
+                        entityManager.remove(t);
+                    } else {
+                        entityManager.merge(t);
+                    }
                 }
 
             }
