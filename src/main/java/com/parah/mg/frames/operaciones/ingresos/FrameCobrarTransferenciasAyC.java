@@ -387,6 +387,22 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                     queryTransferenciasAnteriores.setParameter("eventoTipo", t.getIdEventoTipo());
                     List<TblTransferencias> listTransferenciasAnteriores = (List<TblTransferencias>) queryTransferenciasAnteriores.getResultList();
 
+                    for (TblTransferencias tAnterior : listTransferenciasAnteriores) {
+                        if (tAnterior != t) {
+                            for (TblAsientosTemporales atAnterior : tAnterior.getTblAsientosTemporalesList()) {
+                                for (TblAsientos asiento : listAsientos) {
+                                    if (atAnterior.getIdCentroDeCosto().equals(asiento.getIdCentroDeCosto())
+                                            && atAnterior.getIdCuentaContableDebe().equals(asiento.getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto())
+                                            && atAnterior.getIdCuentaContableHaber().equals(asiento.getIdCuentaContableDebe())
+                                            && atAnterior.getMonto().equals(asiento.getMonto())) {
+                                        listAsientos.remove(asiento);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     List<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesList();
                     if (listAsientosTemporales == null) {
                         listAsientosTemporales = new LinkedList<>();
@@ -412,21 +428,6 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
 
                     }
 
-                    for (TblTransferencias tAnterior : listTransferenciasAnteriores) {
-                        if (tAnterior != t) {
-                            for (TblAsientosTemporales atAnterior : tAnterior.getTblAsientosTemporalesList()) {
-                                for (TblAsientosTemporales atNuevo : listAsientosTemporales) {
-                                    if (atAnterior.getIdCentroDeCosto().equals(atNuevo.getIdCentroDeCosto())
-                                            && atAnterior.getIdCuentaContableDebe().equals(atNuevo.getIdCuentaContableDebe())
-                                            && atAnterior.getIdCuentaContableHaber().equals(atNuevo.getIdCuentaContableHaber())
-                                            && atAnterior.getMonto().equals(atNuevo.getMonto())) {
-                                        listAsientosTemporales.remove(atNuevo);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
                     if (t.getTblAsientosTemporalesList().stream().mapToInt(x -> x.getMonto()).sum() != t.getMontoTotal()) {
                         JOptionPane.showMessageDialog(null, "Error de consistencia de importes. Transferencia no guardada.");
                         entityManager.remove(t);
