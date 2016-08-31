@@ -38,7 +38,7 @@ import com.parah.mg.frames.operaciones.ingresos.FrameColectasDetalle;
 import com.parah.mg.frames.operaciones.ingresos.FrameFacturacionColectiva;
 import com.parah.mg.frames.operaciones.ingresos.FrameFacturacionUnica;
 import com.parah.mg.frames.operaciones.egresos.FrameFacturasCompra;
-import com.parah.mg.frames.operaciones.egresos.FrameNotaDeCredito;
+import com.parah.mg.frames.operaciones.ingresos.FrameNotaDeCredito;
 import com.parah.mg.frames.operaciones.egresos.FrameNotasDeCreditoCompra;
 import com.parah.mg.frames.operaciones.egresos.FrameRecibosCompra;
 import com.parah.mg.frames.operaciones.ingresos.FrameRematesDetalle;

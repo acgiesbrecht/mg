@@ -46,7 +46,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bouncycastle.util.Strings;
-import org.springframework.util.StringUtils;
 
 /**
  *
@@ -441,7 +440,7 @@ public class Utils extends Component {
 
     public static String generateNextFacturaNroFull(String nro) {
         try {
-            Integer i = Integer.parseInt(StringUtils.replace(nro, "001-001-", "")) + 1;
+            Integer i = Integer.parseInt(nro.replaceAll("001-001-", "")) + 1;
             return String.format("001-001-%07d", i);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);

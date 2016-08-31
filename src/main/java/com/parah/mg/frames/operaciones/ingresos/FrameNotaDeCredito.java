@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.parah.mg.frames.operaciones.egresos;
+package com.parah.mg.frames.operaciones.ingresos;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
@@ -349,6 +349,7 @@ public class FrameNotaDeCredito extends JInternalFrame {
             }
             cboRuc.setSelectedIndex(-1);
             dtpFecha.setDateTimeStrict(LocalDateTime.now());
+            
         } else {
             JOptionPane.showMessageDialog(null, "Debe tener un timbrado activo para poder facturar.");
             imprimirButton.setEnabled(false);

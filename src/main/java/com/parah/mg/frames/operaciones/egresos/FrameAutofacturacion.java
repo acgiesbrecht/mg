@@ -86,21 +86,7 @@ public class FrameAutofacturacion extends JInternalFrame {
             AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaHaber, GlazedLists.eventListOf(listCuentasContables.toArray()));
             support4.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            if (listTimbrados.size() > 0) {
-                txtTimbrado.setText(listTimbrados.get(0).getNro());
-                imprimirButton.setEnabled(true);
-                if (list.size() > 0) {
-                    txtNro.setValue(Utils.generateNextFacturaNroFull(list.get(list.size() - 1).getNro()));
-                } else {
-                    txtNro.setValue(Utils.generateFacturaNroFull(listTimbrados.get(0).getNroFacturaIncio()));
-                }
-
-                dtpFecha.setDateTimeStrict(LocalDateTime.now());
-                txtCantidad.setValue(1);
-            } else {
-                JOptionPane.showMessageDialog(null, "Debe tener un timbrado activo para poder facturar.");
-                imprimirButton.setEnabled(false);
-            }
+            refresh();
 
             KeyboardFocusManager.getCurrentKeyboardFocusManager()
                     .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
@@ -465,6 +451,40 @@ public class FrameAutofacturacion extends JInternalFrame {
         }
     }// </editor-fold>//GEN-END:initComponents
 
+    private void refresh(){
+        try{
+        if (listTimbrados.size() > 0) {
+                txtTimbrado.setText(listTimbrados.get(0).getNro());
+                imprimirButton.setEnabled(true);
+                if (list.size() > 0) {
+                    txtNro.setValue(Utils.generateNextFacturaNroFull(list.get(list.size() - 1).getNro()));
+                } else {
+                    txtNro.setValue(Utils.generateFacturaNroFull(listTimbrados.get(0).getNroFacturaIncio()));
+                }
+
+                dtpFecha.setDateTimeStrict(LocalDateTime.now());
+                
+                txtRazonSocial.setText("");
+                rucField.setText("");
+                txtDomicilio.setText("");
+                txtDireccionTransaccion.setText("");
+                
+                txtCantidad.setValue(1);
+                txtConcepto.setText("");
+                txtObservacion.setText("");
+                
+                listAsientos.clear();          
+                            dtpFecha.requestFocusInWindow();
+            } else {
+                JOptionPane.showMessageDialog(null, "Debe tener un timbrado activo para poder facturar.");
+                imprimirButton.setEnabled(false);
+            }
+                } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }
+    
     Boolean validar() {
         /*if ((Integer) txtNro.getValue() < 1) {
             txtNro.setBackground(Color.red);
@@ -529,6 +549,9 @@ public class FrameAutofacturacion extends JInternalFrame {
 
             Utils.getInstance().printAutofactura(factura);
 
+            refresh();
+
+            
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
