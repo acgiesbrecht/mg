@@ -10,10 +10,8 @@ import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
-import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblCuentasContablesPorDefecto;
-import com.parah.mg.domain.TblEventoDetalle;
 import com.parah.mg.domain.TblEventos;
 import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.utils.CurrentUser;
@@ -30,7 +28,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFrame;
@@ -339,7 +336,7 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame implements 
                     t.setCobrado(true);
                     t.setFechahora(dtpFechaCobro.getDate());
 
-                    Query queryEvd = entityManager.createQuery("SELECT t FROM TblEventoDetalle t "
+                    /*Query queryEvd = entityManager.createQuery("SELECT t FROM TblEventoDetalle t "
                             + "WHERE t.idEntidad = :entidad"
                             + " AND t.idEvento = :eventoId");
 
@@ -395,13 +392,44 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame implements 
                         }
                         aT.setMonto(asiento.getMonto());
                         listAsientosTemporales.add(aT);
+                    }*/
+                    List<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesList();
+                    if (listAsientosTemporales == null) {
+                        listAsientosTemporales = new LinkedList<>();
+                        t.setTblAsientosTemporalesList(listAsientosTemporales);
                     }
-                    if (t.getTblAsientosTemporalesList().stream().mapToInt(x -> x.getMonto()).sum() != t.getMontoTotal()) {
+                    TblAsientosTemporales asientoTemporalAporte = new TblAsientosTemporales();
+                    entityManager.persist(asientoTemporalAporte);
+                    asientoTemporalAporte.setFacturado(false);
+                    asientoTemporalAporte.setFechahora(t.getFechahora().atStartOfDay());
+                    asientoTemporalAporte.setIdCentroDeCosto(t.getIdEvento().getIdCentroDeCosto());
+                    asientoTemporalAporte.setIdCuentaContableDebe(t.getIdEvento().getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
+                    asientoTemporalAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
+                    asientoTemporalAporte.setEsAporte(true);
+                    asientoTemporalAporte.setMonto(t.getMontoAporte());
+                    listAsientosTemporales.add(asientoTemporalAporte);
+
+                    TblAsientosTemporales asientoTemporalDonacion = new TblAsientosTemporales();
+                    entityManager.persist(asientoTemporalDonacion);
+                    asientoTemporalDonacion.setFacturado(false);
+                    asientoTemporalDonacion.setFechahora(t.getFechahora().atStartOfDay());
+                    asientoTemporalDonacion.setIdCentroDeCosto(t.getIdEvento().getIdCentroDeCosto());
+                    asientoTemporalDonacion.setIdCuentaContableDebe(t.getIdEvento().getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
+                    asientoTemporalDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
+                    asientoTemporalDonacion.setEsAporte(false);
+                    asientoTemporalDonacion.setMonto(t.getMontoDonacion());
+                    listAsientosTemporales.add(asientoTemporalDonacion);
+
+                    entityManager.merge(t);
+
+                    /*Integer montoAsientos = //t.getTblAsientosTemporalesList().stream().mapToInt(x -> x.getMonto()).sum();
+                    Integer montoT = t.getMontoTotal();
+                    if (!montoAsientos.equals(montoT)) {
                         JOptionPane.showMessageDialog(null, "Error de consistencia de importes. Transferencia no guardada.");
-                        entityManager.remove(t);
-                    } else {
+                        t.getTblAsientosTemporalesList().clear();
                         entityManager.merge(t);
-                    }
+                        return;
+                    }*/
                 }
 
             }

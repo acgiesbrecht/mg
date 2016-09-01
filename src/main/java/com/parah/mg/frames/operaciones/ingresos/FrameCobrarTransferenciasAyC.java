@@ -431,6 +431,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                     if (t.getTblAsientosTemporalesList().stream().mapToInt(x -> x.getMonto()).sum() != t.getMontoTotal()) {
                         JOptionPane.showMessageDialog(null, "Error de consistencia de importes. Transferencia no guardada.");
                         entityManager.remove(t);
+                        return;
                     }
                 }
             }
