@@ -194,7 +194,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
 
         jLabel9.setText("Resumen de Aportes por Mes:");
 
-        jLabel10.setText("Resumen de Aportes con Debito Manual:");
+        jLabel10.setText("Resumen Anual de Aportes sin Debito Automatico:");
 
         jLabel12.setText("Año:");
 
@@ -462,7 +462,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("ano", Integer.parseInt(jspAnoDebitoManual.getValue().toString()));
-            Utils.getInstance().showReport("aportes_resumen_miembros_manual", "aportes_resumen_miembros_manual_subreport", parameters, true);
+            Utils.getInstance().showReport("aportes_resumen_sin_debito_automatico", "aportes_resumen_sin_debito_automatico_subreport", parameters, true);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -473,7 +473,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("ano", Integer.parseInt(jspAnoAportesResumen.getValue().toString()));
-            Utils.getInstance().showReport("aportes_resumen", "aportes_resumen_subreport", parameters, true);
+            Utils.getInstance().showReport("aportes_resumen_anual", "aportes_resumen_anual_subreport", parameters, true);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());

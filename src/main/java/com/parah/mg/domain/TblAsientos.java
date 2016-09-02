@@ -64,6 +64,8 @@ public class TblAsientos implements Serializable {
     @NotNull
     @Column(name = "MONTO")
     private Integer monto;
+    @Column(name = "ASIENTO_MANUAL")
+    private Boolean asientoManual;
     @JoinTable(name = "TBL_ASIENTOS_ASIENTOS_TEMPORALES", joinColumns = {
         @JoinColumn(name = "ID_ASIENTO", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ASIENTO_TEMPORAL", referencedColumnName = "ID")})
@@ -191,6 +193,20 @@ public class TblAsientos implements Serializable {
     @Override
     public String toString() {
         return "com.parah.mg.domain.TblAsientos[ id=" + id + " ]";
+    }
+
+    /**
+     * @return the asientoManual
+     */
+    public Boolean getAsientoManual() {
+        return asientoManual;
+    }
+
+    /**
+     * @param asientoManual the asientoManual to set
+     */
+    public void setAsientoManual(Boolean asientoManual) {
+        this.asientoManual = asientoManual;
     }
 
 }

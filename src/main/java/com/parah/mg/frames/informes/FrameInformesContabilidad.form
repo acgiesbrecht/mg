@@ -122,46 +122,40 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jLabel5" max="32767" attributes="0"/>
-                          <Component id="jLabel10" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabel15" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabel18" alignment="0" pref="79" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="cboPeriodo" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabel22" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="txtFechaDesde" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel23" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="txtFechaHasta" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel21" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jLabel5" max="32767" attributes="0"/>
+                              <Component id="jLabel10" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jLabel15" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jLabel18" alignment="0" min="-2" pref="79" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel13" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel16" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel19" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="txtFechaInicioMayor" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="txtFechaFinMayor" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="cmdLibroMayor" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="txtFechaInicioDiario" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="txtFechaFinDiario" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="cmdLibroDiario" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="cmdLibroMayor" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="cmdLibroDiario" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="cmdLibroMayorSoloTotales" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="cboCentroDeCosto" min="-2" pref="163" max="-2" attributes="0"/>
@@ -170,33 +164,21 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="cmdLibroMayorSoloTotalesCC" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="txtFechaInicioVentas" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmdLibroVentas" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmdLibroCompras" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="cmdExtractoCtaCte" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="cboCentroDeCostoExtractoCtaCte" min="-2" pref="163" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="txtFechaFinVentas" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="cmdLibroVentas" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="txtFechaInicioCompras" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="txtFechaFinCompras" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="cmdLibroCompras" min="-2" max="-2" attributes="0"/>
+                              <Component id="cmdExtractoCtaCteCC" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cboPeriodo" min="-2" max="-2" attributes="0"/>
-                  </Group>
               </Group>
-              <EmptySpace pref="28" max="32767" attributes="0"/>
+              <EmptySpace pref="27" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -210,60 +192,63 @@
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                      <Component id="cmdLibroDiario" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel5" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                      <Component id="jLabel13" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                      <Component id="jLabel14" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
+                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                      <Component id="jLabel23" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
+                      <Component id="jLabel22" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="txtFechaInicioDiario" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtFechaFinDiario" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtFechaDesde" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtFechaHasta" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="txtFechaInicioMayor" alignment="1" max="32767" attributes="0"/>
-                      <Component id="txtFechaFinMayor" alignment="1" max="32767" attributes="0"/>
-                      <Component id="cmdLibroMayor" alignment="1" max="32767" attributes="0"/>
-                      <Component id="jLabel10" alignment="1" max="32767" attributes="0"/>
-                      <Component id="jLabel11" alignment="1" max="32767" attributes="0"/>
-                      <Component id="jLabel12" alignment="0" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                          <Component id="cmdLibroMayorCC" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cmdLibroMayorSoloTotalesCC" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel5" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                          <Component id="cmdLibroDiario" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel10" min="-2" pref="23" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel15" min="-2" pref="23" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel18" min="-2" pref="23" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="cmdLibroMayorSoloTotales" max="32767" attributes="0"/>
+                              <Component id="cmdLibroMayor" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                  <Component id="cmdLibroMayorCC" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="cmdLibroMayorSoloTotalesCC" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                  <Component id="cboCentroDeCosto" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel1" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="cmdLibroCompras" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="cmdLibroVentas" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="jLabel21" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
+                  <Component id="cmdExtractoCtaCte" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                      <Component id="cmdExtractoCtaCteCC" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                          <Component id="cmdLibroMayorSoloTotales" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cboCentroDeCosto" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cboCentroDeCostoExtractoCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel2" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                      <Component id="jLabel15" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                      <Component id="jLabel16" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                      <Component id="cmdLibroCompras" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel17" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="txtFechaInicioCompras" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtFechaFinCompras" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                      <Component id="jLabel18" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                      <Component id="jLabel19" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                      <Component id="jLabel20" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="txtFechaInicioVentas" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtFechaFinVentas" min="-2" max="-2" attributes="0"/>
-                  <Component id="cmdLibroVentas" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="497" max="-2" attributes="0"/>
+              <EmptySpace pref="36" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -288,16 +273,6 @@
         <Property name="text" type="java.lang.String" value="Libro Mayor"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel11">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Desde"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel12">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Hasta"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="cmdLibroMayor">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ver"/>
@@ -306,29 +281,9 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdLibroMayorActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel13">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Desde"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel14">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Hasta"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel15">
       <Properties>
         <Property name="text" type="java.lang.String" value="Libro Egresos"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel16">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Desde"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel17">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Hasta"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="cmdLibroCompras">
@@ -344,16 +299,6 @@
         <Property name="text" type="java.lang.String" value="Libro Ingresos"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel19">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Desde"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel20">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Hasta"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="cmdLibroVentas">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ver"/>
@@ -361,46 +306,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdLibroVentasActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaInicioDiario">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings, timePickerSettings);"/>
-      </AuxValues>
-    </Component>
-    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaFinDiario">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings1, timePickerSettings1);"/>
-      </AuxValues>
-    </Component>
-    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaInicioMayor">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings2, timePickerSettings2);"/>
-      </AuxValues>
-    </Component>
-    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaInicioCompras">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings4, timePickerSettings4);"/>
-      </AuxValues>
-    </Component>
-    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaInicioVentas">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings6, timePickerSettings6);"/>
-      </AuxValues>
-    </Component>
-    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaFinMayor">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings3, timePickerSettings3);"/>
-      </AuxValues>
-    </Component>
-    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaFinCompras">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings5, timePickerSettings5);"/>
-      </AuxValues>
-    </Component>
-    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaFinVentas">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings7, timePickerSettings7);"/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="cmdLibroMayorSoloTotales">
       <Properties>
@@ -467,6 +372,67 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaHasta">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings1, timePickerSettings1);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel21">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Extracto Cuenta Corriente"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel22">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Desde"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel23">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Hasta"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="cmdExtractoCtaCte">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ver"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdExtractoCtaCteActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="txtFechaDesde">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings, timePickerSettings);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cboCentroDeCostoExtractoCtaCte">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Centro de Costo"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="cmdExtractoCtaCteCC">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ver"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdExtractoCtaCteCCActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

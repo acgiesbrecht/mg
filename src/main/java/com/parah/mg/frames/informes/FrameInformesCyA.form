@@ -381,7 +381,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel10">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Resumen de Aportes con Debito Manual:"/>
+        <Property name="text" type="java.lang.String" value="Resumen Anual de Aportes sin Debito Automatico:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel12">

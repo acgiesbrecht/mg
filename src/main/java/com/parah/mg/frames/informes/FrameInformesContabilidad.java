@@ -46,6 +46,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     DatePickerSettings datePickerSettings6 = new DatePickerSettings();
     DatePickerSettings datePickerSettings7 = new DatePickerSettings();
     DatePickerSettings datePickerSettings8 = new DatePickerSettings();
+    DatePickerSettings datePickerSettings9 = new DatePickerSettings();
+    DatePickerSettings datePickerSettings10 = new DatePickerSettings();
 
     TimePickerSettings timePickerSettings = new TimePickerSettings();
     TimePickerSettings timePickerSettings1 = new TimePickerSettings();
@@ -56,6 +58,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     TimePickerSettings timePickerSettings6 = new TimePickerSettings();
     TimePickerSettings timePickerSettings7 = new TimePickerSettings();
     TimePickerSettings timePickerSettings8 = new TimePickerSettings();
+    TimePickerSettings timePickerSettings9 = new TimePickerSettings();
+    TimePickerSettings timePickerSettings10 = new TimePickerSettings();
 
     /**
      * Creates new form FramePagos
@@ -72,22 +76,10 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             persistenceMap = Utils.getInstance().getPersistenceMap();
 
             datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
-            datePickerSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");
-            datePickerSettings2.setFormatForDatesCommonEra("dd/MM/yyyy");
-            datePickerSettings3.setFormatForDatesCommonEra("dd/MM/yyyy");
-            datePickerSettings4.setFormatForDatesCommonEra("dd/MM/yyyy");
-            datePickerSettings5.setFormatForDatesCommonEra("dd/MM/yyyy");
-            datePickerSettings6.setFormatForDatesCommonEra("dd/MM/yyyy");
-            datePickerSettings7.setFormatForDatesCommonEra("dd/MM/yyyy");
+            datePickerSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");         
 
             timePickerSettings.setFormatForDisplayTime("HH:mm:ss");
             timePickerSettings1.setFormatForDisplayTime("HH:mm:ss");
-            timePickerSettings2.setFormatForDisplayTime("HH:mm:ss");
-            timePickerSettings3.setFormatForDisplayTime("HH:mm:ss");
-            timePickerSettings4.setFormatForDisplayTime("HH:mm:ss");
-            timePickerSettings5.setFormatForDisplayTime("HH:mm:ss");
-            timePickerSettings6.setFormatForDisplayTime("HH:mm:ss");
-            timePickerSettings7.setFormatForDisplayTime("HH:mm:ss");
 
             initComponents();
 
@@ -95,8 +87,12 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                 entityManager.getTransaction().begin();
             }
 
-            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            AutoCompleteSupport support = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            support.setFilterMode(TextMatcherEditor.CONTAINS);
+            
+            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCentroDeCostoExtractoCtaCte, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
+            
 
             cboPeriodo.setSelectedIndex(0);
 
@@ -129,27 +125,11 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         cmdLibroDiario = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
         cmdLibroMayor = new javax.swing.JButton();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
         cmdLibroCompras = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
         cmdLibroVentas = new javax.swing.JButton();
-        txtFechaInicioDiario = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings, timePickerSettings);
-        txtFechaFinDiario = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings1, timePickerSettings1);
-        txtFechaInicioMayor = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings2, timePickerSettings2);
-        txtFechaInicioCompras = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings4, timePickerSettings4);
-        txtFechaInicioVentas = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings6, timePickerSettings6);
-        txtFechaFinMayor = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings3, timePickerSettings3);
-        txtFechaFinCompras = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings5, timePickerSettings5);
-        txtFechaFinVentas = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings7, timePickerSettings7);
         cmdLibroMayorSoloTotales = new javax.swing.JButton();
         cboCentroDeCosto = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
@@ -157,6 +137,15 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         cmdLibroMayorCC = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         cboPeriodo = new javax.swing.JComboBox<>();
+        txtFechaHasta = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings1, timePickerSettings1);
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        cmdExtractoCtaCte = new javax.swing.JButton();
+        txtFechaDesde = new com.github.lgooddatepicker.components.DateTimePicker(datePickerSettings, timePickerSettings);
+        cboCentroDeCostoExtractoCtaCte = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        cmdExtractoCtaCteCC = new javax.swing.JButton();
 
         dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
 
@@ -193,10 +182,6 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
 
         jLabel10.setText("Libro Mayor");
 
-        jLabel11.setText("Desde");
-
-        jLabel12.setText("Hasta");
-
         cmdLibroMayor.setText("Ver");
         cmdLibroMayor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -204,15 +189,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel13.setText("Desde");
-
-        jLabel14.setText("Hasta");
-
         jLabel15.setText("Libro Egresos");
-
-        jLabel16.setText("Desde");
-
-        jLabel17.setText("Hasta");
 
         cmdLibroCompras.setText("Ver");
         cmdLibroCompras.addActionListener(new java.awt.event.ActionListener() {
@@ -222,10 +199,6 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         });
 
         jLabel18.setText("Libro Ingresos");
-
-        jLabel19.setText("Desde");
-
-        jLabel20.setText("Hasta");
 
         cmdLibroVentas.setText("Ver");
         cmdLibroVentas.addActionListener(new java.awt.event.ActionListener() {
@@ -268,6 +241,30 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel21.setText("Extracto Cuenta Corriente");
+
+        jLabel22.setText("Desde");
+
+        jLabel23.setText("Hasta");
+
+        cmdExtractoCtaCte.setText("Ver");
+        cmdExtractoCtaCte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdExtractoCtaCteActionPerformed(evt);
+            }
+        });
+
+        cboCentroDeCostoExtractoCtaCte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel2.setText("Centro de Costo");
+
+        cmdExtractoCtaCteCC.setText("Ver");
+        cmdExtractoCtaCteCC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdExtractoCtaCteCCActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -276,40 +273,34 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel16)
-                            .addComponent(jLabel19))
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel22)
                         .addGap(18, 18, 18)
+                        .addComponent(txtFechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel23)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel21)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtFechaInicioMayor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel12)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtFechaFinMayor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cmdLibroMayor))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(txtFechaInicioDiario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel14)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtFechaFinDiario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cmdLibroDiario)))
+                                    .addComponent(cmdLibroMayor)
+                                    .addComponent(cmdLibroDiario, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cmdLibroMayorSoloTotales)
-                                .addGap(47, 47, 47)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
                                 .addComponent(cboCentroDeCosto, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -317,27 +308,17 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                                 .addComponent(cmdLibroMayorCC)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cmdLibroMayorSoloTotalesCC))
+                            .addComponent(cmdLibroVentas)
+                            .addComponent(cmdLibroCompras)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtFechaInicioVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel20)
+                                .addComponent(cmdExtractoCtaCte)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(cboCentroDeCostoExtractoCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtFechaFinVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmdLibroVentas))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtFechaInicioCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel17)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtFechaFinCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmdLibroCompras))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                                .addComponent(cmdExtractoCtaCteCC)))))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -348,49 +329,49 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                     .addComponent(cboPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cmdLibroDiario)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtFechaInicioDiario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFechaFinDiario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtFechaInicioMayor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtFechaFinMayor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmdLibroMayor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmdLibroMayorCC)
-                            .addComponent(cmdLibroMayorSoloTotalesCC))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmdLibroMayorSoloTotales)
-                            .addComponent(cboCentroDeCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmdLibroDiario))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(cmdLibroMayorSoloTotales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cmdLibroMayor))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cmdLibroMayorCC)
+                                    .addComponent(cmdLibroMayorSoloTotalesCC))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cboCentroDeCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmdLibroCompras)
-                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtFechaInicioCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFechaFinCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdLibroVentas)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtFechaInicioVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFechaFinVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmdLibroVentas))
-                .addGap(497, 497, 497))
+                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdExtractoCtaCte)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(cmdExtractoCtaCteCC)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cboCentroDeCostoExtractoCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         pack();
@@ -413,8 +394,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private void cmdLibroMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayorActionPerformed
         try {
             Map parameters = new HashMap();
-            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaInicioMayor.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaFinMayor.getDateTimeStrict()));
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));  
             //parameters.put("ctaContable", 101020100);
             Utils.getInstance().showReport("libro_mayor", "libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters, false);
             //Utils.getInstance().showReport("libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters);
@@ -428,8 +409,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private void cmdLibroComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroComprasActionPerformed
         try {
             Map parameters = new HashMap();
-            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaInicioCompras.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaFinCompras.getDateTimeStrict()));
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));  
 
             Utils.getInstance().showReport("libro_egresos", parameters, true);
 
@@ -442,8 +423,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private void cmdLibroVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroVentasActionPerformed
         try {
             Map parameters = new HashMap();
-            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaInicioVentas.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaFinVentas.getDateTimeStrict()));
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));  
 
             Utils.getInstance().showReport("libro_ingresos", parameters, true);
 
@@ -456,8 +437,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private void cmdLibroMayorSoloTotalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayorSoloTotalesActionPerformed
         try {
             Map parameters = new HashMap();
-            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaInicioMayor.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaFinMayor.getDateTimeStrict()));
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));  
             //parameters.put("ctaContable", 101020100);
             Utils.getInstance().showReport("libro_mayor", "libro_mayor_solo_totales_subreport", "libro_mayor_subreport_saldo_anterior", parameters, false);
             //Utils.getInstance().showReport("libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters);
@@ -470,8 +451,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private void cmdLibroMayorSoloTotalesCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayorSoloTotalesCCActionPerformed
         try {
             Map parameters = new HashMap();
-            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaInicioMayor.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaFinMayor.getDateTimeStrict()));
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));  
             parameters.put("centroDeCosto", ((TblCentrosDeCosto) cboCentroDeCosto.getSelectedItem()).getId());
             parameters.put("centroDeCostoNombre", ((TblCentrosDeCosto) cboCentroDeCosto.getSelectedItem()).getDescripcion());
             //parameters.put("ctaContable", 101020100);
@@ -486,8 +467,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private void cmdLibroMayorCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroMayorCCActionPerformed
         try {
             Map parameters = new HashMap();
-            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaInicioMayor.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaFinMayor.getDateTimeStrict()));
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));  
             parameters.put("centroDeCosto", ((TblCentrosDeCosto) cboCentroDeCosto.getSelectedItem()).getId());
             parameters.put("centroDeCostoNombre", ((TblCentrosDeCosto) cboCentroDeCosto.getSelectedItem()).getDescripcion());
             //parameters.put("ctaContable", 101020100);
@@ -519,21 +500,40 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                     endDate = startDate.plusDays(1).minusNanos(1);
                     break;
             }
-
-            txtFechaInicioDiario.setDateTimeStrict(startDate);
-            txtFechaInicioMayor.setDateTimeStrict(startDate);
-            txtFechaInicioCompras.setDateTimeStrict(startDate);
-            txtFechaInicioVentas.setDateTimeStrict(startDate);
-
-            txtFechaFinMayor.setDateTimeStrict(endDate);
-            txtFechaFinDiario.setDateTimeStrict(endDate);
-            txtFechaFinCompras.setDateTimeStrict(endDate);
-            txtFechaFinVentas.setDateTimeStrict(endDate);
+            
+            txtFechaDesde.setDateTimeStrict(startDate);
+            txtFechaHasta.setDateTimeStrict(endDate);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }//GEN-LAST:event_cboPeriodoActionPerformed
+
+    private void cmdExtractoCtaCteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExtractoCtaCteActionPerformed
+        try {
+            Map parameters = new HashMap();
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));            
+            Utils.getInstance().showReport("extracto_ctacte", "extracto_ctacte_subreport_saldo_anterior", parameters, false);            
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdExtractoCtaCteActionPerformed
+
+    private void cmdExtractoCtaCteCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExtractoCtaCteCCActionPerformed
+                try {
+            Map parameters = new HashMap();
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));    
+            parameters.put("centroDeCosto", ((TblCentrosDeCosto) cboCentroDeCostoExtractoCtaCte.getSelectedItem()).getId());
+            parameters.put("centroDeCostoNombre", ((TblCentrosDeCosto) cboCentroDeCostoExtractoCtaCte.getSelectedItem()).getDescripcion());
+            Utils.getInstance().showReport("extracto_ctacte_cc", "extracto_ctacte_subreport_saldo_anterior_cc", parameters, false);            
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdExtractoCtaCteCCActionPerformed
 
     /**
      * @param args the command line arguments
@@ -592,7 +592,10 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cboCentroDeCosto;
+    private javax.swing.JComboBox<String> cboCentroDeCostoExtractoCtaCte;
     private javax.swing.JComboBox<String> cboPeriodo;
+    private javax.swing.JButton cmdExtractoCtaCte;
+    private javax.swing.JButton cmdExtractoCtaCteCC;
     private javax.swing.JButton cmdLibroCompras;
     private javax.swing.JButton cmdLibroDiario;
     private javax.swing.JButton cmdLibroMayor;
@@ -605,16 +608,12 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private java.util.List<com.parah.mg.domain.TblCentrosDeCosto> listCentrosDeCosto;
@@ -624,13 +623,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private javax.persistence.Query queryCentrosDeCosto;
     private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryMiembros;
-    private com.github.lgooddatepicker.components.DateTimePicker txtFechaFinCompras;
-    private com.github.lgooddatepicker.components.DateTimePicker txtFechaFinDiario;
-    private com.github.lgooddatepicker.components.DateTimePicker txtFechaFinMayor;
-    private com.github.lgooddatepicker.components.DateTimePicker txtFechaFinVentas;
-    private com.github.lgooddatepicker.components.DateTimePicker txtFechaInicioCompras;
-    private com.github.lgooddatepicker.components.DateTimePicker txtFechaInicioDiario;
-    private com.github.lgooddatepicker.components.DateTimePicker txtFechaInicioMayor;
-    private com.github.lgooddatepicker.components.DateTimePicker txtFechaInicioVentas;
+    private com.github.lgooddatepicker.components.DateTimePicker txtFechaDesde;
+    private com.github.lgooddatepicker.components.DateTimePicker txtFechaHasta;
     // End of variables declaration//GEN-END:variables
 }

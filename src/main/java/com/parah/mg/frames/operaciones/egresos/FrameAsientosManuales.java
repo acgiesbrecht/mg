@@ -10,6 +10,7 @@ import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePickerSettings;
+import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.frames.admin.*;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -18,6 +19,7 @@ import java.awt.KeyboardFocusManager;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,7 +115,7 @@ public class FrameAsientosManuales extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblAsientos t WHERE t.observacion != null");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblAsientos t WHERE t.asientoManual = true OR t.observacion NOT LIKE '%Anulacion%'");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         dateToStringConverter1 = new com.parah.mg.utils.DateToStringConverter();
         dateTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
@@ -324,10 +326,10 @@ public class FrameAsientosManuales extends JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(conceptoLabel1)
                                     .addComponent(conceptoLabel2))
-                                .addGap(18, 18, 18)
+                                .addGap(21, 21, 21)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cboCuentaDebe, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cboCentroDeCosto, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(cboCentroDeCosto, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cboCuentaDebe, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap())
         );
 
@@ -337,7 +339,7 @@ public class FrameAsientosManuales extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -481,7 +483,7 @@ public class FrameAsientosManuales extends JInternalFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             int[] selected = masterTable.getSelectedRows();
-            List<com.parah.mg.domain.TblAsientos> toRemove = new ArrayList<>(selected.length);
+            List<TblAsientos> toRemove = new ArrayList<>(selected.length);
             for (Integer idx = 0; idx < selected.length; idx++) {
                 com.parah.mg.domain.TblAsientos t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
                 toRemove.add(t);
@@ -497,10 +499,12 @@ public class FrameAsientosManuales extends JInternalFrame {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         try {
-            com.parah.mg.domain.TblAsientos t = new com.parah.mg.domain.TblAsientos();
-            entityManager.persist(t);
-            t.setIdUser(currentUser.getUser());
-            list.add(t);
+            TblAsientos a = new TblAsientos();
+            entityManager.persist(a);
+            a.setIdUser(currentUser.getUser());
+            a.setFechahora(LocalDateTime.now().toLocalDate().atStartOfDay());
+            a.setAsientoManual(true);
+            list.add(a);
             Integer row = list.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));

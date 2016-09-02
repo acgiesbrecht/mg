@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
-<!-- 2016-09-01T19:14:34 -->
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2016-09-02T09:44:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="841" pageHeight="595" orientation="Landscape" columnWidth="801" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mgdb"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -13,13 +13,14 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<parameter name="subreportHeaderLandscape" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
 	<parameter name="id_categoria" class="java.lang.Integer"/>
 	<parameter name="ano" class="java.lang.Integer"/>
 	<parameter name="subreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT e.ID, e.APELLIDOS, e.NOMBRES
-FROM MG.TBL_ENTIDADES e]]>
+FROM MG.TBL_ENTIDADES e LEFT JOIN TBL_MIEMBROS_CATEGORIAS_DE_PAGO cp ON e.ID_MIEMBROS_CATEGORIA_DE_PAGO = cp.ID
+WHERE cp.DESCRIPCION LIKE '%Aporta%']]>
 	</queryString>
 	<field name="ID" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -34,7 +35,7 @@ FROM MG.TBL_ENTIDADES e]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="80" splitType="Stretch">
+		<band height="62" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="30" width="799" height="30" uuid="a63323e5-1d25-45b0-bc23-c36c39a4393e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -48,12 +49,12 @@ FROM MG.TBL_ENTIDADES e]]>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{subreportHeaderLandscape}]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{subreportHeader}]]></subreportExpression>
 			</subreport>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="15" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
 		<band height="20" splitType="Stretch">
@@ -196,13 +197,4 @@ FROM MG.TBL_ENTIDADES e]]>
 			</subreport>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="53" splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>

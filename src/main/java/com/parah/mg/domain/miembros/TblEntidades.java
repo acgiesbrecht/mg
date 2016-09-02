@@ -102,6 +102,8 @@ public class TblEntidades implements Serializable {
     @NotNull
     @Column(name = "APORTE_MENSUAL")
     private Integer aporteMensual;
+    @Column(name = "APORTE_SALDO_ANTERIOR")
+    private Long aporteSaldoAnterior;
     @Column(name = "FECHA_NACIMIENTO")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDate fechaNacimiento;
@@ -426,6 +428,20 @@ public class TblEntidades implements Serializable {
     @Override
     public String toString() {
         return getNombreCompleto();
+    }
+
+    /**
+     * @return the aporteSaldoAnterior
+     */
+    public Long getAporteSaldoAnterior() {
+        return aporteSaldoAnterior;
+    }
+
+    /**
+     * @param aporteSaldoAnterior the aporteSaldoAnterior to set
+     */
+    public void setAporteSaldoAnterior(Long aporteSaldoAnterior) {
+        this.aporteSaldoAnterior = aporteSaldoAnterior;
     }
 
 }
