@@ -593,7 +593,8 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                     }
                     TblAsientos asientoAporte = new TblAsientos();
                     asientoAporte.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
-                    asientoAporte.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
+                    asientoAporte.setIdCentroDeCostoDebe(evd.getIdEvento().getIdCentroDeCosto());
+                    asientoAporte.setIdCentroDeCostoHaber(evd.getIdEvento().getIdCentroDeCosto());
                     asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                     asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
                     asientoAporte.setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
@@ -603,7 +604,8 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
                     TblAsientos asientoDonacion = new TblAsientos();
                     asientoDonacion.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
-                    asientoDonacion.setIdCentroDeCosto(evd.getIdEvento().getIdCentroDeCosto());
+                    asientoDonacion.setIdCentroDeCostoDebe(evd.getIdEvento().getIdCentroDeCosto());
+                    asientoDonacion.setIdCentroDeCostoHaber(evd.getIdEvento().getIdCentroDeCosto());
                     asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                     asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
                     asientoDonacion.setMonto(evd.getMonto() - asientoAporte.getMonto());

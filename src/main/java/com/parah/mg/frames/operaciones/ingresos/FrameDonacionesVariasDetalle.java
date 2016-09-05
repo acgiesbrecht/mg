@@ -654,7 +654,8 @@ public class FrameDonacionesVariasDetalle extends JInternalFrame {
                         }
                         TblAsientos asientoAporte = new TblAsientos();
                         asientoAporte.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
-                        asientoAporte.setIdCentroDeCosto((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
+                        asientoAporte.setIdCentroDeCostoDebe((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
+                        asientoAporte.setIdCentroDeCostoHaber(asientoAporte.getIdCentroDeCostoDebe());
                         asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
                         asientoAporte.setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
@@ -664,7 +665,8 @@ public class FrameDonacionesVariasDetalle extends JInternalFrame {
 
                         TblAsientos asientoDonacion = new TblAsientos();
                         asientoDonacion.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
-                        asientoDonacion.setIdCentroDeCosto((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
+                        asientoDonacion.setIdCentroDeCostoDebe((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
+                        asientoDonacion.setIdCentroDeCostoHaber(asientoAporte.getIdCentroDeCostoDebe());
                         asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
                         asientoDonacion.setMonto(evd.getMonto() - asientoAporte.getMonto());

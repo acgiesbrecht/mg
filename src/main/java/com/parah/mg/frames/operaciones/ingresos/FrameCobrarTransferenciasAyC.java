@@ -391,8 +391,8 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                         if (tAnterior != t) {
                             for (TblAsientosTemporales atAnterior : tAnterior.getTblAsientosTemporalesList()) {
                                 for (TblAsientos asiento : listAsientos) {
-                                    if (atAnterior.getIdCentroDeCosto().equals(asiento.getIdCentroDeCosto())
-                                            && atAnterior.getIdCuentaContableDebe().equals(asiento.getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto())
+                                    if (atAnterior.getIdCentroDeCostoDebe().equals(asiento.getIdCentroDeCostoDebe())
+                                            && atAnterior.getIdCuentaContableDebe().equals(asiento.getIdCentroDeCostoDebe().getIdCuentaContableCtaCtePorDefecto())
                                             && atAnterior.getIdCuentaContableHaber().equals(asiento.getIdCuentaContableDebe())
                                             && atAnterior.getMonto().equals(asiento.getMonto())) {
                                         listAsientos.remove(asiento);
@@ -414,8 +414,9 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                         entityManager.persist(aT);
                         aT.setFacturado(false);
                         aT.setFechahora(t.getFechahora().atStartOfDay());
-                        aT.setIdCentroDeCosto(asiento.getIdCentroDeCosto());
-                        aT.setIdCuentaContableDebe(asiento.getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
+                        aT.setIdCentroDeCostoDebe(asiento.getIdCentroDeCostoHaber());
+                        aT.setIdCentroDeCostoHaber(asiento.getIdCentroDeCostoDebe());
+                        aT.setIdCuentaContableDebe(asiento.getIdCentroDeCostoHaber().getIdCuentaContableCtaCtePorDefecto());
                         aT.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
                         if (asiento.getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
                             aT.setEsAporte(true);

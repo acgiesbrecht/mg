@@ -450,7 +450,8 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     for (TblAsientosTemporales aT : pago.getAsientosTemporalesList()) {
                         TblAsientos asiento = new TblAsientos();
                         asiento.setFechahora(f.getFechahora());
-                        asiento.setIdCentroDeCosto(aT.getIdCentroDeCosto());
+                        asiento.setIdCentroDeCostoDebe(aT.getIdCentroDeCostoDebe());
+                        asiento.setIdCentroDeCostoHaber(aT.getIdCentroDeCostoHaber());
                         asiento.setIdCuentaContableDebe(aT.getIdCuentaContableDebe());
                         asiento.setIdCuentaContableHaber(aT.getIdCuentaContableHaber());
                         asiento.setMonto(aT.getMonto());

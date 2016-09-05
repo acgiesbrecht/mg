@@ -1055,8 +1055,9 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 TblAsientosTemporales aT = new TblAsientosTemporales();
                 aT.setFacturado(false);
                 aT.setFechahora(recibo.getFechahora().atStartOfDay());
-                aT.setIdCentroDeCosto(listAsientos.get(0).getIdCentroDeCosto());
-                aT.setIdCuentaContableDebe(listAsientos.get(0).getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
+                aT.setIdCentroDeCostoDebe(listAsientos.get(0).getIdCentroDeCostoHaber());
+                aT.setIdCentroDeCostoHaber(listAsientos.get(0).getIdCentroDeCostoDebe());
+                aT.setIdCuentaContableDebe(listAsientos.get(0).getIdCentroDeCostoHaber().getIdCuentaContableCtaCtePorDefecto());
                 aT.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaACobrar());
                 aT.setEsAporte(true);
                 aT.setMonto(recibo.getMontoAporte());
@@ -1066,8 +1067,9 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 aT = new TblAsientosTemporales();
                 aT.setFacturado(false);
                 aT.setFechahora(recibo.getFechahora().atStartOfDay());
-                aT.setIdCentroDeCosto(listAsientos.get(0).getIdCentroDeCosto());
-                aT.setIdCuentaContableDebe(listAsientos.get(0).getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
+                aT.setIdCentroDeCostoDebe(listAsientos.get(0).getIdCentroDeCostoHaber());
+                aT.setIdCentroDeCostoHaber(listAsientos.get(0).getIdCentroDeCostoDebe());
+                aT.setIdCuentaContableDebe(listAsientos.get(0).getIdCentroDeCostoHaber().getIdCuentaContableCtaCtePorDefecto());
                 aT.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaACobrar());
                 aT.setEsAporte(false);
                 aT.setMonto(recibo.getMontoDonacion());

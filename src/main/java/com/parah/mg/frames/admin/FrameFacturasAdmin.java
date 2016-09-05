@@ -265,7 +265,8 @@ public class FrameFacturasAdmin extends JInternalFrame {
                     TblAsientos asientoInverso = new TblAsientos();
                     entityManager.persist(asientoInverso);
                     asientoInverso.setFechahora(LocalDateTime.now());
-                    asientoInverso.setIdCentroDeCosto(asiento.getIdCentroDeCosto());
+                    asientoInverso.setIdCentroDeCostoDebe(asiento.getIdCentroDeCostoHaber());
+                    asientoInverso.setIdCentroDeCostoHaber(asiento.getIdCentroDeCostoDebe());
                     asientoInverso.setIdCuentaContableDebe(asiento.getIdCuentaContableHaber());
                     asientoInverso.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
                     asientoInverso.setMonto(asiento.getMonto());

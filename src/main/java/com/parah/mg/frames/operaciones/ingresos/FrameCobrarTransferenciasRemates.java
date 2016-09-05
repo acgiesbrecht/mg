@@ -402,7 +402,8 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame implements 
                     entityManager.persist(asientoTemporalAporte);
                     asientoTemporalAporte.setFacturado(false);
                     asientoTemporalAporte.setFechahora(t.getFechahora().atStartOfDay());
-                    asientoTemporalAporte.setIdCentroDeCosto(t.getIdEvento().getIdCentroDeCosto());
+                    asientoTemporalAporte.setIdCentroDeCostoDebe(t.getIdEvento().getIdCentroDeCosto());
+                    asientoTemporalAporte.setIdCentroDeCostoHaber(t.getIdEvento().getIdCentroDeCosto());
                     asientoTemporalAporte.setIdCuentaContableDebe(t.getIdEvento().getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
                     asientoTemporalAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
                     asientoTemporalAporte.setEsAporte(true);
@@ -413,7 +414,8 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame implements 
                     entityManager.persist(asientoTemporalDonacion);
                     asientoTemporalDonacion.setFacturado(false);
                     asientoTemporalDonacion.setFechahora(t.getFechahora().atStartOfDay());
-                    asientoTemporalDonacion.setIdCentroDeCosto(t.getIdEvento().getIdCentroDeCosto());
+                    asientoTemporalDonacion.setIdCentroDeCostoDebe(t.getIdEvento().getIdCentroDeCosto());
+                    asientoTemporalDonacion.setIdCentroDeCostoHaber(t.getIdEvento().getIdCentroDeCosto());
                     asientoTemporalDonacion.setIdCuentaContableDebe(t.getIdEvento().getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
                     asientoTemporalDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
                     asientoTemporalDonacion.setEsAporte(false);

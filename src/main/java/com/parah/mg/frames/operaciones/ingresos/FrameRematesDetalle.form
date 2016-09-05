@@ -776,7 +776,6 @@
     </Component>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="fechahoraField">
       <BindingProperties>
-        <BindingProperty name="dateTime" source="masterTable" sourcePath="${selectedElement.fechahora}" target="fechahoraField" targetPath="dateTime" updateStrategy="0" immediately="false"/>
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="fechahoraField" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <AuxValues>

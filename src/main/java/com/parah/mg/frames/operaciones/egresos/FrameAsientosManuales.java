@@ -70,8 +70,11 @@ public class FrameAsientosManuales extends JInternalFrame {
                 entityManager.getTransaction().begin();
             }
 
-            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCentroDeCostoDebe, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
+            
+            AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCentroDeCostoHaber, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            support4.setFilterMode(TextMatcherEditor.CONTAINS);            
 
             AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCuentaDebe, GlazedLists.eventListOf(listCuentasContables.toArray()));
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
@@ -138,7 +141,7 @@ public class FrameAsientosManuales extends JInternalFrame {
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         conceptoLabel1 = new javax.swing.JLabel();
-        cboCentroDeCosto = new javax.swing.JComboBox();
+        cboCentroDeCostoDebe = new javax.swing.JComboBox();
         montoField = new javax.swing.JFormattedTextField();
         conceptoLabel2 = new javax.swing.JLabel();
         cboCuentaDebe = new javax.swing.JComboBox();
@@ -147,6 +150,8 @@ public class FrameAsientosManuales extends JInternalFrame {
         conceptoLabel = new javax.swing.JLabel();
         conceptoField = new javax.swing.JTextField();
         dtpFecha = new com.github.lgooddatepicker.components.DateTimePicker(dps, tps);
+        conceptoLabel4 = new javax.swing.JLabel();
+        cboCentroDeCostoHaber = new javax.swing.JComboBox();
 
         FormListener formListener = new FormListener();
 
@@ -171,16 +176,21 @@ public class FrameAsientosManuales extends JInternalFrame {
         columnBinding.setColumnClass(java.time.LocalDateTime.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCentroDeCosto}"));
-        columnBinding.setColumnName("Centro de Costo");
+        columnBinding.setColumnName("Centro de Costo Debe");
         columnBinding.setColumnClass(com.parah.mg.domain.TblCentrosDeCosto.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCuentaContableDebe}"));
         columnBinding.setColumnName("Cuenta Debe");
         columnBinding.setColumnClass(com.parah.mg.domain.TblCuentasContables.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCentroDeCostoHaber}"));
+        columnBinding.setColumnName("Centro de Costo Haber");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCentrosDeCosto.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCuentaContableHaber}"));
         columnBinding.setColumnName("Cuenta Haber");
         columnBinding.setColumnClass(com.parah.mg.domain.TblCuentasContables.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
         columnBinding.setColumnName("Monto");
         columnBinding.setColumnClass(Integer.class);
@@ -190,7 +200,7 @@ public class FrameAsientosManuales extends JInternalFrame {
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
             masterTable.getColumnModel().getColumn(1).setCellRenderer(dateTimeTableCellRenderer1);
-            masterTable.getColumnModel().getColumn(5).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
         }
 
         fechahoraLabel.setText("Fecha/Hora:");
@@ -223,14 +233,14 @@ public class FrameAsientosManuales extends JInternalFrame {
 
         deleteButton.addActionListener(formListener);
 
-        conceptoLabel1.setText("Centro de Costo:");
+        conceptoLabel1.setText("Centro de Costo Debe:");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCentroDeCosto}"), cboCentroDeCosto, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCentroDeCostoDebe}"), cboCentroDeCostoDebe, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboCentroDeCosto, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboCentroDeCostoDebe, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        cboCentroDeCosto.addActionListener(formListener);
+        cboCentroDeCostoDebe.addActionListener(formListener);
 
         montoField.setColumns(9);
         montoField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
@@ -277,14 +287,21 @@ public class FrameAsientosManuales extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        conceptoLabel4.setText("Centro de Costo Haber:");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCentroDeCostoHaber}"), cboCentroDeCostoHaber, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        cboCentroDeCostoHaber.addActionListener(formListener);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(newButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -293,27 +310,23 @@ public class FrameAsientosManuales extends JInternalFrame {
                         .addComponent(refreshButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton))
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addComponent(masterScrollPane)
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(montoLabel)
+                                .addGap(69, 69, 69))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(conceptoLabel3)
-                                            .addComponent(montoLabel))
-                                        .addGap(32, 32, 32))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(conceptoLabel)
-                                        .addGap(40, 40, 40)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(conceptoField)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(montoField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(cboCuentaHaber, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addComponent(conceptoLabel)
+                                .addGap(40, 40, 40)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(conceptoField)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(fechahoraLabel)
@@ -323,13 +336,22 @@ public class FrameAsientosManuales extends JInternalFrame {
                                     .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(conceptoLabel1)
-                                    .addComponent(conceptoLabel2))
+                                .addComponent(conceptoLabel1)
                                 .addGap(21, 21, 21)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cboCentroDeCosto, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cboCuentaDebe, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addComponent(cboCentroDeCostoDebe, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(conceptoLabel2)
+                                .addGap(21, 21, 21)
+                                .addComponent(cboCuentaDebe, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(conceptoLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(cboCentroDeCostoHaber, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(conceptoLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(cboCuentaHaber, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 19, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -339,8 +361,8 @@ public class FrameAsientosManuales extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(idLabel))
@@ -351,16 +373,17 @@ public class FrameAsientosManuales extends JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(conceptoLabel1)
-                    .addComponent(cboCentroDeCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboCentroDeCostoDebe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(conceptoLabel2)
                     .addComponent(cboCuentaDebe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(conceptoLabel3)
-                    .addComponent(cboCuentaHaber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(cboCuentaHaber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(conceptoLabel4)
+                        .addComponent(cboCentroDeCostoHaber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(conceptoLabel3)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(montoLabel))
@@ -397,8 +420,8 @@ public class FrameAsientosManuales extends JInternalFrame {
             else if (evt.getSource() == deleteButton) {
                 FrameAsientosManuales.this.deleteButtonActionPerformed(evt);
             }
-            else if (evt.getSource() == cboCentroDeCosto) {
-                FrameAsientosManuales.this.cboCentroDeCostoActionPerformed(evt);
+            else if (evt.getSource() == cboCentroDeCostoDebe) {
+                FrameAsientosManuales.this.cboCentroDeCostoDebeActionPerformed(evt);
             }
             else if (evt.getSource() == montoField) {
                 FrameAsientosManuales.this.montoFieldActionPerformed(evt);
@@ -408,6 +431,9 @@ public class FrameAsientosManuales extends JInternalFrame {
             }
             else if (evt.getSource() == cboCuentaHaber) {
                 FrameAsientosManuales.this.cboCuentaHaberActionPerformed(evt);
+            }
+            else if (evt.getSource() == cboCentroDeCostoHaber) {
+                FrameAsientosManuales.this.cboCentroDeCostoHaberActionPerformed(evt);
             }
         }
 
@@ -543,9 +569,9 @@ public class FrameAsientosManuales extends JInternalFrame {
 
     }//GEN-LAST:event_formInternalFrameActivated
 
-    private void cboCentroDeCostoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCentroDeCostoActionPerformed
+    private void cboCentroDeCostoDebeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCentroDeCostoDebeActionPerformed
 
-    }//GEN-LAST:event_cboCentroDeCostoActionPerformed
+    }//GEN-LAST:event_cboCentroDeCostoDebeActionPerformed
 
     private void montoFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_montoFieldFocusGained
         montoField.selectAll();
@@ -567,8 +593,13 @@ public class FrameAsientosManuales extends JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cboCuentaHaberActionPerformed
 
+    private void cboCentroDeCostoHaberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCentroDeCostoHaberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboCentroDeCostoHaberActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox cboCentroDeCosto;
+    private javax.swing.JComboBox cboCentroDeCostoDebe;
+    private javax.swing.JComboBox cboCentroDeCostoHaber;
     private javax.swing.JComboBox cboCuentaDebe;
     private javax.swing.JComboBox cboCuentaHaber;
     private javax.swing.JTextField conceptoField;
@@ -576,6 +607,7 @@ public class FrameAsientosManuales extends JInternalFrame {
     private javax.swing.JLabel conceptoLabel1;
     private javax.swing.JLabel conceptoLabel2;
     private javax.swing.JLabel conceptoLabel3;
+    private javax.swing.JLabel conceptoLabel4;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;

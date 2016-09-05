@@ -568,7 +568,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
 
                         TblAsientos asiento = new TblAsientos();
                         asiento.setFechahora(factura.getFechahora());
-                        asiento.setIdCentroDeCosto(at.getIdCentroDeCosto());
+                        asiento.setIdCentroDeCostoDebe(at.getIdCentroDeCostoDebe());
+                        asiento.setIdCentroDeCostoHaber(at.getIdCentroDeCostoHaber());
                         asiento.setIdCuentaContableDebe(at.getIdCuentaContableDebe());
                         asiento.setIdCuentaContableHaber(at.getIdCuentaContableHaber());
                         asiento.setMonto(at.getMonto());

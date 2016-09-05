@@ -65,9 +65,12 @@ public class TblAsientosTemporales implements Serializable {
     private Boolean esAporte;
     @ManyToMany(mappedBy = "tblAsientosTemporalesList")
     private List<TblAsientos> tblAsientosList;
-    @JoinColumn(name = "ID_CENTRO_DE_COSTO", referencedColumnName = "ID")
+    @JoinColumn(name = "ID_CENTRO_DE_COSTO_DEBE", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private TblCentrosDeCosto idCentroDeCosto;
+    private TblCentrosDeCosto idCentroDeCostoDebe;
+    @JoinColumn(name = "ID_CENTRO_DE_COSTO_HABER", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private TblCentrosDeCosto idCentroDeCostoHaber;
     @JoinColumn(name = "ID_CUENTA_CONTABLE_HABER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCuentasContables idCuentaContableHaber;
@@ -138,12 +141,20 @@ public class TblAsientosTemporales implements Serializable {
         this.tblAsientosList = tblAsientosList;
     }
 
-    public TblCentrosDeCosto getIdCentroDeCosto() {
-        return idCentroDeCosto;
+    public TblCentrosDeCosto getIdCentroDeCostoDebe() {
+        return idCentroDeCostoDebe;
     }
 
-    public void setIdCentroDeCosto(TblCentrosDeCosto idCentroDeCosto) {
-        this.idCentroDeCosto = idCentroDeCosto;
+    public void setIdCentroDeCostoDebe(TblCentrosDeCosto idCentroDeCostoDebe) {
+        this.idCentroDeCostoDebe = idCentroDeCostoDebe;
+    }
+
+    public TblCentrosDeCosto getIdCentroDeCostoHaber() {
+        return idCentroDeCostoHaber;
+    }
+
+    public void setIdCentroDeCostoHaber(TblCentrosDeCosto idCentroDeCostoHaber) {
+        this.idCentroDeCostoHaber = idCentroDeCostoHaber;
     }
 
     public TblCuentasContables getIdCuentaContableHaber() {
