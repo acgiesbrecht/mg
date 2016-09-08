@@ -50,7 +50,8 @@ public class FrameAutofacturacion extends JInternalFrame {
     private static final Logger LOGGER = LogManager.getLogger(FrameAutofacturacion.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     Map<String, String> persistenceMap = new HashMap<>();
-    JComboBox<TblCentrosDeCosto> cboCentroDeCosto = new JComboBox();
+    JComboBox<TblCentrosDeCosto> cboCentroDeCostoDebe = new JComboBox();
+    JComboBox<TblCentrosDeCosto> cboCentroDeCostoHaber = new JComboBox();
     JComboBox<TblCuentasContables> cboCuentaHaber = new JComboBox();
     JComboBox<TblCuentasContables> cboCuentaDebe = new JComboBox();
     DatePickerSettings dps = new DatePickerSettings();
@@ -77,8 +78,11 @@ public class FrameAutofacturacion extends JInternalFrame {
                 entityManager.getTransaction().begin();
             }
 
-            AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCentroDeCostoDebe, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
+            
+            AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCentroDeCostoHaber, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            support5.setFilterMode(TextMatcherEditor.CONTAINS);
 
             AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaDebe, GlazedLists.eventListOf(listCuentasContables.toArray()));
             support3.setFilterMode(TextMatcherEditor.CONTAINS);
@@ -179,46 +183,46 @@ public class FrameAutofacturacion extends JInternalFrame {
         imprimirButton.setText("Guardar & Imprimir");
         imprimirButton.addActionListener(formListener);
 
-        montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel.setText("Timbrado:");
+        montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        txtTimbrado.setEditable(false);
         txtTimbrado.setColumns(9);
+        txtTimbrado.setEditable(false);
         txtTimbrado.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         txtTimbrado.addFocusListener(formListener);
         txtTimbrado.addMouseListener(formListener);
         txtTimbrado.addActionListener(formListener);
 
-        montoLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel1.setText("Factura Nro::");
+        montoLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         fecha1Label.setText("Fecha:");
 
-        montoLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel2.setText("Nombre y Apellido del Vendedor:");
+        montoLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         ctacteLabel3.setText("C.I.N°:");
 
-        montoLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel3.setText("Cantidad");
+        montoLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        montoLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel4.setText("Concepto");
+        montoLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         txtPrecioUnitario.setColumns(9);
         txtPrecioUnitario.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
 
-        montoLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel5.setText("Domicilio del Vendedor:");
+        montoLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         txtCantidad.setColumns(9);
         txtCantidad.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
 
-        montoLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel7.setText("Direccion de la Transaccoion:");
+        montoLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        montoLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel8.setText("Precio Unitario");
+        montoLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         cmdBorrarAsiento.setText("-");
         cmdBorrarAsiento.addActionListener(formListener);
@@ -229,12 +233,15 @@ public class FrameAutofacturacion extends JInternalFrame {
         montoLabel6.setText("Asientos");
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listAsientos, asientosTable);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCentroDeCosto}"));
-        columnBinding.setColumnName("Centro de Costo");
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCentroDeCostoDebe}"));
+        columnBinding.setColumnName("Centro de Costo Debe");
         columnBinding.setColumnClass(com.parah.mg.domain.TblCentrosDeCosto.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCuentaContableDebe}"));
         columnBinding.setColumnName("Cuenta Debe");
         columnBinding.setColumnClass(com.parah.mg.domain.TblCuentasContables.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCentroDeCostoHaber}"));
+        columnBinding.setColumnName("Centro de Costo Haber");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCentrosDeCosto.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCuentaContableHaber}"));
         columnBinding.setColumnName("Cuenta Haber");
         columnBinding.setColumnClass(com.parah.mg.domain.TblCuentasContables.class);
@@ -313,7 +320,7 @@ public class FrameAutofacturacion extends JInternalFrame {
                                 .addComponent(conceptoLabel)
                                 .addGap(8, 8, 8)
                                 .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 830, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(montoLabel6)
@@ -633,20 +640,22 @@ public class FrameAutofacturacion extends JInternalFrame {
             t.setFechahora(dtpFecha.getDateTimeStrict());
             t.setIdUser(currentUser.getUser());
 
-            t.setIdCentroDeCosto((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
+            t.setIdCentroDeCostoDebe((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
+            t.setIdCentroDeCostoHaber(t.getIdCentroDeCostoDebe());
             t.setIdCuentaContableDebe(((TblCuentasContablesPorDefecto) entityManager.createQuery("SELECT t FROM TblCuentasContablesPorDefecto t WHERE t.id = 1").getSingleResult()).getIdCuentaDebeCompras());
 
-            t.setIdCuentaContableHaber(t.getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
+            t.setIdCuentaContableHaber(t.getIdCentroDeCostoHaber().getIdCuentaContableCtaCtePorDefecto());
             t.setMonto(0);
             listAsientos.add(t);
             Integer row = listAsientos.size() - 1;
             asientosTable.setRowSelectionInterval(row, row);
             asientosTable.scrollRectToVisible(asientosTable.getCellRect(row, 0, true));
             if (asientosTable.getColumnModel().getColumnCount() > 0 && asientosTable.getRowCount() == 1) {
-                asientosTable.getColumn("Centro de Costo").setCellEditor(new DefaultCellEditor(cboCentroDeCosto));
+                asientosTable.getColumn("Centro de Costo Debe").setCellEditor(new DefaultCellEditor(cboCentroDeCostoDebe));
+                asientosTable.getColumn("Centro de Costo Haber").setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
                 asientosTable.getColumn("Cuenta Debe").setCellEditor(new DefaultCellEditor(cboCuentaDebe));
                 asientosTable.getColumn("Cuenta Haber").setCellEditor(new DefaultCellEditor(cboCuentaHaber));
-                asientosTable.getColumnModel().getColumn(3).setCellRenderer(numberCellRenderer1);
+                asientosTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());

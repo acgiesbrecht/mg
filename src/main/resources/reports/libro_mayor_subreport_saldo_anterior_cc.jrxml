@@ -11,13 +11,13 @@
         FROM TBL_ASIENTOS A
         WHERE ID_CUENTA_CONTABLE_DEBE =  $P{ctaContable}
         AND A.FECHAHORA < $P{fechaDesde}
-        AND A.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
+        AND A.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
         UNION ALL
         SELECT -A.MONTO AS SALDO_ANTERIOR
         FROM TBL_ASIENTOS A
         WHERE ID_CUENTA_CONTABLE_HABER =  $P{ctaContable}
         AND A.FECHAHORA < $P{fechaDesde}
-        AND A.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
+        AND A.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
         ) AS S]]>
 	</queryString>
 	<field name="SALDO_ANTERIOR_SUMA" class="java.lang.Integer"/>

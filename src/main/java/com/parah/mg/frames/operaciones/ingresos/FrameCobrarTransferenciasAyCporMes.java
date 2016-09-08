@@ -50,15 +50,15 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Industria
  */
-public class FrameCobrarTransferenciasAyC extends JInternalFrame implements TableModelListener {
+public class FrameCobrarTransferenciasAyCporMes extends JInternalFrame implements TableModelListener {
 
-    private static final Logger LOGGER = LogManager.getLogger(FrameCobrarTransferenciasAyC.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameCobrarTransferenciasAyCporMes.class);
     CurrentUser currentUser = CurrentUser.getInstance();
     Map<String, String> persistenceMap = new HashMap<>();
     TblCuentasContablesPorDefecto cuentasContablesPorDefecto;
     DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.getDefault());
 
-    public FrameCobrarTransferenciasAyC() {
+    public FrameCobrarTransferenciasAyCporMes() {
         super("Cobrar Aportes y Colectas",
                 true, //resizable
                 true, //closable
@@ -297,22 +297,22 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                FrameCobrarTransferenciasAyC.this.saveButtonActionPerformed(evt);
+                FrameCobrarTransferenciasAyCporMes.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                FrameCobrarTransferenciasAyC.this.refreshButtonActionPerformed(evt);
+                FrameCobrarTransferenciasAyCporMes.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == cboEventoTipo) {
-                FrameCobrarTransferenciasAyC.this.cboEventoTipoActionPerformed(evt);
+                FrameCobrarTransferenciasAyCporMes.this.cboEventoTipoActionPerformed(evt);
             }
             else if (evt.getSource() == cboMarcarSeleccionados) {
-                FrameCobrarTransferenciasAyC.this.cboMarcarSeleccionadosActionPerformed(evt);
+                FrameCobrarTransferenciasAyCporMes.this.cboMarcarSeleccionadosActionPerformed(evt);
             }
         }
 
         public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            if (evt.getSource() == FrameCobrarTransferenciasAyC.this) {
-                FrameCobrarTransferenciasAyC.this.formInternalFrameActivated(evt);
+            if (evt.getSource() == FrameCobrarTransferenciasAyCporMes.this) {
+                FrameCobrarTransferenciasAyCporMes.this.formInternalFrameActivated(evt);
             }
         }
 
@@ -730,14 +730,22 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyCporMes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyCporMes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyCporMes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyCporMes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -751,7 +759,7 @@ public class FrameCobrarTransferenciasAyC extends JInternalFrame implements Tabl
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new FrameCobrarTransferenciasAyC());
+                frame.setContentPane(new FrameCobrarTransferenciasAyCporMes());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

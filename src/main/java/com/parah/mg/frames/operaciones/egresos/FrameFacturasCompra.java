@@ -61,7 +61,8 @@ public class FrameFacturasCompra extends JInternalFrame {
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
-    JComboBox<TblCentrosDeCosto> cboCentroDeCosto = new JComboBox();
+    JComboBox<TblCentrosDeCosto> cboCentroDeCostoDebe = new JComboBox();
+    JComboBox<TblCentrosDeCosto> cboCentroDeCostoHaber = new JComboBox();
     JComboBox<TblCuentasContables> cboCuentaHaber = new JComboBox();
     JComboBox<TblCuentasContables> cboCuentaDebe = new JComboBox();
     TblCentrosDeCosto centroDeCostoPreferido;
@@ -98,8 +99,11 @@ public class FrameFacturasCompra extends JInternalFrame {
             filterHeader.setAdaptiveChoices(false);
             filterHeader.getParserModel().setIgnoreCase(true);
 
-            AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCentroDeCostoDebe, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
+            
+            AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCentroDeCostoHaber, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            support5.setFilterMode(TextMatcherEditor.CONTAINS);
 
             AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaDebe, GlazedLists.eventListOf(listCuentasContables.toArray()));
             support3.setFilterMode(TextMatcherEditor.CONTAINS);
@@ -234,11 +238,12 @@ public class FrameFacturasCompra extends JInternalFrame {
                 public void valueChanged(ListSelectionEvent lse) {
                     try {
                         if (!lse.getValueIsAdjusting()) {
-                            if (asientosTable.getColumnModel().getColumnCount() == 4) {
-                                asientosTable.getColumn("Centro de Costo").setCellEditor(new DefaultCellEditor(cboCentroDeCosto));
+                            if (asientosTable.getColumnModel().getColumnCount() == 5) {
+                                asientosTable.getColumn("Centro de Costo Debe").setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
+                                asientosTable.getColumn("Centro de Costo Haber").setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
                                 asientosTable.getColumn("Cuenta Contable Debe").setCellEditor(new DefaultCellEditor(cboCuentaDebe));
                                 asientosTable.getColumn("Cuenta Contable Haber").setCellEditor(new DefaultCellEditor(cboCuentaHaber));
-                                asientosTable.getColumnModel().getColumn(3).setCellRenderer(numberCellRenderer1);
+                                asientosTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
                             }
                         }
                     } catch (Exception ex) {
@@ -556,12 +561,15 @@ public class FrameFacturasCompra extends JInternalFrame {
 
         org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.tblAsientosList}");
         jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, eLProperty, asientosTable);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCentroDeCosto}"));
-        columnBinding.setColumnName("Centro de Costo");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCentroDeCostoDebe}"));
+        columnBinding.setColumnName("Centro de Costo Debe");
         columnBinding.setColumnClass(com.parah.mg.domain.TblCentrosDeCosto.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCuentaContableDebe}"));
         columnBinding.setColumnName("Cuenta Contable Debe");
         columnBinding.setColumnClass(com.parah.mg.domain.TblCuentasContables.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCentroDeCostoHaber}"));
+        columnBinding.setColumnName("Centro de Costo Haber");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCentrosDeCosto.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCuentaContableHaber}"));
         columnBinding.setColumnName("Cuenta Contable Haber");
         columnBinding.setColumnClass(com.parah.mg.domain.TblCuentasContables.class);
@@ -702,6 +710,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                         .addComponent(saveButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(montoLabel6)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(idMiembroLabel)
                                 .addGap(42, 42, 42)
@@ -732,11 +741,6 @@ public class FrameFacturasCompra extends JInternalFrame {
                                 .addComponent(conceptoLabel)
                                 .addGap(8, 8, 8)
                                 .addComponent(conceptoField, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(montoLabel6)
-                                    .addGap(450, 450, 450)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -760,7 +764,8 @@ public class FrameFacturasCompra extends JInternalFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(montoLabel4)
                                         .addGap(12, 12, 12)
-                                        .addComponent(txtIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(txtIVA10, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(78, 78, 78)))
                 .addContainerGap())
         );
@@ -1275,11 +1280,12 @@ public class FrameFacturasCompra extends JInternalFrame {
             t.setFechahora(T.getFechahora() != null ? T.getFechahora().atStartOfDay() : null);
             t.setIdUser(currentUser.getUser());
 
-            t.setIdCentroDeCosto(centroDeCostoPreferido);
+            t.setIdCentroDeCostoDebe(centroDeCostoPreferido);
+            t.setIdCentroDeCostoHaber(centroDeCostoPreferido);
             t.setIdCuentaContableDebe(listCuentasContablesPorDefecto.get(0).getIdCuentaDebeCompras());
             if (T.getCondicionContado()) {
                 //t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaContado());
-                t.setIdCuentaContableHaber(t.getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
+                t.setIdCuentaContableHaber(t.getIdCentroDeCostoHaber().getIdCuentaContableCtaCtePorDefecto());
             } else {
                 //t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberFacturaCredito());
                 t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaHaberComprasFacturaCredito());
@@ -1296,10 +1302,11 @@ public class FrameFacturasCompra extends JInternalFrame {
             asientosTable.setRowSelectionInterval(row, row);
             asientosTable.scrollRectToVisible(asientosTable.getCellRect(row, 0, true));
             if (asientosTable.getColumnModel().getColumnCount() > 0 && asientosTable.getRowCount() == 1) {
-                asientosTable.getColumn("Centro de Costo").setCellEditor(new DefaultCellEditor(cboCentroDeCosto));
+                asientosTable.getColumn("Centro de Costo Debe").setCellEditor(new DefaultCellEditor(cboCentroDeCostoDebe));
+                asientosTable.getColumn("Centro de Costo Haber").setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
                 asientosTable.getColumn("Cuenta Contable Debe").setCellEditor(new DefaultCellEditor(cboCuentaDebe));
                 asientosTable.getColumn("Cuenta Contable Haber").setCellEditor(new DefaultCellEditor(cboCuentaHaber));
-                asientosTable.getColumnModel().getColumn(3).setCellRenderer(numberCellRenderer1);
+                asientosTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -1324,7 +1331,7 @@ public class FrameFacturasCompra extends JInternalFrame {
                 List<TblAsientos> ts = (List) T.getTblAsientosList();
                 if (ts != null) {
                     if (asientosTable.getModel().getRowCount() == 1) {
-                        asientosTable.getModel().setValueAt(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10(), 0, 3);
+                        asientosTable.getModel().setValueAt(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10(), 0, 4);
                         TblAsientos asiento = ts.get(0);
                         asiento.setFechahora(T.getFechahora() != null ? T.getFechahora().atStartOfDay() : null);
                         //asiento.setMonto(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10());

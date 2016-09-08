@@ -17,7 +17,7 @@ WHERE a.ID_CUENTA_CONTABLE_DEBE = cc.ID
     AND a.ASIENTO_MANUAL = TRUE
     AND YEAR(a.FECHAHORA) = YEAR(CURRENT_DATE) 
     AND a.FECHAHORA <  $P{fechaDesde} 
-    AND a.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
+    AND a.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
 UNION ALL
 		SELECT SUM(att.MONTO) AS INGRESOS, 0 AS EGRESOS FROM   TBL_ASIENTOS_TEMPORALES att, 
                     TBL_TRANSFERENCIAS t, 
@@ -35,7 +35,7 @@ WHERE tat.ID_TRANSFERENCIA = t.ID
     AND cch.ID = att.ID_CUENTA_CONTABLE_HABER    
     AND YEAR(att.FECHAHORA) = YEAR(CURRENT_DATE) 
     AND att.FECHAHORA <  $P{fechaDesde} 
-    AND att.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
+    AND att.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
 UNION ALL
 SELECT SUM(att.MONTO) AS INGRESOS, 0 AS EGRESOS FROM   TBL_ASIENTOS_TEMPORALES att, 
                     TBL_TRANSFERENCIAS t, 
@@ -53,7 +53,7 @@ WHERE tat.ID_TRANSFERENCIA = t.ID
     AND cch.ID = att.ID_CUENTA_CONTABLE_HABER    
     AND YEAR(att.FECHAHORA) = YEAR(CURRENT_DATE) 
     AND att.FECHAHORA <  $P{fechaDesde} 
-    AND att.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
+    AND att.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
 UNION ALL
 SELECT 0 AS INGRESOS, SUM(a.MONTO) AS EGRESOS FROM   TBL_ASIENTOS a,                     
                     TBL_CUENTAS_CONTABLES cc,
@@ -65,7 +65,7 @@ WHERE a.ID_CUENTA_CONTABLE_HABER = cc.ID
     AND ccd.ID = a.ID_CUENTA_CONTABLE_DEBE
     AND YEAR(a.FECHAHORA) = YEAR(CURRENT_DATE) 
     AND a.FECHAHORA <  $P{fechaDesde} 
-    AND a.ID_CENTRO_DE_COSTO = $P{centroDeCosto}) t]]>
+    AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}) t]]>
 	</queryString>
 	<field name="SALDO" class="java.lang.Integer"/>
 	<variable name="SALDO_ANTERIOR" class="java.lang.Integer">

@@ -21,7 +21,7 @@ WHERE a.ID_CUENTA_CONTABLE_DEBE = cc.ID
     AND cch.ID = a.ID_CUENTA_CONTABLE_HABER
     AND a.ASIENTO_MANUAL = TRUE
     AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-    AND a.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
+    AND a.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
 GROUP BY cch.DESCRIPCION
 UNION ALL
 		SELECT 'Aportes' AS CUENTA, SUM(att.MONTO) AS IMPORTE FROM   TBL_ASIENTOS_TEMPORALES att, 
@@ -39,7 +39,7 @@ WHERE tat.ID_TRANSFERENCIA = t.ID
     AND t.COBRADO = TRUE
     AND cch.ID = att.ID_CUENTA_CONTABLE_HABER
     AND att.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-    AND att.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
+    AND att.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
 UNION ALL
 SELECT 'Donaciones' AS CUENTA, SUM(att.MONTO) AS IMPORTE FROM   TBL_ASIENTOS_TEMPORALES att, 
                     TBL_TRANSFERENCIAS t, 
@@ -56,7 +56,7 @@ WHERE tat.ID_TRANSFERENCIA = t.ID
     AND t.COBRADO = TRUE
     AND cch.ID = att.ID_CUENTA_CONTABLE_HABER
     AND att.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-    AND att.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
+    AND att.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
 UNION ALL
 SELECT ccd.DESCRIPCION AS CUENTA, -SUM(a.MONTO) AS IMPORTE FROM   TBL_ASIENTOS a,                     
                     TBL_CUENTAS_CONTABLES cc,
@@ -67,7 +67,7 @@ WHERE a.ID_CUENTA_CONTABLE_HABER = cc.ID
     AND ccpd.ID = 1   
     AND ccd.ID = a.ID_CUENTA_CONTABLE_DEBE
     AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-    AND a.ID_CENTRO_DE_COSTO = $P{centroDeCosto}
+    AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
 GROUP BY ccd.DESCRIPCION]]>
 	</queryString>
 	<field name="CUENTA" class="java.lang.String"/>

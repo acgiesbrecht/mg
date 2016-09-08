@@ -40,8 +40,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TblCentrosDeCosto.findByPreferido", query = "SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = :preferido")})
 public class TblCentrosDeCosto implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCosto")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCostoDebe")
     private List<TblAsientos> tblAsientosList;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCostoHaber")
+    private List<TblAsientos> tblAsientosList1;
 
     @OneToMany(mappedBy = "idCentroDeCosto")
     private List<TblEventos> tblEventosList;
@@ -65,8 +68,10 @@ public class TblCentrosDeCosto implements Serializable {
     @NotNull
     @Column(name = "PREFERIDO")
     private Boolean preferido = false;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCosto")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCostoDebe")
     private List<TblAsientosTemporales> tblAsientosTemporalesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCentroDeCostoHaber")
+    private List<TblAsientosTemporales> tblAsientosTemporalesList1;
     @JoinColumn(name = "ID_CUENTA_CONTABLE_CTA_CTE_POR_DEFECTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblCuentasContables idCuentaContableCtaCtePorDefecto;
@@ -128,6 +133,15 @@ public class TblCentrosDeCosto implements Serializable {
     public void setTblAsientosTemporalesList(List<TblAsientosTemporales> tblAsientosTemporalesList) {
         this.tblAsientosTemporalesList = tblAsientosTemporalesList;
     }
+    
+    @XmlTransient
+    public List<TblAsientosTemporales> getTblAsientosTemporalesList1() {
+        return tblAsientosTemporalesList1;
+    }
+
+    public void setTblAsientosTemporalesList1(List<TblAsientosTemporales> tblAsientosTemporalesList) {
+        this.tblAsientosTemporalesList1 = tblAsientosTemporalesList;
+    }
 
     public TblCuentasContables getIdCuentaContableCtaCtePorDefecto() {
         return idCuentaContableCtaCtePorDefecto;
@@ -186,6 +200,15 @@ public class TblCentrosDeCosto implements Serializable {
 
     public void setTblAsientosList(List<TblAsientos> tblAsientosList) {
         this.tblAsientosList = tblAsientosList;
+    }
+    
+    @XmlTransient
+    public List<TblAsientos> getTblAsientosList1() {
+        return tblAsientosList1;
+    }
+
+    public void setTblAsientosList1(List<TblAsientos> tblAsientosList) {
+        this.tblAsientosList1 = tblAsientosList;
     }
 
 }

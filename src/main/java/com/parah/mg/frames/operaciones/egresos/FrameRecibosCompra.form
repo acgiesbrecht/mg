@@ -213,6 +213,10 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="saveButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="montoLabel6" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="450" max="32767" attributes="0"/>
+                  </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
@@ -224,13 +228,6 @@
                               <Component id="conceptoLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                               <Component id="conceptoField" min="-2" pref="527" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="montoLabel6" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="450" max="-2" attributes="0"/>
-                              </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="montoLabel" min="-2" max="-2" attributes="0"/>
@@ -262,6 +259,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="txtRazonSocial" min="-2" pref="679" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="jScrollPane1" alignment="0" min="-2" pref="599" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -589,6 +587,11 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
               </TableColumnModel>
             </Property>
             <Property name="rowHeight" type="int" value="20"/>
@@ -598,13 +601,17 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="elements" source="masterTable" sourcePath="${selectedElement.tblAsientosList}" target="asientosTable" targetPath="elements" updateStrategy="0" immediately="true">
-              <Subbinding sourcePath="${idCentroDeCosto}">
-                <BindingParameter name="NAME" value="Centro de Costo"/>
+              <Subbinding sourcePath="${idCentroDeCostoDebe}">
+                <BindingParameter name="NAME" value="Centro de Costo Debe"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblCentrosDeCosto.class"/>
               </Subbinding>
               <Subbinding sourcePath="${idCuentaContableDebe}">
                 <BindingParameter name="NAME" value="Cuenta Contable Debe"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblCuentasContables.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${idCentroDeCostoHaber}">
+                <BindingParameter name="NAME" value="Centro de Costo Haber"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblCentrosDeCosto.class"/>
               </Subbinding>
               <Subbinding sourcePath="${idCuentaContableHaber}">
                 <BindingParameter name="NAME" value="Cuenta Contable Haber"/>
