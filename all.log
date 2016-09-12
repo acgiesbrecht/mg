@@ -1,0 +1,60 @@
+2016-09-07 20:10:32.177 [AWT-EventQueue-0] ERROR 280OGGER - <init>
+org.eclipse.persistence.exceptions.PersistenceUnitLoadingException: 
+Exception Description: An exception was thrown while searching for persistence archives with ClassLoader: sun.misc.Launcher$AppClassLoader@73d16e93
+Internal Exception: javax.persistence.PersistenceException: Exception [EclipseLink-28018] (Eclipse Persistence Services - 2.6.2.v20151217-774c696): org.eclipse.persistence.exceptions.EntityManagerSetupException
+Exception Description: Predeployment of PersistenceUnit [mg_PU] failed.
+Internal Exception: Exception [EclipseLink-7154] (Eclipse Persistence Services - 2.6.2.v20151217-774c696): org.eclipse.persistence.exceptions.ValidationException
+Exception Description: The attribute [tblAsientosTemporalesList] in entity class [class com.parah.mg.domain.TblCentrosDeCosto] has a mappedBy value of [idCentroDeCosto] which does not exist in its owning entity class [class com.parah.mg.domain.TblAsientosTemporales]. If the owning entity class is a @MappedSuperclass, this is invalid, and your attribute should reference the correct subclass.
+	at org.eclipse.persistence.exceptions.PersistenceUnitLoadingException.exceptionSearchingForPersistenceResources(PersistenceUnitLoadingException.java:127) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactoryImpl(PersistenceProvider.java:115) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactory(PersistenceProvider.java:188) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79) ~[javax.persistence-2.1.1.jar:2.1.1]
+	at com.parah.mg.frames.MdiFrame.<init>(MdiFrame.java:190) [classes/:?]
+	at com.parah.mg.frames.MdiFrame$39.run(MdiFrame.java:1376) [classes/:?]
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311) [?:1.8.0_31]
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:749) [?:1.8.0_31]
+	at java.awt.EventQueue.access$500(EventQueue.java:97) [?:1.8.0_31]
+	at java.awt.EventQueue$3.run(EventQueue.java:702) [?:1.8.0_31]
+	at java.awt.EventQueue$3.run(EventQueue.java:696) [?:1.8.0_31]
+	at java.security.AccessController.doPrivileged(Native Method) ~[?:1.8.0_31]
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75) [?:1.8.0_31]
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:719) [?:1.8.0_31]
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201) [?:1.8.0_31]
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116) [?:1.8.0_31]
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105) [?:1.8.0_31]
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101) [?:1.8.0_31]
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93) [?:1.8.0_31]
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82) [?:1.8.0_31]
+Caused by: javax.persistence.PersistenceException: Exception [EclipseLink-28018] (Eclipse Persistence Services - 2.6.2.v20151217-774c696): org.eclipse.persistence.exceptions.EntityManagerSetupException
+Exception Description: Predeployment of PersistenceUnit [mg_PU] failed.
+Internal Exception: Exception [EclipseLink-7154] (Eclipse Persistence Services - 2.6.2.v20151217-774c696): org.eclipse.persistence.exceptions.ValidationException
+Exception Description: The attribute [tblAsientosTemporalesList] in entity class [class com.parah.mg.domain.TblCentrosDeCosto] has a mappedBy value of [idCentroDeCosto] which does not exist in its owning entity class [class com.parah.mg.domain.TblAsientosTemporales]. If the owning entity class is a @MappedSuperclass, this is invalid, and your attribute should reference the correct subclass.
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.createPredeployFailedPersistenceException(EntityManagerSetupImpl.java:2035) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.predeploy(EntityManagerSetupImpl.java:2026) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.deployment.JPAInitializer.callPredeploy(JPAInitializer.java:100) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactoryImpl(PersistenceProvider.java:104) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	... 18 more
+Caused by: org.eclipse.persistence.exceptions.EntityManagerSetupException: 
+Exception Description: Predeployment of PersistenceUnit [mg_PU] failed.
+Internal Exception: Exception [EclipseLink-7154] (Eclipse Persistence Services - 2.6.2.v20151217-774c696): org.eclipse.persistence.exceptions.ValidationException
+Exception Description: The attribute [tblAsientosTemporalesList] in entity class [class com.parah.mg.domain.TblCentrosDeCosto] has a mappedBy value of [idCentroDeCosto] which does not exist in its owning entity class [class com.parah.mg.domain.TblAsientosTemporales]. If the owning entity class is a @MappedSuperclass, this is invalid, and your attribute should reference the correct subclass.
+	at org.eclipse.persistence.exceptions.EntityManagerSetupException.predeployFailed(EntityManagerSetupException.java:231) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.createPredeployFailedPersistenceException(EntityManagerSetupImpl.java:2035) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.predeploy(EntityManagerSetupImpl.java:2026) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.deployment.JPAInitializer.callPredeploy(JPAInitializer.java:100) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactoryImpl(PersistenceProvider.java:104) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	... 18 more
+Caused by: org.eclipse.persistence.exceptions.ValidationException: 
+Exception Description: The attribute [tblAsientosTemporalesList] in entity class [class com.parah.mg.domain.TblCentrosDeCosto] has a mappedBy value of [idCentroDeCosto] which does not exist in its owning entity class [class com.parah.mg.domain.TblAsientosTemporales]. If the owning entity class is a @MappedSuperclass, this is invalid, and your attribute should reference the correct subclass.
+	at org.eclipse.persistence.exceptions.ValidationException.noMappedByAttributeFound(ValidationException.java:1374) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.metadata.accessors.mappings.RelationshipAccessor.getOwningMapping(RelationshipAccessor.java:475) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.metadata.accessors.mappings.OneToManyAccessor.processOneToManyMapping(OneToManyAccessor.java:210) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.metadata.accessors.mappings.OneToManyAccessor.process(OneToManyAccessor.java:143) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.metadata.MetadataProject.processNonOwningRelationshipAccessors(MetadataProject.java:1581) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.metadata.MetadataProject.processStage3(MetadataProject.java:1870) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.metadata.MetadataProcessor.processORMMetadata(MetadataProcessor.java:577) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.deployment.PersistenceUnitProcessor.processORMetadata(PersistenceUnitProcessor.java:604) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.predeploy(EntityManagerSetupImpl.java:1948) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.internal.jpa.deployment.JPAInitializer.callPredeploy(JPAInitializer.java:100) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	at org.eclipse.persistence.jpa.PersistenceProvider.createEntityManagerFactoryImpl(PersistenceProvider.java:104) ~[eclipselink-2.6.2.jar:2.6.2.v20151217-774c696]
+	... 18 more
