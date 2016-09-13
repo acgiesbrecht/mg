@@ -784,7 +784,7 @@ public class FrameColectasDetalle extends JInternalFrame {
                         }
                         TblAsientos asientoAporte = new TblAsientos();
                         asientoAporte.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
-                        asientoAporte.setIdCentroDeCostoHaber(evd.getIdEvento().getIdCentroDeCosto());
+                        asientoAporte.setIdCentroDeCostoDebe(evd.getIdEvento().getIdCentroDeCosto());
                         asientoAporte.setIdCentroDeCostoHaber(evd.getIdEvento().getIdCentroDeCosto());
                         asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
                         asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());

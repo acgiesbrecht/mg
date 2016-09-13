@@ -91,6 +91,9 @@ public class TblTransferencias implements Serializable {
     @JoinColumn(name = "ID_EVENTO_TIPO", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblEventoTipos idEventoTipo;
+    @JoinColumn(name = "ID_EVENTO_DETALLE", referencedColumnName = "ID")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private TblEventoDetalle idEventoDetalle;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblUsers idUser;
@@ -197,6 +200,14 @@ public class TblTransferencias implements Serializable {
 
     public void setIdEventoTipo(TblEventoTipos idEventoTipo) {
         this.idEventoTipo = idEventoTipo;
+    }
+
+    public TblEventoDetalle getIdEventoDetalle() {
+        return idEventoDetalle;
+    }
+
+    public void setIdEventoDetalle(TblEventoDetalle idEventoDetalle) {
+        this.idEventoDetalle = idEventoDetalle;
     }
 
     public TblUsers getIdUser() {
