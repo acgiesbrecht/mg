@@ -274,9 +274,9 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="masterScrollPane" min="-2" pref="371" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="fechahoraLabel" min="-2" max="-2" attributes="0"/>
-                  <Component id="fechahoraField" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="fechahoraField" max="32767" attributes="0"/>
+                  <Component id="fechahoraLabel" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -326,7 +326,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="523" max="32767" attributes="0"/>
+              <EmptySpace pref="527" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -424,42 +424,42 @@
     </Container>
     <Component class="javax.swing.JLabel" name="fechahoraLabel">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Fecha/Hora:"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Fecha/Hora:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="idCategoriaLabel">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Categoria:"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Categoria:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="montoLabel">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Monto:"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Monto:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="observacionLabel">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Observacion:"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Observacion:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="idMiembroLabel">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Cliente:"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Cliente:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="observacionField">
@@ -477,10 +477,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="saveButton">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Guardar"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Guardar"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveButtonActionPerformed"/>
@@ -492,10 +492,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="refreshButton">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Cancelar"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Cancelar"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshButtonActionPerformed"/>
@@ -507,10 +507,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="newButton">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Nuevo"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Nuevo"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newButtonActionPerformed"/>
@@ -540,10 +540,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="idMiembroLabel1">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Cta. Cte.:"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Cta. Cte.:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtCtaCte">
@@ -563,10 +563,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="idMiembroLabel2">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Nombre:"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Nombre:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cboCategoria">
@@ -656,29 +656,29 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblTotal">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="ff" red="cc" type="rgb"/>
             </Property>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="18" style="1"/>
-            </Property>
-            <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                 <EmptyBorder/>
               </Border>
             </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="18" style="1"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblTotalOperaciones">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="ff" red="cc" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="1"/>
             </Property>
-            <Property name="horizontalAlignment" type="int" value="4"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
@@ -743,10 +743,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="saveButton1">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Guardar &amp; Imprimir"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Guardar &amp; Imprimir"/>
         <Property name="horizontalTextPosition" type="int" value="0"/>
       </Properties>
       <Events>
@@ -776,6 +776,7 @@
     </Component>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="fechahoraField">
       <BindingProperties>
+        <BindingProperty name="dateTimeStrict" source="masterTable" sourcePath="${selectedElement.fechahora}" target="fechahoraField" targetPath="dateTimeStrict" updateStrategy="0" immediately="false"/>
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="fechahoraField" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <AuxValues>

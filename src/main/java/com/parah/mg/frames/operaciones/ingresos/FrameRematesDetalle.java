@@ -243,20 +243,20 @@ public class FrameRematesDetalle extends JInternalFrame {
             masterTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
         }
 
-        fechahoraLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         fechahoraLabel.setText("Fecha/Hora:");
+        fechahoraLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        idCategoriaLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idCategoriaLabel.setText("Categoria:");
+        idCategoriaLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel.setText("Monto:");
+        montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        observacionLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         observacionLabel.setText("Observacion:");
+        observacionLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel.setText("Cliente:");
+        idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         observacionField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -266,16 +266,16 @@ public class FrameRematesDetalle extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), observacionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        saveButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         saveButton.setText("Guardar");
+        saveButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         saveButton.addActionListener(formListener);
 
-        refreshButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         refreshButton.setText("Cancelar");
+        refreshButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         refreshButton.addActionListener(formListener);
 
-        newButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         newButton.setText("Nuevo");
+        newButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         newButton.addActionListener(formListener);
 
         deleteButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -286,8 +286,8 @@ public class FrameRematesDetalle extends JInternalFrame {
 
         deleteButton.addActionListener(formListener);
 
-        idMiembroLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel1.setText("Cta. Cte.:");
+        idMiembroLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         txtCtaCte.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -298,8 +298,8 @@ public class FrameRematesDetalle extends JInternalFrame {
         txtCtaCte.addActionListener(formListener);
         txtCtaCte.addKeyListener(formListener);
 
-        idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel2.setText("Nombre:");
+        idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         cboCategoria.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -328,14 +328,14 @@ public class FrameRematesDetalle extends JInternalFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel1.setText("Total Operaciones:");
 
-        lblTotal.setBackground(new java.awt.Color(204, 255, 204));
-        lblTotal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTotal.setBackground(new java.awt.Color(204, 255, 204));
         lblTotal.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        lblTotal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
 
+        lblTotalOperaciones.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblTotalOperaciones.setBackground(new java.awt.Color(204, 255, 204));
         lblTotalOperaciones.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblTotalOperaciones.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText("Total Guaranies:");
@@ -397,8 +397,8 @@ public class FrameRematesDetalle extends JInternalFrame {
         jButton2.setText("Actualizar");
         jButton2.addActionListener(formListener);
 
-        saveButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         saveButton1.setText("Guardar & Imprimir");
+        saveButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         saveButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         saveButton1.addActionListener(formListener);
 
@@ -411,7 +411,7 @@ public class FrameRematesDetalle extends JInternalFrame {
 
         cboFormaDePagoPreferida.addActionListener(formListener);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), fechahoraField, org.jdesktop.beansbinding.BeanProperty.create("dateTime"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), fechahoraField, org.jdesktop.beansbinding.BeanProperty.create("dateTimeStrict"));
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechahoraField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -495,9 +495,9 @@ public class FrameRematesDetalle extends JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fechahoraLabel)
-                    .addComponent(fechahoraField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(fechahoraField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(fechahoraLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idCategoriaLabel)
@@ -536,7 +536,7 @@ public class FrameRematesDetalle extends JInternalFrame {
                                 .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(saveButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(523, Short.MAX_VALUE))
+                .addContainerGap(527, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -720,13 +720,14 @@ public class FrameRematesDetalle extends JInternalFrame {
             TblEventoDetalle t = new TblEventoDetalle();
             entityManager.persist(t);
             t.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
+            t.setFechahora(LocalDateTime.now());
             t.setIdUser(currentUser.getUser());
             listEventosDetalle.add(t);
             Integer row = listEventosDetalle.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
 
-            fechahoraField.setDateTimeStrict(LocalDateTime.now());
+            //fechahoraField.setDateTimeStrict(LocalDateTime.now());
             if (tblCategoriasArticulosList.size() > 0) {
                 cboCategoria.setSelectedItem(tblCategoriasArticulosList.get(tblCategoriasArticulosList.size() - 1));
             }
