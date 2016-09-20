@@ -289,9 +289,9 @@ public class FrameAsientosManuales extends JInternalFrame {
 
         conceptoLabel4.setText("Centro de Costo Haber:");
 
-        cboCentroDeCostoHaber.setEnabled(false);
-
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCentroDeCostoHaber}"), cboCentroDeCostoHaber, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboCentroDeCostoHaber, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         cboCentroDeCostoHaber.addActionListener(formListener);
