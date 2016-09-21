@@ -5,6 +5,9 @@
  */
 package com.parah.mg.frames.operaciones.ingresos;
 
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.matchers.TextMatcherEditor;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.parah.mg.domain.TblAsientos;
@@ -12,9 +15,9 @@ import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.domain.TblEventoDetalle;
 import com.parah.mg.domain.TblEventoTipos;
-import com.parah.mg.domain.TblRecibos;
+import com.parah.mg.domain.TblEventos;
 import com.parah.mg.domain.TblTransferencias;
-import com.parah.mg.domain.miembros.TblEntidades;
+import com.parah.mg.domain.models.PagosEventoPendientes;
 import com.parah.mg.domain.models.PagosMensualesPendientes;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
@@ -24,6 +27,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.Beans;
 import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,7 +78,8 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
 
         cuentasContablesPorDefecto = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
 
-        cboEventoTipo.setSelectedIndex(-1);
+        AutoCompleteSupport support = AutoCompleteSupport.install(cboEvento, GlazedLists.eventListOf(listEventos.toArray()));
+        support.setFilterMode(TextMatcherEditor.CONTAINS);
 
         TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.DISABLED);
         filterHeader.setAdaptiveChoices(false);
@@ -101,9 +106,9 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
     public void tableChanged(TableModelEvent e) {
         try {
             Integer suma = 0;
-            for (PagosMensualesPendientes pago : list) {
+            for (PagosEventoPendientes pago : list) {
                 if (pago.getCobrado()) {
-                    suma += pago.getMontoTotal();
+                    suma += pago.getTblEventoDetalle().getMonto();
                 }
             }
             lblTotal.setText(String.format("%(,d", suma));
@@ -124,26 +129,24 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoDetalle t WHERE t.id = null");
-        list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.apellidos, t.nombres");
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
         dateToStringConverter1 = new com.parah.mg.utils.DateToStringConverter();
         dateTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
         numberCellRenderer1 = new com.parah.mg.utils.NumberCellRenderer();
         integerLongConverter1 = new com.parah.mg.utils.IntegerLongConverter();
-        queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idGrupo IN :grupos ORDER BY t.fecha");
+        queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id > 1 AND t.idGrupo IN :grupos ORDER BY t.fecha");
         queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
-        queryEventoTipos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoTipos t where t.id != 1");
-        listEventoTipos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoTipos.getResultList());
         ctaCteTableCellRenderer1 = new com.parah.mg.utils.CtaCteTableCellRenderer();
         mesTableCellRenderer1 = new com.parah.mg.utils.MesTableCellRenderer();
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoDetalle t WHERE t.id = null");
+        list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         saveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
-        cboEventoTipo = new javax.swing.JComboBox();
+        cboEvento = new javax.swing.JComboBox();
         descripcionLabel3 = new javax.swing.JLabel();
         cboMarcarSeleccionados = new javax.swing.JButton();
         descripcionLabel4 = new javax.swing.JLabel();
@@ -168,24 +171,15 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
         masterTable.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${entidad.ctacte}"));
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tblEventoDetalle.idEntidad.ctacte}"));
         columnBinding.setColumnName("Cta Cte");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${entidad.nombreCompleto}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tblEventoDetalle.idEntidad.nombreCompleto}"));
         columnBinding.setColumnName("Nombre");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoTotal}"));
-        columnBinding.setColumnName("Monto");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tblEventoDetalle.monto}"));
+        columnBinding.setColumnName("Importe");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${mes}"));
-        columnBinding.setColumnName("Mes");
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${ano}"));
-        columnBinding.setColumnName("Año");
-        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cobrado}"));
         columnBinding.setColumnName("Cobrado");
         columnBinding.setColumnClass(Boolean.class);
@@ -193,13 +187,11 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
-            masterTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+            masterTable.getColumnModel().getColumn(0).setPreferredWidth(200);
             masterTable.getColumnModel().getColumn(0).setCellRenderer(ctaCteTableCellRenderer1);
-            masterTable.getColumnModel().getColumn(1).setPreferredWidth(200);
             masterTable.getColumnModel().getColumn(2).setCellRenderer(numberCellRenderer1);
-            masterTable.getColumnModel().getColumn(3).setPreferredWidth(20);
-            masterTable.getColumnModel().getColumn(3).setCellRenderer(mesTableCellRenderer1);
-            masterTable.getColumnModel().getColumn(4).setPreferredWidth(20);
+            masterTable.getColumnModel().getColumn(3).setPreferredWidth(50);
+            masterTable.getColumnModel().getColumn(3).setCellRenderer(null);
         }
 
         saveButton.setText("Guardar");
@@ -208,15 +200,15 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
         refreshButton.setText("Cancelar");
         refreshButton.addActionListener(formListener);
 
-        cboEventoTipo.setEditable(true);
-        cboEventoTipo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cboEvento.setEditable(true);
+        cboEvento.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventoTipos, cboEventoTipo);
+        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventos, cboEvento);
         bindingGroup.addBinding(jComboBoxBinding);
 
-        cboEventoTipo.addActionListener(formListener);
+        cboEvento.addActionListener(formListener);
 
-        descripcionLabel3.setText("Tipo de Evento:");
+        descripcionLabel3.setText("Fecha de Evento:");
 
         cboMarcarSeleccionados.setText("Marcar como cobrado a las filas seleccionadas");
         cboMarcarSeleccionados.addActionListener(formListener);
@@ -241,7 +233,7 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(descripcionLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cboEventoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cboEvento, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cboMarcarSeleccionados)
@@ -269,7 +261,7 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(descripcionLabel3)
-                    .addComponent(cboEventoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboEvento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -302,8 +294,8 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
             else if (evt.getSource() == refreshButton) {
                 FrameCobrarTransferenciasAyCporEvento.this.refreshButtonActionPerformed(evt);
             }
-            else if (evt.getSource() == cboEventoTipo) {
-                FrameCobrarTransferenciasAyCporEvento.this.cboEventoTipoActionPerformed(evt);
+            else if (evt.getSource() == cboEvento) {
+                FrameCobrarTransferenciasAyCporEvento.this.cboEventoActionPerformed(evt);
             }
             else if (evt.getSource() == cboMarcarSeleccionados) {
                 FrameCobrarTransferenciasAyCporEvento.this.cboMarcarSeleccionadosActionPerformed(evt);
@@ -342,66 +334,22 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
-            for (PagosMensualesPendientes pago : list) {
+            for (PagosEventoPendientes pago : list) {
                 if (pago.getCobrado()) {
 
                     TblTransferencias t = new TblTransferencias();
                     entityManager.persist(t);
-                    t.setIdEntidad(pago.getEntidad());
-                    t.setConcepto(((TblEventoTipos) cboEventoTipo.getSelectedItem()).getDescripcion() + " " + pago.getMes().toString() + "/" + pago.getAno().toString());
-                    t.setMontoAporte(pago.getMontoAporte());
-                    t.setMontoDonacion(pago.getMontoDonacion());
+                    t.setIdEntidad(pago.getTblEventoDetalle().getIdEntidad());
+                    t.setConcepto(pago.getTblEventoDetalle().getIdEvento().getIdEventoTipo().getDescripcion() + " " + String.valueOf(pago.getTblEventoDetalle().getFechahora().get(ChronoField.MONTH_OF_YEAR)) + "/" + String.valueOf(pago.getTblEventoDetalle().getFechahora().get(ChronoField.YEAR)));
+                    t.setMontoAporte(((Long) (pago.getTblEventoDetalle().getMonto().longValue() * pago.getTblEventoDetalle().getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
+                    t.setMontoDonacion(pago.getTblEventoDetalle().getMonto() - t.getMontoAporte());
                     t.setCobrado(true);
-                    /*Calendar c = Calendar.getInstance();
-                    c.set(Calendar.MONTH, pago.getMes());
-                    c.set(Calendar.YEAR, pago.getAno());
-                    c.set(Calendar.DAY_OF_MONTH, 1);
-                    c.add(Calendar.DATE, -1);
-                    LocalDateTime date = c.getTime();
-                    t.setFechahoraCompromiso(date);*/
-                    LocalDate primerDiaDelMes = LocalDate.of(pago.getAno(), pago.getMes(), 1);
-                    t.setFechahoraCompromiso(primerDiaDelMes.with(lastDayOfMonth()));
+
+                    t.setFechahoraCompromiso(pago.getTblEventoDetalle().getFechahora().toLocalDate());
                     t.setFechahora(dtpFechaCobro.getDate());
-                    t.setIdEventoTipo((TblEventoTipos) cboEventoTipo.getSelectedItem());
+                    t.setIdEventoDetalle(pago.getTblEventoDetalle());
+                    t.setIdEventoTipo(pago.getTblEventoDetalle().getIdEvento().getIdEventoTipo());
                     t.setIdUser(currentUser.getUser());
-
-                    Query queryEvd = entityManager.createQuery("SELECT t FROM TblEventoDetalle t "
-                            + "WHERE t.idEntidad = :entidad"
-                            + " AND t.idEvento.idEventoTipo = :eventoTipo"
-                            + " AND EXTRACT(MONTH FROM t.idEvento.fecha) = " + pago.getMes().toString()
-                            + " AND EXTRACT(YEAR FROM t.idEvento.fecha) = " + pago.getAno().toString());
-                    queryEvd.setParameter("entidad", pago.getEntidad());
-                    queryEvd.setParameter("eventoTipo", t.getIdEventoTipo());
-                    List<TblEventoDetalle> listEvd = (List<TblEventoDetalle>) queryEvd.getResultList();
-                    List<TblAsientos> listAsientos = new ArrayList<>();
-                    for (TblEventoDetalle evd : listEvd) {
-                        listAsientos.addAll(evd.getTblAsientosList());
-                    }
-
-                    Query queryTransferenciasAnteriores = entityManager.createQuery("SELECT t FROM TblTransferencias t "
-                            + "WHERE t.idEntidad = :entidad"
-                            + " AND t.idEventoTipo = :eventoTipo"
-                            + " AND EXTRACT(MONTH FROM t.fechahoraCompromiso) = " + pago.getMes().toString()
-                            + " AND EXTRACT(YEAR FROM t.fechahoraCompromiso) = " + pago.getAno().toString());
-                    queryTransferenciasAnteriores.setParameter("entidad", pago.getEntidad());
-                    queryTransferenciasAnteriores.setParameter("eventoTipo", t.getIdEventoTipo());
-                    List<TblTransferencias> listTransferenciasAnteriores = (List<TblTransferencias>) queryTransferenciasAnteriores.getResultList();
-
-                    for (TblTransferencias tAnterior : listTransferenciasAnteriores) {
-                        if (tAnterior != t) {
-                            for (TblAsientosTemporales atAnterior : tAnterior.getTblAsientosTemporalesList()) {
-                                for (TblAsientos asiento : listAsientos) {
-                                    if (atAnterior.getIdCentroDeCostoDebe().equals(asiento.getIdCentroDeCostoDebe())
-                                            && atAnterior.getIdCuentaContableDebe().equals(asiento.getIdCentroDeCostoDebe().getIdCuentaContableCtaCtePorDefecto())
-                                            && atAnterior.getIdCuentaContableHaber().equals(asiento.getIdCuentaContableDebe())
-                                            && atAnterior.getMonto().equals(asiento.getMonto())) {
-                                        listAsientos.remove(asiento);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
 
                     List<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesList();
                     if (listAsientosTemporales == null) {
@@ -409,7 +357,7 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
                         t.setTblAsientosTemporalesList(listAsientosTemporales);
                     }
 
-                    for (TblAsientos asiento : listAsientos) {
+                    for (TblAsientos asiento : pago.getTblEventoDetalle().getTblAsientosList()) {
                         TblAsientosTemporales aT = new TblAsientosTemporales();
                         entityManager.persist(aT);
                         aT.setFacturado(false);
@@ -454,14 +402,14 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
 
     }//GEN-LAST:event_formInternalFrameActivated
 
-    private void cboEventoTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEventoTipoActionPerformed
+    private void cboEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEventoActionPerformed
         try {
             refresh();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
-    }//GEN-LAST:event_cboEventoTipoActionPerformed
+    }//GEN-LAST:event_cboEventoActionPerformed
 
     private void cboMarcarSeleccionadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMarcarSeleccionadosActionPerformed
         try {
@@ -478,208 +426,13 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
 
     void refresh() {
         try {
-            if (cboEventoTipo.getSelectedItem() != null && entityManager.getTransaction().isActive()) {
+            if (cboEvento.getSelectedItem() != null && entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
                 entityManager.getTransaction().begin();
-                /*SELECT new com.parah.mg.domain.models.PagosMensualesPendientes(e,
-                 EXTRACT(MONTH FROM ed.fechahora),
-                 EXTRACT(YEAR FROM ed.fechahora),
-                 SUM(ed.monto*ed.idEvento.porcentajeAporte/100),
-                 SUM(ed.monto*(100-ed.idEvento.porcentajeAporte)/100))
-                 FROM TblEntidades e,
-                 (TblEventoDetalle ed), TblTransferencias t
-                 WHERE e.id = ed.idEntidad.id AND e.id = t.idEntidad.id
-                 AND ed.idEvento.idEventoTipo = :tipoEventoId
-                 AND t.idEvento.idEventoTipo = :tipoEventoId
-                 AND SUM(t.monto) <> SUM(ed.monto)
-                 GROUP BY e, EXTRACT(MONTH FROM ed.fechahora),
-                 EXTRACT(YEAR FROM ed.fechahora),
-                 EXTRACT(MONTH FROM t.fechahora),
-                 EXTRACT(YEAR FROM t.fechahora) ORDER BY e.ctacte
-
-                 query = entityManager.createNativeQuery("SELECT eventodetalle.id, "
-                 + " eventodetalle.nombres, "
-                 + "    eventodetalle.apellidos, "
-                 + "    eventodetalle.RAZON_SOCIAL, "
-                 + "    eventodetalle.RUC_SIN_DV, "
-                 + "    eventodetalle.ctacte, "
-                 + "    eventodetalle.domicilio, "
-                 + "    eventodetalle.box, "
-                 + "    eventodetalle.id_forma_de_pago_preferida, "
-                 + "   eventodetalle.IS_MIEMBRO_ACTIVO, "
-                 + "   eventodetalle.ID_FORMA_DE_PAGO_PREFERIDA, "
-                 + "   eventodetalle.APORTE_MENSUAL, "
-                 + "   eventodetalle.ID_ENTIDAD_PAGANTE_APORTES, "
-                 + "   eventodetalle.FECHA_NACIMIENTO, "
-                 + "   eventodetalle.FECHA_BAUTISMO, "
-                 + "   eventodetalle.FECHA_ENTRADA_CONGREGACION, "
-                 + "   eventodetalle.FECHA_SALIDA_CONGREGACION, "
-                 + "   eventodetalle.FECHA_DEFUNCION, "
-                 + "   eventodetalle.ID_AREA_SERVICIO_EN_IGLESIA, "
-                 + "   eventodetalle.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
-                 + "   eventodetalle.ID_MIEMBROS_ALERGIA, "
-                 + "    eventodetalle.id_user,"
-                 + "    eventodetalle.mes, "
-                 + "    eventodetalle.ano, "
-                 + "    eventodetalle.montoAporte, "
-                 + "    eventodetalle.montoDonacion "
-                 + " FROM "
-                 + "        (SELECT m.*, "
-                 + "            MONTH(rd.fechahora), "
-                 + "            YEAR(rd.fechahora), "
-                 + "            SUM(rd.monto*rd.porcentajeAporte/100) AS montoAporte,"
-                 + "            SUM(rd.monto*(100-rd.porcentajeAporte)/100) AS montoDonacion"
-                 + "         FROM TBL_ENTIDADES m "
-                 + "            LEFT JOIN (SELECT * FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = 1) rd"
-                 + "            ON m.id = rd.ID_ENTIDAD "
-                 + "            group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida, "
-                 + "             m.ID_ENTIDAD_PAGANTE_APORTES, "
-                 + "             m.IS_MIEMBRO_ACTIVO, "
-                 + "             m.ID_FORMA_DE_PAGO_PREFERIDA, "
-                 + "             m.APORTE_MENSUAL, "
-                 + "             m.FECHA_NACIMIENTO, "
-                 + "             m.FECHA_BAUTISMO, "
-                 + "             m.FECHA_ENTRADA_CONGREGACION, "
-                 + "             m.FECHA_SALIDA_CONGREGACION, "
-                 + "             m.FECHA_DEFUNCION, "
-                 + "             m.ID_AREA_SERVICIO_EN_IGLESIA, "
-                 + "             m.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
-                 + "             m.ID_MIEMBROS_ALERGIA) eventodetalle, "
-                 + "        (SELECT m.*, "
-                 + "             MONTH(p.fechahora), "
-                 + "             YEAR(p.fechahora), "
-                 + "             COALESCE(SUM(p.monto),0)*p.porcentajeAporte/100) AS montoAporte, "
-                 + "             COALESCE(SUM(p.monto),0)*(100-p.porcentajeAporte)/100) AS montoDonacion, "
-                 + "             FROM TBL_ENTIDADES m "
-                 + "             LEFT JOIN (SELECT * FROM MG.TBL_TRANSFERENCIAS WHERE ID_EVENTO_TIPO = 1) p ON m.id = p.ID_ENTIDAD "
-                 + "             group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida, "
-                 + "             m.IS_MIEMBRO_ACTIVO, "
-                 + "             m.ID_ENTIDAD_PAGANTE_APORTES, "
-                 + "             m.ID_FORMA_DE_PAGO_PREFERIDA, "
-                 + "             m.APORTE_MENSUAL, "
-                 + "             m.FECHA_NACIMIENTO, "
-                 + "             m.FECHA_BAUTISMO, "
-                 + "             m.FECHA_ENTRADA_CONGREGACION, "
-                 + "             m.FECHA_SALIDA_CONGREGACION, "
-                 + "             m.FECHA_DEFUNCION, "
-                 + "             m.ID_AREA_SERVICIO_EN_IGLESIA, "
-                 + "             m.ID_MIEMBROS_CATEGORIA_DE_PAGO, "
-                 + "             m.ID_MIEMBROS_ALERGIA) transferencias, "
-                 + "        (SELECT m.*, "
-                 + "             MONTH(p.fechahora), "
-                 + "             YEAR(p.fechahora), "
-                 + "             COALESCE(SUM(p.monto),0)*p.porcentajeAporte/100) AS montoAporte, "
-                 + "             COALESCE(SUM(p.monto),0)*(100-p.porcentajeAporte)/100) AS montoDonacion, "
-                 + "             FROM TBL_ENTIDADES m "
-                 + "             LEFT JOIN (SELECT * FROM MG.TBL_RECIBOS WHERE ID_EVENTO_TIPO = 1) p ON m.id = p.ID_ENTIDAD "
-                 + "             group by m.id, m.nombres, m.apellidos, m.RAZON_SOCIAL, m.RUC_SIN_DV, m.ctacte, m.domicilio, m.box, m.aporte_mensual, m.id_user, m.id_forma_de_pago_preferida, "
-                 + "             m.IS_MIEMBRO_ACTIVO, "
-                 + "             m.ID_FORMA_DE_PAGO_PREFERIDA, "
-                 + "             m.APORTE_MENSUAL, "
-                 + "             m.ID_ENTIDAD_PAGANTE_APORTES, "
-                 + "             m.FECHA_NACIMIENTO, "
-                 + "             m.FECHA_BAUTISMO, "
-                 + "             m.FECHA_ENTRADA_CONGREGACION, "
-                 + "             m.FECHA_SALIDA_CONGREGACION, "
-                 + "             m.FECHA_DEFUNCION, "
-                 + "             m.ID_AREA_SERVICIO_EN_IGLESIA, "
-                 + "             m.ID_MIEMBROS_CATEGORIA_DE_PAGO, "-
-                 + "             m.ID_MIEMBROS_ALERGIA) recibos "
-                 + "             WHERE eventodetalle.id = transferencias.id AND eventodetalle.id = recibos.id AND (eventodetalle.monto - transferencias.monto - recibos.monto) > 0 "
-                 + "   ORDER BY eventodetalle.ctacte");*/
-
- /*query = entityManager.createNativeQuery("SELECT eventodetalle.id,"
-                        + "                             eventodetalle.ctacte,"
-                        + "                             eventodetalle.mes,"
-                        + "                             eventodetalle.ano,"
-                        + "                             eventodetalle.montoAporte - transferencias.montoAporte - recibos.montoAporte,"
-                        + "                             eventodetalle.montoDonacion - transferencias.montoDonacion - recibos.montoDonacion"
-                        + "                          FROM"
-                        + "                                 (SELECT m.id, m.ctacte,"
-                        + "                                     MONTH(rd.FECHA) AS MES,"
-                        + "                                     YEAR(rd.FECHA) AS ANO,"
-                        + "                                     SUM(rd.monto*rd.PORCENTAJE_APORTE/100) AS montoAporte,"
-                        + "                                     SUM(rd.monto*(100-rd.PORCENTAJE_APORTE)/100) AS montoDonacion"
-                        + "                                  FROM TBL_ENTIDADES m"
-                        + "                                     LEFT JOIN (SELECT ed.*, ev.* FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + ") rd"
-                        + "                                     ON m.id = rd.ID_ENTIDAD"
-                        + "                                     group by m.id, m.ctacte, MONTH(rd.FECHA), YEAR(rd.FECHA)) eventodetalle,"
-                        + "                                 (SELECT m.id, m.ctacte,"
-                        + "                                      MONTH(p.fechahora) AS MES,"
-                        + "                                      YEAR(p.fechahora) AS ANO,"
-                        + "                                      COALESCE(SUM(p.MONTO_APORTE),0) AS montoAporte,"
-                        + "                                      COALESCE(SUM(p.MONTO_DONACION),0) AS montoDonacion"
-                        + "                                      FROM TBL_ENTIDADES m"
-                        + "                                      LEFT JOIN (SELECT * FROM MG.TBL_TRANSFERENCIAS WHERE ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + ") p ON m.id = p.ID_ENTIDAD"
-                        + "                                      group by m.id, m.ctacte, MONTH(p.FECHAHORA), YEAR(p.FECHAHORA)) transferencias,"
-                        + "                                 (SELECT m.id, m.ctacte,"
-                        + "                                      MONTH(p.fechahora) AS MES,"
-                        + "                                      YEAR(p.fechahora) AS ANO,"
-                        + "                                      COALESCE(SUM(p.MONTO_APORTE),0) AS montoAporte,"
-                        + "                                      COALESCE(SUM(p.MONTO_DONACION),0) AS montoDonacion"
-                        + "                                      FROM TBL_ENTIDADES m"
-                        + "                                      LEFT JOIN (SELECT * FROM MG.TBL_RECIBOS WHERE ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + ") p ON m.id = p.ID_ENTIDAD"
-                        + "                                      group by m.id, m.ctacte, MONTH(p.FECHAHORA), YEAR(p.FECHAHORA)) recibos"
-                        + "                                      WHERE eventodetalle.id = transferencias.id AND eventodetalle.id = recibos.id AND (eventodetalle.montoAporte - transferencias.montoAporte - recibos.montoAporte + eventodetalle.montoDonacion - transferencias.montoDonacion - recibos.montoDonacion) > 0"
-                        + "                            ORDER BY eventodetalle.ctacte");*/
-                //" + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString() + "
-                query = entityManager.createNativeQuery("SELECT * FROM (SELECT e.ID, e.CTACTE, DETALLE.mes, DETALLE.ano, SUM(DETALLE.MONTOAPORTE) AS MONTOAPORTE, SUM(DETALLE.MONTODONACION) AS MONTODONACION FROM"
-                        + "(SELECT ed.id_entidad,"
-                        + "                MONTH(ev.FECHA) AS mes,"
-                        + "                YEAR(ev.FECHA) AS ano,"
-                        + "                CAST(ed.monto*(CAST(ev.PORCENTAJE_APORTE AS FLOAT)/100) AS INTEGER) AS montoAporte,"
-                        + "                CAST(ed.monto*(CAST(100-ev.PORCENTAJE_APORTE AS FLOAT)/100) AS INTEGER) AS montoDonacion"
-                        + "              FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString()
-                        + "                group by ed.id_entidad"
-                        + " UNION ALL  "
-                        + " SELECT p.id_entidad,"
-                        + "                 MONTH(p.fechahora_compromiso) AS mes,"
-                        + "                 YEAR(p.fechahora_compromiso) AS ano,"
-                        + "                 -SUM(p.MONTO_APORTE) AS montoAporte,"
-                        + "                 -SUM(p.MONTO_DONACION) AS montoDonacion"
-                        + "                 FROM MG.TBL_TRANSFERENCIAS p WHERE p.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString()
-                        + "                 group by p.id_entidad"
-                        + " UNION ALL "
-                        + " SELECT p.id_entidad,"
-                        + "        MONTH(p.fechahora_compromiso) AS mes,"
-                        + "        YEAR(p.fechahora_compromiso) AS ano,"
-                        + "        -SUM(p.MONTO_APORTE) AS montoAporte,"
-                        + "        -SUM(p.MONTO_DONACION) AS montoDonacion"
-                        + "        FROM MG.TBL_RECIBOS p WHERE p.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString()
-                        + "        group by p.id_entidad) DETALLE LEFT JOIN MG.TBL_ENTIDADES e ON DETALLE.ID_ENTIDAD = e.ID"
-                        + " GROUP BY e.ID, e.CTACTE, e.APELLIDOS, e.NOMBRES) d"
-                        + " WHERE MONTODONACION + MONTOAPORTE > 0"
-                        + " ORDER BY CTACTE");
-
-                List<Object[]> data = queryMiembros.getResultList();
-                listMiembros.clear();
-                listMiembros.addAll(data);
-
-                List<Object[]> dataO = query.getResultList();
+                query = entityManager.createQuery("SELECT new com.parah.mg.domain.models.PagosEventoPendientes(evd, false) FROM TblEventoDetalle evd WHERE evd.idEvento = :eventoId AND evd.id NOT IN (SELECT t.idEventoDetalle.id FROM TblTransferencias t)");
+                query.setParameter("eventoId", (TblEventos) cboEvento.getSelectedItem());
                 list.clear();
-
-                for (Object[] o : dataO) {
-                    PagosMensualesPendientes p = new PagosMensualesPendientes();
-                    p.setEntidad(entityManager.find(TblEntidades.class, o[0]));
-                    p.setMes((Integer) o[2]);
-                    p.setAno((Integer) o[3]);
-                    p.setMontoAporte((Integer) o[4]);
-                    p.setMontoDonacion((Integer) o[5]);
-                    p.setCobrado(false);
-                    list.add(p);
-                }
-                if (list.size() > 0) {
-                    /*Calendar c = Calendar.getInstance();
-                    c.set(Calendar.MONTH, list.get(0).getMes());
-                    c.set(Calendar.YEAR, list.get(0).getAno());
-                    c.set(Calendar.DAY_OF_MONTH, 1);
-                    c.add(Calendar.DATE, -1);
-                    LocalDateTime date = c.getTime();
-                    dtpFechaCobro.setDate(date);*/
-                    LocalDate primerDiaDelMes = LocalDate.of(list.get(0).getAno(), list.get(0).getMes(), 1);
-                    dtpFechaCobro.setDate((primerDiaDelMes.with(lastDayOfMonth())));
-                }
-
+                list.addAll(query.getResultList());
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -687,7 +440,7 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox cboEventoTipo;
+    private javax.swing.JComboBox cboEvento;
     private javax.swing.JButton cboMarcarSeleccionados;
     private com.parah.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
@@ -699,8 +452,7 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private javax.swing.JLabel lblTotal;
-    private java.util.List<com.parah.mg.domain.models.PagosMensualesPendientes> list;
-    private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
+    private java.util.List<com.parah.mg.domain.models.PagosEventoPendientes> list;
     private java.util.List<com.parah.mg.domain.TblEventos> listEventos;
     private java.util.List listMiembros;
     private javax.swing.JScrollPane masterScrollPane;
@@ -708,7 +460,6 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
     private com.parah.mg.utils.MesTableCellRenderer mesTableCellRenderer1;
     private com.parah.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query query;
-    private javax.persistence.Query queryEventoTipos;
     private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryMiembros;
     private javax.swing.JButton refreshButton;
@@ -727,16 +478,24 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyCporEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyCporEvento.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyCporEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyCporEvento.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyCporEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyCporEvento.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyCporEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCobrarTransferenciasAyCporEvento.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

@@ -246,17 +246,17 @@ public class FrameRematesDetalle extends JInternalFrame {
         fechahoraLabel.setText("Fecha/Hora:");
         fechahoraLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        idCategoriaLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idCategoriaLabel.setText("Categoria:");
+        idCategoriaLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel.setText("Monto:");
+        montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        observacionLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         observacionLabel.setText("Observacion:");
+        observacionLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel.setText("Cliente:");
+        idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         observacionField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -266,12 +266,12 @@ public class FrameRematesDetalle extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), observacionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        saveButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         saveButton.setText("Guardar");
+        saveButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         saveButton.addActionListener(formListener);
 
-        refreshButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         refreshButton.setText("Cancelar");
+        refreshButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         refreshButton.addActionListener(formListener);
 
         newButton.setText("Nuevo");
@@ -286,8 +286,8 @@ public class FrameRematesDetalle extends JInternalFrame {
 
         deleteButton.addActionListener(formListener);
 
-        idMiembroLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel1.setText("Cta. Cte.:");
+        idMiembroLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         txtCtaCte.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -298,8 +298,8 @@ public class FrameRematesDetalle extends JInternalFrame {
         txtCtaCte.addActionListener(formListener);
         txtCtaCte.addKeyListener(formListener);
 
-        idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel2.setText("Nombre:");
+        idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         cboCategoria.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -328,14 +328,14 @@ public class FrameRematesDetalle extends JInternalFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel1.setText("Total Operaciones:");
 
-        lblTotal.setBackground(new java.awt.Color(204, 255, 204));
-        lblTotal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTotal.setBackground(new java.awt.Color(204, 255, 204));
         lblTotal.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        lblTotal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
 
+        lblTotalOperaciones.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblTotalOperaciones.setBackground(new java.awt.Color(204, 255, 204));
         lblTotalOperaciones.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblTotalOperaciones.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText("Total Guaranies:");
@@ -397,8 +397,8 @@ public class FrameRematesDetalle extends JInternalFrame {
         jButton2.setText("Actualizar");
         jButton2.addActionListener(formListener);
 
-        saveButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         saveButton1.setText("Guardar & Imprimir");
+        saveButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         saveButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         saveButton1.addActionListener(formListener);
 
