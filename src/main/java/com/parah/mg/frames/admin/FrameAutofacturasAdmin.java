@@ -235,35 +235,36 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
                 int[] selected = masterTable.getSelectedRows();
 
                 TblAutofacturas t = list.get(masterTable.convertRowIndexToModel(selected[0]));
+                if (!t.getAnulado()) {
+                    t.setAnulado(true);
 
-                t.setAnulado(true);
-                Calendar calendar = Calendar.getInstance();
-                for (TblAsientos asiento : t.getTblAsientosList()) {
-                    if (asiento.getFechahora().getMonth().getValue() < LocalDateTime.now().getMonth().getValue()) {
-                        TblAsientos asientoInverso = new TblAsientos();
-                        entityManager.persist(asientoInverso);
-                        asientoInverso.setFechahora(LocalDateTime.now());
-                        asientoInverso.setIdCentroDeCostoDebe(asiento.getIdCentroDeCostoHaber());
-                        asientoInverso.setIdCentroDeCostoHaber(asiento.getIdCentroDeCostoDebe());
-                        asientoInverso.setIdCuentaContableDebe(asiento.getIdCuentaContableHaber());
-                        asientoInverso.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
-                        asientoInverso.setMonto(asiento.getMonto());
-                        asientoInverso.setIdUser(currentUser.getUser());
-                        asientoInverso.setObservacion("Anulacion");
-                    } else {
-                        entityManager.remove(asiento);
+                    for (TblAsientos asiento : t.getTblAsientosList()) {
+                        if (asiento.getFechahora().getMonth().getValue() < LocalDateTime.now().getMonth().getValue()) {
+                            TblAsientos asientoInverso = new TblAsientos();
+                            entityManager.persist(asientoInverso);
+                            asientoInverso.setFechahora(LocalDateTime.now());
+                            asientoInverso.setIdCentroDeCostoDebe(asiento.getIdCentroDeCostoHaber());
+                            asientoInverso.setIdCentroDeCostoHaber(asiento.getIdCentroDeCostoDebe());
+                            asientoInverso.setIdCuentaContableDebe(asiento.getIdCuentaContableHaber());
+                            asientoInverso.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
+                            asientoInverso.setMonto(asiento.getMonto());
+                            asientoInverso.setIdUser(currentUser.getUser());
+                            asientoInverso.setObservacion("Anulacion");
+                        } else {
+                            entityManager.remove(asiento);
+                        }
                     }
+                    entityManager.merge(t);
+                    //chkAnulado.setSelected(true);
+                    entityManager.getTransaction().commit();
+                    entityManager.getTransaction().begin();
+                    java.util.List data = query.getResultList();
+                    for (Object entity : data) {
+                        entityManager.refresh(entity);
+                    }
+                    list.clear();
+                    list.addAll(data);
                 }
-                entityManager.merge(t);
-                //chkAnulado.setSelected(true);
-                entityManager.getTransaction().commit();
-                entityManager.getTransaction().begin();
-                java.util.List data = query.getResultList();
-                for (Object entity : data) {
-                    entityManager.refresh(entity);
-                }
-                list.clear();
-                list.addAll(data);
             }
         } catch (RollbackException ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);

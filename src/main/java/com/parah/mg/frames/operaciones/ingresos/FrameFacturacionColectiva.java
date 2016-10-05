@@ -277,6 +277,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
+
             list.stream().forEach((factura) -> {
 
                 Utils.getInstance().printFactura(factura);
@@ -304,6 +305,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
     }//GEN-LAST:event_cancelarButtonActionPerformed
 
     private void cmdCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCalcularActionPerformed
+        Utils.getInstance().exectueBackUp(Utils.getInstance().getPersistenceMap().get("backUpDir"));
         generate();
         if (masterTable.getRowCount() > 0) {
             imprimirButton.setEnabled(true);
