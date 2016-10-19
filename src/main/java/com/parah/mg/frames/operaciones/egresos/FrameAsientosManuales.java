@@ -72,9 +72,9 @@ public class FrameAsientosManuales extends JInternalFrame {
 
             AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCentroDeCostoDebe, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
-            
+
             AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCentroDeCostoHaber, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
-            support4.setFilterMode(TextMatcherEditor.CONTAINS);            
+            support4.setFilterMode(TextMatcherEditor.CONTAINS);
 
             AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCuentaDebe, GlazedLists.eventListOf(listCuentasContables.toArray()));
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
@@ -289,9 +289,9 @@ public class FrameAsientosManuales extends JInternalFrame {
 
         conceptoLabel4.setText("Centro de Costo Haber:");
 
-        cboCentroDeCostoHaber.setEnabled(false);
-
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idCentroDeCostoHaber}"), cboCentroDeCostoHaber, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboCentroDeCostoHaber, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         cboCentroDeCostoHaber.addActionListener(formListener);

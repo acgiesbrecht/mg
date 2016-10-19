@@ -523,11 +523,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cboCentroDeCostoHaber">
-      <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
       <BindingProperties>
         <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idCentroDeCostoHaber}" target="cboCentroDeCostoHaber" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="cboCentroDeCostoHaber" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboCentroDeCostoHaberActionPerformed"/>
