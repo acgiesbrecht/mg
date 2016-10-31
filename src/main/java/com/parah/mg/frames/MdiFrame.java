@@ -42,6 +42,7 @@ import com.parah.mg.frames.operaciones.egresos.FrameNotasDeCreditoCompra;
 import com.parah.mg.frames.operaciones.egresos.FrameRecibosCompra;
 import com.parah.mg.frames.operaciones.ingresos.FrameCobrarTransferenciasAyCporEvento;
 import com.parah.mg.frames.operaciones.ingresos.FrameCobrarTransferenciasAyCporMes;
+import com.parah.mg.frames.operaciones.ingresos.FrameDonacionesVariasDetalle;
 import com.parah.mg.frames.operaciones.ingresos.FrameRematesDetalle;
 import com.parah.mg.frames.operaciones.ingresos.FrameRematesPagos;
 import com.parah.mg.utils.CurrentUser;
@@ -138,6 +139,7 @@ public class MdiFrame extends javax.swing.JFrame {
                             mnuOpPagos.setEnabled(currentUser.hasRole(1));
                             mnuOpColectas.setEnabled(currentUser.hasRole(1));
                             mnuOpAportes.setEnabled(currentUser.hasRole(1));
+                            //mnuOpDonacionesVarias.setEnabled(currentUser.hasRole(1));
 
                             mnuOpFacturaUnica.setEnabled(currentUser.hasRole(2));
                             mnuOpFacturaPendientes.setEnabled(currentUser.hasRole(2));
@@ -313,10 +315,13 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOpColectas = new javax.swing.JMenuItem();
         mnuOpCobrarTransferenciasAyC = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
+        mnuOpDonacionesVarias = new javax.swing.JMenuItem();
+        jSeparator14 = new javax.swing.JPopupMenu.Separator();
         mnuOpFacturaPendientes = new javax.swing.JMenuItem();
         mnuOpFacturaUnica = new javax.swing.JMenuItem();
         jSeparator12 = new javax.swing.JPopupMenu.Separator();
         mnuOpNotaDeCredito = new javax.swing.JMenuItem();
+        jSeparator13 = new javax.swing.JPopupMenu.Separator();
         jMenu5 = new javax.swing.JMenu();
         mnuEgFacturas = new javax.swing.JMenuItem();
         mnuEgAutofacturas = new javax.swing.JMenuItem();
@@ -441,6 +446,17 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOpFacturacion.add(mnuOpCobrarTransferenciasAyC);
         mnuOpFacturacion.add(jSeparator9);
 
+        mnuOpDonacionesVarias.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        mnuOpDonacionesVarias.setText("Donaciones Varias");
+        mnuOpDonacionesVarias.setEnabled(false);
+        mnuOpDonacionesVarias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuOpDonacionesVariasActionPerformed(evt);
+            }
+        });
+        mnuOpFacturacion.add(mnuOpDonacionesVarias);
+        mnuOpFacturacion.add(jSeparator14);
+
         mnuOpFacturaPendientes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         mnuOpFacturaPendientes.setText("Facturacion Colectiva");
         mnuOpFacturaPendientes.setEnabled(false);
@@ -471,6 +487,7 @@ public class MdiFrame extends javax.swing.JFrame {
             }
         });
         mnuOpFacturacion.add(mnuOpNotaDeCredito);
+        mnuOpFacturacion.add(jSeparator13);
 
         jMenuBar1.add(mnuOpFacturacion);
 
@@ -1350,6 +1367,21 @@ public class MdiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuEgNotasDeCreditoActionPerformed
 
+    private void mnuOpDonacionesVariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpDonacionesVariasActionPerformed
+        try {
+            FrameDonacionesVariasDetalle frame = new FrameDonacionesVariasDetalle();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_mnuOpDonacionesVariasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1409,6 +1441,8 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JPopupMenu.Separator jSeparator11;
     private javax.swing.JPopupMenu.Separator jSeparator12;
+    private javax.swing.JPopupMenu.Separator jSeparator13;
+    private javax.swing.JPopupMenu.Separator jSeparator14;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
@@ -1449,6 +1483,7 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuOpCobrarTransferencias;
     private javax.swing.JMenuItem mnuOpCobrarTransferenciasAyC;
     private javax.swing.JMenuItem mnuOpColectas;
+    private javax.swing.JMenuItem mnuOpDonacionesVarias;
     private javax.swing.JMenuItem mnuOpFacturaPendientes;
     private javax.swing.JMenuItem mnuOpFacturaUnica;
     private javax.swing.JMenu mnuOpFacturacion;
