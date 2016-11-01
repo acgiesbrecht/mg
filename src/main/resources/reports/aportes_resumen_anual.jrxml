@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
-<!-- 2016-10-31T22:12:03 -->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2016-11-01T15:17:21 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="841" pageHeight="595" orientation="Landscape" columnWidth="801" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
@@ -31,7 +31,10 @@ WHERE e.IS_MIEMBRO_ACTIVO = TRUE]]>
 	<field name="NOMBRES" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<variable name="SUMA_SALDO" class="java.lang.Long" calculation="System"/>
+	<variable name="SUMA_SALDO" class="java.lang.Integer" calculation="System"/>
+	<variable name="SUMA_COMPROMISO" class="java.lang.Integer" calculation="System"/>
+	<variable name="SUMA_PAGOS" class="java.lang.Integer" calculation="System"/>
+	<variable name="SUMA_SALDO_ANTERIOR" class="java.lang.Integer" calculation="System"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -238,16 +241,103 @@ WHERE e.IS_MIEMBRO_ACTIVO = TRUE]]>
 					<subreportParameterExpression><![CDATA[$P{ano}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="SALDO" toVariable="SUMA_SALDO" calculation="Sum"/>
+				<returnValue subreportVariable="COMPROMISO" toVariable="SUMA_COMPROMISO" calculation="Sum"/>
+				<returnValue subreportVariable="PAGOS" toVariable="SUMA_PAGOS" calculation="Sum"/>
+				<returnValue subreportVariable="SALDO_ANTERIOR" toVariable="SUMA_SALDO_ANTERIOR" calculation="Sum"/>
 				<subreportExpression><![CDATA[$P{subreportObject}]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
 	<columnFooter>
+		<band height="50"/>
+	</columnFooter>
+	<summary>
 		<band height="50">
-			<textField>
-				<reportElement x="750" y="0" width="48" height="20" uuid="78453c50-5b96-40db-b956-bea10eee77f6"/>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="750" y="0" width="50" height="20" uuid="78453c50-5b96-40db-b956-bea10eee77f6">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{SUMA_SALDO}]]></textFieldExpression>
 			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="700" y="0" width="50" height="20" uuid="15c39f83-0998-4304-ac89-76555493defa">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SUMA_COMPROMISO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="650" y="0" width="50" height="20" uuid="23b2f4b7-6420-478a-88ed-198f5ad3140b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SUMA_PAGOS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="129" height="20" uuid="7b68cb6b-50d1-4c45-9684-584b6dc3c780"/>
+				<box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTALES]]></text>
+			</staticText>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="128" y="0" width="40" height="20" uuid="6d9eac80-eb20-40db-823d-b96b4a204185"/>
+				<box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SUMA_SALDO_ANTERIOR}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="168" y="0" width="481" height="20" uuid="f981dd65-dcda-4afd-b81d-397162ba7721"/>
+				<box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
 		</band>
-	</columnFooter>
+	</summary>
 </jasperReport>
