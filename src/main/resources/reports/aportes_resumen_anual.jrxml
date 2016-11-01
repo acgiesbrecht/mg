@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
-<!-- 2016-10-30T18:16:32 -->
+<!-- 2016-10-31T22:12:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="841" pageHeight="595" orientation="Landscape" columnWidth="801" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mgdb"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
@@ -20,7 +20,7 @@
 	<queryString language="SQL">
 		<![CDATA[SELECT e.ID, e.APELLIDOS, e.NOMBRES
 FROM MG.TBL_ENTIDADES e LEFT JOIN TBL_MIEMBROS_CATEGORIAS_DE_PAGO cp ON e.ID_MIEMBROS_CATEGORIA_DE_PAGO = cp.ID
-WHERE cp.DESCRIPCION LIKE '%Aporta%']]>
+WHERE e.IS_MIEMBRO_ACTIVO = TRUE]]>
 	</queryString>
 	<field name="ID" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -31,6 +31,7 @@ WHERE cp.DESCRIPCION LIKE '%Aporta%']]>
 	<field name="NOMBRES" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<variable name="SUMA_SALDO" class="java.lang.Long" calculation="System"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -241,4 +242,12 @@ WHERE cp.DESCRIPCION LIKE '%Aporta%']]>
 			</subreport>
 		</band>
 	</detail>
+	<columnFooter>
+		<band height="50">
+			<textField>
+				<reportElement x="750" y="0" width="48" height="20" uuid="78453c50-5b96-40db-b956-bea10eee77f6"/>
+				<textFieldExpression><![CDATA[$V{SUMA_SALDO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
 </jasperReport>
