@@ -115,7 +115,7 @@
 	<field name="COMPROMISO" class="java.lang.Integer"/>
 	<field name="SALDO_ANTERIOR" class="java.lang.Long"/>
 	<variable name="SALDO" class="java.lang.Integer">
-		<variableExpression><![CDATA[$F{ENERO}+$F{FEBRERO}+$F{MARZO}+$F{ABRIL}+$F{MAYO}+$F{JUNIO}+$F{JULIO}+$F{AGOSTO}+$F{SETIEMBRE}+$F{OCTUBRE}+$F{NOVIEMBRE}+$F{DICIEMBRE}-$F{COMPROMISO}-$F{SALDO_ANTERIOR}]]></variableExpression>
+		<variableExpression><![CDATA[$F{ENERO}+$F{FEBRERO}+$F{MARZO}+$F{ABRIL}+$F{MAYO}+$F{JUNIO}+$F{JULIO}+$F{AGOSTO}+$F{SETIEMBRE}+$F{OCTUBRE}+$F{NOVIEMBRE}+$F{DICIEMBRE}-$F{COMPROMISO}+$F{SALDO_ANTERIOR}]]></variableExpression>
 	</variable>
 	<variable name="PAGOS" class="java.lang.Integer">
 		<variableExpression><![CDATA[$F{ENERO}+$F{FEBRERO}+$F{MARZO}+$F{ABRIL}+$F{MAYO}+$F{JUNIO}+$F{JULIO}+$F{AGOSTO}+$F{SETIEMBRE}+$F{OCTUBRE}+$F{NOVIEMBRE}+$F{DICIEMBRE}]]></variableExpression>
