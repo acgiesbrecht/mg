@@ -335,6 +335,9 @@ public class Utils extends Component {
                 cs.setString(1, backupfile);
                 cs.execute();
                 cs.close();
+            } catch (Exception ex) {
+                LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+                JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             }
             JOptionPane.showMessageDialog(null, "BackUp guardado con exito en: " + backupfile);
             return true;
