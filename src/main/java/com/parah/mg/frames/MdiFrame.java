@@ -42,7 +42,7 @@ import com.parah.mg.frames.operaciones.egresos.FrameNotasDeCreditoCompra;
 import com.parah.mg.frames.operaciones.egresos.FrameRecibosCompra;
 import com.parah.mg.frames.operaciones.ingresos.FrameCobrarTransferenciasAyCporEvento;
 import com.parah.mg.frames.operaciones.ingresos.FrameCobrarTransferenciasAyCporMes;
-import com.parah.mg.frames.operaciones.ingresos.FrameDonacionesVariasDetalle;
+import com.parah.mg.frames.operaciones.ingresos.FrameAportesDonacionesVariasDetalle;
 import com.parah.mg.frames.operaciones.ingresos.FrameRematesDetalle;
 import com.parah.mg.frames.operaciones.ingresos.FrameRematesPagos;
 import com.parah.mg.utils.CurrentUser;
@@ -1369,7 +1369,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuOpDonacionesVariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpDonacionesVariasActionPerformed
         try {
-            FrameDonacionesVariasDetalle frame = new FrameDonacionesVariasDetalle();
+            FrameAportesDonacionesVariasDetalle frame = new FrameAportesDonacionesVariasDetalle();
             frame.setVisible(true);
 
             desktop.add(frame);

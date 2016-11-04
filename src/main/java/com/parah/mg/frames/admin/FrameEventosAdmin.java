@@ -92,7 +92,7 @@ public class FrameEventosAdmin extends JInternalFrame {
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         queryGrupos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblGrupos t");
         listGrupos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryGrupos.getResultList());
-        queryEventoTipos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoTipos t");
+        queryEventoTipos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventoTipos t where t.id < 4");
         listEventoTipos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoTipos.getResultList());
         donacionTableCellRenderer1 = new com.parah.mg.utils.DonacionTableCellRenderer();
         queryCentrosDeCosto = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t");
@@ -235,8 +235,8 @@ public class FrameEventosAdmin extends JInternalFrame {
 
         lblAporte.setText("100%");
 
-        descripcionLabel6.setForeground(new java.awt.Color(153, 153, 153));
         descripcionLabel6.setText("Observacion: Cambios en la categoria tributaria solo tendrán efectivo en pagos realizados a partir de ese cambio.");
+        descripcionLabel6.setForeground(new java.awt.Color(153, 153, 153));
 
         cboCentroDeCosto.setEditable(true);
         cboCentroDeCosto.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
