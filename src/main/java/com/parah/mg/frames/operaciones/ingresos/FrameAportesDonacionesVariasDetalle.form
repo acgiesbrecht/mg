@@ -47,7 +47,7 @@
     </Component>
     <Component class="javax.persistence.Query" name="queryTransferencias">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblTransferencias t WHERE t.idTipoEvento.id = 4 ORDER BY t.id"/>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblTransferencias t WHERE t.idEventoTipo.id = 4 ORDER BY t.id"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="entityManager"/>
         </Property>
@@ -145,6 +145,9 @@
     </Component>
     <Component class="java.util.List" name="listCentrosDeCosto">
       <Properties>
+        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
+          <ComponentRef name="queryCentrosDeCosto"/>
+        </Property>
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
@@ -259,27 +262,9 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="idMiembroLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="fechahoraLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="342" max="-2" attributes="0"/>
                               <Component id="dateTableCellRenderer1" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="idMiembroLabel1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtCtaCte" min="-2" pref="61" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                      <Component id="idMiembroLabel2" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="dtpFecha" min="-2" pref="146" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cboMiembro" min="-2" pref="324" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -289,9 +274,27 @@
                               </Group>
                               <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="montoField1" min="-2" pref="124" max="-2" attributes="0"/>
-                                  <Component id="montoField" min="-2" pref="124" max="-2" attributes="0"/>
+                                  <Component id="montoAporteField" min="-2" pref="124" max="-2" attributes="0"/>
+                                  <Component id="montoDonacionField" min="-2" pref="124" max="-2" attributes="0"/>
                                   <Component id="txtObservacion" min="-2" pref="324" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="fechahoraLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="idMiembroLabel1" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="txtCtaCte" min="-2" pref="61" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                      <Component id="idMiembroLabel2" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="cboMiembro" min="-2" pref="324" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="dtpFecha" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -307,10 +310,10 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="masterScrollPane" min="-2" pref="371" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="fechahoraLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="dtpFecha" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="fechahoraLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="dtpFecha" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -323,12 +326,12 @@
               </Group>
               <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="montoField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="montoAporteField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="montoLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="montoField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="montoDonacionField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="montoLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -359,7 +362,7 @@
               </Group>
               <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
               <Component id="dateTableCellRenderer1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="21" max="32767" attributes="0"/>
+              <EmptySpace pref="25" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -420,7 +423,7 @@
             <BindingProperty name="elements" source="listTransferencias" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${fechahora}">
                 <BindingParameter name="NAME" value="Fecha/Hora"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDateTime.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDate.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${idEntidad.ctacte}">
@@ -439,7 +442,7 @@
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${montoTotal}">
-                <BindingParameter name="NAME" value="Monto"/>
+                <BindingParameter name="NAME" value="Importe"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
@@ -580,7 +583,7 @@
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="cboMiembroKeyReleased"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="montoField">
+    <Component class="javax.swing.JFormattedTextField" name="montoDonacionField">
       <Properties>
         <Property name="columns" type="int" value="9"/>
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
@@ -590,18 +593,18 @@
         <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
       <BindingProperties>
-        <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.montoDonacion}" target="montoField" targetPath="value" updateStrategy="0" immediately="false">
+        <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.montoDonacion}" target="montoDonacionField" targetPath="value" updateStrategy="0" immediately="false">
           <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.ComponentChooserEditor">
             <ComponentRef name="integerLongConverter1"/>
           </Property>
         </BindingProperty>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="montoField" targetPath="enabled" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="montoDonacionField" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
-        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="montoFieldFocusGained"/>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="montoFieldMouseClicked"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="montoFieldActionPerformed"/>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="montoFieldKeyReleased"/>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="montoDonacionFieldFocusGained"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="montoDonacionFieldMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="montoDonacionFieldActionPerformed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="montoDonacionFieldKeyReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
@@ -619,12 +622,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Fecha:"/>
       </Properties>
-    </Component>
-    <Component class="org.jdesktop.swingx.JXDatePicker" name="dtpFecha">
-      <BindingProperties>
-        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fechahora}" target="dtpFecha" targetPath="date" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="dtpFecha" targetPath="enabled" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtObservacion">
       <BindingProperties>
@@ -742,7 +739,7 @@
         <Property name="text" type="java.lang.String" value="Improte Aporte:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="montoField1">
+    <Component class="javax.swing.JFormattedTextField" name="montoAporteField">
       <Properties>
         <Property name="columns" type="int" value="9"/>
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
@@ -752,15 +749,24 @@
         <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
       <BindingProperties>
-        <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.montoAporte}" target="montoField1" targetPath="value" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="montoField1" targetPath="enabled" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.montoAporte}" target="montoAporteField" targetPath="value" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="montoAporteField" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
-        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="montoField1FocusGained"/>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="montoField1MouseClicked"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="montoField1ActionPerformed"/>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="montoField1KeyReleased"/>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="montoAporteFieldFocusGained"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="montoAporteFieldMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="montoAporteFieldActionPerformed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="montoAporteFieldKeyReleased"/>
       </Events>
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="dtpFecha">
+      <BindingProperties>
+        <BindingProperty name="date" source="masterTable" sourcePath="${selectedElement.fechahora}" target="dtpFecha" targetPath="date" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="dtpFecha" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DatePicker(datePickerSettings);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

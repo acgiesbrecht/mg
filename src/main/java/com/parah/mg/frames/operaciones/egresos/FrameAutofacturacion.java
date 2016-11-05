@@ -16,6 +16,7 @@ import com.parah.mg.domain.TblCentrosDeCosto;
 import com.parah.mg.domain.TblCuentasContables;
 import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.domain.TblFacturas;
+import com.parah.mg.domain.TblFacturasCompra;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.Color;
@@ -458,6 +459,8 @@ public class FrameAutofacturacion extends JInternalFrame {
         }
     }// </editor-fold>//GEN-END:initComponents
 
+
+    
     private void refresh(){
         try{
         if (listTimbrados.size() > 0) {

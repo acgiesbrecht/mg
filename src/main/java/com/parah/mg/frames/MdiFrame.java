@@ -139,7 +139,7 @@ public class MdiFrame extends javax.swing.JFrame {
                             mnuOpPagos.setEnabled(currentUser.hasRole(1));
                             mnuOpColectas.setEnabled(currentUser.hasRole(1));
                             mnuOpAportes.setEnabled(currentUser.hasRole(1));
-                            //mnuOpDonacionesVarias.setEnabled(currentUser.hasRole(1));
+                            mnuOpDonacionesVarias.setEnabled(currentUser.hasRole(1));
 
                             mnuOpFacturaUnica.setEnabled(currentUser.hasRole(2));
                             mnuOpFacturaPendientes.setEnabled(currentUser.hasRole(2));

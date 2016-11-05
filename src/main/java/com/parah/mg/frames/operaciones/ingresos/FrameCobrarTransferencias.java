@@ -8,6 +8,7 @@ package com.parah.mg.frames.operaciones.ingresos;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.domain.TblEventoTipos;
 import com.parah.mg.frames.admin.FrameUsuariosAdmin;
@@ -24,6 +25,7 @@ import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.prefs.Preferences;
@@ -55,6 +57,7 @@ public class FrameCobrarTransferencias extends JInternalFrame {
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
+    DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.getDefault());
 
     public FrameCobrarTransferencias() {
         super("Cobrar Transferencias",
@@ -68,6 +71,8 @@ public class FrameCobrarTransferencias extends JInternalFrame {
             entityManager.getTransaction().begin();
         }
 
+        datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
+        
         TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.DISABLED);
         filterHeader.setAdaptiveChoices(false);
         filterHeader.getParserModel().setIgnoreCase(true);
