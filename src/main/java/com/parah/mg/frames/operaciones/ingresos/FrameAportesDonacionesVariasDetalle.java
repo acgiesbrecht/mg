@@ -15,8 +15,8 @@ import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblCentrosDeCosto;
 import com.parah.mg.domain.TblCuentasContables;
+import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.domain.TblEventoTipos;
-import com.parah.mg.domain.TblFacturasCompra;
 import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
@@ -50,6 +50,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.apache.logging.log4j.LogManager;
@@ -71,6 +73,8 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
     JComboBox<TblCentrosDeCosto> cboCentroDeCostoHaber = new JComboBox();
     JComboBox<TblCuentasContables> cboCuentaHaber = new JComboBox();
     JComboBox<TblCuentasContables> cboCuentaDebe = new JComboBox();
+
+    TblCuentasContablesPorDefecto cuentasContablesPorDefecto;
 
     Set forwardKeys = getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS);
     Set newForwardKeys = new HashSet(forwardKeys);
@@ -96,7 +100,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                 @Override
                 public void keyReleased(java.awt.event.KeyEvent evt) {
                     if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                        montoDonacionField.requestFocusInWindow();
+                        importeField.requestFocusInWindow();
                     }
                 }
             });
@@ -114,10 +118,10 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                 entityManager.getTransaction().begin();
                 entityManager1.getTransaction().begin();
             }
-            
-datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
-            centroDeCostoPreferido = (TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult();
 
+            datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
+            centroDeCostoPreferido = (TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult();
+            cuentasContablesPorDefecto = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
             //AutoCompleteDecorator.decorate(cboFechaRemate);
             //AutoCompleteDecorator.decorate(cboCategoria);
             //AutoCompleteSupport support = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
@@ -147,6 +151,7 @@ datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
                         }
                     }
                     );
+
             masterTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent lse) {
@@ -155,9 +160,31 @@ datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
                             if (asientosTable.getColumnModel().getColumnCount() == 5) {
                                 asientosTable.getColumn("Centro de Costo Debe").setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
                                 asientosTable.getColumn("Centro de Costo Haber").setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
+                                asientosTable.getColumnModel().getColumn(2).getCellEditor().addCellEditorListener(new CellEditorListener() {
+                                    @Override
+                                    public void editingStopped(ChangeEvent e) {
+                                        refreshImporte();
+                                    }
+
+                                    @Override
+                                    public void editingCanceled(ChangeEvent c) {
+                                        refreshImporte();
+                                    }
+                                });
                                 asientosTable.getColumn("Cuenta Contable Debe").setCellEditor(new DefaultCellEditor(cboCuentaDebe));
                                 asientosTable.getColumn("Cuenta Contable Haber").setCellEditor(new DefaultCellEditor(cboCuentaHaber));
                                 asientosTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
+                                asientosTable.getColumnModel().getColumn(4).getCellEditor().addCellEditorListener(new CellEditorListener() {
+                                    @Override
+                                    public void editingStopped(ChangeEvent e) {
+                                        refreshImporte();
+                                    }
+
+                                    @Override
+                                    public void editingCanceled(ChangeEvent c) {
+                                        refreshImporte();
+                                    }
+                                });
                             }
                         }
                     } catch (Exception ex) {
@@ -171,28 +198,31 @@ datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
-private void updateAsientoInicial() {
-        try {
-            if (masterTable.getSelectedRow() > -1) {
-                Integer index = masterTable.getSelectedRow();
-                TblTransferencias T = listTransferencias.get(masterTable.convertRowIndexToModel(index));
-                List<TblAsientosTemporales> ts = (List) T.getTblAsientosTemporalesList();
-                if (ts != null) {
-                    if (asientosTable.getModel().getRowCount() == 1) {
-                        asientosTable.getModel().setValueAt(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10(), 0, 4);
-                        TblAsientos asiento = ts.get(0);
-                        asiento.setFechahora(T.getFechahora() != null ? T.getFechahora().atStartOfDay() : null);
-                        //asiento.setMonto(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10());
-                        entityManager.merge(asiento);
-                    }
-                }
 
+    public void refreshImporte() {
+        try {
+            int[] selected = masterTable.getSelectedRows();
+            TblTransferencias t = listTransferencias.get(masterTable.convertRowIndexToModel(selected[0]));
+            int iAportes = 0;
+            int iDonacion = 0;
+            for (TblAsientosTemporales at : t.getTblAsientosTemporalesList()) {
+                if (at.getIdCuentaContableHaber() == cuentasContablesPorDefecto.getIdCuentaAportes()) {
+                    iAportes += at.getMonto();
+                    at.setEsAporte(true);
+                } else if (at.getIdCuentaContableHaber() == cuentasContablesPorDefecto.getIdCuentaDonaciones()) {
+                    iDonacion += at.getMonto();
+                    at.setEsAporte(false);
+                }
             }
+            t.setMontoAporte(iAportes);
+            t.setMontoDonacion(iDonacion);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
+
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -229,7 +259,6 @@ private void updateAsientoInicial() {
         listCuentasContablesPorDefecto = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCuentasContablesPorDefecto.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
-        montoLabel = new javax.swing.JLabel();
         idMiembroLabel = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
@@ -240,7 +269,6 @@ private void updateAsientoInicial() {
         idMiembroLabel2 = new javax.swing.JLabel();
         dateTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
         cboMiembro = new javax.swing.JComboBox();
-        montoDonacionField = new javax.swing.JFormattedTextField();
         jButton2 = new javax.swing.JButton();
         fechahoraLabel = new javax.swing.JLabel();
         txtObservacion = new javax.swing.JTextField();
@@ -251,7 +279,7 @@ private void updateAsientoInicial() {
         cmdAddAsiento = new javax.swing.JButton();
         montoLabel6 = new javax.swing.JLabel();
         montoLabel1 = new javax.swing.JLabel();
-        montoAporteField = new javax.swing.JFormattedTextField();
+        importeField = new javax.swing.JFormattedTextField();
         dtpFecha = new DatePicker(datePickerSettings);
 
         FormListener formListener = new FormListener();
@@ -307,22 +335,19 @@ private void updateAsientoInicial() {
             masterTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
         }
 
-        montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        montoLabel.setText("Improte Donacion:");
-
-        idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel.setText("Donador:");
+        idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        saveButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         saveButton.setText("Guardar");
+        saveButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         saveButton.addActionListener(formListener);
 
-        refreshButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         refreshButton.setText("Cancelar");
+        refreshButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         refreshButton.addActionListener(formListener);
 
-        newButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         newButton.setText("Nuevo");
+        newButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         newButton.addActionListener(formListener);
 
         deleteButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -333,8 +358,8 @@ private void updateAsientoInicial() {
 
         deleteButton.addActionListener(formListener);
 
-        idMiembroLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel1.setText("Cta. Cte.:");
+        idMiembroLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         txtCtaCte.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -344,8 +369,8 @@ private void updateAsientoInicial() {
         txtCtaCte.addFocusListener(formListener);
         txtCtaCte.addKeyListener(formListener);
 
-        idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel2.setText("Nombre:");
+        idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         cboMiembro.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -360,27 +385,11 @@ private void updateAsientoInicial() {
         cboMiembro.addActionListener(formListener);
         cboMiembro.addKeyListener(formListener);
 
-        montoDonacionField.setColumns(9);
-        montoDonacionField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        montoDonacionField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        montoDonacionField.setText("0");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoDonacion}"), montoDonacionField, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        binding.setConverter(integerLongConverter1);
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoDonacionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        montoDonacionField.addFocusListener(formListener);
-        montoDonacionField.addMouseListener(formListener);
-        montoDonacionField.addActionListener(formListener);
-        montoDonacionField.addKeyListener(formListener);
-
         jButton2.setText("Actualizar");
         jButton2.addActionListener(formListener);
 
-        fechahoraLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         fechahoraLabel.setText("Fecha:");
+        fechahoraLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.observacion}"), txtObservacion, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
@@ -421,23 +430,21 @@ private void updateAsientoInicial() {
 
         montoLabel6.setText("Asientos");
 
+        montoLabel1.setText("Improte Total:");
         montoLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        montoLabel1.setText("Improte Aporte:");
 
-        montoAporteField.setColumns(9);
-        montoAporteField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        montoAporteField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        montoAporteField.setText("0");
+        importeField.setColumns(9);
+        importeField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        importeField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        importeField.setText("0");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoAporte}"), montoAporteField, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoAporteField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoTotal}"), importeField, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
-        montoAporteField.addFocusListener(formListener);
-        montoAporteField.addMouseListener(formListener);
-        montoAporteField.addActionListener(formListener);
-        montoAporteField.addKeyListener(formListener);
+        importeField.addFocusListener(formListener);
+        importeField.addMouseListener(formListener);
+        importeField.addActionListener(formListener);
+        importeField.addKeyListener(formListener);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("date"));
         bindingGroup.addBinding(binding);
@@ -452,58 +459,56 @@ private void updateAsientoInicial() {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(masterScrollPane)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(montoLabel6)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(cmdAddAsiento)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cmdBorrarAsiento))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(299, 299, 299))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(refreshButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(deleteButton, javax.swing.GroupLayout.Alignment.TRAILING)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(idMiembroLabel)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(342, 342, 342)
                                 .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(montoLabel6)
+                                    .addGap(20, 20, 20))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(cmdAddAsiento)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(cmdBorrarAsiento)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(refreshButton)
+                                        .addComponent(deleteButton, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(idMiembroLabel)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(montoLabel)
                                     .addComponent(descripcionLabel)
                                     .addComponent(montoLabel1))
-                                .addGap(48, 48, 48)
+                                .addGap(60, 60, 60)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(montoAporteField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(montoDonacionField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(importeField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jButton2))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(fechahoraLabel)
-                                .addGap(114, 114, 114)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
+                                        .addGap(114, 114, 114)
                                         .addComponent(idMiembroLabel1)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(12, 12, 12)
                                         .addComponent(idMiembroLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton2))
-                                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                        .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(104, 104, 104)
+                                        .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 311, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -513,8 +518,8 @@ private void updateAsientoInicial() {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(fechahoraLabel)
                     .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -524,40 +529,37 @@ private void updateAsientoInicial() {
                     .addComponent(idMiembroLabel1)
                     .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(idMiembroLabel2)
-                    .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(montoAporteField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(importeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(montoLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(montoDonacionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(montoLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(descripcionLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(montoLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmdAddAsiento)
-                    .addComponent(cmdBorrarAsiento))
-                .addGap(18, 18, 18)
+                    .addComponent(descripcionLabel)
+                    .addComponent(jButton2))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(deleteButton)
+                        .addGap(338, 338, 338)
+                        .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(montoLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(refreshButton)))
-                .addGap(50, 50, 50)
-                .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmdAddAsiento)
+                            .addComponent(cmdBorrarAsiento)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(deleteButton)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(refreshButton)))))))
         );
 
         bindingGroup.bind();
@@ -583,9 +585,6 @@ private void updateAsientoInicial() {
             else if (evt.getSource() == cboMiembro) {
                 FrameAportesDonacionesVariasDetalle.this.cboMiembroActionPerformed(evt);
             }
-            else if (evt.getSource() == montoDonacionField) {
-                FrameAportesDonacionesVariasDetalle.this.montoDonacionFieldActionPerformed(evt);
-            }
             else if (evt.getSource() == jButton2) {
                 FrameAportesDonacionesVariasDetalle.this.jButton2ActionPerformed(evt);
             }
@@ -595,8 +594,8 @@ private void updateAsientoInicial() {
             else if (evt.getSource() == cmdAddAsiento) {
                 FrameAportesDonacionesVariasDetalle.this.cmdAddAsientoActionPerformed(evt);
             }
-            else if (evt.getSource() == montoAporteField) {
-                FrameAportesDonacionesVariasDetalle.this.montoAporteFieldActionPerformed(evt);
+            else if (evt.getSource() == importeField) {
+                FrameAportesDonacionesVariasDetalle.this.importeFieldActionPerformed(evt);
             }
         }
 
@@ -604,11 +603,8 @@ private void updateAsientoInicial() {
             if (evt.getSource() == txtCtaCte) {
                 FrameAportesDonacionesVariasDetalle.this.txtCtaCteFocusGained(evt);
             }
-            else if (evt.getSource() == montoDonacionField) {
-                FrameAportesDonacionesVariasDetalle.this.montoDonacionFieldFocusGained(evt);
-            }
-            else if (evt.getSource() == montoAporteField) {
-                FrameAportesDonacionesVariasDetalle.this.montoAporteFieldFocusGained(evt);
+            else if (evt.getSource() == importeField) {
+                FrameAportesDonacionesVariasDetalle.this.importeFieldFocusGained(evt);
             }
         }
 
@@ -625,11 +621,8 @@ private void updateAsientoInicial() {
             else if (evt.getSource() == cboMiembro) {
                 FrameAportesDonacionesVariasDetalle.this.cboMiembroKeyReleased(evt);
             }
-            else if (evt.getSource() == montoDonacionField) {
-                FrameAportesDonacionesVariasDetalle.this.montoDonacionFieldKeyReleased(evt);
-            }
-            else if (evt.getSource() == montoAporteField) {
-                FrameAportesDonacionesVariasDetalle.this.montoAporteFieldKeyReleased(evt);
+            else if (evt.getSource() == importeField) {
+                FrameAportesDonacionesVariasDetalle.this.importeFieldKeyReleased(evt);
             }
         }
 
@@ -637,11 +630,8 @@ private void updateAsientoInicial() {
         }
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
-            if (evt.getSource() == montoDonacionField) {
-                FrameAportesDonacionesVariasDetalle.this.montoDonacionFieldMouseClicked(evt);
-            }
-            else if (evt.getSource() == montoAporteField) {
-                FrameAportesDonacionesVariasDetalle.this.montoAporteFieldMouseClicked(evt);
+            if (evt.getSource() == importeField) {
+                FrameAportesDonacionesVariasDetalle.this.importeFieldMouseClicked(evt);
             }
         }
 
@@ -750,12 +740,12 @@ private void updateAsientoInicial() {
             t.setIdUser(currentUser.getUser());
             t.setCobrado(true);
             t.setFechahora(LocalDate.now());
-            
+
             entityManager.persist(t);
             listTransferencias.add(t);
             Integer row = listTransferencias.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
-            masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));            
+            masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
             txtCtaCte.requestFocusInWindow();
 
         } catch (Exception ex) {
@@ -774,9 +764,9 @@ private void updateAsientoInicial() {
 
     private void save() {
         try {
-            if (((Number) montoDonacionField.getValue()).intValue() == 0) {
+            if (((Number) importeField.getValue()).intValue() == 0) {
                 JOptionPane.showMessageDialog(null, "El monto no puede ser 0.");
-                montoDonacionField.requestFocusInWindow();
+                importeField.requestFocusInWindow();
                 return;
             }
             /*for (TblTransferencias evd : listTransferencias) {
@@ -852,7 +842,7 @@ private void updateAsientoInicial() {
                 if (value.isPresent()) {
                     cboMiembro.setSelectedItem(value.get());
                     txtCtaCte.setBackground(Color.green);
-                    montoDonacionField.requestFocus();
+                    // montoDonacionField.requestFocus();
                 }
 
             }
@@ -884,18 +874,6 @@ private void updateAsientoInicial() {
         refresh();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
-    private void montoDonacionFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_montoDonacionFieldFocusGained
-        montoDonacionField.selectAll();
-    }//GEN-LAST:event_montoDonacionFieldFocusGained
-
-    private void montoDonacionFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_montoDonacionFieldMouseClicked
-
-    }//GEN-LAST:event_montoDonacionFieldMouseClicked
-
-    private void montoDonacionFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_montoDonacionFieldActionPerformed
-
-    }//GEN-LAST:event_montoDonacionFieldActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             List data = queryMiembros.getResultList();
@@ -925,31 +903,6 @@ private void updateAsientoInicial() {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cboMiembroActionPerformed
-
-    private void montoDonacionFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoDonacionFieldKeyReleased
-        try {
-            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                if (((Number) montoDonacionField.getValue()).intValue() == 0) {
-                    JOptionPane.showMessageDialog(null, "El monto no puede ser 0.");
-                    montoDonacionField.requestFocusInWindow();
-                    return;
-                }
-                if (cboMiembro.getSelectedItem() == null) {
-                    JOptionPane.showMessageDialog(null, "No ha eligido un donador.");
-                    txtCtaCte.requestFocusInWindow();
-                    return;
-                }
-                save();
-                Integer reply = JOptionPane.showConfirmDialog(null, "Desea crear un nuevo registro?", title, JOptionPane.YES_NO_OPTION);
-                if (reply == JOptionPane.YES_OPTION) {
-                    newDetalle();
-                }
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_montoDonacionFieldKeyReleased
 
     private void cboMiembroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cboMiembroKeyReleased
 
@@ -995,21 +948,21 @@ private void updateAsientoInicial() {
         }
     }//GEN-LAST:event_cmdAddAsientoActionPerformed
 
-    private void montoAporteFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_montoAporteFieldFocusGained
+    private void importeFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_importeFieldFocusGained
         // TODO add your handling code here:
-    }//GEN-LAST:event_montoAporteFieldFocusGained
+    }//GEN-LAST:event_importeFieldFocusGained
 
-    private void montoAporteFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_montoAporteFieldMouseClicked
+    private void importeFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_importeFieldMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_montoAporteFieldMouseClicked
+    }//GEN-LAST:event_importeFieldMouseClicked
 
-    private void montoAporteFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_montoAporteFieldActionPerformed
+    private void importeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importeFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_montoAporteFieldActionPerformed
+    }//GEN-LAST:event_importeFieldActionPerformed
 
-    private void montoAporteFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoAporteFieldKeyReleased
+    private void importeFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_importeFieldKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_montoAporteFieldKeyReleased
+    }//GEN-LAST:event_importeFieldKeyReleased
 
     private void addAsiento() {
         try {
@@ -1022,7 +975,7 @@ private void updateAsientoInicial() {
             }
             TblAsientosTemporales t = new TblAsientosTemporales();
 
-            t.setFechahora(T.getFechahora().atStartOfDay() != null ? T.getFechahora().atStartOfDay() : null);            
+            t.setFechahora(T.getFechahora().atStartOfDay() != null ? T.getFechahora().atStartOfDay() : null);
 
             t.setIdCentroDeCostoDebe(centroDeCostoPreferido);
             t.setIdCentroDeCostoHaber(centroDeCostoPreferido);
@@ -1081,6 +1034,7 @@ private void updateAsientoInicial() {
     private javax.swing.JLabel idMiembroLabel;
     private javax.swing.JLabel idMiembroLabel1;
     private javax.swing.JLabel idMiembroLabel2;
+    private javax.swing.JFormattedTextField importeField;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -1092,9 +1046,6 @@ private void updateAsientoInicial() {
     private java.util.List<com.parah.mg.domain.TblTransferencias> listTransferencias;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
-    private javax.swing.JFormattedTextField montoAporteField;
-    private javax.swing.JFormattedTextField montoDonacionField;
-    private javax.swing.JLabel montoLabel;
     private javax.swing.JLabel montoLabel1;
     private javax.swing.JLabel montoLabel6;
     private javax.swing.JButton newButton;
