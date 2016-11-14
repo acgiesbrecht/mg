@@ -265,6 +265,9 @@ public class MdiFrame extends javax.swing.JFrame {
             if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20160912.sql") == null) {
                 hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20160912.sql", hasBackedUp);
             }
+            if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20161104.sql") == null) {
+                hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20161104.sql", hasBackedUp);
+            }
 
             List<TblUsers> list = entityManager.createQuery("SELECT t FROM TblUsers t").getResultList();
             for (TblUsers user : list) {

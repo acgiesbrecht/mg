@@ -144,6 +144,7 @@ public class FrameAutofacturacion extends JInternalFrame {
         queryCentrosDeCosto = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t");
         listCentrosDeCosto = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCentrosDeCosto.getResultList());
         numberCellRenderer1 = new com.parah.mg.utils.NumberCellRenderer();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         cancelarButton = new javax.swing.JButton();
         imprimirButton = new javax.swing.JButton();
         montoLabel = new javax.swing.JLabel();
@@ -173,6 +174,8 @@ public class FrameAutofacturacion extends JInternalFrame {
         conceptoLabel = new javax.swing.JLabel();
         txtObservacion = new javax.swing.JTextField();
         dtpFecha = new com.github.lgooddatepicker.components.DateTimePicker(dps, tps);
+        rbContado = new javax.swing.JRadioButton();
+        rbCredito = new javax.swing.JRadioButton();
 
         FormListener formListener = new FormListener();
 
@@ -261,6 +264,13 @@ public class FrameAutofacturacion extends JInternalFrame {
 
         conceptoLabel.setText("Observacion:");
 
+        buttonGroup1.add(rbContado);
+        rbContado.setText("Pago en misma Fecha");
+
+        buttonGroup1.add(rbCredito);
+        rbCredito.setText("Pago en otra Fecha");
+        rbCredito.addActionListener(formListener);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -296,8 +306,13 @@ public class FrameAutofacturacion extends JInternalFrame {
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(txtNro, javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(txtTimbrado, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
-                                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(38, 38, 38)
+                                        .addComponent(rbContado)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(rbCredito)))))
+                        .addGap(0, 76, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -355,7 +370,10 @@ public class FrameAutofacturacion extends JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(fecha1Label)
-                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(rbContado)
+                        .addComponent(rbCredito)))
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(montoLabel2)
@@ -403,7 +421,7 @@ public class FrameAutofacturacion extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
                     .addComponent(imprimirButton))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -428,6 +446,9 @@ public class FrameAutofacturacion extends JInternalFrame {
             }
             else if (evt.getSource() == cmdAddAsiento) {
                 FrameAutofacturacion.this.cmdAddAsientoActionPerformed(evt);
+            }
+            else if (evt.getSource() == rbCredito) {
+                FrameAutofacturacion.this.rbCreditoActionPerformed(evt);
             }
         }
 
@@ -464,6 +485,7 @@ public class FrameAutofacturacion extends JInternalFrame {
     private void refresh(){
         try{
         if (listTimbrados.size() > 0) {
+                rbContado.setSelected(true);
                 txtTimbrado.setText(listTimbrados.get(0).getNro());
                 imprimirButton.setEnabled(true);
                 if (list.size() > 0) {
@@ -546,6 +568,7 @@ public class FrameAutofacturacion extends JInternalFrame {
             factura.setAnulado(false);
             factura.setObservacion(txtObservacion.getText());
             factura.setIdUser(currentUser.getUser());
+            factura.setCondicionContado(rbContado.isSelected());
 
             for (TblAsientos a : listAsientos) {
                 a.setFechahora(factura.getFechahora());
@@ -637,17 +660,26 @@ public class FrameAutofacturacion extends JInternalFrame {
         addAsiento();
     }//GEN-LAST:event_cmdAddAsientoActionPerformed
 
+    private void rbCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCreditoActionPerformed
+        
+    }//GEN-LAST:event_rbCreditoActionPerformed
+
     private void addAsiento() {
         try {
             TblAsientos t = new TblAsientos();
             t.setFechahora(dtpFecha.getDateTimeStrict());
             t.setIdUser(currentUser.getUser());
-
+            
+            TblCuentasContablesPorDefecto tblCuentasContablesPorDefecto = (TblCuentasContablesPorDefecto)entityManager.createQuery("SELECT t FROM TblCuentasContablesPorDefecto t WHERE t.id = 1").getSingleResult();
+            
             t.setIdCentroDeCostoDebe((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
             t.setIdCentroDeCostoHaber(t.getIdCentroDeCostoDebe());
-            t.setIdCuentaContableDebe(((TblCuentasContablesPorDefecto) entityManager.createQuery("SELECT t FROM TblCuentasContablesPorDefecto t WHERE t.id = 1").getSingleResult()).getIdCuentaDebeCompras());
-
-            t.setIdCuentaContableHaber(t.getIdCentroDeCostoHaber().getIdCuentaContableCtaCtePorDefecto());
+            t.setIdCuentaContableDebe(tblCuentasContablesPorDefecto.getIdCuentaDebeCompras());
+            if(rbContado.isSelected()){
+                t.setIdCuentaContableHaber(tblCuentasContablesPorDefecto.getIdCuentaHaberComprasFacturaCredito());
+            }else{
+                t.setIdCuentaContableHaber(tblCuentasContablesPorDefecto.getIdCuentaHaberComprasFacturaCredito());
+            }
             t.setMonto(0);
             listAsientos.add(t);
             Integer row = listAsientos.size() - 1;
@@ -669,6 +701,7 @@ public class FrameAutofacturacion extends JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable asientosTable;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cancelarButton;
     private javax.swing.JButton cmdAddAsiento;
     private javax.swing.JButton cmdBorrarAsiento;
@@ -699,6 +732,8 @@ public class FrameAutofacturacion extends JInternalFrame {
     private javax.persistence.Query queryCentrosDeCosto;
     private javax.persistence.Query queryCuentasContables;
     private javax.persistence.Query queryTimbrados;
+    private javax.swing.JRadioButton rbContado;
+    private javax.swing.JRadioButton rbCredito;
     private javax.swing.JTextField rucField;
     private javax.swing.JFormattedTextField txtCantidad;
     private javax.swing.JTextField txtConcepto;

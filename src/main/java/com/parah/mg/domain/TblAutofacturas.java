@@ -124,6 +124,10 @@ public class TblAutofacturas implements Serializable {
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblUsers idUser;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CONDICION_CONTADO")
+    private Boolean condicionContado;
 
     public TblAutofacturas() {
     }
@@ -132,7 +136,7 @@ public class TblAutofacturas implements Serializable {
         this.id = id;
     }
 
-    public TblAutofacturas(Integer id, String nro, LocalDateTime fechahora, String nombre, String domicilio, String direccionDeTransaccion, String ci, Integer cantidad, String concepto, Integer precioUnitario, Integer monto, Boolean anulado) {
+    public TblAutofacturas(Integer id, String nro, LocalDateTime fechahora, String nombre, String domicilio, Boolean condicionContado, String direccionDeTransaccion, String ci, Integer cantidad, String concepto, Integer precioUnitario, Integer monto, Boolean anulado) {
         this.id = id;
         this.nro = nro;
         this.fechahora = fechahora;
@@ -145,6 +149,7 @@ public class TblAutofacturas implements Serializable {
         this.precioUnitario = precioUnitario;
         this.monto = monto;
         this.anulado = anulado;
+        this.condicionContado = condicionContado;
     }
 
     public Integer getId() {
@@ -274,6 +279,14 @@ public class TblAutofacturas implements Serializable {
 
     public void setIdUser(TblUsers idUser) {
         this.idUser = idUser;
+    }
+
+    public Boolean getCondicionContado() {
+        return condicionContado;
+    }
+
+    public void setCondicionContado(Boolean condicionContado) {
+        this.condicionContado = condicionContado;
     }
 
     @Override

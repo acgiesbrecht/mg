@@ -7,6 +7,7 @@ package com.parah.mg.frames.operaciones.ingresos;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
+import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.github.lgooddatepicker.components.DatePicker;
@@ -50,6 +51,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.apache.logging.log4j.LogManager;
@@ -77,7 +80,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
     DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.getDefault());
 
     public FrameAportesDonacionesVariasDetalle() {
-        super("Colectas",
+        super("Donaciones Varias",
                 true, //resizable
                 true, //closable
                 true, //maximizable
@@ -114,8 +117,8 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                 entityManager.getTransaction().begin();
                 entityManager1.getTransaction().begin();
             }
-            
-datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
+
+            datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
             centroDeCostoPreferido = (TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult();
 
             //AutoCompleteDecorator.decorate(cboFechaRemate);
@@ -126,11 +129,78 @@ datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
 
             eventListMiembros.addAll(listMiembros);
             AutoCompleteSupport support2 = AutoCompleteSupport.install(cboMiembro, eventListMiembros);
-
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCentroDeCostoDebe, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            support5.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support6 = AutoCompleteSupport.install(cboCentroDeCostoHaber, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            support6.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaDebe, GlazedLists.eventListOf(listCuentasContables.toArray()));
+            support3.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaHaber, GlazedLists.eventListOf(listCuentasContables.toArray()));
+            support4.setFilterMode(TextMatcherEditor.CONTAINS);
 
             idEventoTipo = entityManager.find(TblEventoTipos.class, 4);
 
+            montoDonacionField.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                public void process() {
+                    try {
+                        if (montoDonacionField.getText().length() > 0 && montoDonacionField.getValue() != null) {                       
+                            updateAsientoInicial();                            
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+                        LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+                    }
+                }
+            });
+            
+            montoAporteField.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                public void process() {
+                    try {
+                        if (montoAporteField.getText().length() > 0 && montoAporteField.getValue() != null) {                       
+                            updateAsientoInicial();                            
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+                        LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+                    }
+                }
+            });
+            
             KeyboardFocusManager.getCurrentKeyboardFocusManager()
                     .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
                         @Override
@@ -152,11 +222,11 @@ datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
                 public void valueChanged(ListSelectionEvent lse) {
                     try {
                         if (!lse.getValueIsAdjusting()) {
-                            if (asientosTable.getColumnModel().getColumnCount() == 5) {
-                                asientosTable.getColumn("Centro de Costo Debe").setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
-                                asientosTable.getColumn("Centro de Costo Haber").setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
-                                asientosTable.getColumn("Cuenta Contable Debe").setCellEditor(new DefaultCellEditor(cboCuentaDebe));
-                                asientosTable.getColumn("Cuenta Contable Haber").setCellEditor(new DefaultCellEditor(cboCuentaHaber));
+                            if (asientosTable.getColumnModel().getColumnCount() == 5) {                                
+                                asientosTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(cboCentroDeCostoDebe));
+                                asientosTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(cboCuentaDebe));
+                                asientosTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
+                                asientosTable.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(cboCuentaHaber));
                                 asientosTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
                             }
                         }
@@ -171,7 +241,8 @@ datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
-private void updateAsientoInicial() {
+
+    private void updateAsientoInicial() {
         try {
             if (masterTable.getSelectedRow() > -1) {
                 Integer index = masterTable.getSelectedRow();
@@ -179,10 +250,10 @@ private void updateAsientoInicial() {
                 List<TblAsientosTemporales> ts = (List) T.getTblAsientosTemporalesList();
                 if (ts != null) {
                     if (asientosTable.getModel().getRowCount() == 1) {
-                        asientosTable.getModel().setValueAt(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10(), 0, 4);
-                        TblAsientos asiento = ts.get(0);
+                        //asientosTable.getModel().setValueAt(T.getMontoDonacion() + T.getMontoAporte(), 0, 4);
+                        TblAsientosTemporales asiento = ts.get(0);
                         asiento.setFechahora(T.getFechahora() != null ? T.getFechahora().atStartOfDay() : null);
-                        //asiento.setMonto(T.getMontoExentas() + T.getMontoIva5() + T.getMontoIva10());
+                        asientosTable.getModel().setValueAt(T.getMontoDonacion(), 0, 4);                        
                         entityManager.merge(asiento);
                     }
                 }
@@ -193,6 +264,7 @@ private void updateAsientoInicial() {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -307,22 +379,22 @@ private void updateAsientoInicial() {
             masterTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
         }
 
-        montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel.setText("Improte Donacion:");
+        montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel.setText("Donador:");
+        idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        saveButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         saveButton.setText("Guardar");
+        saveButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         saveButton.addActionListener(formListener);
 
-        refreshButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         refreshButton.setText("Cancelar");
+        refreshButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         refreshButton.addActionListener(formListener);
 
-        newButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         newButton.setText("Nuevo");
+        newButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         newButton.addActionListener(formListener);
 
         deleteButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -333,8 +405,8 @@ private void updateAsientoInicial() {
 
         deleteButton.addActionListener(formListener);
 
-        idMiembroLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel1.setText("Cta. Cte.:");
+        idMiembroLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         txtCtaCte.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -344,8 +416,8 @@ private void updateAsientoInicial() {
         txtCtaCte.addFocusListener(formListener);
         txtCtaCte.addKeyListener(formListener);
 
-        idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel2.setText("Nombre:");
+        idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         cboMiembro.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -379,8 +451,8 @@ private void updateAsientoInicial() {
         jButton2.setText("Actualizar");
         jButton2.addActionListener(formListener);
 
-        fechahoraLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         fechahoraLabel.setText("Fecha:");
+        fechahoraLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.observacion}"), txtObservacion, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
@@ -421,17 +493,16 @@ private void updateAsientoInicial() {
 
         montoLabel6.setText("Asientos");
 
-        montoLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel1.setText("Improte Aporte:");
+        montoLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
+        montoAporteField.setEditable(false);
         montoAporteField.setColumns(9);
         montoAporteField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         montoAporteField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
         montoAporteField.setText("0");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoAporte}"), montoAporteField, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoAporteField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         montoAporteField.addFocusListener(formListener);
@@ -452,8 +523,8 @@ private void updateAsientoInicial() {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(masterScrollPane)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -463,7 +534,7 @@ private void updateAsientoInicial() {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(cmdBorrarAsiento))
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(299, 299, 299))
+                                .addGap(15, 15, 15))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -746,16 +817,21 @@ private void updateAsientoInicial() {
     private void newDetalle() {
         try {
             TblTransferencias t = new TblTransferencias();
-
+            entityManager.persist(t);
             t.setIdUser(currentUser.getUser());
             t.setCobrado(true);
             t.setFechahora(LocalDate.now());
-            
-            entityManager.persist(t);
+            t.setMontoAporte(0);
+            t.setMontoDonacion(0);
+            t.setIdEventoTipo(idEventoTipo);
+
             listTransferencias.add(t);
             Integer row = listTransferencias.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
-            masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));            
+            masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+
+            createAsientoInicial();
+
             txtCtaCte.requestFocusInWindow();
 
         } catch (Exception ex) {
@@ -774,50 +850,11 @@ private void updateAsientoInicial() {
 
     private void save() {
         try {
-            if (((Number) montoDonacionField.getValue()).intValue() == 0) {
+            if (((Number) montoDonacionField.getValue()).intValue() == 0 && ((Number) montoAporteField.getValue()).intValue() == 0) {
                 JOptionPane.showMessageDialog(null, "El monto no puede ser 0.");
                 montoDonacionField.requestFocusInWindow();
                 return;
             }
-            /*for (TblTransferencias evd : listTransferencias) {
-                if (entityManager.contains(evd)) {
-                    if (evd.getTblAsientosList().size() == 2) {
-                        ((List<TblAsientos>) evd.getTblAsientosList()).get(0).setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
-                        ((List<TblAsientos>) evd.getTblAsientosList()).get(1).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosList()).get(0).getMonto());
-                        entityManager.merge(evd);
-                    } else if (evd.getTblAsientosList().isEmpty()) {
-
-                        List<TblAsientos> ts = evd.getTblAsientosList();
-                        if (ts == null) {
-                            ts = new LinkedList<>();
-                            evd.setTblAsientosList((List) ts);
-                        }
-                        TblAsientos asientoAporte = new TblAsientos();
-                        asientoAporte.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
-                        asientoAporte.setIdCentroDeCostoDebe((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
-                        asientoAporte.setIdCentroDeCostoHaber(asientoAporte.getIdCentroDeCostoDebe());
-                        asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
-                        asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
-                        asientoAporte.setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
-                        asientoAporte.setIdUser(currentUser.getUser());
-
-                        ts.add(asientoAporte);
-
-                        TblAsientos asientoDonacion = new TblAsientos();
-                        asientoDonacion.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
-                        asientoDonacion.setIdCentroDeCostoDebe((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
-                        asientoDonacion.setIdCentroDeCostoHaber(asientoAporte.getIdCentroDeCostoDebe());
-                        asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
-                        asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
-                        asientoDonacion.setMonto(evd.getMonto() - asientoAporte.getMonto());
-                        asientoDonacion.setIdUser(currentUser.getUser());
-
-                        ts.add(asientoDonacion);
-
-                        entityManager.merge(evd);
-                    }
-                }
-            }*/
 
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
@@ -1021,18 +1058,23 @@ private void updateAsientoInicial() {
                 T.setTblAsientosTemporalesList((List) ts);
             }
             TblAsientosTemporales t = new TblAsientosTemporales();
-
-            t.setFechahora(T.getFechahora().atStartOfDay() != null ? T.getFechahora().atStartOfDay() : null);            
+            t.setFacturado(false);
+            t.setFechahora(T.getFechahora().atStartOfDay() != null ? T.getFechahora().atStartOfDay() : null);
 
             t.setIdCentroDeCostoDebe(centroDeCostoPreferido);
             t.setIdCentroDeCostoHaber(centroDeCostoPreferido);
             t.setIdCuentaContableDebe(listCuentasContablesPorDefecto.get(0).getIdCuentaCtaCte());
+
+
+//-----------------------SOLO DONACIONES-------------------------------
             t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaDonaciones());
 
+            t.setEsAporte(false);
+            
             if (ts.isEmpty()) {
-                t.setMonto(T.getMontoTotal());
+                t.setMonto(T.getMontoDonacion());
             }
-
+//---------------------------------------------------------------
             ts.add(t);
             entityManager.merge(T);
             masterTable.clearSelection();
@@ -1041,10 +1083,10 @@ private void updateAsientoInicial() {
             asientosTable.setRowSelectionInterval(row, row);
             asientosTable.scrollRectToVisible(asientosTable.getCellRect(row, 0, true));
             if (asientosTable.getColumnModel().getColumnCount() > 0 && asientosTable.getRowCount() == 1) {
-                asientosTable.getColumn("Centro de Costo Debe").setCellEditor(new DefaultCellEditor(cboCentroDeCostoDebe));
-                asientosTable.getColumn("Centro de Costo Haber").setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
-                asientosTable.getColumn("Cuenta Contable Debe").setCellEditor(new DefaultCellEditor(cboCuentaDebe));
-                asientosTable.getColumn("Cuenta Contable Haber").setCellEditor(new DefaultCellEditor(cboCuentaHaber));
+                asientosTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(cboCentroDeCostoDebe));
+                asientosTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(cboCuentaDebe));
+                asientosTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
+                asientosTable.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(cboCuentaHaber));
                 asientosTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
             }
         } catch (Exception ex) {
