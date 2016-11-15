@@ -7,6 +7,7 @@ package com.parah.mg.frames.operaciones.ingresos;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
+import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.github.lgooddatepicker.components.DatePicker;
@@ -15,8 +16,8 @@ import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblAsientosTemporales;
 import com.parah.mg.domain.TblCentrosDeCosto;
 import com.parah.mg.domain.TblCuentasContables;
-import com.parah.mg.domain.TblCuentasContablesPorDefecto;
 import com.parah.mg.domain.TblEventoTipos;
+import com.parah.mg.domain.TblFacturasCompra;
 import com.parah.mg.domain.TblTransferencias;
 import com.parah.mg.domain.miembros.TblEntidades;
 import com.parah.mg.utils.CurrentUser;
@@ -50,8 +51,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.apache.logging.log4j.LogManager;
@@ -74,14 +75,12 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
     JComboBox<TblCuentasContables> cboCuentaHaber = new JComboBox();
     JComboBox<TblCuentasContables> cboCuentaDebe = new JComboBox();
 
-    TblCuentasContablesPorDefecto cuentasContablesPorDefecto;
-
     Set forwardKeys = getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS);
     Set newForwardKeys = new HashSet(forwardKeys);
     DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.getDefault());
 
     public FrameAportesDonacionesVariasDetalle() {
-        super("Colectas",
+        super("Donaciones Varias",
                 true, //resizable
                 true, //closable
                 true, //maximizable
@@ -100,7 +99,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                 @Override
                 public void keyReleased(java.awt.event.KeyEvent evt) {
                     if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                        importeField.requestFocusInWindow();
+                        montoDonacionField.requestFocusInWindow();
                     }
                 }
             });
@@ -121,7 +120,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
 
             datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
             centroDeCostoPreferido = (TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult();
-            cuentasContablesPorDefecto = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
+
             //AutoCompleteDecorator.decorate(cboFechaRemate);
             //AutoCompleteDecorator.decorate(cboCategoria);
             //AutoCompleteSupport support = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
@@ -130,11 +129,78 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
 
             eventListMiembros.addAll(listMiembros);
             AutoCompleteSupport support2 = AutoCompleteSupport.install(cboMiembro, eventListMiembros);
-
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCentroDeCostoDebe, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            support5.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support6 = AutoCompleteSupport.install(cboCentroDeCostoHaber, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            support6.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaDebe, GlazedLists.eventListOf(listCuentasContables.toArray()));
+            support3.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaHaber, GlazedLists.eventListOf(listCuentasContables.toArray()));
+            support4.setFilterMode(TextMatcherEditor.CONTAINS);
 
             idEventoTipo = entityManager.find(TblEventoTipos.class, 4);
 
+            montoDonacionField.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                public void process() {
+                    try {
+                        if (montoDonacionField.getText().length() > 0 && montoDonacionField.getValue() != null) {                       
+                            updateAsientoInicial();                            
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+                        LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+                    }
+                }
+            });
+            
+            montoAporteField.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                public void process() {
+                    try {
+                        if (montoAporteField.getText().length() > 0 && montoAporteField.getValue() != null) {                       
+                            updateAsientoInicial();                            
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+                        LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+                    }
+                }
+            });
+            
             KeyboardFocusManager.getCurrentKeyboardFocusManager()
                     .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
                         @Override
@@ -151,40 +217,17 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                         }
                     }
                     );
-
             masterTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent lse) {
                     try {
                         if (!lse.getValueIsAdjusting()) {
-                            if (asientosTable.getColumnModel().getColumnCount() == 5) {
-                                asientosTable.getColumn("Centro de Costo Debe").setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
-                                asientosTable.getColumn("Centro de Costo Haber").setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
-                                asientosTable.getColumnModel().getColumn(2).getCellEditor().addCellEditorListener(new CellEditorListener() {
-                                    @Override
-                                    public void editingStopped(ChangeEvent e) {
-                                        refreshImporte();
-                                    }
-
-                                    @Override
-                                    public void editingCanceled(ChangeEvent c) {
-                                        refreshImporte();
-                                    }
-                                });
-                                asientosTable.getColumn("Cuenta Contable Debe").setCellEditor(new DefaultCellEditor(cboCuentaDebe));
-                                asientosTable.getColumn("Cuenta Contable Haber").setCellEditor(new DefaultCellEditor(cboCuentaHaber));
+                            if (asientosTable.getColumnModel().getColumnCount() == 5) {                                
+                                asientosTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(cboCentroDeCostoDebe));
+                                asientosTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(cboCuentaDebe));
+                                asientosTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
+                                asientosTable.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(cboCuentaHaber));
                                 asientosTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
-                                asientosTable.getColumnModel().getColumn(4).getCellEditor().addCellEditorListener(new CellEditorListener() {
-                                    @Override
-                                    public void editingStopped(ChangeEvent e) {
-                                        refreshImporte();
-                                    }
-
-                                    @Override
-                                    public void editingCanceled(ChangeEvent c) {
-                                        refreshImporte();
-                                    }
-                                });
                             }
                         }
                     } catch (Exception ex) {
@@ -199,28 +242,27 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         }
     }
 
-    public void refreshImporte() {
+    private void updateAsientoInicial() {
         try {
-            int[] selected = masterTable.getSelectedRows();
-            TblTransferencias t = listTransferencias.get(masterTable.convertRowIndexToModel(selected[0]));
-            int iAportes = 0;
-            int iDonacion = 0;
-            for (TblAsientosTemporales at : t.getTblAsientosTemporalesList()) {
-                if (at.getIdCuentaContableHaber() == cuentasContablesPorDefecto.getIdCuentaAportes()) {
-                    iAportes += at.getMonto();
-                    at.setEsAporte(true);
-                } else if (at.getIdCuentaContableHaber() == cuentasContablesPorDefecto.getIdCuentaDonaciones()) {
-                    iDonacion += at.getMonto();
-                    at.setEsAporte(false);
+            if (masterTable.getSelectedRow() > -1) {
+                Integer index = masterTable.getSelectedRow();
+                TblTransferencias T = listTransferencias.get(masterTable.convertRowIndexToModel(index));
+                List<TblAsientosTemporales> ts = (List) T.getTblAsientosTemporalesList();
+                if (ts != null) {
+                    if (asientosTable.getModel().getRowCount() == 1) {
+                        //asientosTable.getModel().setValueAt(T.getMontoDonacion() + T.getMontoAporte(), 0, 4);
+                        TblAsientosTemporales asiento = ts.get(0);
+                        asiento.setFechahora(T.getFechahora() != null ? T.getFechahora().atStartOfDay() : null);
+                        asientosTable.getModel().setValueAt(T.getMontoDonacion(), 0, 4);                        
+                        entityManager.merge(asiento);
+                    }
                 }
+
             }
-            t.setMontoAporte(iAportes);
-            t.setMontoDonacion(iDonacion);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
-
     }
 
     /**
@@ -259,6 +301,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         listCuentasContablesPorDefecto = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCuentasContablesPorDefecto.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
+        montoLabel = new javax.swing.JLabel();
         idMiembroLabel = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
@@ -269,6 +312,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         idMiembroLabel2 = new javax.swing.JLabel();
         dateTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
         cboMiembro = new javax.swing.JComboBox();
+        montoDonacionField = new javax.swing.JFormattedTextField();
         jButton2 = new javax.swing.JButton();
         fechahoraLabel = new javax.swing.JLabel();
         txtObservacion = new javax.swing.JTextField();
@@ -279,7 +323,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         cmdAddAsiento = new javax.swing.JButton();
         montoLabel6 = new javax.swing.JLabel();
         montoLabel1 = new javax.swing.JLabel();
-        importeField = new javax.swing.JFormattedTextField();
+        montoAporteField = new javax.swing.JFormattedTextField();
         dtpFecha = new DatePicker(datePickerSettings);
 
         FormListener formListener = new FormListener();
@@ -335,6 +379,9 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
             masterTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
         }
 
+        montoLabel.setText("Improte Donacion:");
+        montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
         idMiembroLabel.setText("Donador:");
         idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -385,6 +432,22 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         cboMiembro.addActionListener(formListener);
         cboMiembro.addKeyListener(formListener);
 
+        montoDonacionField.setColumns(9);
+        montoDonacionField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        montoDonacionField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        montoDonacionField.setText("0");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoDonacion}"), montoDonacionField, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding.setConverter(integerLongConverter1);
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoDonacionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        montoDonacionField.addFocusListener(formListener);
+        montoDonacionField.addMouseListener(formListener);
+        montoDonacionField.addActionListener(formListener);
+        montoDonacionField.addKeyListener(formListener);
+
         jButton2.setText("Actualizar");
         jButton2.addActionListener(formListener);
 
@@ -430,21 +493,22 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
 
         montoLabel6.setText("Asientos");
 
-        montoLabel1.setText("Improte Total:");
+        montoLabel1.setText("Improte Aporte:");
         montoLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        importeField.setColumns(9);
-        importeField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        importeField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        importeField.setText("0");
+        montoAporteField.setEditable(false);
+        montoAporteField.setColumns(9);
+        montoAporteField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        montoAporteField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        montoAporteField.setText("0");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoTotal}"), importeField, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoAporte}"), montoAporteField, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
-        importeField.addFocusListener(formListener);
-        importeField.addMouseListener(formListener);
-        importeField.addActionListener(formListener);
-        importeField.addKeyListener(formListener);
+        montoAporteField.addFocusListener(formListener);
+        montoAporteField.addMouseListener(formListener);
+        montoAporteField.addActionListener(formListener);
+        montoAporteField.addKeyListener(formListener);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechahora}"), dtpFecha, org.jdesktop.beansbinding.BeanProperty.create("date"));
         bindingGroup.addBinding(binding);
@@ -460,55 +524,57 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(masterScrollPane)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(montoLabel6)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(cmdAddAsiento)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cmdBorrarAsiento))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(15, 15, 15))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(refreshButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(deleteButton, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(idMiembroLabel)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(342, 342, 342)
                                 .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(montoLabel6)
-                                    .addGap(20, 20, 20))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(cmdAddAsiento)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(cmdBorrarAsiento)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(refreshButton)
-                                        .addComponent(deleteButton, javax.swing.GroupLayout.Alignment.TRAILING))))
-                            .addComponent(idMiembroLabel)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(montoLabel)
                                     .addComponent(descripcionLabel)
                                     .addComponent(montoLabel1))
-                                .addGap(60, 60, 60)
+                                .addGap(48, 48, 48)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(importeField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButton2))))
+                                    .addComponent(montoAporteField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(montoDonacionField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(fechahoraLabel)
+                                .addGap(114, 114, 114)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(114, 114, 114)
                                         .addComponent(idMiembroLabel1)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(12, 12, 12)
                                         .addComponent(idMiembroLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(104, 104, 104)
-                                        .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 311, Short.MAX_VALUE)))
+                                        .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton2))
+                                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -518,8 +584,8 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(fechahoraLabel)
                     .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -529,37 +595,40 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                     .addComponent(idMiembroLabel1)
                     .addComponent(txtCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(idMiembroLabel2)
-                    .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboMiembro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
                 .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(importeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(montoAporteField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(montoLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(montoDonacionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(montoLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(descripcionLabel)
-                    .addComponent(jButton2))
+                    .addComponent(descripcionLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(montoLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmdAddAsiento)
+                    .addComponent(cmdBorrarAsiento))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(338, 338, 338)
-                        .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(montoLabel6)
+                        .addComponent(deleteButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmdAddAsiento)
-                            .addComponent(cmdBorrarAsiento)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(deleteButton)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(refreshButton)))))))
+                        .addComponent(refreshButton)))
+                .addGap(50, 50, 50)
+                .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -585,6 +654,9 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
             else if (evt.getSource() == cboMiembro) {
                 FrameAportesDonacionesVariasDetalle.this.cboMiembroActionPerformed(evt);
             }
+            else if (evt.getSource() == montoDonacionField) {
+                FrameAportesDonacionesVariasDetalle.this.montoDonacionFieldActionPerformed(evt);
+            }
             else if (evt.getSource() == jButton2) {
                 FrameAportesDonacionesVariasDetalle.this.jButton2ActionPerformed(evt);
             }
@@ -594,8 +666,8 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
             else if (evt.getSource() == cmdAddAsiento) {
                 FrameAportesDonacionesVariasDetalle.this.cmdAddAsientoActionPerformed(evt);
             }
-            else if (evt.getSource() == importeField) {
-                FrameAportesDonacionesVariasDetalle.this.importeFieldActionPerformed(evt);
+            else if (evt.getSource() == montoAporteField) {
+                FrameAportesDonacionesVariasDetalle.this.montoAporteFieldActionPerformed(evt);
             }
         }
 
@@ -603,8 +675,11 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
             if (evt.getSource() == txtCtaCte) {
                 FrameAportesDonacionesVariasDetalle.this.txtCtaCteFocusGained(evt);
             }
-            else if (evt.getSource() == importeField) {
-                FrameAportesDonacionesVariasDetalle.this.importeFieldFocusGained(evt);
+            else if (evt.getSource() == montoDonacionField) {
+                FrameAportesDonacionesVariasDetalle.this.montoDonacionFieldFocusGained(evt);
+            }
+            else if (evt.getSource() == montoAporteField) {
+                FrameAportesDonacionesVariasDetalle.this.montoAporteFieldFocusGained(evt);
             }
         }
 
@@ -621,8 +696,11 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
             else if (evt.getSource() == cboMiembro) {
                 FrameAportesDonacionesVariasDetalle.this.cboMiembroKeyReleased(evt);
             }
-            else if (evt.getSource() == importeField) {
-                FrameAportesDonacionesVariasDetalle.this.importeFieldKeyReleased(evt);
+            else if (evt.getSource() == montoDonacionField) {
+                FrameAportesDonacionesVariasDetalle.this.montoDonacionFieldKeyReleased(evt);
+            }
+            else if (evt.getSource() == montoAporteField) {
+                FrameAportesDonacionesVariasDetalle.this.montoAporteFieldKeyReleased(evt);
             }
         }
 
@@ -630,8 +708,11 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         }
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
-            if (evt.getSource() == importeField) {
-                FrameAportesDonacionesVariasDetalle.this.importeFieldMouseClicked(evt);
+            if (evt.getSource() == montoDonacionField) {
+                FrameAportesDonacionesVariasDetalle.this.montoDonacionFieldMouseClicked(evt);
+            }
+            else if (evt.getSource() == montoAporteField) {
+                FrameAportesDonacionesVariasDetalle.this.montoAporteFieldMouseClicked(evt);
             }
         }
 
@@ -736,16 +817,21 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
     private void newDetalle() {
         try {
             TblTransferencias t = new TblTransferencias();
-
+            entityManager.persist(t);
             t.setIdUser(currentUser.getUser());
             t.setCobrado(true);
             t.setFechahora(LocalDate.now());
+            t.setMontoAporte(0);
+            t.setMontoDonacion(0);
+            t.setIdEventoTipo(idEventoTipo);
 
-            entityManager.persist(t);
             listTransferencias.add(t);
             Integer row = listTransferencias.size() - 1;
             masterTable.setRowSelectionInterval(row, row);
             masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+
+            createAsientoInicial();
+
             txtCtaCte.requestFocusInWindow();
 
         } catch (Exception ex) {
@@ -764,50 +850,11 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
 
     private void save() {
         try {
-            if (((Number) importeField.getValue()).intValue() == 0) {
+            if (((Number) montoDonacionField.getValue()).intValue() == 0 && ((Number) montoAporteField.getValue()).intValue() == 0) {
                 JOptionPane.showMessageDialog(null, "El monto no puede ser 0.");
-                importeField.requestFocusInWindow();
+                montoDonacionField.requestFocusInWindow();
                 return;
             }
-            /*for (TblTransferencias evd : listTransferencias) {
-                if (entityManager.contains(evd)) {
-                    if (evd.getTblAsientosList().size() == 2) {
-                        ((List<TblAsientos>) evd.getTblAsientosList()).get(0).setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
-                        ((List<TblAsientos>) evd.getTblAsientosList()).get(1).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosList()).get(0).getMonto());
-                        entityManager.merge(evd);
-                    } else if (evd.getTblAsientosList().isEmpty()) {
-
-                        List<TblAsientos> ts = evd.getTblAsientosList();
-                        if (ts == null) {
-                            ts = new LinkedList<>();
-                            evd.setTblAsientosList((List) ts);
-                        }
-                        TblAsientos asientoAporte = new TblAsientos();
-                        asientoAporte.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
-                        asientoAporte.setIdCentroDeCostoDebe((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
-                        asientoAporte.setIdCentroDeCostoHaber(asientoAporte.getIdCentroDeCostoDebe());
-                        asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
-                        asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
-                        asientoAporte.setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
-                        asientoAporte.setIdUser(currentUser.getUser());
-
-                        ts.add(asientoAporte);
-
-                        TblAsientos asientoDonacion = new TblAsientos();
-                        asientoDonacion.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
-                        asientoDonacion.setIdCentroDeCostoDebe((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
-                        asientoDonacion.setIdCentroDeCostoHaber(asientoAporte.getIdCentroDeCostoDebe());
-                        asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
-                        asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
-                        asientoDonacion.setMonto(evd.getMonto() - asientoAporte.getMonto());
-                        asientoDonacion.setIdUser(currentUser.getUser());
-
-                        ts.add(asientoDonacion);
-
-                        entityManager.merge(evd);
-                    }
-                }
-            }*/
 
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
@@ -842,7 +889,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                 if (value.isPresent()) {
                     cboMiembro.setSelectedItem(value.get());
                     txtCtaCte.setBackground(Color.green);
-                    // montoDonacionField.requestFocus();
+                    montoDonacionField.requestFocus();
                 }
 
             }
@@ -874,6 +921,18 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         refresh();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
+    private void montoDonacionFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_montoDonacionFieldFocusGained
+        montoDonacionField.selectAll();
+    }//GEN-LAST:event_montoDonacionFieldFocusGained
+
+    private void montoDonacionFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_montoDonacionFieldMouseClicked
+
+    }//GEN-LAST:event_montoDonacionFieldMouseClicked
+
+    private void montoDonacionFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_montoDonacionFieldActionPerformed
+
+    }//GEN-LAST:event_montoDonacionFieldActionPerformed
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             List data = queryMiembros.getResultList();
@@ -903,6 +962,31 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cboMiembroActionPerformed
+
+    private void montoDonacionFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoDonacionFieldKeyReleased
+        try {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (((Number) montoDonacionField.getValue()).intValue() == 0) {
+                    JOptionPane.showMessageDialog(null, "El monto no puede ser 0.");
+                    montoDonacionField.requestFocusInWindow();
+                    return;
+                }
+                if (cboMiembro.getSelectedItem() == null) {
+                    JOptionPane.showMessageDialog(null, "No ha eligido un donador.");
+                    txtCtaCte.requestFocusInWindow();
+                    return;
+                }
+                save();
+                Integer reply = JOptionPane.showConfirmDialog(null, "Desea crear un nuevo registro?", title, JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                    newDetalle();
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_montoDonacionFieldKeyReleased
 
     private void cboMiembroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cboMiembroKeyReleased
 
@@ -948,21 +1032,21 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         }
     }//GEN-LAST:event_cmdAddAsientoActionPerformed
 
-    private void importeFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_importeFieldFocusGained
+    private void montoAporteFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_montoAporteFieldFocusGained
         // TODO add your handling code here:
-    }//GEN-LAST:event_importeFieldFocusGained
+    }//GEN-LAST:event_montoAporteFieldFocusGained
 
-    private void importeFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_importeFieldMouseClicked
+    private void montoAporteFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_montoAporteFieldMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_importeFieldMouseClicked
+    }//GEN-LAST:event_montoAporteFieldMouseClicked
 
-    private void importeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importeFieldActionPerformed
+    private void montoAporteFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_montoAporteFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_importeFieldActionPerformed
+    }//GEN-LAST:event_montoAporteFieldActionPerformed
 
-    private void importeFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_importeFieldKeyReleased
+    private void montoAporteFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoAporteFieldKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_importeFieldKeyReleased
+    }//GEN-LAST:event_montoAporteFieldKeyReleased
 
     private void addAsiento() {
         try {
@@ -974,18 +1058,23 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                 T.setTblAsientosTemporalesList((List) ts);
             }
             TblAsientosTemporales t = new TblAsientosTemporales();
-
+            t.setFacturado(false);
             t.setFechahora(T.getFechahora().atStartOfDay() != null ? T.getFechahora().atStartOfDay() : null);
 
             t.setIdCentroDeCostoDebe(centroDeCostoPreferido);
             t.setIdCentroDeCostoHaber(centroDeCostoPreferido);
             t.setIdCuentaContableDebe(listCuentasContablesPorDefecto.get(0).getIdCuentaCtaCte());
+
+
+//-----------------------SOLO DONACIONES-------------------------------
             t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaDonaciones());
 
+            t.setEsAporte(false);
+            
             if (ts.isEmpty()) {
-                t.setMonto(T.getMontoTotal());
+                t.setMonto(T.getMontoDonacion());
             }
-
+//---------------------------------------------------------------
             ts.add(t);
             entityManager.merge(T);
             masterTable.clearSelection();
@@ -994,10 +1083,10 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
             asientosTable.setRowSelectionInterval(row, row);
             asientosTable.scrollRectToVisible(asientosTable.getCellRect(row, 0, true));
             if (asientosTable.getColumnModel().getColumnCount() > 0 && asientosTable.getRowCount() == 1) {
-                asientosTable.getColumn("Centro de Costo Debe").setCellEditor(new DefaultCellEditor(cboCentroDeCostoDebe));
-                asientosTable.getColumn("Centro de Costo Haber").setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
-                asientosTable.getColumn("Cuenta Contable Debe").setCellEditor(new DefaultCellEditor(cboCuentaDebe));
-                asientosTable.getColumn("Cuenta Contable Haber").setCellEditor(new DefaultCellEditor(cboCuentaHaber));
+                asientosTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(cboCentroDeCostoDebe));
+                asientosTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(cboCuentaDebe));
+                asientosTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
+                asientosTable.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(cboCuentaHaber));
                 asientosTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
             }
         } catch (Exception ex) {
@@ -1034,7 +1123,6 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
     private javax.swing.JLabel idMiembroLabel;
     private javax.swing.JLabel idMiembroLabel1;
     private javax.swing.JLabel idMiembroLabel2;
-    private javax.swing.JFormattedTextField importeField;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -1046,6 +1134,9 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
     private java.util.List<com.parah.mg.domain.TblTransferencias> listTransferencias;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
+    private javax.swing.JFormattedTextField montoAporteField;
+    private javax.swing.JFormattedTextField montoDonacionField;
+    private javax.swing.JLabel montoLabel;
     private javax.swing.JLabel montoLabel1;
     private javax.swing.JLabel montoLabel6;
     private javax.swing.JButton newButton;
