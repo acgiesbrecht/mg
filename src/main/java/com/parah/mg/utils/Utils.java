@@ -443,8 +443,10 @@ public class Utils extends Component {
 
     public static String generateNextFacturaNroFull(String nro) {
         try {
-            Integer i = Integer.parseInt(nro.replaceAll("001-001-", "")) + 1;
-            return String.format("001-001-%07d", i);
+            String[] s = nro.split("-");
+            Integer i = Integer.parseInt(s[2]) + 1;
+            
+            return String.format(s[0] + "-" + s[1] + "-%07d", i);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());

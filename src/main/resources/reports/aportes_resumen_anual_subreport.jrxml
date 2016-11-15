@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2016-11-01T15:27:29 -->
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2016-11-15T08:13:25 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="670" pageHeight="595" orientation="Landscape" columnWidth="670" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -90,9 +90,7 @@
     AND t.COBRADO = TRUE
     AND t.ID_ENTIDAD = $P{id_entidad}) diciembre,
 (SELECT
-    SUM(COALESCE(e.APORTE_MENSUAL * (SELECT COUNT(*) FROM MG.TBL_EVENTOS ev
-    WHERE ev.ID_EVENTO_TIPO = 3
-    AND YEAR(ev.FECHA) = $P{ano} AND MONTH(ev.FECHA) > 1), 0)) as compromiso
+    SUM(COALESCE(e.APORTE_MENSUAL * (e.MES_FIN_APORTE - e.MES_INICIO_APORTE + 1), 0)) as compromiso
     FROM TBL_ENTIDADES e
     WHERE e.ID = $P{id_entidad} OR e.ID_ENTIDAD_PAGANTE_APORTES = $P{id_entidad}) compromiso,
 (SELECT
@@ -369,7 +367,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{ENERO}+$F{FEBRERO}+$F{MARZO}+$F{ABRIL}+$F{MAYO}+$F{JUNIO}+$F{JULIO}+$F{AGOSTO}+$F{SETIEMBRE}+$F{OCTUBRE}+$F{NOVIEMBRE}+$F{DICIEMBRE}-$F{COMPROMISO}-$F{SALDO_ANTERIOR}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{ENERO}+$F{FEBRERO}+$F{MARZO}+$F{ABRIL}+$F{MAYO}+$F{JUNIO}+$F{JULIO}+$F{AGOSTO}+$F{SETIEMBRE}+$F{OCTUBRE}+$F{NOVIEMBRE}+$F{DICIEMBRE}-$F{COMPROMISO}+$F{SALDO_ANTERIOR}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

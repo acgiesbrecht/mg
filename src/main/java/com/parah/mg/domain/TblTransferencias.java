@@ -243,8 +243,8 @@ public class TblTransferencias implements Serializable {
         return "com.parah.mg.domain.TblTransferencias[ id=" + id + " ]";
     }
 
-    public Integer getMontoTotal() {
-        return getMontoAporte() + getMontoDonacion();
+    public Integer getMontoTotal() {        
+            return getMontoAporte() + getMontoDonacion();       
     }
 
 }

@@ -95,7 +95,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             support3.setFilterMode(TextMatcherEditor.CONTAINS);
 
             AutoCompleteSupport support4 = AutoCompleteSupport.install(cboAlergia, GlazedLists.eventListOf(listAlergia.toArray()));
-            support4.setFilterMode(TextMatcherEditor.CONTAINS);
+            support4.setFilterMode(TextMatcherEditor.CONTAINS);                        
 
             rucField.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
@@ -230,7 +230,9 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         ctacteLabel7 = new javax.swing.JLabel();
         nombreLabel7 = new javax.swing.JLabel();
         nombreLabel8 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        txtMesInicioAporte = new javax.swing.JFormattedTextField();
+        txtMesFinAporte = new javax.swing.JFormattedTextField();
 
         FormListener formListener = new FormListener();
 
@@ -537,7 +539,18 @@ public class FrameEntidadesAdmin extends JInternalFrame {
 
         nombreLabel8.setText("Mes Fin de Compromiso de Aportar:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jButton1.setText("Calcular Meses Compromiso Aporte");
+        jButton1.addActionListener(formListener);
+
+        txtMesInicioAporte.setText("2");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.mesInicioAporte}"), txtMesInicioAporte, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        txtMesFinAporte.setText("11");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.mesFinAporte}"), txtMesFinAporte, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -559,7 +572,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1294, Short.MAX_VALUE)
+                    .addComponent(masterScrollPane)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(newButton)
@@ -629,29 +642,28 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                                                     .addComponent(nombreLabel8))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                            .addComponent(dtpFechaCongregacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                            .addComponent(dtpFechaDescongregacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                            .addComponent(dtpFechaDefuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addGap(58, 58, 58))
                                                     .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(dtpFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(dtpFechaBautismo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                    .addComponent(dtpFechaCongregacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(dtpFechaDescongregacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(dtpFechaDefuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addComponent(txtMesInicioAporte, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                            .addComponent(txtMesFinAporte, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                        .addComponent(jButton1))))
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                     .addGroup(layout.createSequentialGroup()
                                                         .addGap(183, 183, 183)
                                                         .addComponent(cboAlergia, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                     .addComponent(cboAreaServicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(idCategoriaLabel3)
-                                                        .addComponent(idCategoriaLabel2))
-                                                    .addGap(238, 238, 238)))
+                                                .addComponent(idCategoriaLabel3)
+                                                .addComponent(idCategoriaLabel2))
                                             .addComponent(jCheckBox1))))))
-                        .addGap(225, 225, 225)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 299, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -661,7 +673,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -725,11 +737,16 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                             .addComponent(dtpFechaDefuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(nombreLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(nombreLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nombreLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(nombreLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtMesInicioAporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(nombreLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtMesFinAporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -833,6 +850,9 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             }
             else if (evt.getSource() == txtAporteBase2) {
                 FrameEntidadesAdmin.this.txtAporteBase2ActionPerformed(evt);
+            }
+            else if (evt.getSource() == jButton1) {
+                FrameEntidadesAdmin.this.jButton1ActionPerformed(evt);
             }
         }
 
@@ -1247,6 +1267,23 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAporteBase2ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            int[] selected = masterTable.getSelectedRows();
+            List<TblEntidades> toRemove = new ArrayList<>(selected.length);
+            TblEntidades t;
+            for (Integer idx = 0; idx < selected.length; idx++) {
+                t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                t.setMesInicioAporte(2);
+                t.setMesFinAporte(11);
+                entityManager.merge(t);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidosField;
     private javax.swing.JComboBox cboAlergia;
@@ -1284,10 +1321,10 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private javax.swing.JLabel idMiembroLabel1;
     private javax.swing.JLabel idMiembroLabel2;
     private com.parah.mg.utils.IntegerLongConverter integerLongConverter1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private java.util.List<com.parah.mg.domain.miembros.TblEntidades> list;
     private java.util.List<com.parah.mg.domain.miembros.TblMiembrosAlergias> listAlergia;
     private java.util.List<com.parah.mg.domain.miembros.TblAreasServicioEnIglesia> listAreaServicio;
@@ -1321,6 +1358,8 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private javax.swing.JFormattedTextField txtAporteBase1;
     private javax.swing.JFormattedTextField txtAporteBase2;
     private javax.swing.JTextField txtCtaCte;
+    private javax.swing.JFormattedTextField txtMesFinAporte;
+    private javax.swing.JFormattedTextField txtMesInicioAporte;
     private javax.swing.JTextField txtRazonSocial;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
