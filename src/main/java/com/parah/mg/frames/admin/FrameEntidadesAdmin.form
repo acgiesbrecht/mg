@@ -183,12 +183,12 @@
                       <Component id="ctacteLabel2" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="0" pref="37" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="masterScrollPane" max="32767" attributes="0"/>
+                  <Component id="masterScrollPane" pref="1294" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="newButton" linkSize="1" min="-2" max="-2" attributes="0"/>
@@ -246,58 +246,63 @@
                                           <Component id="ctacteField1" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
                                           <Component id="direccionField" alignment="0" min="-2" pref="295" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="145" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
                                               <Group type="103" groupAlignment="0" attributes="0">
                                                   <Component id="nombreLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                                                   <Component id="nombreLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="idCategoriaLabel1" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="idCategoriaLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                                                      <Group type="102" alignment="0" attributes="0">
+                                                          <Component id="nombreLabel4" min="-2" max="-2" attributes="0"/>
+                                                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                                                      </Group>
+                                                      <Component id="nombreLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Component id="nombreLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="nombreLabel6" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="nombreLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
                                               </Group>
-                                              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Group type="102" alignment="1" attributes="0">
+                                                      <Group type="103" groupAlignment="0" attributes="0">
+                                                          <Component id="dtpFechaCongregacion" min="-2" max="-2" attributes="0"/>
+                                                          <Component id="dtpFechaDescongregacion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                          <Component id="dtpFechaDefuncion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                      </Group>
+                                                      <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+                                                  </Group>
                                                   <Component id="cboCategoria" min="-2" pref="197" max="-2" attributes="0"/>
                                                   <Component id="dtpFechaNacimiento" min="-2" max="-2" attributes="0"/>
                                                   <Component id="dtpFechaBautismo" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
-                                          <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <EmptySpace min="-2" pref="183" max="-2" attributes="0"/>
+                                                      <Component id="cboAlergia" min="-2" pref="197" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Component id="cboAreaServicio" alignment="1" min="-2" pref="197" max="-2" attributes="0"/>
+                                              </Group>
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Group type="102" alignment="0" attributes="0">
-                                                          <Group type="103" groupAlignment="0" attributes="0">
-                                                              <Component id="nombreLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                                                  <Component id="nombreLabel6" min="-2" max="-2" attributes="0"/>
-                                                                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                                                                      <Component id="idCategoriaLabel3" min="-2" max="-2" attributes="0"/>
-                                                                      <Component id="idCategoriaLabel2" min="-2" max="-2" attributes="0"/>
-                                                                  </Group>
-                                                              </Group>
-                                                          </Group>
-                                                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                                                      </Group>
-                                                      <Group type="102" alignment="1" attributes="0">
-                                                          <Component id="nombreLabel5" min="-2" max="-2" attributes="0"/>
-                                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                      </Group>
+                                                      <Component id="idCategoriaLabel3" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="idCategoriaLabel2" min="-2" max="-2" attributes="0"/>
                                                   </Group>
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="dtpFechaCongregacion" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="dtpFechaDescongregacion" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="dtpFechaDefuncion" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="cboAlergia" alignment="1" min="-2" pref="197" max="-2" attributes="0"/>
-                                                  </Group>
+                                                  <EmptySpace min="-2" pref="238" max="-2" attributes="0"/>
                                               </Group>
-                                              <Component id="cboAreaServicio" alignment="1" min="-2" pref="197" max="-2" attributes="0"/>
                                           </Group>
+                                          <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="225" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -308,52 +313,8 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="63" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" pref="49" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
-                      <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="idCategoriaLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cboCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="nombreLabel2" min="-2" pref="19" max="-2" attributes="0"/>
-                          <Component id="dtpFechaNacimiento" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="dtpFechaBautismo" max="32767" attributes="0"/>
-                          <Component id="nombreLabel3" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="dtpFechaCongregacion" max="32767" attributes="0"/>
-                          <Component id="nombreLabel4" min="-2" pref="20" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="nombreLabel5" max="32767" attributes="0"/>
-                          <Component id="dtpFechaDescongregacion" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="dtpFechaDefuncion" max="32767" attributes="0"/>
-                          <Component id="nombreLabel6" min="-2" pref="20" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="cboAreaServicio" min="-2" max="-2" attributes="0"/>
-                          <Component id="idCategoriaLabel2" min="-2" pref="23" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="idCategoriaLabel3" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
-                          <Component id="cboAlergia" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -396,7 +357,52 @@
                           <Component id="ctacteField1" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="direccionLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="idCategoriaLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cboCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="nombreLabel2" min="-2" pref="19" max="-2" attributes="0"/>
+                          <Component id="dtpFechaNacimiento" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="dtpFechaBautismo" max="32767" attributes="0"/>
+                          <Component id="nombreLabel3" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="dtpFechaCongregacion" max="32767" attributes="0"/>
+                          <Component id="nombreLabel4" min="-2" pref="20" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="nombreLabel5" max="32767" attributes="0"/>
+                          <Component id="dtpFechaDescongregacion" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="dtpFechaDefuncion" min="-2" max="-2" attributes="0"/>
+                          <Component id="nombreLabel7" min="-2" pref="20" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="nombreLabel6" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="nombreLabel8" min="-2" pref="20" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="txtAporteBase1" max="32767" attributes="0"/>
                           <Component id="ctacteLabel6" min="-2" pref="20" max="-2" attributes="0"/>
@@ -412,14 +418,26 @@
                           <Component id="idCategoriaLabel" min="-2" pref="21" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
                   </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="cboAreaServicio" min="-2" max="-2" attributes="0"/>
+                          <Component id="idCategoriaLabel2" min="-2" pref="23" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="idCategoriaLabel3" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="cboAlergia" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -916,12 +934,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="nombreLabel6">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Fecha Defunci&#xf3;n:"/>
+        <Property name="text" type="java.lang.String" value="Mes Inicio de Compromiso de Aportar:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="idCategoriaLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Categoria de Miembro:"/>
+        <Property name="text" type="java.lang.String" value="Categoria de Aporte de Miembro:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cboCategoria">
@@ -1028,6 +1046,31 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Aporte Saldo de A&#xf1;o Anterior:"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="nombreLabel7">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Fecha Defunci&#xf3;n:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="nombreLabel8">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Mes Fin de Compromiso de Aportar:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="jComboBox1">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
