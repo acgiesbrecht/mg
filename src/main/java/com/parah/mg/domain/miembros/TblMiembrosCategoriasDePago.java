@@ -49,6 +49,8 @@ public class TblMiembrosCategoriasDePago implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
+    @Column(name = "ES_ACTIVACION")
+    private Boolean esActivacion;    
 
     public TblMiembrosCategoriasDePago() {
     }
@@ -110,6 +112,20 @@ public class TblMiembrosCategoriasDePago implements Serializable {
 
     public void setTblEntidadesList(List<TblEntidades> tblEntidadesList) {
         this.tblEntidadesList = tblEntidadesList;
+    }
+
+    /**
+     * @return the esActivacion
+     */
+    public Boolean getEsActivacion() {
+        return esActivacion;
+    }
+
+    /**
+     * @param esActivacion the esActivacion to set
+     */
+    public void setEsActivacion(Boolean esActivacion) {
+        this.esActivacion = esActivacion;
     }
 
 }

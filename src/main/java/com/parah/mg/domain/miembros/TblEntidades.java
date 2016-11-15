@@ -148,6 +148,14 @@ public class TblEntidades implements Serializable {
     @JoinColumn(name = "ID_MIEMBROS_CATEGORIA_DE_PAGO", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private TblMiembrosCategoriasDePago idMiembrosCategoriaDePago;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "MES_INICIO_APORTE")
+    private Integer mesInicioAporte;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "MES_FIN_APORTE")
+    private Integer mesFinAporte;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private TblUsers idUser;
@@ -442,6 +450,34 @@ public class TblEntidades implements Serializable {
      */
     public void setAporteSaldoAnterior(Long aporteSaldoAnterior) {
         this.aporteSaldoAnterior = aporteSaldoAnterior;
+    }
+
+    /**
+     * @return the mesInicioAporte
+     */
+    public Integer getMesInicioAporte() {
+        return mesInicioAporte;
+    }
+
+    /**
+     * @param mesInicioAporte the mesInicioAporte to set
+     */
+    public void setMesInicioAporte(Integer mesInicioAporte) {
+        this.mesInicioAporte = mesInicioAporte;
+    }
+
+    /**
+     * @return the mesFinAporte
+     */
+    public Integer getMesFinAporte() {
+        return mesFinAporte;
+    }
+
+    /**
+     * @param mesFinAporte the mesFinAporte to set
+     */
+    public void setMesFinAporte(Integer mesFinAporte) {
+        this.mesFinAporte = mesFinAporte;
     }
 
 }
