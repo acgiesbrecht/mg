@@ -265,10 +265,8 @@
                                                   <Component id="nombreLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                   <Component id="cboCategoria" min="-2" pref="197" max="-2" attributes="0"/>
-                                                  <Component id="dtpFechaNacimiento" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="dtpFechaBautismo" min="-2" max="-2" attributes="0"/>
                                                   <Component id="dtpFechaCongregacion" min="-2" max="-2" attributes="0"/>
                                                   <Component id="dtpFechaDescongregacion" alignment="0" min="-2" max="-2" attributes="0"/>
                                                   <Component id="dtpFechaDefuncion" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -279,6 +277,16 @@
                                                       </Group>
                                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                                       <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <Component id="dtpFechaBautismo" min="-2" max="-2" attributes="0"/>
+                                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                      <Component id="lblEdadBautismo" max="32767" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <Component id="dtpFechaNacimiento" min="-2" max="-2" attributes="0"/>
+                                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                      <Component id="lblEdad" min="-2" pref="237" max="-2" attributes="0"/>
                                                   </Group>
                                               </Group>
                                           </Group>
@@ -299,7 +307,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="299" max="32767" attributes="0"/>
+                      <EmptySpace pref="171" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -310,7 +318,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="50" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" pref="52" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -364,14 +372,16 @@
                           <Component id="cboCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="nombreLabel2" min="-2" pref="19" max="-2" attributes="0"/>
-                          <Component id="dtpFechaNacimiento" min="-2" max="-2" attributes="0"/>
+                          <Component id="dtpFechaNacimiento" max="32767" attributes="0"/>
+                          <Component id="lblEdad" alignment="1" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="dtpFechaBautismo" max="32767" attributes="0"/>
                           <Component id="nombreLabel3" max="32767" attributes="0"/>
+                          <Component id="lblEdadBautismo" alignment="1" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -444,7 +454,7 @@
                   <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" pref="13" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="ctacteLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -1084,6 +1094,16 @@
       </Properties>
       <BindingProperties>
         <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.mesFinAporte}" target="txtMesFinAporte" targetPath="value" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblEdad">
+      <BindingProperties>
+        <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.edadText}" target="lblEdad" targetPath="text" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblEdadBautismo">
+      <BindingProperties>
+        <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.edadBautismoText}" target="lblEdadBautismo" targetPath="text" updateStrategy="0" immediately="false"/>
       </BindingProperties>
     </Component>
   </SubComponents>

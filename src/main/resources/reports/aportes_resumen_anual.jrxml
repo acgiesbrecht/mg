@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-11-15T07:04:32 -->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2016-11-15T15:20:47 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="841" pageHeight="595" orientation="Landscape" columnWidth="801" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -13,12 +13,14 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="159"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="830"/>
 	<parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
 	<parameter name="id_categoria" class="java.lang.Integer"/>
 	<parameter name="ano" class="java.lang.Integer"/>
 	<parameter name="subreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT e.ID, e.APELLIDOS, e.NOMBRES
+		<![CDATA[SELECT e.ID, e.APELLIDOS, e.NOMBRES, {fn timestampdiff(SQL_TSI_YEAR, e.FECHA_NACIMIENTO, CURRENT_TIMESTAMP)} as edad
 FROM MG.TBL_ENTIDADES e LEFT JOIN TBL_MIEMBROS_CATEGORIAS_DE_PAGO cp ON e.ID_MIEMBROS_CATEGORIA_DE_PAGO = cp.ID
 WHERE e.IS_MIEMBRO_ACTIVO = TRUE]]>
 	</queryString>
@@ -31,6 +33,7 @@ WHERE e.IS_MIEMBRO_ACTIVO = TRUE]]>
 	<field name="NOMBRES" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="edad" class="java.lang.Integer"/>
 	<variable name="SUMA_SALDO" class="java.lang.Integer" calculation="System"/>
 	<variable name="SUMA_COMPROMISO" class="java.lang.Integer" calculation="System"/>
 	<variable name="SUMA_PAGOS" class="java.lang.Integer" calculation="System"/>

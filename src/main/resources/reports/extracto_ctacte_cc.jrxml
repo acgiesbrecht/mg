@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-11-03T14:30:48 -->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2016-11-15T10:36:53 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -149,14 +149,14 @@ GROUP BY ccd.DESCRIPCION]]>
 				<text><![CDATA[Cuenta Contable]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="355" y="20" width="100" height="20" uuid="ab27f696-a8ca-4ccc-988b-f118306c527a"/>
+				<reportElement x="454" y="20" width="100" height="20" uuid="ab27f696-a8ca-4ccc-988b-f118306c527a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Ingresos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="455" y="20" width="100" height="20" uuid="3700a0a7-58cf-4ca1-a6ff-06b2028578f9"/>
+				<reportElement x="354" y="20" width="100" height="20" uuid="3700a0a7-58cf-4ca1-a6ff-06b2028578f9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -181,7 +181,7 @@ GROUP BY ccd.DESCRIPCION]]>
 		<band height="20" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement key="" x="355" y="0" width="100" height="20" uuid="97cad6e3-efc3-4cbc-95f0-fe04f55ad5c2">
+				<reportElement key="" x="454" y="0" width="100" height="20" uuid="97cad6e3-efc3-4cbc-95f0-fe04f55ad5c2">
 					<printWhenExpression><![CDATA[$F{IMPORTE} != null]]></printWhenExpression>
 				</reportElement>
 				<box leftPadding="3" rightPadding="3">
@@ -209,7 +209,7 @@ GROUP BY ccd.DESCRIPCION]]>
 				<textFieldExpression><![CDATA[$F{CUENTA} == "Capital" ? "Capital o Saldo Anterior" : ($F{IMPORTE} == null ? null : $F{CUENTA})]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement key="" x="455" y="0" width="100" height="20" uuid="920b3bb4-9c54-4815-b16a-8c493ad8c299">
+				<reportElement key="" x="354" y="0" width="100" height="20" uuid="920b3bb4-9c54-4815-b16a-8c493ad8c299">
 					<printWhenExpression><![CDATA[$F{IMPORTE} != null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
@@ -227,7 +227,7 @@ GROUP BY ccd.DESCRIPCION]]>
 		<band height="40" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField pattern="#,##0">
-				<reportElement x="355" y="0" width="100" height="20" uuid="42e527ad-ea36-4acc-9ccc-bc9199249333"/>
+				<reportElement x="454" y="0" width="100" height="20" uuid="42e527ad-ea36-4acc-9ccc-bc9199249333"/>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.4"/>
 					<leftPen lineWidth="0.4"/>
@@ -253,7 +253,7 @@ GROUP BY ccd.DESCRIPCION]]>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 			<textField pattern="#,##0">
-				<reportElement x="455" y="0" width="100" height="20" uuid="ba4e2998-fa74-4b5d-8269-a15ef5bdb43a"/>
+				<reportElement x="354" y="0" width="100" height="20" uuid="ba4e2998-fa74-4b5d-8269-a15ef5bdb43a"/>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.4"/>
 					<leftPen lineWidth="0.4"/>
@@ -266,7 +266,7 @@ GROUP BY ccd.DESCRIPCION]]>
 				<textFieldExpression><![CDATA[$V{sum_egresos} < 0 ? -$V{sum_egresos} : ""]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="455" y="20" width="100" height="20" uuid="697a9bc5-9dcf-400c-b211-ab64656c0d85"/>
+				<reportElement x="354" y="20" width="100" height="20" uuid="697a9bc5-9dcf-400c-b211-ab64656c0d85"/>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.4"/>
 					<leftPen lineWidth="0.4"/>
@@ -292,7 +292,7 @@ GROUP BY ccd.DESCRIPCION]]>
 				<text><![CDATA[SALDO:]]></text>
 			</staticText>
 			<textField pattern="#,##0">
-				<reportElement x="355" y="20" width="100" height="20" uuid="156f91b4-4adc-4ece-a0fe-cf807407ed1b"/>
+				<reportElement x="454" y="20" width="100" height="20" uuid="156f91b4-4adc-4ece-a0fe-cf807407ed1b"/>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.4"/>
 					<leftPen lineWidth="0.4"/>

@@ -14,6 +14,7 @@ import com.parah.mg.domain.TblUsers;
 import java.io.Serializable;
 import java.util.List;
 import java.time.LocalDate;
+import java.time.Period;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,21 +44,36 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "TBL_ENTIDADES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblEntidades.findAll", query = "SELECT t FROM TblEntidades t"),
-    @NamedQuery(name = "TblEntidades.findById", query = "SELECT t FROM TblEntidades t WHERE t.id = :id"),
-    @NamedQuery(name = "TblEntidades.findByNombres", query = "SELECT t FROM TblEntidades t WHERE t.nombres = :nombres"),
-    @NamedQuery(name = "TblEntidades.findByApellidos", query = "SELECT t FROM TblEntidades t WHERE t.apellidos = :apellidos"),
-    @NamedQuery(name = "TblEntidades.findByRazonSocial", query = "SELECT t FROM TblEntidades t WHERE t.razonSocial = :razonSocial"),
-    @NamedQuery(name = "TblEntidades.findByRucSinDv", query = "SELECT t FROM TblEntidades t WHERE t.rucSinDv = :rucSinDv"),
-    @NamedQuery(name = "TblEntidades.findByCtacte", query = "SELECT t FROM TblEntidades t WHERE t.ctacte = :ctacte"),
-    @NamedQuery(name = "TblEntidades.findByDomicilio", query = "SELECT t FROM TblEntidades t WHERE t.domicilio = :domicilio"),
-    @NamedQuery(name = "TblEntidades.findByBox", query = "SELECT t FROM TblEntidades t WHERE t.box = :box"),
-    @NamedQuery(name = "TblEntidades.findByIsMiembroActivo", query = "SELECT t FROM TblEntidades t WHERE t.isMiembroActivo = :isMiembroActivo"),
-    @NamedQuery(name = "TblEntidades.findByAporteMensual", query = "SELECT t FROM TblEntidades t WHERE t.aporteMensual = :aporteMensual"),
-    @NamedQuery(name = "TblEntidades.findByFechaNacimiento", query = "SELECT t FROM TblEntidades t WHERE t.fechaNacimiento = :fechaNacimiento"),
-    @NamedQuery(name = "TblEntidades.findByFechaBautismo", query = "SELECT t FROM TblEntidades t WHERE t.fechaBautismo = :fechaBautismo"),
-    @NamedQuery(name = "TblEntidades.findByFechaEntradaCongregacion", query = "SELECT t FROM TblEntidades t WHERE t.fechaEntradaCongregacion = :fechaEntradaCongregacion"),
-    @NamedQuery(name = "TblEntidades.findByFechaSalidaCongregacion", query = "SELECT t FROM TblEntidades t WHERE t.fechaSalidaCongregacion = :fechaSalidaCongregacion"),
+    @NamedQuery(name = "TblEntidades.findAll", query = "SELECT t FROM TblEntidades t")
+    ,
+    @NamedQuery(name = "TblEntidades.findById", query = "SELECT t FROM TblEntidades t WHERE t.id = :id")
+    ,
+    @NamedQuery(name = "TblEntidades.findByNombres", query = "SELECT t FROM TblEntidades t WHERE t.nombres = :nombres")
+    ,
+    @NamedQuery(name = "TblEntidades.findByApellidos", query = "SELECT t FROM TblEntidades t WHERE t.apellidos = :apellidos")
+    ,
+    @NamedQuery(name = "TblEntidades.findByRazonSocial", query = "SELECT t FROM TblEntidades t WHERE t.razonSocial = :razonSocial")
+    ,
+    @NamedQuery(name = "TblEntidades.findByRucSinDv", query = "SELECT t FROM TblEntidades t WHERE t.rucSinDv = :rucSinDv")
+    ,
+    @NamedQuery(name = "TblEntidades.findByCtacte", query = "SELECT t FROM TblEntidades t WHERE t.ctacte = :ctacte")
+    ,
+    @NamedQuery(name = "TblEntidades.findByDomicilio", query = "SELECT t FROM TblEntidades t WHERE t.domicilio = :domicilio")
+    ,
+    @NamedQuery(name = "TblEntidades.findByBox", query = "SELECT t FROM TblEntidades t WHERE t.box = :box")
+    ,
+    @NamedQuery(name = "TblEntidades.findByIsMiembroActivo", query = "SELECT t FROM TblEntidades t WHERE t.isMiembroActivo = :isMiembroActivo")
+    ,
+    @NamedQuery(name = "TblEntidades.findByAporteMensual", query = "SELECT t FROM TblEntidades t WHERE t.aporteMensual = :aporteMensual")
+    ,
+    @NamedQuery(name = "TblEntidades.findByFechaNacimiento", query = "SELECT t FROM TblEntidades t WHERE t.fechaNacimiento = :fechaNacimiento")
+    ,
+    @NamedQuery(name = "TblEntidades.findByFechaBautismo", query = "SELECT t FROM TblEntidades t WHERE t.fechaBautismo = :fechaBautismo")
+    ,
+    @NamedQuery(name = "TblEntidades.findByFechaEntradaCongregacion", query = "SELECT t FROM TblEntidades t WHERE t.fechaEntradaCongregacion = :fechaEntradaCongregacion")
+    ,
+    @NamedQuery(name = "TblEntidades.findByFechaSalidaCongregacion", query = "SELECT t FROM TblEntidades t WHERE t.fechaSalidaCongregacion = :fechaSalidaCongregacion")
+    ,
     @NamedQuery(name = "TblEntidades.findByFechaDefuncion", query = "SELECT t FROM TblEntidades t WHERE t.fechaDefuncion = :fechaDefuncion")})
 public class TblEntidades implements Serializable {
 
@@ -480,4 +496,27 @@ public class TblEntidades implements Serializable {
         this.mesFinAporte = mesFinAporte;
     }
 
+    public Integer getEdad() {
+        if (getFechaNacimiento() != null) {
+            return Period.between(getFechaNacimiento(), LocalDate.now()).getYears();
+        } else {
+            return 0;
+        }
+    }
+
+    public String getEdadText() {
+        if (getFechaNacimiento() != null) {
+            return "Edad: " + String.valueOf(Period.between(getFechaNacimiento(), LocalDate.now()).getYears()) + " años. ";
+        } else {
+            return "Edad: No disponible.";
+        }
+    }
+
+    public String getEdadBautismoText() {
+        if (getFechaBautismo() != null) {
+            return "Bautizado hace: " + String.valueOf(Period.between(getFechaBautismo(), LocalDate.now()).getYears()) + " años. ";
+        } else {
+            return "Bautizado hace: No disponible.";
+        }
+    }
 }
