@@ -22,14 +22,17 @@ import com.parah.mg.utils.Utils;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.persistence.Persistence;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -38,7 +41,10 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -81,7 +87,7 @@ public class FrameAutofacturacion extends JInternalFrame {
 
             AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCentroDeCostoDebe, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
-            
+
             AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCentroDeCostoHaber, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support5.setFilterMode(TextMatcherEditor.CONTAINS);
 
@@ -92,6 +98,62 @@ public class FrameAutofacturacion extends JInternalFrame {
             support4.setFilterMode(TextMatcherEditor.CONTAINS);
 
             refresh();
+
+            txtCantidad.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                public void process() {
+                    try {
+                        if (txtCantidad.getText().length() > 0 && txtCantidad.getValue() != null) {
+                            updateAsientoInicial();
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+                        LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+                    }
+                }
+            });
+
+            txtPrecioUnitario.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    process();
+                }
+
+                public void process() {
+                    try {
+                        if (txtPrecioUnitario.getText().length() > 0 && txtPrecioUnitario.getValue() != null) {
+                            updateAsientoInicial();
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+                        LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+                    }
+                }
+            });
 
             KeyboardFocusManager.getCurrentKeyboardFocusManager()
                     .addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
@@ -116,6 +178,15 @@ public class FrameAutofacturacion extends JInternalFrame {
                         }
                     });
 
+                        KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+            KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
+            KeyStroke ctrlTab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, KeyEvent.CTRL_DOWN_MASK);
+            Set<KeyStroke> keys = new HashSet<>();
+            keys.add(enter);
+            keys.add(tab);
+            keys.add(ctrlTab);
+            KeyboardFocusManager.getCurrentKeyboardFocusManager().setDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, keys);
+            
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -219,8 +290,12 @@ public class FrameAutofacturacion extends JInternalFrame {
         montoLabel5.setText("Domicilio del Vendedor:");
         montoLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
+        txtDomicilio.setText("Loma Plata");
+
         txtCantidad.setColumns(9);
         txtCantidad.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+
+        txtDireccionTransaccion.setText("Loma Plata");
 
         montoLabel7.setText("Direccion de la Transaccoion:");
         montoLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -266,6 +341,7 @@ public class FrameAutofacturacion extends JInternalFrame {
 
         buttonGroup1.add(rbContado);
         rbContado.setText("Pago en misma Fecha");
+        rbContado.addActionListener(formListener);
 
         buttonGroup1.add(rbCredito);
         rbCredito.setText("Pago en otra Fecha");
@@ -450,6 +526,9 @@ public class FrameAutofacturacion extends JInternalFrame {
             else if (evt.getSource() == rbCredito) {
                 FrameAutofacturacion.this.rbCreditoActionPerformed(evt);
             }
+            else if (evt.getSource() == rbContado) {
+                FrameAutofacturacion.this.rbContadoActionPerformed(evt);
+            }
         }
 
         public void focusGained(java.awt.event.FocusEvent evt) {
@@ -480,11 +559,24 @@ public class FrameAutofacturacion extends JInternalFrame {
         }
     }// </editor-fold>//GEN-END:initComponents
 
+    private void updateAsientoInicial() {
+        try {
+            if (txtCantidad.getValue() != null && txtPrecioUnitario.getValue() != null) {
 
-    
-    private void refresh(){
-        try{
-        if (listTimbrados.size() > 0) {
+                if (asientosTable.getModel().getRowCount() == 1) {
+                    asientosTable.getModel().setValueAt(((Number) txtCantidad.getValue()).intValue() * ((Number) txtPrecioUnitario.getValue()).intValue(), 0, 4);
+                }
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }
+
+    private void refresh() {
+        try {
+            if (listTimbrados.size() > 0) {
                 rbContado.setSelected(true);
                 txtTimbrado.setText(listTimbrados.get(0).getNro());
                 imprimirButton.setEnabled(true);
@@ -495,28 +587,28 @@ public class FrameAutofacturacion extends JInternalFrame {
                 }
 
                 dtpFecha.setDateTimeStrict(LocalDateTime.now());
-                
+
                 txtRazonSocial.setText("");
                 rucField.setText("");
                 txtDomicilio.setText("");
                 txtDireccionTransaccion.setText("");
-                
+
                 txtCantidad.setValue(1);
                 txtConcepto.setText("");
                 txtObservacion.setText("");
-                
-                listAsientos.clear();          
-                            dtpFecha.requestFocusInWindow();
+
+                listAsientos.clear();
+                dtpFecha.requestFocusInWindow();
             } else {
                 JOptionPane.showMessageDialog(null, "Debe tener un timbrado activo para poder facturar.");
                 imprimirButton.setEnabled(false);
             }
-                } catch (Exception ex) {
+        } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
-    
+
     Boolean validar() {
         /*if ((Integer) txtNro.getValue() < 1) {
             txtNro.setBackground(Color.red);
@@ -584,7 +676,6 @@ public class FrameAutofacturacion extends JInternalFrame {
 
             refresh();
 
-            
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -658,26 +749,31 @@ public class FrameAutofacturacion extends JInternalFrame {
 
     private void cmdAddAsientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAddAsientoActionPerformed
         addAsiento();
+        updateAsientoInicial();
     }//GEN-LAST:event_cmdAddAsientoActionPerformed
 
     private void rbCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCreditoActionPerformed
-        
+
     }//GEN-LAST:event_rbCreditoActionPerformed
+
+    private void rbContadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbContadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbContadoActionPerformed
 
     private void addAsiento() {
         try {
             TblAsientos t = new TblAsientos();
             t.setFechahora(dtpFecha.getDateTimeStrict());
             t.setIdUser(currentUser.getUser());
-            
-            TblCuentasContablesPorDefecto tblCuentasContablesPorDefecto = (TblCuentasContablesPorDefecto)entityManager.createQuery("SELECT t FROM TblCuentasContablesPorDefecto t WHERE t.id = 1").getSingleResult();
-            
+
+            TblCuentasContablesPorDefecto tblCuentasContablesPorDefecto = (TblCuentasContablesPorDefecto) entityManager.createQuery("SELECT t FROM TblCuentasContablesPorDefecto t WHERE t.id = 1").getSingleResult();
+
             t.setIdCentroDeCostoDebe((TblCentrosDeCosto) entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t WHERE t.preferido = true").getSingleResult());
             t.setIdCentroDeCostoHaber(t.getIdCentroDeCostoDebe());
             t.setIdCuentaContableDebe(tblCuentasContablesPorDefecto.getIdCuentaDebeCompras());
-            if(rbContado.isSelected()){
-                t.setIdCuentaContableHaber(tblCuentasContablesPorDefecto.getIdCuentaHaberComprasFacturaCredito());
-            }else{
+            if (rbContado.isSelected()) {
+                t.setIdCuentaContableHaber(tblCuentasContablesPorDefecto.getIdCuentaHaberComprasFacturaContado());
+            } else {
                 t.setIdCuentaContableHaber(tblCuentasContablesPorDefecto.getIdCuentaHaberComprasFacturaCredito());
             }
             t.setMonto(0);

@@ -21,15 +21,18 @@ import com.parah.mg.utils.Utils;
 import com.parah.utils.CalcDV;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
 import javax.swing.DefaultCellEditor;
@@ -39,6 +42,7 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -195,6 +199,15 @@ public class FrameRecibosCompra extends JInternalFrame {
                             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
                         }
                     });
+            
+                        KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+            KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
+            KeyStroke ctrlTab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, KeyEvent.CTRL_DOWN_MASK);
+            Set<KeyStroke> keys = new HashSet<>();
+            keys.add(enter);
+            keys.add(tab);
+            keys.add(ctrlTab);
+            KeyboardFocusManager.getCurrentKeyboardFocusManager().setDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, keys);
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());

@@ -466,6 +466,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtDomicilio">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Loma Plata"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="txtCantidad">
       <Properties>
@@ -476,6 +479,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtDireccionTransaccion">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Loma Plata"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="montoLabel7">
       <Properties>
@@ -611,6 +617,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Pago en misma Fecha"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbContadoActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="rbCredito">
       <Properties>
