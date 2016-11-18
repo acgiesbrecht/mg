@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2016-11-15T10:36:53 -->
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2016-11-18T17:55:44 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -19,7 +19,7 @@ WHERE a.ID_CUENTA_CONTABLE_DEBE = cc.ID
     AND cc.ID = ccpd.ID_CUENTA_CTA_CTE
     AND ccpd.ID = 1   
     AND cch.ID = a.ID_CUENTA_CONTABLE_HABER
-    AND a.ASIENTO_MANUAL = TRUE
+    AND a.ID NOT IN (SELECT ID_ASIENTO FROM TBL_FACTURAS_ASIENTOS)
     AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
     AND a.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
 GROUP BY cch.DESCRIPCION
@@ -170,6 +170,9 @@ GROUP BY ccd.DESCRIPCION]]>
 				</reportElement>
 				<subreportParameter name="fechaDesde">
 					<subreportParameterExpression><![CDATA[$P{fechaDesde}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="centroDeCosto">
+					<subreportParameterExpression><![CDATA[$P{centroDeCosto}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<returnValue subreportVariable="SALDO_ANTERIOR" toVariable="SALDO_ANTERIOR_S" calculation="First"/>

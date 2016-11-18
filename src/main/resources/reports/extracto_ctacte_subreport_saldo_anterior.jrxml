@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-09-02T17:19:14 -->
+<!-- 2016-11-18T17:48:00 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libro_mayor_saldo_anterior" pageWidth="514" pageHeight="842" columnWidth="514" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96688">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="fechaDesde" class="java.sql.Timestamp"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT COALESCE(SUM(INGRESOS) - SUM(EGRESOS),0) AS SALDO FROM
-(SELECT SUM(a.MONTO) AS INGRESOS, 0 AS EGRESOS FROM   TBL_ASIENTOS a,                     
+		<![CDATA[SELECT COALESCE(SUM(IMPORTE),0) AS SALDO FROM
+(SELECT SUM(a.MONTO) AS IMPORTE FROM   TBL_ASIENTOS a,                     
                     TBL_CUENTAS_CONTABLES cc,
                     TBL_CUENTAS_CONTABLES cch,
                     TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
@@ -13,11 +15,12 @@ WHERE a.ID_CUENTA_CONTABLE_DEBE = cc.ID
     AND cc.ID = ccpd.ID_CUENTA_CTA_CTE
     AND ccpd.ID = 1   
     AND cch.ID = a.ID_CUENTA_CONTABLE_HABER
-    AND a.ASIENTO_MANUAL = TRUE
-    AND YEAR(a.FECHAHORA) = YEAR(CURRENT_DATE) 
-    AND a.FECHAHORA <  $P{fechaDesde} 
+    AND a.ID NOT IN (SELECT ID_ASIENTO FROM TBL_FACTURAS_ASIENTOS)
+    AND a.FECHAHORA < $P{fechaDesde}
+        AND YEAR(a.FECHAHORA) = YEAR(CURRENT_DATE)
+GROUP BY cch.DESCRIPCION
 UNION ALL
-		SELECT SUM(att.MONTO) AS INGRESOS, 0 AS EGRESOS FROM   TBL_ASIENTOS_TEMPORALES att, 
+		SELECT SUM(att.MONTO) AS IMPORTE FROM   TBL_ASIENTOS_TEMPORALES att, 
                     TBL_TRANSFERENCIAS t, 
                     TBL_TRANSFERENCIAS_ASIENTOS_TEMPORALES tat,
                     TBL_CUENTAS_CONTABLES cc,
@@ -30,11 +33,11 @@ WHERE tat.ID_TRANSFERENCIA = t.ID
     AND cc.ID = ccpd.ID_CUENTA_CTA_CTE
     AND ccpd.ID = 1
     AND t.COBRADO = TRUE
-    AND cch.ID = att.ID_CUENTA_CONTABLE_HABER    
-    AND YEAR(att.FECHAHORA) = YEAR(CURRENT_DATE) 
-    AND att.FECHAHORA <  $P{fechaDesde} 
+    AND cch.ID = att.ID_CUENTA_CONTABLE_HABER
+    AND att.FECHAHORA < $P{fechaDesde}
+        AND YEAR(att.FECHAHORA) = YEAR(CURRENT_DATE)
 UNION ALL
-SELECT SUM(att.MONTO) AS INGRESOS, 0 AS EGRESOS FROM   TBL_ASIENTOS_TEMPORALES att, 
+SELECT SUM(att.MONTO) AS IMPORTE FROM   TBL_ASIENTOS_TEMPORALES att, 
                     TBL_TRANSFERENCIAS t, 
                     TBL_TRANSFERENCIAS_ASIENTOS_TEMPORALES tat,
                     TBL_CUENTAS_CONTABLES cc,
@@ -47,11 +50,11 @@ WHERE tat.ID_TRANSFERENCIA = t.ID
     AND cc.ID = ccpd.ID_CUENTA_CTA_CTE
     AND ccpd.ID = 1
     AND t.COBRADO = TRUE
-    AND cch.ID = att.ID_CUENTA_CONTABLE_HABER    
-    AND YEAR(att.FECHAHORA) = YEAR(CURRENT_DATE) 
-    AND att.FECHAHORA <  $P{fechaDesde} 
+    AND cch.ID = att.ID_CUENTA_CONTABLE_HABER
+    AND att.FECHAHORA < $P{fechaDesde}
+        AND YEAR(att.FECHAHORA) = YEAR(CURRENT_DATE)
 UNION ALL
-SELECT 0 AS INGRESOS, SUM(a.MONTO) AS EGRESOS FROM   TBL_ASIENTOS a,                     
+SELECT -SUM(a.MONTO) AS IMPORTE FROM   TBL_ASIENTOS a,                     
                     TBL_CUENTAS_CONTABLES cc,
                     TBL_CUENTAS_CONTABLES ccd,
                     TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
@@ -59,8 +62,9 @@ WHERE a.ID_CUENTA_CONTABLE_HABER = cc.ID
     AND cc.ID = ccpd.ID_CUENTA_CTA_CTE
     AND ccpd.ID = 1   
     AND ccd.ID = a.ID_CUENTA_CONTABLE_DEBE
-    AND YEAR(a.FECHAHORA) = YEAR(CURRENT_DATE) 
-    AND a.FECHAHORA <  $P{fechaDesde} ) t]]>
+    AND a.FECHAHORA < $P{fechaDesde}
+    AND YEAR(a.FECHAHORA) = YEAR(CURRENT_DATE)
+GROUP BY ccd.DESCRIPCION ) t]]>
 	</queryString>
 	<field name="SALDO" class="java.lang.Integer"/>
 	<variable name="SALDO_ANTERIOR" class="java.lang.Integer">

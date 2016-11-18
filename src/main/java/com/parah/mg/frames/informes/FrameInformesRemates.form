@@ -94,14 +94,11 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jButton2" alignment="0" min="-2" pref="237" max="-2" attributes="0"/>
-                  <Component id="jButton3" alignment="0" min="-2" pref="237" max="-2" attributes="0"/>
-                  <Component id="jButton4" alignment="0" min="-2" pref="237" max="-2" attributes="0"/>
-                  <Component id="jButton5" alignment="0" min="-2" pref="237" max="-2" attributes="0"/>
-                  <Component id="jButton6" alignment="0" min="-2" pref="237" max="-2" attributes="0"/>
+                  <Component id="jButton6" min="-2" pref="140" max="-2" attributes="0"/>
+                  <Component id="jButton7" min="-2" pref="281" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="idMiembroLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
@@ -118,7 +115,13 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="cboFechaRemate" min="-2" pref="175" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jButton1" alignment="0" min="-2" pref="536" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="jButton4" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jButton3" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jButton2" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jButton1" alignment="0" pref="281" max="32767" attributes="0"/>
+                  </Group>
+                  <Component id="jButton5" alignment="0" min="-2" pref="140" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="140" max="32767" attributes="0"/>
           </Group>
@@ -132,15 +135,17 @@
                   <Component id="cboFechaRemate" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" pref="47" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton2" min="-2" pref="50" max="-2" attributes="0"/>
+              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton3" min="-2" pref="47" max="-2" attributes="0"/>
+              <Component id="jButton3" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton4" min="-2" pref="47" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+              <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jButton7" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -149,10 +154,10 @@
                   <Component id="cboMiembro" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jButton5" min="-2" pref="47" max="-2" attributes="0"/>
+              <Component id="jButton5" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton6" min="-2" pref="47" max="-2" attributes="0"/>
-              <EmptySpace pref="210" max="32767" attributes="0"/>
+              <Component id="jButton6" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="353" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -173,32 +178,44 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Listado de Deudas pendientes (Solo indica transferencias generadas no las cobradas)"/>
+        <Property name="text" type="java.lang.String" value="Listado de Transferencias Pendientes de Firma"/>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="cboFechaRemate" sourcePath="${selectedItem != null}" target="jButton1" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Detalle del Remate"/>
+        <Property name="text" type="java.lang.String" value="Detalle de compras"/>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="cboFechaRemate" sourcePath="${selectedItem != null}" target="jButton2" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Detalle de Transferencias"/>
+        <Property name="text" type="java.lang.String" value="Detalle de Transferencias firmadas"/>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="cboFechaRemate" sourcePath="${selectedItem != null}" target="jButton3" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton4">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Detalle de Recibos"/>
+        <Property name="text" type="java.lang.String" value="Detalle de Pagos en efectivo"/>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="cboFechaRemate" sourcePath="${selectedItem != null}" target="jButton4" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
       </Events>
@@ -207,6 +224,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Detalle de Compras"/>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="cboMiembro" sourcePath="${selectedItem != nul}" target="jButton5" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton5ActionPerformed"/>
       </Events>
@@ -215,6 +235,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Detalle de Pagos"/>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="cboMiembro" sourcePath="${selectedItem != nul}" target="jButton6" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton6ActionPerformed"/>
       </Events>
@@ -223,13 +246,22 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Miembro:"/>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="cboFechaRemate" sourcePath="${selectedItem != null}" target="idMiembroLabel" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
     </Component>
     <Component class="javax.swing.JLabel" name="idMiembroLabel1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Cta. Cte.:"/>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="cboFechaRemate" sourcePath="${selectedItem != null}" target="idMiembroLabel1" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtCtaCte">
+      <BindingProperties>
+        <BindingProperty name="enabled" source="cboFechaRemate" sourcePath="${selectedItem != null}" target="txtCtaCte" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtCtaCteFocusGained"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCtaCteActionPerformed"/>
@@ -242,13 +274,28 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Nombre:"/>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="cboFechaRemate" sourcePath="${selectedItem != null}" target="idMiembroLabel2" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cboMiembro">
       <BindingProperties>
         <BindingProperty name="elements" source="listMiembros" target="cboMiembro" targetPath="elements" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="enabled" source="cboFechaRemate" sourcePath="${selectedItem != null}" target="cboMiembro" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboMiembroActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton7">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Resumen de Pagos recibidos"/>
+      </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="cboFechaRemate" sourcePath="${selectedItem != null}" target="jButton7" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton7ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
