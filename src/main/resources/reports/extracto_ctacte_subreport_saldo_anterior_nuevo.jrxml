@@ -2,97 +2,108 @@
 <!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
 <!-- 2016-09-02T17:19:14 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libro_mayor_saldo_anterior" pageWidth="514" pageHeight="842" columnWidth="514" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96688">
-	<parameter name="fechaDesde" class="java.sql.Timestamp"/>
-	<queryString language="SQL">
-		<![CDATA[SELECT COALESCE(SUM(INGRESOS) - SUM(EGRESOS),0) AS SALDO FROM
-(SELECT SUM(a.MONTO) AS INGRESOS, 0 AS EGRESOS FROM   TBL_ASIENTOS a,                     
-                    TBL_CUENTAS_CONTABLES cc,
-                    TBL_CUENTAS_CONTABLES cch,
-                    TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
-WHERE a.ID_CUENTA_CONTABLE_DEBE = cc.ID
-    AND cc.ID = ccpd.ID_CUENTA_CTA_CTE
-    AND ccpd.ID = 1   
-    AND cch.ID = a.ID_CUENTA_CONTABLE_HABER
-    AND a.ASIENTO_MANUAL = TRUE
-    AND YEAR(a.FECHAHORA) = YEAR(CURRENT_DATE) 
-    AND a.FECHAHORA <  $P{fechaDesde} 
-UNION ALL
-		SELECT SUM(att.MONTO) AS INGRESOS, 0 AS EGRESOS FROM   TBL_ASIENTOS_TEMPORALES att, 
-                    TBL_TRANSFERENCIAS t, 
-                    TBL_TRANSFERENCIAS_ASIENTOS_TEMPORALES tat,
-                    TBL_CUENTAS_CONTABLES cc,
-                    TBL_CUENTAS_CONTABLES cch,
-                    TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
-WHERE tat.ID_TRANSFERENCIA = t.ID
-    AND tat.ID_ASIENTO_TEMPORAL = att.ID
-    AND att.ID_CUENTA_CONTABLE_DEBE = cc.ID
-    AND att.ES_APORTE = TRUE
-    AND cc.ID = ccpd.ID_CUENTA_CTA_CTE
-    AND ccpd.ID = 1
-    AND t.COBRADO = TRUE
-    AND cch.ID = att.ID_CUENTA_CONTABLE_HABER    
-    AND YEAR(att.FECHAHORA) = YEAR(CURRENT_DATE) 
-    AND att.FECHAHORA <  $P{fechaDesde} 
-UNION ALL
-SELECT SUM(att.MONTO) AS INGRESOS, 0 AS EGRESOS FROM   TBL_ASIENTOS_TEMPORALES att, 
-                    TBL_TRANSFERENCIAS t, 
-                    TBL_TRANSFERENCIAS_ASIENTOS_TEMPORALES tat,
-                    TBL_CUENTAS_CONTABLES cc,
-                    TBL_CUENTAS_CONTABLES cch,
-                    TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
-WHERE tat.ID_TRANSFERENCIA = t.ID
-    AND tat.ID_ASIENTO_TEMPORAL = att.ID
-    AND att.ID_CUENTA_CONTABLE_DEBE = cc.ID
-    AND att.ES_APORTE = FALSE
-    AND cc.ID = ccpd.ID_CUENTA_CTA_CTE
-    AND ccpd.ID = 1
-    AND t.COBRADO = TRUE
-    AND cch.ID = att.ID_CUENTA_CONTABLE_HABER    
-    AND YEAR(att.FECHAHORA) = YEAR(CURRENT_DATE) 
-    AND att.FECHAHORA <  $P{fechaDesde} 
-UNION ALL
-SELECT 0 AS INGRESOS, SUM(a.MONTO) AS EGRESOS FROM   TBL_ASIENTOS a,                     
-                    TBL_CUENTAS_CONTABLES cc,
-                    TBL_CUENTAS_CONTABLES ccd,
-                    TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
-WHERE a.ID_CUENTA_CONTABLE_HABER = cc.ID
-    AND cc.ID = ccpd.ID_CUENTA_CTA_CTE
-    AND ccpd.ID = 1   
-    AND ccd.ID = a.ID_CUENTA_CONTABLE_DEBE
-    AND YEAR(a.FECHAHORA) = YEAR(CURRENT_DATE) 
-    AND a.FECHAHORA <  $P{fechaDesde} ) t]]>
-	</queryString>
-	<field name="SALDO" class="java.lang.Integer"/>
-	<variable name="SALDO_ANTERIOR" class="java.lang.Integer">
-		<variableExpression><![CDATA[$F{SALDO}]]></variableExpression>
-	</variable>
-	<detail>
-		<band height="20" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<textField pattern="#,##0.###">
-				<reportElement x="414" y="0" width="100" height="20" uuid="0478e450-09e3-4273-a256-163e494b3123">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
-				<box padding="2">
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{SALDO}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="250" y="0" width="164" height="20" uuid="d3c806a8-3576-46be-8f94-c11247024d4e">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
-				</textElement>
-				<text><![CDATA[SALDO ANTERIOR  ]]></text>
-			</staticText>
-		</band>
-	</detail>
+    <parameter name="fechaDesde" class="java.sql.Timestamp"/>
+    <queryString language="SQL">
+		<![CDATA[SELECT COALESCE(SUM(IMPORTE),0) AS SALDO FROM
+(SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -(f.MONTO_EXENTAS + f.MONTO_IVA5 + f.MONTO_IVA10) AS IMPORTE
+                        FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ID = fa.ID_ASIENTO
+                            AND f.ID = fa.ID_FACTURA_COMPRA
+                            AND a.FECHAHORA < $P{fechaDesde}
+                            GROUP BY f.FECHAHORA, f.RAZON_SOCIAL, f.MONTO_EXENTAS, f.MONTO_IVA5, f.MONTO_IVA10
+                    UNION ALL
+                        SELECT n.FECHAHORA, 'NdC - '  || n.RAZON_SOCIAL AS NOMBRE, n.MONTO_EXENTAS + n.MONTO_IVA5 + n.MONTO_IVA10 AS IMPORTE
+                        FROM TBL_NOTAS_DE_CREDITO_COMPRAS n, TBL_NOTAS_DE_CREDITO_COMPRAS_ASIENTOS na, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_DEBE = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ID = na.ID_ASIENTO
+                            AND n.ID = na.ID_NOTA_DE_CREDITO
+                            AND a.FECHAHORA < $P{fechaDesde}
+                            GROUP BY n.FECHAHORA, n.RAZON_SOCIAL, n.MONTO_EXENTAS, n.MONTO_IVA5, n.MONTO_IVA10
+                    UNION ALL
+                        SELECT r.FECHAHORA, 'Rec - '  || r.RAZON_SOCIAL AS NOMBRE, -r.MONTO AS IMPORTE
+                        FROM TBL_RECIBOS_COMPRA r, TBL_RECIBOS_COMPRA_ASIENTOS ra, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ID = ra.ID_ASIENTO
+                            AND r.ID = ra.ID_RECIBO
+                            AND a.FECHAHORA < $P{fechaDesde}
+                            GROUP BY r.FECHAHORA, r.RAZON_SOCIAL, r.MONTO
+                    UNION ALL
+                        SELECT af.FECHAHORA, 'AuF - '  || af.NOMBRE AS NOMBRE, -af.MONTO AS IMPORTE
+                        FROM TBL_AUTOFACTURAS af, TBL_AUTOFACTURAS_ASIENTOS afa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ID = afa.ID_ASIENTO
+                            AND af.ID = afa.ID_AUTOFACTURA
+                            AND a.FECHAHORA < $P{fechaDesde}
+                            GROUP BY af.FECHAHORA, af.NOMBRE, af.MONTO
+                    UNION ALL
+                        SELECT a.FECHAHORA, ccd.DESCRIPCION AS NOMBRE, -a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,
+                            TBL_CUENTAS_CONTABLES ccd,
+                            TBL_CUENTAS_CONTABLES cch,
+                            TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_DEBE = ccd.ID
+                            AND a.ID_CUENTA_CONTABLE_HABER = cch.ID
+                            AND ccd.ID != ccpd.ID_CUENTA_CTA_CTE
+                            AND cch.ID = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ASIENTO_MANUAL = TRUE
+                            AND a.FECHAHORA < $P{fechaDesde}
+                    UNION ALL
+                        SELECT a.FECHAHORA, cch.DESCRIPCION AS NOMBRE, a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,
+                            TBL_CUENTAS_CONTABLES ccd,
+                            TBL_CUENTAS_CONTABLES cch,
+                            TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_DEBE = ccd.ID
+                            AND a.ID_CUENTA_CONTABLE_HABER = cch.ID
+                            AND ccd.ID = ccpd.ID_CUENTA_CTA_CTE
+                            AND cch.ID != ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ASIENTO_MANUAL = TRUE
+                            AND a.FECHAHORA < $P{fechaDesde}
+                    UNION ALL
+                        SELECT t.FECHAHORA, 'Transferencias 0.00% - ' || et.DESCRIPCION as NOMBRE, SUM(t.MONTO_APORTE + t.MONTO_DONACION) AS IMPORTE
+                        FROM TBL_TRANSFERENCIAS t, TBL_EVENTO_TIPOS et
+                        WHERE t.COBRADO = TRUE
+                        AND t.ID_EVENTO_TIPO = et.ID
+                        AND t.FECHAHORA < $P{fechaDesde}
+                            GROUP BY t.FECHAHORA, et.DESCRIPCION
+                    ORDER BY FECHAHORA) t]]>
+    </queryString>
+    <field name="SALDO" class="java.lang.Integer"/>
+    <variable name="SALDO_ANTERIOR" class="java.lang.Integer">
+        <variableExpression><![CDATA[$F{SALDO}]]></variableExpression>
+    </variable>
+    <detail>
+        <band height="20" splitType="Stretch">
+            <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+            <textField pattern="#,##0.###">
+                <reportElement x="414" y="0" width="100" height="20" uuid="0478e450-09e3-4273-a256-163e494b3123">
+                    <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                </reportElement>
+                <box padding="2">
+                    <topPen lineWidth="0.5"/>
+                    <leftPen lineWidth="0.5"/>
+                    <bottomPen lineWidth="0.5"/>
+                    <rightPen lineWidth="0.5"/>
+                </box>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{SALDO}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="250" y="0" width="164" height="20" uuid="d3c806a8-3576-46be-8f94-c11247024d4e">
+                    <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                </reportElement>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font size="10" isBold="false"/>
+                </textElement>
+                <text><![CDATA[SALDO ANTERIOR  ]]></text>
+            </staticText>
+        </band>
+    </detail>
 </jasperReport>
