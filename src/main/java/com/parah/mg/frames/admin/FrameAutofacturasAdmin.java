@@ -5,23 +5,31 @@
  */
 package com.parah.mg.frames.admin;
 
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.matchers.TextMatcherEditor;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.parah.mg.domain.TblAsientos;
 import com.parah.mg.domain.TblAutofacturas;
+import com.parah.mg.domain.TblCentrosDeCosto;
+import com.parah.mg.domain.TblCuentasContables;
 import com.parah.mg.utils.CurrentUser;
 import com.parah.mg.utils.Utils;
 import java.awt.EventQueue;
 import java.beans.Beans;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 import org.apache.logging.log4j.LogManager;
@@ -37,6 +45,10 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
     CurrentUser currentUser = CurrentUser.getInstance();
     String databaseIP;
     Map<String, String> persistenceMap = new HashMap<>();
+    JComboBox<TblCentrosDeCosto> cboCentroDeCostoDebe = new JComboBox();
+    JComboBox<TblCentrosDeCosto> cboCentroDeCostoHaber = new JComboBox();
+    JComboBox<TblCuentasContables> cboCuentaHaber = new JComboBox();
+    JComboBox<TblCuentasContables> cboCuentaDebe = new JComboBox();
 
     public FrameAutofacturasAdmin() {
         super("Administrar Facturas",
@@ -56,6 +68,38 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
         filterHeader.setAdaptiveChoices(false);
         filterHeader.getParserModel().setIgnoreCase(true);
         filterHeader.setPosition(TableFilterHeader.Position.TOP);
+
+        AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCentroDeCostoDebe, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+        support2.setFilterMode(TextMatcherEditor.CONTAINS);
+
+        AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCentroDeCostoHaber, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+        support5.setFilterMode(TextMatcherEditor.CONTAINS);
+
+        AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaDebe, GlazedLists.eventListOf(listCuentasContables.toArray()));
+        support3.setFilterMode(TextMatcherEditor.CONTAINS);
+
+        AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaHaber, GlazedLists.eventListOf(listCuentasContables.toArray()));
+        support4.setFilterMode(TextMatcherEditor.CONTAINS);
+
+        masterTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent lse) {
+                try {
+                    if (!lse.getValueIsAdjusting()) {
+                        if (asientosTable.getColumnModel().getColumnCount() == 5) {
+                            asientosTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));                            
+                            asientosTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(cboCuentaDebe));
+                            asientosTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
+                            asientosTable.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(cboCuentaHaber));
+                            asientosTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
+                        }
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+                    LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+                }
+            }
+        });
     }
 
     /**
@@ -81,12 +125,19 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
         facturaNroTableCellRenderer1 = new com.parah.mg.utils.FacturaNroTableCellRenderer();
         numberCellRenderer1 = new com.parah.mg.utils.NumberCellRenderer();
         dateTimeTableCellRenderer1 = new com.parah.mg.utils.DateTimeTableCellRenderer();
+        queryCuentasContables = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCuentasContables t where t.imputable = true");
+        listCuentasContables = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCuentasContables.getResultList());
+        queryCentrosDeCosto = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t");
+        listCentrosDeCosto = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCentrosDeCosto.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         anularButton = new javax.swing.JButton();
         imprimirButton = new javax.swing.JButton();
         chkAnulado = new javax.swing.JCheckBox();
         txtNro = new javax.swing.JFormattedTextField();
+        montoLabel6 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        asientosTable = new javax.swing.JTable();
 
         FormListener formListener = new FormListener();
 
@@ -164,6 +215,35 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nro}"), txtNro, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
+        montoLabel6.setText("Asientos");
+
+        asientosTable.setAutoCreateRowSorter(true);
+        asientosTable.setRowHeight(20);
+
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.tblAsientosList}");
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, eLProperty, asientosTable);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCentroDeCostoDebe}"));
+        columnBinding.setColumnName("Centro De Costo Debe");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCentrosDeCosto.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCuentaContableDebe}"));
+        columnBinding.setColumnName("Cuenta Contable Debe");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCuentasContables.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCentroDeCostoHaber}"));
+        columnBinding.setColumnName("Centro De Costo Haber");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCentrosDeCosto.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idCuentaContableHaber}"));
+        columnBinding.setColumnName("Cuenta Contable Haber");
+        columnBinding.setColumnClass(com.parah.mg.domain.TblCuentasContables.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
+        columnBinding.setColumnName("Monto");
+        columnBinding.setColumnClass(Integer.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        jScrollPane1.setViewportView(asientosTable);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -179,7 +259,12 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(imprimirButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(anularButton)))
+                        .addComponent(anularButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(montoLabel6)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -189,7 +274,11 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(montoLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(anularButton)
@@ -280,6 +369,7 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anularButton;
+    private javax.swing.JTable asientosTable;
     private javax.swing.JCheckBox chkAnulado;
     private com.parah.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
     private com.parah.mg.utils.DateToStringConverter dateToStringConverter1;
@@ -287,13 +377,19 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
     private javax.persistence.EntityManager entityManager;
     private com.parah.mg.utils.FacturaNroTableCellRenderer facturaNroTableCellRenderer1;
     private javax.swing.JButton imprimirButton;
+    private javax.swing.JScrollPane jScrollPane1;
     private java.util.List<com.parah.mg.domain.TblAutofacturas> list;
+    private java.util.List<com.parah.mg.domain.TblCentrosDeCosto> listCentrosDeCosto;
+    private java.util.List<com.parah.mg.domain.TblCuentasContables> listCuentasContables;
     private java.util.List<com.parah.mg.domain.TblEventoTipos> listEventoTipos;
     private java.util.List<com.parah.mg.domain.TblGrupos> listGrupos;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
+    private javax.swing.JLabel montoLabel6;
     private com.parah.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query query;
+    private javax.persistence.Query queryCentrosDeCosto;
+    private javax.persistence.Query queryCuentasContables;
     private javax.persistence.Query queryEventoTipos;
     private javax.persistence.Query queryGrupos;
     private com.parah.mg.utils.RucTableCellRenderer rucTableCellRenderer1;
