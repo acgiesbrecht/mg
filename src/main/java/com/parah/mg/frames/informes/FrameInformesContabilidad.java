@@ -146,6 +146,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         cmdExtractoCtaCteCC = new javax.swing.JButton();
         cmdExtractoCtaCte1 = new javax.swing.JButton();
+        cmdExtractoCtaCte2 = new javax.swing.JButton();
+        cmdExtractoCtaCte3 = new javax.swing.JButton();
 
         dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
 
@@ -251,17 +253,31 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Centro de Costo");
 
-        cmdExtractoCtaCteCC.setText("Ver");
+        cmdExtractoCtaCteCC.setText("Ver Detalle");
         cmdExtractoCtaCteCC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdExtractoCtaCteCCActionPerformed(evt);
             }
         });
 
-        cmdExtractoCtaCte1.setText("Ver");
+        cmdExtractoCtaCte1.setText("Ver Detalle");
         cmdExtractoCtaCte1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdExtractoCtaCte1ActionPerformed(evt);
+            }
+        });
+
+        cmdExtractoCtaCte2.setText("Ver Resumen");
+        cmdExtractoCtaCte2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdExtractoCtaCte2ActionPerformed(evt);
+            }
+        });
+
+        cmdExtractoCtaCte3.setText("Ver Resumen");
+        cmdExtractoCtaCte3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdExtractoCtaCte3ActionPerformed(evt);
             }
         });
 
@@ -312,24 +328,23 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                             .addComponent(cmdLibroCompras)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(cmdExtractoCtaCte1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmdExtractoCtaCte2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
                                 .addComponent(cboCentroDeCostoExtractoCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cmdExtractoCtaCteCC)))))
-                .addContainerGap(27, Short.MAX_VALUE))
+                                .addComponent(cmdExtractoCtaCteCC)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmdExtractoCtaCte3)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(cmdExtractoCtaCteCC)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cboCentroDeCostoExtractoCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(cmdExtractoCtaCte1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -371,8 +386,16 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cmdLibroVentas)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(48, Short.MAX_VALUE))
+                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmdExtractoCtaCteCC)
+                            .addComponent(cmdExtractoCtaCte3))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cboCentroDeCostoExtractoCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmdExtractoCtaCte2))))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         pack();
@@ -536,6 +559,32 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_cmdExtractoCtaCte1ActionPerformed
 
+    private void cmdExtractoCtaCte2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExtractoCtaCte2ActionPerformed
+         try {
+            Map parameters = new HashMap();
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));            
+            Utils.getInstance().showReport("extracto_ctacte_resumen", "extracto_ctacte_subreport_saldo_anterior", parameters, false);            
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdExtractoCtaCte2ActionPerformed
+
+    private void cmdExtractoCtaCte3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExtractoCtaCte3ActionPerformed
+             try {
+            Map parameters = new HashMap();
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));            
+            parameters.put("centroDeCosto", ((TblCentrosDeCosto) cboCentroDeCostoExtractoCtaCte.getSelectedItem()).getId());
+            parameters.put("centroDeCostoNombre", ((TblCentrosDeCosto) cboCentroDeCostoExtractoCtaCte.getSelectedItem()).getDescripcion());
+            Utils.getInstance().showReport("extracto_ctacte_resumen_cc", "extracto_ctacte_subreport_saldo_anterior_cc", parameters, false);            
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdExtractoCtaCte3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -596,6 +645,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cboCentroDeCostoExtractoCtaCte;
     private javax.swing.JComboBox<String> cboPeriodo;
     private javax.swing.JButton cmdExtractoCtaCte1;
+    private javax.swing.JButton cmdExtractoCtaCte2;
+    private javax.swing.JButton cmdExtractoCtaCte3;
     private javax.swing.JButton cmdExtractoCtaCteCC;
     private javax.swing.JButton cmdLibroCompras;
     private javax.swing.JButton cmdLibroDiario;

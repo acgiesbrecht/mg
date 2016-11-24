@@ -50,8 +50,7 @@
                             TBL_CUENTAS_CONTABLES cch,
                             TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_DEBE = ccd.ID
-                            AND a.ID_CUENTA_CONTABLE_HABER = cch.ID                            
-                            AND ccd.ID != ccpd.ID_CUENTA_CTA_CTE
+                            AND a.ID_CUENTA_CONTABLE_HABER = cch.ID
                             AND cch.ID = ccpd.ID_CUENTA_CTA_CTE
                             AND ccpd.ID = 1
                             AND a.ASIENTO_MANUAL = TRUE
@@ -65,7 +64,6 @@
                         WHERE a.ID_CUENTA_CONTABLE_DEBE = ccd.ID
                             AND a.ID_CUENTA_CONTABLE_HABER = cch.ID
                             AND ccd.ID = ccpd.ID_CUENTA_CTA_CTE
-                            AND cch.ID != ccpd.ID_CUENTA_CTA_CTE
                             AND ccpd.ID = 1
                             AND a.ASIENTO_MANUAL = TRUE
                             AND a.FECHAHORA < $P{fechaDesde}    
