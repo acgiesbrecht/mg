@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-11-23T06:52:31 -->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2016-11-24T18:09:05 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -8,7 +8,7 @@
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="840"/>
 	<parameter name="fechaDesde" class="java.sql.Timestamp"/>
 	<parameter name="fechaHasta" class="java.sql.Timestamp"/>
-        <parameter name="centroDeCosto" class="java.lang.Integer"/>
+	<parameter name="centroDeCosto" class="java.lang.Integer"/>
 	<parameter name="centroDeCostoNombre" class="java.lang.String"/>
 	<parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
 	<parameter name="subreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
@@ -83,7 +83,6 @@
                             AND a.ID_CENTRO_DE_COSTO_DEBE = cdc.ID
                             AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
                             AND cch.ID = ccpd.ID_CUENTA_CTA_CTE
-                            AND ccd.ID != ccpd.ID_CUENTA_CTA_CTE
                             AND ccpd.ID = 1
                             AND a.ASIENTO_MANUAL = TRUE
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
@@ -99,7 +98,6 @@
                             AND a.ID_CENTRO_DE_COSTO_HABER = cdc.ID
                             AND a.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
                             AND ccd.ID = ccpd.ID_CUENTA_CTA_CTE
-                            AND cch.ID != ccpd.ID_CUENTA_CTA_CTE
                             AND ccpd.ID = 1
                             AND a.ASIENTO_MANUAL = TRUE
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
@@ -116,7 +114,7 @@
                         AND aat.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
                         AND aat.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                             GROUP BY et.DESCRIPCION]]>
-	</queryString>	
+	</queryString>
 	<field name="NOMBRE" class="java.lang.String"/>
 	<field name="IMPORTE" class="java.lang.Integer"/>
 	<variable name="sum_ingresos" class="java.lang.Integer" calculation="Sum">
@@ -130,7 +128,8 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="120" splitType="Stretch">
+		<band height="140" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField>
 				<reportElement x="40" y="30" width="514" height="30" uuid="a63323e5-1d25-45b0-bc23-c36c39a4393e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -170,6 +169,18 @@
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Hasta:]]></text>
 			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="120" y="120" width="160" height="20" uuid="82891ce2-06f0-4a29-abb3-d5065f9c7bfc"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{centroDeCostoNombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="120" width="80" height="20" uuid="428e5fbc-4655-4523-adc5-12640d3257da"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Centro de Costo:]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>
@@ -204,6 +215,9 @@
 				</reportElement>
 				<subreportParameter name="fechaDesde">
 					<subreportParameterExpression><![CDATA[$P{fechaDesde}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="centroDeCosto">
+					<subreportParameterExpression><![CDATA[$P{centroDeCosto}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<returnValue subreportVariable="SALDO_ANTERIOR" toVariable="SALDO_ANTERIOR_S" calculation="First"/>
