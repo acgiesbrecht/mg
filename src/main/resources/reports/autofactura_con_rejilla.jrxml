@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-04-02T10:31:26 -->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2016-12-19T09:30:57 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="78c20e98-1bd9-416f-bdbe-337f3341ab83">
 	<parameter name="factura_nro" class="java.lang.String"/>
 	<parameter name="fechahora" class="java.sql.Date"/>
@@ -17,27 +17,27 @@
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="801" splitType="Stretch">
+		<band height="802" splitType="Stretch">
 			<rectangle>
-				<reportElement mode="Transparent" x="6" y="595" width="50" height="142" uuid="ee8a5b41-0af7-4b03-86a2-9960c1bc29b5"/>
+				<reportElement mode="Transparent" x="6" y="595" width="50" height="115" uuid="ee8a5b41-0af7-4b03-86a2-9960c1bc29b5"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement mode="Transparent" x="431" y="595" width="119" height="142" uuid="b5c9c9ed-fff1-42e5-ab3d-ff6bf40932d6"/>
+				<reportElement mode="Transparent" x="431" y="595" width="119" height="115" uuid="b5c9c9ed-fff1-42e5-ab3d-ff6bf40932d6"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement mode="Transparent" x="56" y="595" width="265" height="142" uuid="72356fff-1659-44e8-ae85-bb05a27d8312"/>
+				<reportElement mode="Transparent" x="56" y="595" width="265" height="115" uuid="72356fff-1659-44e8-ae85-bb05a27d8312"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement mode="Transparent" x="321" y="595" width="110" height="142" uuid="49b54642-14ca-411d-9802-8f3f3630e0a3"/>
+				<reportElement mode="Transparent" x="321" y="595" width="110" height="115" uuid="49b54642-14ca-411d-9802-8f3f3630e0a3"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
@@ -105,7 +105,7 @@
 				<textFieldExpression><![CDATA[$P{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="431" y="737" width="119" height="15" uuid="6c3699fc-2b5e-4ea7-b3da-7f6d5b6fd866"/>
+				<reportElement x="431" y="710" width="119" height="15" uuid="6c3699fc-2b5e-4ea7-b3da-7f6d5b6fd866"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -118,7 +118,7 @@
 				<textFieldExpression><![CDATA[$P{monto}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="137" y="737" width="294" height="15" uuid="e83d7c4d-3770-4af7-9090-c4afad1c9142"/>
+				<reportElement x="137" y="710" width="294" height="15" uuid="e83d7c4d-3770-4af7-9090-c4afad1c9142"/>
 				<box padding="0">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -195,7 +195,7 @@
 				<text><![CDATA[VALOR DE VENTA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="6" y="737" width="131" height="15" uuid="0293102e-9ab6-4887-9c1a-a1575c5d6ba7"/>
+				<reportElement x="6" y="710" width="131" height="15" uuid="0293102e-9ab6-4887-9c1a-a1575c5d6ba7"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -284,25 +284,25 @@
 				<textFieldExpression><![CDATA[$P{direccionDeTransaccion}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement mode="Transparent" x="7" y="175" width="50" height="149" uuid="724e5871-c956-429a-bb25-16c1bf657e7f"/>
+				<reportElement mode="Transparent" x="7" y="175" width="50" height="125" uuid="724e5871-c956-429a-bb25-16c1bf657e7f"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement mode="Transparent" x="432" y="175" width="119" height="149" uuid="2a3394b4-a43a-4aaf-b48d-fef8bd40243b"/>
+				<reportElement mode="Transparent" x="432" y="175" width="119" height="125" uuid="2a3394b4-a43a-4aaf-b48d-fef8bd40243b"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement mode="Transparent" x="57" y="175" width="265" height="149" uuid="1d24e536-dd8c-4eb9-ab05-9dd2cfc73bd9"/>
+				<reportElement mode="Transparent" x="57" y="175" width="265" height="125" uuid="1d24e536-dd8c-4eb9-ab05-9dd2cfc73bd9"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement mode="Transparent" x="322" y="175" width="110" height="149" uuid="4ec71596-cf8c-4ece-9263-4fdeb4f1b70f"/>
+				<reportElement mode="Transparent" x="322" y="175" width="110" height="125" uuid="4ec71596-cf8c-4ece-9263-4fdeb4f1b70f"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
@@ -370,7 +370,7 @@
 				<textFieldExpression><![CDATA[$P{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="432" y="324" width="119" height="15" uuid="5c02fb05-ae04-49b7-be78-6ac76a0492a6"/>
+				<reportElement x="432" y="300" width="119" height="15" uuid="5c02fb05-ae04-49b7-be78-6ac76a0492a6"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -383,7 +383,7 @@
 				<textFieldExpression><![CDATA[$P{monto}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="137" y="324" width="295" height="15" uuid="326d26ac-c562-4b66-9603-331623816420"/>
+				<reportElement x="137" y="300" width="295" height="15" uuid="326d26ac-c562-4b66-9603-331623816420"/>
 				<box padding="0">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -460,7 +460,7 @@
 				<text><![CDATA[VALOR DE VENTA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="7" y="324" width="130" height="15" uuid="734eddc7-b027-49fa-bd52-2455736262f3"/>
+				<reportElement x="7" y="300" width="130" height="15" uuid="734eddc7-b027-49fa-bd52-2455736262f3"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -548,6 +548,32 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{direccionDeTransaccion}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="7" y="315" width="544" height="25" uuid="e57d1c36-34e9-48b1-87ed-850e60e129ec"/>
+				<box leftPadding="5" rightPadding="5">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Firma Vendedor:                                             Aclaración:                                                                    C.I. N°:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="725" width="544" height="25" uuid="3e683107-092b-4a1c-8293-c6cce3de307f"/>
+				<box leftPadding="5" rightPadding="5">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Firma Vendedor:                                             Aclaración:                                                                    C.I. N°:]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>
