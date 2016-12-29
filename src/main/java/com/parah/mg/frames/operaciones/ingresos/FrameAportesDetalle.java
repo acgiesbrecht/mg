@@ -977,29 +977,31 @@ public class FrameAportesDetalle extends JInternalFrame {
                 });
                 listEventoDetalle.clear();*/
                 listEntidades.stream().forEach((miembro) -> {
-                    if (miembro.getAporteMensual() > 0) {
-                        TblEventoDetalle t = new TblEventoDetalle();
-                        entityManager.persist(t);
-                        t.setFechahora(currEvento.getFecha().atStartOfDay());
-                        t.setIdEvento(currEvento);
-                        t.setIdCategoriaArticulo(entityManager.find(TblCategoriasArticulos.class, 2));
-                        if (miembro.getIdEntidadPaganteAportes() != null) {
-                            t.setIdEntidad(miembro.getIdEntidadPaganteAportes());
-                            t.setObservacion("Aporte de " + miembro.getNombreCompleto());
-                        } else {
-                            t.setIdEntidad(miembro);
+                    if (miembro.getIdMiembrosCategoriaDePago() != null) {
+                        if (miembro.getIdMiembrosCategoriaDePago().getId().equals(3) && miembro.getAporteMensual() > 0) {
+                            TblEventoDetalle t = new TblEventoDetalle();
+                            entityManager.persist(t);
+                            t.setFechahora(currEvento.getFecha().atStartOfDay());
+                            t.setIdEvento(currEvento);
+                            t.setIdCategoriaArticulo(entityManager.find(TblCategoriasArticulos.class, 2));
+                            if (miembro.getIdEntidadPaganteAportes() != null) {
+                                t.setIdEntidad(miembro.getIdEntidadPaganteAportes());
+                                t.setObservacion("Aporte de " + miembro.getNombreCompleto());
+                            } else {
+                                t.setIdEntidad(miembro);
+                            }
+                            if (miembro.getIdFormaDePagoPreferida() == null) {
+                                t.setIdFormaDePagoPreferida(entityManager.find(TblFormasDePago.class, 1));
+                            } else {
+                                t.setIdFormaDePagoPreferida(miembro.getIdFormaDePagoPreferida());
+                            }
+                            t.setMonto(miembro.getAporteMensual());
+                            t.setIdUser(currentUser.getUser());
+                            listEventoDetalle.add(t);
+                            Integer row = listEventoDetalle.size() - 1;
+                            masterTable.setRowSelectionInterval(row, row);
+                            //masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
                         }
-                        if (miembro.getIdFormaDePagoPreferida() == null) {
-                            t.setIdFormaDePagoPreferida(entityManager.find(TblFormasDePago.class, 1));
-                        } else {
-                            t.setIdFormaDePagoPreferida(miembro.getIdFormaDePagoPreferida());
-                        }
-                        t.setMonto(miembro.getAporteMensual());
-                        t.setIdUser(currentUser.getUser());
-                        listEventoDetalle.add(t);
-                        Integer row = listEventoDetalle.size() - 1;
-                        masterTable.setRowSelectionInterval(row, row);
-                        //masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
                     }
                 });
             }
