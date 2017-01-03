@@ -13,7 +13,7 @@
                                      ON m.id = rd.ID_ENTIDAD
                                      WHERE YEAR(rd.FECHAHORA) = $P{pAno} AND MONTH(rd.FECHAHORA) = $P{pMes}
                             GROUP BY m.id, m.ctacte, m.nombres, m.apellidos
-                            ORDER BY m.ctacte]]>
+                            ORDER BY m.apellidos, m.nombres]]>
     </queryString>
     <field name="monto" class="java.lang.Integer"/>
     <field name="apellidos" class="java.lang.String"/>

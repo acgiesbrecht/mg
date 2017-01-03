@@ -32,7 +32,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     List<TblEntidades> listMiembrosFiltered;
     TblEntidades selectedMiembro;
     CurrentUser currentUser = CurrentUser.getInstance();
-    
+
     /**
      * Creates new form FramePagos
      */
@@ -49,26 +49,26 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             initComponents();
 
             jspAno.setValue(Calendar.getInstance().get(Calendar.YEAR));
-            jspAno.setEditor(new JSpinner.NumberEditor(jspAno,"#"));
+            jspAno.setEditor(new JSpinner.NumberEditor(jspAno, "#"));
             cboMes.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH));
 
             jspAnoA.setValue(Calendar.getInstance().get(Calendar.YEAR));
-            jspAnoA.setEditor(new JSpinner.NumberEditor(jspAnoA,"#"));
+            jspAnoA.setEditor(new JSpinner.NumberEditor(jspAnoA, "#"));
             cboMesA.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH));
 
             jspAnoDebitoManual.setValue(Calendar.getInstance().get(Calendar.YEAR));
-            jspAnoDebitoManual.setEditor(new JSpinner.NumberEditor(jspAnoDebitoManual,"#"));
+            jspAnoDebitoManual.setEditor(new JSpinner.NumberEditor(jspAnoDebitoManual, "#"));
             jspAnoAportesResumen.setValue(Calendar.getInstance().get(Calendar.YEAR));
-            jspAnoAportesResumen.setEditor(new JSpinner.NumberEditor(jspAnoAportesResumen,"#"));
+            jspAnoAportesResumen.setEditor(new JSpinner.NumberEditor(jspAnoAportesResumen, "#"));
             jspAnoAportesResumenPendientes.setValue(Calendar.getInstance().get(Calendar.YEAR));
-            jspAnoAportesResumenPendientes.setEditor(new JSpinner.NumberEditor(jspAnoAportesResumenPendientes,"#"));
+            jspAnoAportesResumenPendientes.setEditor(new JSpinner.NumberEditor(jspAnoAportesResumenPendientes, "#"));
 
             jspAnoCP.setValue(Calendar.getInstance().get(Calendar.YEAR));
-            jspAnoCP.setEditor(new JSpinner.NumberEditor(jspAnoCP,"#"));
+            jspAnoCP.setEditor(new JSpinner.NumberEditor(jspAnoCP, "#"));
             cboMesCP.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH));
-            
+
             jspAnoDebitoManual.setValue(Calendar.getInstance().get(Calendar.YEAR));
-            jspAnoDebitoManual.setEditor(new JSpinner.NumberEditor(jspAnoDebitoManual,"#"));
+            jspAnoDebitoManual.setEditor(new JSpinner.NumberEditor(jspAnoDebitoManual, "#"));
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -551,7 +551,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     private void cmdAportesResumenPendientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAportesResumenPendientesActionPerformed
         try {
             Map parameters = new HashMap();
-            parameters.put("ano", Integer.parseInt(jspAnoAportesResumen.getValue().toString()));
+            parameters.put("ano", Integer.parseInt(jspAnoAportesResumenPendientes.getValue().toString()));
             Utils.getInstance().showReport("aportes_resumen_anual_pendientes", "aportes_resumen_anual_pendientes_subreport", parameters, true);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);

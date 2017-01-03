@@ -24,7 +24,7 @@ import com.parah.mg.frames.admin.FrameRecibosAdmin;
 import com.parah.mg.frames.admin.FrameTimbradosAdmin;
 import com.parah.mg.frames.admin.FrameTimbradosAutofacturasAdmin;
 import com.parah.mg.frames.admin.FrameTimbradosNotasDeCreditoAdmin;
-import com.parah.mg.frames.admin.FrameTransferenciasAdmin;
+import com.parah.mg.frames.admin.FrameTransferenciasAdminFX;
 import com.parah.mg.frames.admin.FrameUsuariosAdmin;
 import com.parah.mg.frames.informes.FrameInformesContabilidad;
 import com.parah.mg.frames.informes.FrameInformesCyA;
@@ -874,7 +874,8 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuAdTransfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdTransfActionPerformed
         try {
-            FrameTransferenciasAdmin frame = new FrameTransferenciasAdmin();
+            //FrameTransferenciasAdmin frame = new FrameTransferenciasAdmin();
+            FrameTransferenciasAdminFX frame = new FrameTransferenciasAdminFX();
             frame.setVisible(true);
 
             desktop.add(frame);

@@ -32,7 +32,7 @@
                                group by YEAR(p.FECHAHORA_COMPROMISO), MONTH(p.FECHAHORA_COMPROMISO), p.id_entidad) DETALLE LEFT JOIN MG.TBL_ENTIDADES e ON DETALLE.ID_ENTIDAD = e.ID
                         GROUP BY e.ID, e.CTACTE, e.APELLIDOS, e.NOMBRES, DETALLE.ano, DETALLE.mes) d
                         WHERE MONTODONACION + MONTOAPORTE > 0
-                        ORDER BY CTACTE]]>
+                        ORDER BY APELLIDOS, NOMBRES]]>
     </queryString>
     <field name="mes" class="java.lang.Integer"/>
     <field name="ano" class="java.lang.Integer"/>
