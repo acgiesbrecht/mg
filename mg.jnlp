@@ -15,7 +15,7 @@
     </resources>
     <application-desc
         name="MG"
-        main-class="com.parah.mg.MdiFrame"
+        main-class="com.gnadenheimer.mg.MdiFrame"
         width="300"
         height="300">
     </application-desc>
