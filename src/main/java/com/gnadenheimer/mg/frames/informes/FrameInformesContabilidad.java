@@ -76,7 +76,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             persistenceMap = Utils.getInstance().getPersistenceMap();
 
             datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
-            datePickerSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");         
+            datePickerSettings1.setFormatForDatesCommonEra("dd/MM/yyyy");
 
             timePickerSettings.setFormatForDisplayTime("HH:mm:ss");
             timePickerSettings1.setFormatForDisplayTime("HH:mm:ss");
@@ -89,10 +89,9 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
 
             AutoCompleteSupport support = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support.setFilterMode(TextMatcherEditor.CONTAINS);
-            
+
             AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCentroDeCostoExtractoCtaCte, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
-            
 
             cboPeriodo.setSelectedIndex(0);
 
@@ -112,11 +111,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        dateToStringConverter1 = new com.gnadenheimer.mg.utils.DateToStringConverter();
         queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
-        dateTimeTableCellRenderer1 = new com.gnadenheimer.mg.utils.DateTimeTableCellRenderer();
-        numberCellRenderer1 = new com.gnadenheimer.mg.utils.NumberCellRenderer();
         queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 1 AND t.idGrupo IN :grupos ORDER BY t.fecha");
         queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
@@ -148,10 +144,6 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         cmdExtractoCtaCte1 = new javax.swing.JButton();
         cmdExtractoCtaCte2 = new javax.swing.JButton();
         cmdExtractoCtaCte3 = new javax.swing.JButton();
-
-        dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
-
-        numberCellRenderer1.setText("numberCellRenderer1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -419,7 +411,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));  
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
             //parameters.put("ctaContable", 101020100);
             Utils.getInstance().showReport("libro_mayor", "libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters, false);
             //Utils.getInstance().showReport("libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters);
@@ -434,7 +426,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));  
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
 
             Utils.getInstance().showReport("libro_egresos", parameters, true);
 
@@ -448,7 +440,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));  
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
 
             Utils.getInstance().showReport("libro_ingresos", parameters, true);
 
@@ -462,7 +454,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));  
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
             //parameters.put("ctaContable", 101020100);
             Utils.getInstance().showReport("libro_mayor", "libro_mayor_solo_totales_subreport", "libro_mayor_subreport_saldo_anterior", parameters, false);
             //Utils.getInstance().showReport("libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters);
@@ -476,7 +468,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));  
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
             parameters.put("centroDeCosto", ((TblCentrosDeCosto) cboCentroDeCosto.getSelectedItem()).getId());
             parameters.put("centroDeCostoNombre", ((TblCentrosDeCosto) cboCentroDeCosto.getSelectedItem()).getDescripcion());
             //parameters.put("ctaContable", 101020100);
@@ -492,7 +484,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));  
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
             parameters.put("centroDeCosto", ((TblCentrosDeCosto) cboCentroDeCosto.getSelectedItem()).getId());
             parameters.put("centroDeCostoNombre", ((TblCentrosDeCosto) cboCentroDeCosto.getSelectedItem()).getDescripcion());
             //parameters.put("ctaContable", 101020100);
@@ -524,7 +516,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                     endDate = startDate.plusDays(1).minusNanos(1);
                     break;
             }
-            
+
             txtFechaDesde.setDateTimeStrict(startDate);
             txtFechaHasta.setDateTimeStrict(endDate);
         } catch (Exception ex) {
@@ -534,13 +526,13 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cboPeriodoActionPerformed
 
     private void cmdExtractoCtaCteCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExtractoCtaCteCCActionPerformed
-                try {
+        try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));    
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
             parameters.put("centroDeCosto", ((TblCentrosDeCosto) cboCentroDeCostoExtractoCtaCte.getSelectedItem()).getId());
             parameters.put("centroDeCostoNombre", ((TblCentrosDeCosto) cboCentroDeCostoExtractoCtaCte.getSelectedItem()).getDescripcion());
-            Utils.getInstance().showReport("extracto_ctacte_cc", "extracto_ctacte_subreport_saldo_anterior_cc", parameters, false);            
+            Utils.getInstance().showReport("extracto_ctacte_cc", "extracto_ctacte_subreport_saldo_anterior_cc", parameters, false);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -551,8 +543,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));            
-            Utils.getInstance().showReport("extracto_ctacte", "extracto_ctacte_subreport_saldo_anterior", parameters, false);            
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
+            Utils.getInstance().showReport("extracto_ctacte", "extracto_ctacte_subreport_saldo_anterior", parameters, false);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -560,11 +552,11 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cmdExtractoCtaCte1ActionPerformed
 
     private void cmdExtractoCtaCte2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExtractoCtaCte2ActionPerformed
-         try {
+        try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));            
-            Utils.getInstance().showReport("extracto_ctacte_resumen", "extracto_ctacte_subreport_saldo_anterior", parameters, false);            
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
+            Utils.getInstance().showReport("extracto_ctacte_resumen", "extracto_ctacte_subreport_saldo_anterior", parameters, false);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -572,13 +564,13 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cmdExtractoCtaCte2ActionPerformed
 
     private void cmdExtractoCtaCte3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExtractoCtaCte3ActionPerformed
-             try {
+        try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
-            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));            
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
             parameters.put("centroDeCosto", ((TblCentrosDeCosto) cboCentroDeCostoExtractoCtaCte.getSelectedItem()).getId());
             parameters.put("centroDeCostoNombre", ((TblCentrosDeCosto) cboCentroDeCostoExtractoCtaCte.getSelectedItem()).getDescripcion());
-            Utils.getInstance().showReport("extracto_ctacte_resumen_cc", "extracto_ctacte_subreport_saldo_anterior_cc", parameters, false);            
+            Utils.getInstance().showReport("extracto_ctacte_resumen_cc", "extracto_ctacte_subreport_saldo_anterior_cc", parameters, false);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -655,8 +647,6 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private javax.swing.JButton cmdLibroMayorSoloTotales;
     private javax.swing.JButton cmdLibroMayorSoloTotalesCC;
     private javax.swing.JButton cmdLibroVentas;
-    private com.gnadenheimer.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
-    private com.gnadenheimer.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -671,7 +661,6 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private java.util.List<com.gnadenheimer.mg.domain.TblCentrosDeCosto> listCentrosDeCosto;
     private java.util.List<com.gnadenheimer.mg.domain.TblEventos> listEventos;
     private java.util.List<com.gnadenheimer.mg.domain.miembros.TblEntidades> listMiembros;
-    private com.gnadenheimer.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query queryCentrosDeCosto;
     private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryMiembros;

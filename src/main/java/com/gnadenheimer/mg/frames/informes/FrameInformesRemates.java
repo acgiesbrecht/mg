@@ -71,11 +71,8 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        dateToStringConverter1 = new com.gnadenheimer.mg.utils.DateToStringConverter();
         queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
-        dateTimeTableCellRenderer1 = new com.gnadenheimer.mg.utils.DateTimeTableCellRenderer();
-        numberCellRenderer1 = new com.gnadenheimer.mg.utils.NumberCellRenderer();
         queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 1 AND t.idGrupo IN :grupos ORDER BY t.fecha");
         queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
@@ -93,10 +90,6 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
         idMiembroLabel2 = new javax.swing.JLabel();
         cboMiembro = new javax.swing.JComboBox();
         jButton7 = new javax.swing.JButton();
-
-        dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
-
-        numberCellRenderer1.setText("numberCellRenderer1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -451,7 +444,7 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         try {
             Map parameters = new HashMap();
-            parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());            
+            parameters.put("id_evento", ((TblEventos) cboFechaRemate.getSelectedItem()).getId());
             Utils.getInstance().showReport("remate_resumen_pagos", parameters, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -505,8 +498,6 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboFechaRemate;
     private javax.swing.JComboBox cboMiembro;
-    private com.gnadenheimer.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
-    private com.gnadenheimer.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel idMiembroLabel;
     private javax.swing.JLabel idMiembroLabel1;
@@ -521,7 +512,6 @@ public class FrameInformesRemates extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private java.util.List<com.gnadenheimer.mg.domain.TblEventos> listEventos;
     private java.util.List<com.gnadenheimer.mg.domain.miembros.TblEntidades> listMiembros;
-    private com.gnadenheimer.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryMiembros;
     private javax.swing.JTextField txtCtaCte;

@@ -32,7 +32,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     List<TblEntidades> listMiembrosFiltered;
     TblEntidades selectedMiembro;
     CurrentUser currentUser = CurrentUser.getInstance();
-    
+
     /**
      * Creates new form FramePagos
      */
@@ -49,26 +49,26 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             initComponents();
 
             jspAno.setValue(Calendar.getInstance().get(Calendar.YEAR));
-            jspAno.setEditor(new JSpinner.NumberEditor(jspAno,"#"));
+            jspAno.setEditor(new JSpinner.NumberEditor(jspAno, "#"));
             cboMes.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH));
 
             jspAnoA.setValue(Calendar.getInstance().get(Calendar.YEAR));
-            jspAnoA.setEditor(new JSpinner.NumberEditor(jspAnoA,"#"));
+            jspAnoA.setEditor(new JSpinner.NumberEditor(jspAnoA, "#"));
             cboMesA.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH));
 
             jspAnoDebitoManual.setValue(Calendar.getInstance().get(Calendar.YEAR));
-            jspAnoDebitoManual.setEditor(new JSpinner.NumberEditor(jspAnoDebitoManual,"#"));
+            jspAnoDebitoManual.setEditor(new JSpinner.NumberEditor(jspAnoDebitoManual, "#"));
             jspAnoAportesResumen.setValue(Calendar.getInstance().get(Calendar.YEAR));
-            jspAnoAportesResumen.setEditor(new JSpinner.NumberEditor(jspAnoAportesResumen,"#"));
+            jspAnoAportesResumen.setEditor(new JSpinner.NumberEditor(jspAnoAportesResumen, "#"));
             jspAnoAportesResumenPendientes.setValue(Calendar.getInstance().get(Calendar.YEAR));
-            jspAnoAportesResumenPendientes.setEditor(new JSpinner.NumberEditor(jspAnoAportesResumenPendientes,"#"));
+            jspAnoAportesResumenPendientes.setEditor(new JSpinner.NumberEditor(jspAnoAportesResumenPendientes, "#"));
 
             jspAnoCP.setValue(Calendar.getInstance().get(Calendar.YEAR));
-            jspAnoCP.setEditor(new JSpinner.NumberEditor(jspAnoCP,"#"));
+            jspAnoCP.setEditor(new JSpinner.NumberEditor(jspAnoCP, "#"));
             cboMesCP.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH));
-            
+
             jspAnoDebitoManual.setValue(Calendar.getInstance().get(Calendar.YEAR));
-            jspAnoDebitoManual.setEditor(new JSpinner.NumberEditor(jspAnoDebitoManual,"#"));
+            jspAnoDebitoManual.setEditor(new JSpinner.NumberEditor(jspAnoDebitoManual, "#"));
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -85,11 +85,8 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        dateToStringConverter1 = new com.gnadenheimer.mg.utils.DateToStringConverter();
         queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
-        dateTimeTableCellRenderer1 = new com.gnadenheimer.mg.utils.DateTimeTableCellRenderer();
-        numberCellRenderer1 = new com.gnadenheimer.mg.utils.NumberCellRenderer();
         queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 1 AND t.idGrupo IN :grupos ORDER BY t.fecha");
         queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
@@ -133,10 +130,6 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         jLabel21 = new javax.swing.JLabel();
         jspAnoAportesResumenPendientes = new javax.swing.JSpinner();
         cmdAportesResumenPendientes = new javax.swing.JButton();
-
-        dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
-
-        numberCellRenderer1.setText("numberCellRenderer1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -613,8 +606,6 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     private javax.swing.JButton cmdResumenCP1;
     private javax.swing.JButton cmdResumenPorMes;
     private javax.swing.JButton cmdResumenPorMesA;
-    private com.gnadenheimer.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
-    private com.gnadenheimer.mg.utils.DateToStringConverter dateToStringConverter1;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -645,7 +636,6 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     private javax.swing.JSpinner jspAnoDebitoManual;
     private java.util.List<com.gnadenheimer.mg.domain.TblEventos> listEventos;
     private java.util.List<com.gnadenheimer.mg.domain.miembros.TblEntidades> listMiembros;
-    private com.gnadenheimer.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query queryEventos;
     private javax.persistence.Query queryMiembros;
     // End of variables declaration//GEN-END:variables

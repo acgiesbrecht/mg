@@ -1,0 +1,269 @@
+2017-01-02 21:22:43.337 [AWT-EventQueue-0] ERROR 394OGGER - showReport
+net.sf.jasperreports.engine.JRRuntimeException: net.sf.jasperreports.engine.JRException: Error preparing statement for executing the report query:
+
+SELECT COALESCE(SUM(IMPORTE),0) AS SALDO FROM
+(SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -(a.MONTO) AS IMPORTE
+                        FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ID = fa.ID_ASIENTO
+                            AND f.ID = fa.ID_FACTURA_COMPRA
+                            AND a.FECHAHORA < ?
+                            AND YEAR(a.FECHAHORA) = YEAR(?)
+                            GROUP BY f.FECHAHORA, f.RAZON_SOCIAL, a.MONTO, f.ID
+                    UNION ALL
+                        SELECT n.FECHAHORA, 'NdC - '  || n.RAZON_SOCIAL AS NOMBRE, a.MONTO AS IMPORTE
+                        FROM TBL_NOTAS_DE_CREDITO_COMPRAS n, TBL_NOTAS_DE_CREDITO_COMPRAS_ASIENTOS na, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_DEBE = ccpd.ID_CUENTA_CTA_CTE
+                        AND ccpd.ID = 1
+                            AND a.ID = na.ID_ASIENTO
+                            AND n.ID = na.ID_NOTA_DE_CREDITO
+                            AND a.FECHAHORA < ?
+                            AND YEAR(a.FECHAHORA) = YEAR(?)
+                            GROUP BY n.FECHAHORA, n.RAZON_SOCIAL, a.MONTO, n.ID
+                    UNION ALL
+                        SELECT r.FECHAHORA, 'Rec - '  || r.RAZON_SOCIAL AS NOMBRE, -a.MONTO AS IMPORTE
+                        FROM TBL_RECIBOS_COMPRA r, TBL_RECIBOS_COMPRA_ASIENTOS ra, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ID = ra.ID_ASIENTO
+                            AND r.ID = ra.ID_RECIBO
+                            AND a.FECHAHORA < ?
+                            AND YEAR(a.FECHAHORA) = YEAR(?)
+                            GROUP BY r.FECHAHORA, r.RAZON_SOCIAL, a.MONTO, r.ID
+                    UNION ALL
+                        SELECT af.FECHAHORA, 'AuF - '  || af.NOMBRE AS NOMBRE, -a.MONTO AS IMPORTE
+                        FROM TBL_AUTOFACTURAS af, TBL_AUTOFACTURAS_ASIENTOS afa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ID = afa.ID_ASIENTO
+                            AND af.ID = afa.ID_AUTOFACTURA
+                            AND a.FECHAHORA < ?
+                            AND YEAR(a.FECHAHORA) = YEAR(?)
+                            GROUP BY af.FECHAHORA, af.NOMBRE, a.MONTO
+                    UNION ALL
+                        SELECT a.FECHAHORA, ccd.DESCRIPCION AS NOMBRE, -a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,
+                            TBL_CUENTAS_CONTABLES ccd,
+                            TBL_CUENTAS_CONTABLES cch,
+                            TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_DEBE = ccd.ID
+                            AND a.ID_CUENTA_CONTABLE_HABER = cch.ID
+                            AND cch.ID = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ASIENTO_MANUAL = TRUE
+                            AND a.FECHAHORA < ?
+                            AND YEAR(a.FECHAHORA) = YEAR(?)
+                    UNION ALL
+                        SELECT a.FECHAHORA, cch.DESCRIPCION AS NOMBRE, a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,
+                            TBL_CUENTAS_CONTABLES ccd,
+                            TBL_CUENTAS_CONTABLES cch,
+                            TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_DEBE = ccd.ID
+                            AND a.ID_CUENTA_CONTABLE_HABER = cch.ID
+                            AND ccd.ID = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ASIENTO_MANUAL = TRUE
+                            AND a.FECHAHORA < ?
+                            AND YEAR(a.FECHAHORA) = YEAR(?)
+                    UNION ALL
+                        SELECT t.FECHAHORA, 'Transferencias 0.00% - ' || et.DESCRIPCION as NOMBRE, SUM(aat.MONTO) AS IMPORTE
+                        FROM TBL_TRANSFERENCIAS t, TBL_EVENTO_TIPOS et, TBL_TRANSFERENCIAS_ASIENTOS_TEMPORALES tat, TBL_ASIENTOS_TEMPORALES aat
+                        WHERE t.COBRADO = TRUE
+                        AND t.ID_EVENTO_TIPO = et.ID
+                        AND tat.ID_TRANSFERENCIA = t.ID
+                        AND tat.ID_ASIENTO_TEMPORAL = aat.ID
+                        AND aat.FECHAHORA < ?
+                        AND YEAR(aat.FECHAHORA) = YEAR(?)
+                            GROUP BY t.FECHAHORA, et.DESCRIPCION
+                    ORDER BY FECHAHORA) t
+
+
+	at net.sf.jasperreports.engine.fill.JRFillSubreport.prepare(JRFillSubreport.java:874) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRFillElementContainer.prepareElements(JRFillElementContainer.java:536) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRFillBand.fill(JRFillBand.java:411) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRFillBand.fill(JRFillBand.java:386) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillBandNoOverflow(JRVerticalFiller.java:428) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillColumnHeader(JRVerticalFiller.java:472) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillReportStart(JRVerticalFiller.java:251) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRVerticalFiller.fillReport(JRVerticalFiller.java:115) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRBaseFiller.fill(JRBaseFiller.java:580) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.BaseReportFiller.fill(BaseReportFiller.java:396) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRFiller.fill(JRFiller.java:90) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.JasperFillManager.fill(JasperFillManager.java:456) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.JasperFillManager.fillReport(JasperFillManager.java:863) ~[jasperreports-6.3.0.jar:6.3.0]
+	at com.parah.mg.utils.Utils.showReport(Utils.java:390) [classes/:?]
+	at com.parah.mg.utils.Utils.showReport(Utils.java:355) [classes/:?]
+	at com.parah.mg.frames.informes.FrameInformesContabilidad.cmdExtractoCtaCte1ActionPerformed(FrameInformesContabilidad.java:555) [classes/:?]
+	at com.parah.mg.frames.informes.FrameInformesContabilidad.access$1000(FrameInformesContabilidad.java:33) [classes/:?]
+	at com.parah.mg.frames.informes.FrameInformesContabilidad$11.actionPerformed(FrameInformesContabilidad.java:266) [classes/:?]
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2022) [?:1.8.0_111]
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2348) [?:1.8.0_111]
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402) [?:1.8.0_111]
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259) [?:1.8.0_111]
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252) [?:1.8.0_111]
+	at java.awt.Component.processMouseEvent(Component.java:6533) [?:1.8.0_111]
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3324) [?:1.8.0_111]
+	at java.awt.Component.processEvent(Component.java:6298) [?:1.8.0_111]
+	at java.awt.Container.processEvent(Container.java:2236) [?:1.8.0_111]
+	at java.awt.Component.dispatchEventImpl(Component.java:4889) [?:1.8.0_111]
+	at java.awt.Container.dispatchEventImpl(Container.java:2294) [?:1.8.0_111]
+	at java.awt.Component.dispatchEvent(Component.java:4711) [?:1.8.0_111]
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4888) [?:1.8.0_111]
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4525) [?:1.8.0_111]
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4466) [?:1.8.0_111]
+	at java.awt.Container.dispatchEventImpl(Container.java:2280) [?:1.8.0_111]
+	at java.awt.Window.dispatchEventImpl(Window.java:2746) [?:1.8.0_111]
+	at java.awt.Component.dispatchEvent(Component.java:4711) [?:1.8.0_111]
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758) [?:1.8.0_111]
+	at java.awt.EventQueue.access$500(EventQueue.java:97) [?:1.8.0_111]
+	at java.awt.EventQueue$3.run(EventQueue.java:709) [?:1.8.0_111]
+	at java.awt.EventQueue$3.run(EventQueue.java:703) [?:1.8.0_111]
+	at java.security.AccessController.doPrivileged(Native Method) ~[?:1.8.0_111]
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76) [?:1.8.0_111]
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86) [?:1.8.0_111]
+	at java.awt.EventQueue$4.run(EventQueue.java:731) [?:1.8.0_111]
+	at java.awt.EventQueue$4.run(EventQueue.java:729) [?:1.8.0_111]
+	at java.security.AccessController.doPrivileged(Native Method) ~[?:1.8.0_111]
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76) [?:1.8.0_111]
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728) [?:1.8.0_111]
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201) [?:1.8.0_111]
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116) [?:1.8.0_111]
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105) [?:1.8.0_111]
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101) [?:1.8.0_111]
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93) [?:1.8.0_111]
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82) [?:1.8.0_111]
+Caused by: net.sf.jasperreports.engine.JRException: Error preparing statement for executing the report query:
+
+SELECT COALESCE(SUM(IMPORTE),0) AS SALDO FROM
+(SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -(a.MONTO) AS IMPORTE
+                        FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ID = fa.ID_ASIENTO
+                            AND f.ID = fa.ID_FACTURA_COMPRA
+                            AND a.FECHAHORA < ?
+                            AND YEAR(a.FECHAHORA) = YEAR(?)
+                            GROUP BY f.FECHAHORA, f.RAZON_SOCIAL, a.MONTO, f.ID
+                    UNION ALL
+                        SELECT n.FECHAHORA, 'NdC - '  || n.RAZON_SOCIAL AS NOMBRE, a.MONTO AS IMPORTE
+                        FROM TBL_NOTAS_DE_CREDITO_COMPRAS n, TBL_NOTAS_DE_CREDITO_COMPRAS_ASIENTOS na, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_DEBE = ccpd.ID_CUENTA_CTA_CTE
+                        AND ccpd.ID = 1
+                            AND a.ID = na.ID_ASIENTO
+                            AND n.ID = na.ID_NOTA_DE_CREDITO
+                            AND a.FECHAHORA < ?
+                            AND YEAR(a.FECHAHORA) = YEAR(?)
+                            GROUP BY n.FECHAHORA, n.RAZON_SOCIAL, a.MONTO, n.ID
+                    UNION ALL
+                        SELECT r.FECHAHORA, 'Rec - '  || r.RAZON_SOCIAL AS NOMBRE, -a.MONTO AS IMPORTE
+                        FROM TBL_RECIBOS_COMPRA r, TBL_RECIBOS_COMPRA_ASIENTOS ra, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ID = ra.ID_ASIENTO
+                            AND r.ID = ra.ID_RECIBO
+                            AND a.FECHAHORA < ?
+                            AND YEAR(a.FECHAHORA) = YEAR(?)
+                            GROUP BY r.FECHAHORA, r.RAZON_SOCIAL, a.MONTO, r.ID
+                    UNION ALL
+                        SELECT af.FECHAHORA, 'AuF - '  || af.NOMBRE AS NOMBRE, -a.MONTO AS IMPORTE
+                        FROM TBL_AUTOFACTURAS af, TBL_AUTOFACTURAS_ASIENTOS afa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ID = afa.ID_ASIENTO
+                            AND af.ID = afa.ID_AUTOFACTURA
+                            AND a.FECHAHORA < ?
+                            AND YEAR(a.FECHAHORA) = YEAR(?)
+                            GROUP BY af.FECHAHORA, af.NOMBRE, a.MONTO
+                    UNION ALL
+                        SELECT a.FECHAHORA, ccd.DESCRIPCION AS NOMBRE, -a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,
+                            TBL_CUENTAS_CONTABLES ccd,
+                            TBL_CUENTAS_CONTABLES cch,
+                            TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_DEBE = ccd.ID
+                            AND a.ID_CUENTA_CONTABLE_HABER = cch.ID
+                            AND cch.ID = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ASIENTO_MANUAL = TRUE
+                            AND a.FECHAHORA < ?
+                            AND YEAR(a.FECHAHORA) = YEAR(?)
+                    UNION ALL
+                        SELECT a.FECHAHORA, cch.DESCRIPCION AS NOMBRE, a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,
+                            TBL_CUENTAS_CONTABLES ccd,
+                            TBL_CUENTAS_CONTABLES cch,
+                            TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        WHERE a.ID_CUENTA_CONTABLE_DEBE = ccd.ID
+                            AND a.ID_CUENTA_CONTABLE_HABER = cch.ID
+                            AND ccd.ID = ccpd.ID_CUENTA_CTA_CTE
+                            AND ccpd.ID = 1
+                            AND a.ASIENTO_MANUAL = TRUE
+                            AND a.FECHAHORA < ?
+                            AND YEAR(a.FECHAHORA) = YEAR(?)
+                    UNION ALL
+                        SELECT t.FECHAHORA, 'Transferencias 0.00% - ' || et.DESCRIPCION as NOMBRE, SUM(aat.MONTO) AS IMPORTE
+                        FROM TBL_TRANSFERENCIAS t, TBL_EVENTO_TIPOS et, TBL_TRANSFERENCIAS_ASIENTOS_TEMPORALES tat, TBL_ASIENTOS_TEMPORALES aat
+                        WHERE t.COBRADO = TRUE
+                        AND t.ID_EVENTO_TIPO = et.ID
+                        AND tat.ID_TRANSFERENCIA = t.ID
+                        AND tat.ID_ASIENTO_TEMPORAL = aat.ID
+                        AND aat.FECHAHORA < ?
+                        AND YEAR(aat.FECHAHORA) = YEAR(?)
+                            GROUP BY t.FECHAHORA, et.DESCRIPCION
+                    ORDER BY FECHAHORA) t
+
+
+	at net.sf.jasperreports.engine.query.JRJdbcQueryExecuter.createStatement(JRJdbcQueryExecuter.java:528) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.query.JRJdbcQueryExecuter.createDatasource(JRJdbcQueryExecuter.java:297) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRFillDataset.createQueryDatasource(JRFillDataset.java:1129) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRFillDataset.initDatasource(JRFillDataset.java:696) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.BaseReportFiller.setParameters(BaseReportFiller.java:437) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRBaseFiller.fill(JRBaseFiller.java:548) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.BaseReportFiller.fill(BaseReportFiller.java:396) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRFillSubreport.fillSubreport(JRFillSubreport.java:732) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRSubreportRunnable.run(JRSubreportRunnable.java:59) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.AbstractThreadSubreportRunner.run(AbstractThreadSubreportRunner.java:221) ~[jasperreports-6.3.0.jar:6.3.0]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) ~[?:1.8.0_111]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) ~[?:1.8.0_111]
+	at java.lang.Thread.run(Thread.java:745) ~[?:1.8.0_111]
+Caused by: java.sql.SQLSyntaxErrorException: The 'EXTRACT YEAR' operator is not allowed to take a ? parameter as an operand.
+	at org.apache.derby.client.am.SQLExceptionFactory.getSQLException(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at org.apache.derby.client.am.SqlException.getSQLException(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at org.apache.derby.client.am.ClientConnection.prepareStatement(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at net.sf.jasperreports.engine.query.JRJdbcQueryExecuter.createStatement(JRJdbcQueryExecuter.java:384) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.query.JRJdbcQueryExecuter.createDatasource(JRJdbcQueryExecuter.java:297) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRFillDataset.createQueryDatasource(JRFillDataset.java:1129) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRFillDataset.initDatasource(JRFillDataset.java:696) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.BaseReportFiller.setParameters(BaseReportFiller.java:437) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRBaseFiller.fill(JRBaseFiller.java:548) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.BaseReportFiller.fill(BaseReportFiller.java:396) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRFillSubreport.fillSubreport(JRFillSubreport.java:732) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRSubreportRunnable.run(JRSubreportRunnable.java:59) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.AbstractThreadSubreportRunner.run(AbstractThreadSubreportRunner.java:221) ~[jasperreports-6.3.0.jar:6.3.0]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) ~[?:1.8.0_111]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) ~[?:1.8.0_111]
+	at java.lang.Thread.run(Thread.java:745) ~[?:1.8.0_111]
+Caused by: org.apache.derby.client.am.SqlException: The 'EXTRACT YEAR' operator is not allowed to take a ? parameter as an operand.
+	at org.apache.derby.client.am.ClientStatement.completeSqlca(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at org.apache.derby.client.net.NetStatementReply.parsePrepareError(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at org.apache.derby.client.net.NetStatementReply.parsePRPSQLSTTreply(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at org.apache.derby.client.net.NetStatementReply.readPrepareDescribeOutput(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at org.apache.derby.client.net.StatementReply.readPrepareDescribeOutput(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at org.apache.derby.client.net.NetStatement.readPrepareDescribeOutput_(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at org.apache.derby.client.am.ClientStatement.readPrepareDescribeOutput(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at org.apache.derby.client.am.ClientPreparedStatement.readPrepareDescribeInputOutput(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at org.apache.derby.client.am.ClientPreparedStatement.flowPrepareDescribeInputOutput(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at org.apache.derby.client.am.ClientPreparedStatement.prepare(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at org.apache.derby.client.am.ClientConnection.prepareStatementX(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at org.apache.derby.client.am.ClientConnection.prepareStatement(Unknown Source) ~[derbyclient-10.12.1.1.jar:?]
+	at net.sf.jasperreports.engine.query.JRJdbcQueryExecuter.createStatement(JRJdbcQueryExecuter.java:384) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.query.JRJdbcQueryExecuter.createDatasource(JRJdbcQueryExecuter.java:297) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRFillDataset.createQueryDatasource(JRFillDataset.java:1129) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRFillDataset.initDatasource(JRFillDataset.java:696) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.BaseReportFiller.setParameters(BaseReportFiller.java:437) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRBaseFiller.fill(JRBaseFiller.java:548) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.BaseReportFiller.fill(BaseReportFiller.java:396) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRFillSubreport.fillSubreport(JRFillSubreport.java:732) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.JRSubreportRunnable.run(JRSubreportRunnable.java:59) ~[jasperreports-6.3.0.jar:6.3.0]
+	at net.sf.jasperreports.engine.fill.AbstractThreadSubreportRunner.run(AbstractThreadSubreportRunner.java:221) ~[jasperreports-6.3.0.jar:6.3.0]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) ~[?:1.8.0_111]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) ~[?:1.8.0_111]
+	at java.lang.Thread.run(Thread.java:745) ~[?:1.8.0_111]

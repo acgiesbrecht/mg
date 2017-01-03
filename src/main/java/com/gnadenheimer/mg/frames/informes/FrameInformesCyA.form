@@ -12,8 +12,6 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="com.parah.mg.utils.DateToStringConverter" name="dateToStringConverter1">
-    </Component>
     <Component class="javax.persistence.Query" name="queryMiembros">
       <Properties>
         <Property name="query" type="java.lang.String" value="SELECT t FROM TblEntidades t ORDER BY t.ctacte"/>
@@ -32,16 +30,6 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.miembros.TblEntidades&gt;"/>
       </AuxValues>
-    </Component>
-    <Component class="com.parah.mg.utils.DateTimeTableCellRenderer" name="dateTimeTableCellRenderer1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="dateTimeTableCellRenderer1"/>
-      </Properties>
-    </Component>
-    <Component class="com.parah.mg.utils.NumberCellRenderer" name="numberCellRenderer1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="numberCellRenderer1"/>
-      </Properties>
     </Component>
     <Component class="javax.persistence.Query" name="queryEventos">
       <Properties>
