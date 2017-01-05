@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-09-02T17:19:14 -->
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-01-04T23:16:56 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libro_mayor_saldo_anterior" pageWidth="514" pageHeight="842" columnWidth="514" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96688">
-    <parameter name="fechaDesde" class="java.sql.Timestamp"/>
-    <queryString language="SQL">
+	<parameter name="fechaDesde" class="java.sql.Timestamp"/>
+	<queryString language="SQL">
 		<![CDATA[SELECT COALESCE(SUM(IMPORTE),0) AS SALDO FROM
 (SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -(a.MONTO) AS IMPORTE
                         FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
@@ -41,6 +41,7 @@
                             AND ccpd.ID = 1
                             AND a.ID = afa.ID_ASIENTO
                             AND af.ID = afa.ID_AUTOFACTURA
+                            AND af.ANULADO = FALSE
                             AND a.FECHAHORA < $P{fechaDesde}
                             AND YEAR(a.FECHAHORA) = YEAR(CAST($P{fechaDesde} AS VARCHAR(20)))
                             GROUP BY af.FECHAHORA, af.NOMBRE, a.MONTO
@@ -79,38 +80,38 @@
                         AND YEAR(aat.FECHAHORA) = YEAR(CAST($P{fechaDesde} AS VARCHAR(20)))
                             GROUP BY t.FECHAHORA, et.DESCRIPCION
                     ORDER BY FECHAHORA) t]]>
-    </queryString>
-    <field name="SALDO" class="java.lang.Integer"/>
-    <variable name="SALDO_ANTERIOR" class="java.lang.Integer">
-        <variableExpression><![CDATA[$F{SALDO}]]></variableExpression>
-    </variable>
-    <detail>
-        <band height="20" splitType="Stretch">
-            <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-            <textField pattern="#,##0.###">
-                <reportElement x="414" y="0" width="100" height="20" uuid="0478e450-09e3-4273-a256-163e494b3123">
-                    <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-                </reportElement>
-                <box padding="2">
-                    <topPen lineWidth="0.5"/>
-                    <leftPen lineWidth="0.5"/>
-                    <bottomPen lineWidth="0.5"/>
-                    <rightPen lineWidth="0.5"/>
-                </box>
-                <textElement textAlignment="Right" verticalAlignment="Middle">
-                    <font size="10"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{SALDO}]]></textFieldExpression>
-            </textField>
-            <staticText>
-                <reportElement x="250" y="0" width="164" height="20" uuid="d3c806a8-3576-46be-8f94-c11247024d4e">
-                    <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-                </reportElement>
-                <textElement textAlignment="Right" verticalAlignment="Middle">
-                    <font size="10" isBold="false"/>
-                </textElement>
-                <text><![CDATA[SALDO ANTERIOR  ]]></text>
-            </staticText>
-        </band>
-    </detail>
+	</queryString>
+	<field name="SALDO" class="java.lang.Integer"/>
+	<variable name="SALDO_ANTERIOR" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{SALDO}]]></variableExpression>
+	</variable>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField pattern="#,##0.###">
+				<reportElement x="414" y="0" width="100" height="20" uuid="0478e450-09e3-4273-a256-163e494b3123">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box padding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SALDO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="250" y="0" width="164" height="20" uuid="d3c806a8-3576-46be-8f94-c11247024d4e">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[SALDO ANTERIOR  ]]></text>
+			</staticText>
+		</band>
+	</detail>
 </jasperReport>

@@ -87,9 +87,9 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="com.parah.mg.utils.DateTimeTableCellRenderer" name="dateTimeTableCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.DateTableCellRenderer" name="dateTableCellRenderer1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="dateTimeTableCellRenderer1"/>
+        <Property name="text" type="java.lang.String" value="dateTableCellRenderer1"/>
       </Properties>
     </Component>
   </NonVisualComponents>
@@ -276,7 +276,7 @@
                   <Title/>
                   <Editor/>
                   <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="dateTimeTableCellRenderer1"/>
+                    <ComponentRef name="dateTableCellRenderer1"/>
                   </Renderer>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
