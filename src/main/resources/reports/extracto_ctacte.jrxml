@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-11-23T06:52:58 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-01-04T20:42:47 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="149"/>
@@ -45,6 +45,7 @@
                             AND a.ID = afa.ID_ASIENTO
                             AND af.ID = afa.ID_AUTOFACTURA
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+                            AND af.ANULADO = FALSE
                             GROUP BY af.FECHAHORA, af.NOMBRE, a.MONTO
                     UNION ALL
                         SELECT a.FECHAHORA, ccd.DESCRIPCION  || ' - ' || cdc.DESCRIPCION AS NOMBRE, -a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,

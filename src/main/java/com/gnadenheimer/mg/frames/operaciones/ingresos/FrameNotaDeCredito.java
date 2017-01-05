@@ -128,7 +128,6 @@ public class FrameNotaDeCredito extends JInternalFrame {
         listFacturas = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryFacturas.getResultList());
         queryTimbrados = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTimbradosNotasDeCredito t WHERE t.activo = true");
         listTimbrados = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTimbrados.getResultList());
-        dateTimeTableCellRenderer1 = new com.gnadenheimer.mg.utils.DateTimeTableCellRenderer();
         cancelarButton = new javax.swing.JButton();
         imprimirButton = new javax.swing.JButton();
         montoLabel = new javax.swing.JLabel();
@@ -143,8 +142,6 @@ public class FrameNotaDeCredito extends JInternalFrame {
         txtNro = new javax.swing.JTextField();
 
         FormListener formListener = new FormListener();
-
-        dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
 
         cancelarButton.setText("Cancelar");
         cancelarButton.addActionListener(formListener);
@@ -204,7 +201,7 @@ public class FrameNotaDeCredito extends JInternalFrame {
         jTableBinding.bind();
         jScrollPane1.setViewportView(tblFacturas);
         if (tblFacturas.getColumnModel().getColumnCount() > 0) {
-            tblFacturas.getColumnModel().getColumn(2).setCellRenderer(dateTimeTableCellRenderer1);
+            tblFacturas.getColumnModel().getColumn(2).setCellRenderer(null);
         }
 
         cboRuc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -325,19 +322,22 @@ public class FrameNotaDeCredito extends JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     void refresh() {
+        listFacturas.clear();
         listTimbrados.clear();
         listTimbrados.addAll(queryTimbrados.getResultList());
-        if (listTimbrados.size() > 0) {
+        /*if (listTimbrados.size() > 0) {
             txtTimbrado.setText(listTimbrados.get(0).getNro());
             imprimirButton.setEnabled(true);
         } else {
             JOptionPane.showMessageDialog(null, "Debe tener un timbrado activo para poder facturar.");
             imprimirButton.setEnabled(false);
-        }
+        }*/
 
         if (listTimbrados.size() > 0) {
             txtTimbrado.setText(listTimbrados.get(0).getNro());
             imprimirButton.setEnabled(true);
+            list.clear();
+            list.addAll(query.getResultList());
             if (list.size() > 0) {
                 txtNro.setText(Utils.generateNextFacturaNroConEstPtoExp(listTimbrados.get(0).getEstablecimiento(),
                         listTimbrados.get(0).getPuntoDeExpedicion(),
@@ -348,8 +348,9 @@ public class FrameNotaDeCredito extends JInternalFrame {
                         listTimbrados.get(0).getNroNotaDeCreditoIncio()));
             }
             cboRuc.setSelectedIndex(-1);
+
             dtpFecha.setDateTimeStrict(LocalDateTime.now());
-            
+            cboRuc.requestFocusInWindow();
         } else {
             JOptionPane.showMessageDialog(null, "Debe tener un timbrado activo para poder facturar.");
             imprimirButton.setEnabled(false);
@@ -465,7 +466,6 @@ public class FrameNotaDeCredito extends JInternalFrame {
     private javax.swing.JButton cancelarButton;
     private javax.swing.JComboBox<String> cboRuc;
     private javax.swing.JLabel ctacteLabel3;
-    private com.gnadenheimer.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
     private com.github.lgooddatepicker.components.DateTimePicker dtpFecha;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fecha1Label;

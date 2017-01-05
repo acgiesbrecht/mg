@@ -544,7 +544,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     private void cmdAportesResumenPendientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAportesResumenPendientesActionPerformed
         try {
             Map parameters = new HashMap();
-            parameters.put("ano", Integer.parseInt(jspAnoAportesResumen.getValue().toString()));
+            parameters.put("ano", Integer.parseInt(jspAnoAportesResumenPendientes.getValue().toString()));
             Utils.getInstance().showReport("aportes_resumen_anual_pendientes", "aportes_resumen_anual_pendientes_subreport", parameters, true);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
