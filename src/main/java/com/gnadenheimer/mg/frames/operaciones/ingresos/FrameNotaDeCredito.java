@@ -200,9 +200,6 @@ public class FrameNotaDeCredito extends JInternalFrame {
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(tblFacturas);
-        if (tblFacturas.getColumnModel().getColumnCount() > 0) {
-            tblFacturas.getColumnModel().getColumn(2).setCellRenderer(null);
-        }
 
         cboRuc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboRuc.addActionListener(formListener);
@@ -471,9 +468,9 @@ public class FrameNotaDeCredito extends JInternalFrame {
     private javax.swing.JLabel fecha1Label;
     private javax.swing.JButton imprimirButton;
     private javax.swing.JScrollPane jScrollPane1;
-    private java.util.List<com.gnadenheimer.mg.domain.TblNotasDeCredito> list;
-    private java.util.List<com.gnadenheimer.mg.domain.TblFacturas> listFacturas;
-    private java.util.List<com.gnadenheimer.mg.domain.TblTimbradosNotasDeCredito> listTimbrados;
+    private java.util.List<com.parah.mg.domain.TblNotasDeCredito> list;
+    private java.util.List<com.parah.mg.domain.TblFacturas> listFacturas;
+    private java.util.List<com.parah.mg.domain.TblTimbradosNotasDeCredito> listTimbrados;
     private javax.swing.JLabel montoLabel;
     private javax.swing.JLabel montoLabel1;
     private javax.persistence.Query query;
