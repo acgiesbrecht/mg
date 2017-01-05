@@ -87,7 +87,7 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
                 try {
                     if (!lse.getValueIsAdjusting()) {
                         if (asientosTable.getColumnModel().getColumnCount() == 5) {
-                            asientosTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));                            
+                            asientosTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
                             asientosTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(cboCuentaDebe));
                             asientosTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(cboCentroDeCostoHaber));
                             asientosTable.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(cboCuentaHaber));

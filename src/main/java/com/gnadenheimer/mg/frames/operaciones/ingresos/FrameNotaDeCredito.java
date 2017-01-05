@@ -128,6 +128,7 @@ public class FrameNotaDeCredito extends JInternalFrame {
         listFacturas = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryFacturas.getResultList());
         queryTimbrados = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTimbradosNotasDeCredito t WHERE t.activo = true");
         listTimbrados = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTimbrados.getResultList());
+        dateTableCellRenderer1 = new com.gnadenheimer.mg.utils.DateTableCellRenderer();
         cancelarButton = new javax.swing.JButton();
         imprimirButton = new javax.swing.JButton();
         montoLabel = new javax.swing.JLabel();
@@ -142,6 +143,8 @@ public class FrameNotaDeCredito extends JInternalFrame {
         txtNro = new javax.swing.JTextField();
 
         FormListener formListener = new FormListener();
+
+        dateTableCellRenderer1.setText("dateTableCellRenderer1");
 
         cancelarButton.setText("Cancelar");
         cancelarButton.addActionListener(formListener);
@@ -200,6 +203,9 @@ public class FrameNotaDeCredito extends JInternalFrame {
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(tblFacturas);
+        if (tblFacturas.getColumnModel().getColumnCount() > 0) {
+            tblFacturas.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer1);
+        }
 
         cboRuc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboRuc.addActionListener(formListener);
@@ -463,14 +469,15 @@ public class FrameNotaDeCredito extends JInternalFrame {
     private javax.swing.JButton cancelarButton;
     private javax.swing.JComboBox<String> cboRuc;
     private javax.swing.JLabel ctacteLabel3;
+    private com.gnadenheimer.mg.utils.DateTableCellRenderer dateTableCellRenderer1;
     private com.github.lgooddatepicker.components.DateTimePicker dtpFecha;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fecha1Label;
     private javax.swing.JButton imprimirButton;
     private javax.swing.JScrollPane jScrollPane1;
-    private java.util.List<com.parah.mg.domain.TblNotasDeCredito> list;
-    private java.util.List<com.parah.mg.domain.TblFacturas> listFacturas;
-    private java.util.List<com.parah.mg.domain.TblTimbradosNotasDeCredito> listTimbrados;
+    private java.util.List<com.gnadenheimer.mg.domain.TblNotasDeCredito> list;
+    private java.util.List<com.gnadenheimer.mg.domain.TblFacturas> listFacturas;
+    private java.util.List<com.gnadenheimer.mg.domain.TblTimbradosNotasDeCredito> listTimbrados;
     private javax.swing.JLabel montoLabel;
     private javax.swing.JLabel montoLabel1;
     private javax.persistence.Query query;
