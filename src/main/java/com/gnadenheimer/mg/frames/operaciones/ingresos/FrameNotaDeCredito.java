@@ -16,10 +16,6 @@ import com.gnadenheimer.mg.domain.TblAsientos;
 import com.gnadenheimer.mg.domain.TblAsientosTemporales;
 import com.gnadenheimer.mg.domain.TblFacturas;
 import com.gnadenheimer.mg.domain.TblNotasDeCredito;
-import com.gnadenheimer.mg.domain.TblRecibos;
-import com.gnadenheimer.mg.domain.TblTransferencias;
-import com.gnadenheimer.mg.domain.miembros.TblEntidades;
-import com.gnadenheimer.mg.domain.models.PagosRealizados;
 import com.gnadenheimer.mg.utils.CurrentUser;
 import com.gnadenheimer.mg.utils.Utils;
 import java.awt.Color;
@@ -35,7 +31,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -128,7 +123,7 @@ public class FrameNotaDeCredito extends JInternalFrame {
         listFacturas = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryFacturas.getResultList());
         queryTimbrados = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTimbradosNotasDeCredito t WHERE t.activo = true");
         listTimbrados = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTimbrados.getResultList());
-        dateTableCellRenderer1 = new com.gnadenheimer.mg.utils.DateTableCellRenderer();
+        dateTimeTableCellRenderer1 = new com.gnadenheimer.mg.utils.DateTimeTableCellRenderer();
         cancelarButton = new javax.swing.JButton();
         imprimirButton = new javax.swing.JButton();
         montoLabel = new javax.swing.JLabel();
@@ -144,7 +139,7 @@ public class FrameNotaDeCredito extends JInternalFrame {
 
         FormListener formListener = new FormListener();
 
-        dateTableCellRenderer1.setText("dateTableCellRenderer1");
+        dateTimeTableCellRenderer1.setText("dateTimeTableCellRenderer1");
 
         cancelarButton.setText("Cancelar");
         cancelarButton.addActionListener(formListener);
@@ -204,7 +199,7 @@ public class FrameNotaDeCredito extends JInternalFrame {
         jTableBinding.bind();
         jScrollPane1.setViewportView(tblFacturas);
         if (tblFacturas.getColumnModel().getColumnCount() > 0) {
-            tblFacturas.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer1);
+            tblFacturas.getColumnModel().getColumn(2).setCellRenderer(dateTimeTableCellRenderer1);
         }
 
         cboRuc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -469,7 +464,7 @@ public class FrameNotaDeCredito extends JInternalFrame {
     private javax.swing.JButton cancelarButton;
     private javax.swing.JComboBox<String> cboRuc;
     private javax.swing.JLabel ctacteLabel3;
-    private com.gnadenheimer.mg.utils.DateTableCellRenderer dateTableCellRenderer1;
+    private com.gnadenheimer.mg.utils.DateTimeTableCellRenderer dateTimeTableCellRenderer1;
     private com.github.lgooddatepicker.components.DateTimePicker dtpFecha;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel fecha1Label;

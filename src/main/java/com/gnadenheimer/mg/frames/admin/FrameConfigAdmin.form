@@ -386,10 +386,11 @@
     <Component class="javax.swing.JComboBox" name="cboFormatoFactura">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="3">
+          <StringArray count="4">
             <StringItem index="0" value="Preimpreso con rejilla"/>
             <StringItem index="1" value="Preimpreso sin rejilla"/>
             <StringItem index="2" value="Preimpreso con rejilla modelo especial Bethel Theodor"/>
+            <StringItem index="3" value="Preimpreso sin rejilla Bethel"/>
           </StringArray>
         </Property>
       </Properties>

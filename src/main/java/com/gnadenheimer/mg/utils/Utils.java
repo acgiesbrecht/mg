@@ -161,6 +161,8 @@ public class Utils extends Component {
                 reportFactura = "factura";
             } else if (reportFactura.equals("Preimpreso con rejilla modelo especial Bethel Theodor")) {
                 reportFactura = "factura_bethel";
+            } else if (reportFactura.equals("Preimpreso sin rejilla Bethel")) {
+                reportFactura = "factura_con_rejilla_bethel";
             }
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFactura + ".jrxml"));
 
@@ -195,9 +197,21 @@ public class Utils extends Component {
             parameters.put("monto", factura.getMonto());
             parameters.put("usuario", factura.getIdUser().getNombrecompleto());
 
-            String reportFactura = Preferences.userRoot().node("MG").get("formateFactura", "Preimpreso sin rejilla").equals("Preimpreso sin rejilla")
-                    ? "autofactura_con_rejilla"
-                    : "autofactura";
+            String reportFactura = Preferences.userRoot().node("MG").get("formatoFactura", "Preimpreso sin rejilla");
+            switch (reportFactura) {
+                case "Preimpreso sin rejilla":
+                    reportFactura = "autofactura_con_rejilla";
+                    break;
+                case "Preimpreso con rejilla":
+                    reportFactura = "autofactura";
+                    break;
+                case "Preimpreso sin rejilla Bethel":
+                    reportFactura = "autofactura_con_rejilla_bethel";
+                    break;
+                default:
+                    break;
+            }
+
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFactura + ".jrxml"));
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
@@ -230,11 +244,21 @@ public class Utils extends Component {
             parameters.put("importe_donacion", notaDeCredito.getNroFactura().getImporteDonacion());
             parameters.put("usuario", notaDeCredito.getIdUser().getNombrecompleto());
 
-            /*String reportFactura = Preferences.userRoot().node("MG").get("formateFactura", "Preimpreso sin rejilla").equals("Preimpreso sin rejilla")
-                    ? "nota_de_credito_con_rejilla"
-                    : "nota_de_credito";*/
-            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/nota_de_credito_con_rejilla.jrxml"));
-
+            String reportNC = Preferences.userRoot().node("MG").get("formatoFactura", "Preimpreso sin rejilla");
+            switch (reportNC) {
+                case "Preimpreso sin rejilla":
+                    reportNC = "nota_de_credito_con_rejilla";
+                    break;
+                case "Preimpreso con rejilla":
+                    reportNC = "nota_de_credito";
+                    break;
+                case "Preimpreso sin rejilla Bethel":
+                    reportNC = "nota_de_credito_con_rejilla_bethel";
+                    break;
+                default:
+                    break;
+            }
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportNC + ".jrxml"));
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
 
             //JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
@@ -445,7 +469,7 @@ public class Utils extends Component {
         try {
             String[] s = nro.split("-");
             Integer i = Integer.parseInt(s[2]) + 1;
-            
+
             return String.format(s[0] + "-" + s[1] + "-%07d", i);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);

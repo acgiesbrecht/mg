@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2016-11-23T06:52:31 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-01-07T10:18:02 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="149"/>
@@ -103,7 +103,7 @@
                         AND t.ID_EVENTO_TIPO = et.ID
                         AND t.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                             GROUP BY et.DESCRIPCION]]>
-	</queryString>	
+	</queryString>
 	<field name="NOMBRE" class="java.lang.String"/>
 	<field name="IMPORTE" class="java.lang.Integer"/>
 	<variable name="sum_ingresos" class="java.lang.Integer" calculation="Sum">
@@ -121,7 +121,7 @@
 			<textField>
 				<reportElement x="40" y="30" width="514" height="30" uuid="a63323e5-1d25-45b0-bc23-c36c39a4393e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="22" isBold="true"/>
+					<font size="13" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Resumen de Extracto de Cuenta Corriente"]]></textFieldExpression>
 			</textField>
@@ -199,11 +199,11 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20" splitType="Stretch">
+		<band height="15" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<printWhenExpression><![CDATA[$F{IMPORTE} != null]]></printWhenExpression>
 			<textField pattern="#,##0.###;(#,##0.###-)">
-				<reportElement key="" x="454" y="0" width="100" height="20" uuid="97cad6e3-efc3-4cbc-95f0-fe04f55ad5c2">
+				<reportElement key="" x="454" y="0" width="100" height="15" uuid="97cad6e3-efc3-4cbc-95f0-fe04f55ad5c2">
 					<printWhenExpression><![CDATA[$F{IMPORTE} != null]]></printWhenExpression>
 				</reportElement>
 				<box leftPadding="3" rightPadding="3">
@@ -212,26 +212,14 @@
 					<bottomPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{IMPORTE} > 0 ? $F{IMPORTE} : " "]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="40" y="0" width="314" height="20" isRemoveLineWhenBlank="true" uuid="38526967-f7ac-4e30-a805-ad9fdaac2432">
-					<printWhenExpression><![CDATA[$F{IMPORTE} != null]]></printWhenExpression>
-				</reportElement>
-				<box padding="3">
-					<topPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="DejaVu Sans"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{IMPORTE} == null ? null : $F{NOMBRE}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0" isBlankWhenNull="false">
-				<reportElement key="" x="354" y="0" width="100" height="20" uuid="920b3bb4-9c54-4815-b16a-8c493ad8c299">
+				<reportElement x="40" y="0" width="314" height="15" isRemoveLineWhenBlank="true" uuid="38526967-f7ac-4e30-a805-ad9fdaac2432">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<printWhenExpression><![CDATA[$F{IMPORTE} != null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
@@ -240,7 +228,25 @@
 					<bottomPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IMPORTE} == null ? null : $F{NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="false">
+				<reportElement key="" x="354" y="0" width="100" height="15" uuid="920b3bb4-9c54-4815-b16a-8c493ad8c299">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[$F{IMPORTE} != null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
+					<topPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.4" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{IMPORTE} < 0 ? -$F{IMPORTE} : ""]]></textFieldExpression>
 			</textField>
 		</band>

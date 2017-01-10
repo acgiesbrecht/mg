@@ -275,7 +275,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
         jLabel7.setText("Impresion de Facturas");
 
-        cboFormatoFactura.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preimpreso con rejilla", "Preimpreso sin rejilla", "Preimpreso con rejilla modelo especial Bethel Theodor" }));
+        cboFormatoFactura.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preimpreso con rejilla", "Preimpreso sin rejilla", "Preimpreso con rejilla modelo especial Bethel Theodor", "Preimpreso sin rejilla Bethel" }));
 
         jButton3.setBackground(new java.awt.Color(255, 0, 153));
         jButton3.setText("Actualizar Asientos");
