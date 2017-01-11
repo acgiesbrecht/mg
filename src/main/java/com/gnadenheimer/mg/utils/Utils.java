@@ -150,6 +150,8 @@ public class Utils extends Component {
             parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
             parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
             parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
+            parameters.put("logo-bethel", getClass().getResourceAsStream("/images/logo-bethel.png"));
+            parameters.put("logo-bethel2", getClass().getResourceAsStream("/images/logo-bethel.png"));
 
             parameters.put(JRParameter.REPORT_LOCALE, Locale.forLanguageTag("es"));
 
@@ -162,7 +164,7 @@ public class Utils extends Component {
             } else if (reportFactura.equals("Preimpreso con rejilla modelo especial Bethel Theodor")) {
                 reportFactura = "factura_bethel";
             } else if (reportFactura.equals("Preimpreso sin rejilla Bethel")) {
-                reportFactura = "factura_con_rejilla_bethel";
+                reportFactura = "factura_con_rejilla_bethel_full";
             }
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFactura + ".jrxml"));
 
