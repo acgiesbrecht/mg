@@ -317,7 +317,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
             List<PagosRealizados> pagosList = new ArrayList<>();
 
-            Query queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblTransferenciasList t WHERE t.fechahora >= :fechaDesde AND t.fechahora <= :fechaHasta");
+            Query queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblTransferenciasList t WHERE e.rucSinDv != 44444401 AND t.fechahora >= :fechaDesde AND t.fechahora <= :fechaHasta");
 
             queryE.setParameter("fechaDesde", dtpFechaDesde.getDate());
 
