@@ -39,12 +39,18 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "TBL_TRANSFERENCIAS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblTransferencias.findAll", query = "SELECT t FROM TblTransferencias t"),
-    @NamedQuery(name = "TblTransferencias.findById", query = "SELECT t FROM TblTransferencias t WHERE t.id = :id"),
-    @NamedQuery(name = "TblTransferencias.findByFechahora", query = "SELECT t FROM TblTransferencias t WHERE t.fechahora = :fechahora"),
-    @NamedQuery(name = "TblTransferencias.findByConcepto", query = "SELECT t FROM TblTransferencias t WHERE t.concepto = :concepto"),
-    @NamedQuery(name = "TblTransferencias.findByMontoAporte", query = "SELECT t FROM TblTransferencias t WHERE t.montoAporte = :montoAporte"),
-    @NamedQuery(name = "TblTransferencias.findByMontoDonacion", query = "SELECT t FROM TblTransferencias t WHERE t.montoDonacion = :montoDonacion"),
+    @NamedQuery(name = "TblTransferencias.findAll", query = "SELECT t FROM TblTransferencias t")
+    ,
+    @NamedQuery(name = "TblTransferencias.findById", query = "SELECT t FROM TblTransferencias t WHERE t.id = :id")
+    ,
+    @NamedQuery(name = "TblTransferencias.findByFechahora", query = "SELECT t FROM TblTransferencias t WHERE t.fechahora = :fechahora")
+    ,
+    @NamedQuery(name = "TblTransferencias.findByConcepto", query = "SELECT t FROM TblTransferencias t WHERE t.concepto = :concepto")
+    ,
+    @NamedQuery(name = "TblTransferencias.findByMontoAporte", query = "SELECT t FROM TblTransferencias t WHERE t.montoAporte = :montoAporte")
+    ,
+    @NamedQuery(name = "TblTransferencias.findByMontoDonacion", query = "SELECT t FROM TblTransferencias t WHERE t.montoDonacion = :montoDonacion")
+    ,
     @NamedQuery(name = "TblTransferencias.findByCobrado", query = "SELECT t FROM TblTransferencias t WHERE t.cobrado = :cobrado")})
 public class TblTransferencias implements Serializable {
 
@@ -97,6 +103,8 @@ public class TblTransferencias implements Serializable {
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TblUsers idUser;
+    @Column(name = "SEQ_PAGO")
+    private Integer seqPago;
 
     public TblTransferencias() {
     }
@@ -243,8 +251,22 @@ public class TblTransferencias implements Serializable {
         return "com.gnadenheimer.mg.domain.TblTransferencias[ id=" + id + " ]";
     }
 
-    public Integer getMontoTotal() {        
-            return getMontoAporte() + getMontoDonacion();       
+    public Integer getMontoTotal() {
+        return getMontoAporte() + getMontoDonacion();
+    }
+
+    /**
+     * @return the seqPago
+     */
+    public Integer getSeqPago() {
+        return seqPago;
+    }
+
+    /**
+     * @param seqPago the seqPago to set
+     */
+    public void setSeqPago(Integer seqPago) {
+        this.seqPago = seqPago;
     }
 
 }

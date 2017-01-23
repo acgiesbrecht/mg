@@ -72,7 +72,7 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         queryCuentasContables = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCuentasContables t where t.imputable = true");
         listCuentasContables = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCuentasContables.getResultList());
-        ctaCteTableCellRenderer1 = new com.gnadenheimer.mg.utils.CtaCteTableCellRenderer();
+        ctaCteTableCellRenderer2 = new com.gnadenheimer.mg.utils.CtaCteTableCellRenderer();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         idLabel = new javax.swing.JLabel();
@@ -91,10 +91,11 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         ctacteField = new javax.swing.JTextField();
         ctacteLabel1 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
 
         FormListener formListener = new FormListener();
 
-        ctaCteTableCellRenderer1.setText("ctaCteTableCellRenderer1");
+        ctaCteTableCellRenderer2.setText("ctaCteTableCellRenderer2");
 
         masterTable.setAutoCreateRowSorter(true);
 
@@ -119,6 +120,9 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         columnBinding.setColumnName("Cta Cte C.Ch.");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${esDonacionExterna}"));
+        columnBinding.setColumnName("Es Donacion Externa");
+        columnBinding.setColumnClass(Boolean.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
@@ -128,9 +132,8 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
             masterTable.getColumnModel().getColumn(1).setPreferredWidth(300);
             masterTable.getColumnModel().getColumn(2).setPreferredWidth(100);
             masterTable.getColumnModel().getColumn(3).setPreferredWidth(100);
-            masterTable.getColumnModel().getColumn(4).setResizable(false);
             masterTable.getColumnModel().getColumn(4).setPreferredWidth(100);
-            masterTable.getColumnModel().getColumn(4).setCellRenderer(ctaCteTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(4).setCellRenderer(ctaCteTableCellRenderer2);
         }
 
         idLabel.setText("Nro.:");
@@ -196,6 +199,13 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         binding.setSourceUnreadableValue(false);
         bindingGroup.addBinding(binding);
 
+        jCheckBox2.setText("Es Donacion Externa");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.esDonacionExterna}"), jCheckBox2, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        jCheckBox2.addActionListener(formListener);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -205,8 +215,7 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jCheckBox1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(newButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteButton)
@@ -216,14 +225,14 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
                         .addComponent(saveButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(conceptoLabel2)
-                            .addComponent(conceptoLabel3))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cboCuentaEfectivo, 0, 177, Short.MAX_VALUE)
-                            .addComponent(cboCuentaCtaCte, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(conceptoLabel2)
+                                    .addComponent(conceptoLabel3))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cboCuentaEfectivo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cboCuentaCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(ctacteLabel)
                                 .addGap(18, 18, 18)
@@ -237,7 +246,12 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
                                 .addGap(27, 27, 27)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(descripcionField, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(descripcionField, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCheckBox1)
+                                    .addComponent(jCheckBox2))
+                                .addGap(298, 298, 298)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -248,7 +262,7 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idLabel)
@@ -270,13 +284,16 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
                     .addComponent(ctacteLabel)
                     .addComponent(ctacteField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ctacteLabel1))
-                .addGap(10, 10, 10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
                     .addComponent(deleteButton)
-                    .addComponent(newButton)
-                    .addComponent(jCheckBox1))
+                    .addComponent(newButton))
                 .addContainerGap())
         );
 
@@ -305,6 +322,9 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
             }
             else if (evt.getSource() == cboCuentaCtaCte) {
                 FrameCentrosDeCostoAdmin.this.cboCuentaCtaCteActionPerformed(evt);
+            }
+            else if (evt.getSource() == jCheckBox2) {
+                FrameCentrosDeCostoAdmin.this.jCheckBox2ActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -382,12 +402,16 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cboCuentaCtaCteActionPerformed
 
+    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboCuentaCtaCte;
     private javax.swing.JComboBox cboCuentaEfectivo;
     private javax.swing.JLabel conceptoLabel2;
     private javax.swing.JLabel conceptoLabel3;
-    private com.gnadenheimer.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
+    private com.gnadenheimer.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer2;
     private javax.swing.JTextField ctacteField;
     private javax.swing.JLabel ctacteLabel;
     private javax.swing.JLabel ctacteLabel1;
@@ -398,6 +422,7 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
     private javax.swing.JTextField idField;
     private javax.swing.JLabel idLabel;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private java.util.List<com.gnadenheimer.mg.domain.TblCentrosDeCosto> list;
     private java.util.List<com.gnadenheimer.mg.domain.TblCuentasContables> listCuentasContables;
     private javax.swing.JScrollPane masterScrollPane;

@@ -30,22 +30,22 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.miembros.TblEntidades&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.miembros.TblEntidades&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="com.parah.mg.utils.CtaCteTableCellRenderer" name="ctaCteTableCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.CtaCteTableCellRenderer" name="ctaCteTableCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="ctaCteTableCellRenderer1"/>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.NumberCellRenderer" name="numberCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.NumberCellRenderer" name="numberCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="numberCellRenderer1"/>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.RucTableCellRenderer" name="rucTableCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.RucTableCellRenderer" name="rucTableCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="rucTableCellRenderer1"/>
       </Properties>
@@ -66,10 +66,10 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblFormasDePago&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblFormasDePago&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="com.parah.mg.utils.IntegerLongConverter" name="integerLongConverter1">
+    <Component class="com.gnadenheimer.mg.utils.IntegerLongConverter" name="integerLongConverter1">
     </Component>
     <Component class="javax.persistence.Query" name="queryCategoria">
       <Properties>
@@ -91,7 +91,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.miembros.TblMiembrosCategoriasDePago&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.miembros.TblMiembrosCategoriasDePago&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -116,7 +116,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.miembros.TblAreasServicioEnIglesia&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.miembros.TblAreasServicioEnIglesia&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -141,7 +141,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.miembros.TblMiembrosAlergias&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.miembros.TblMiembrosAlergias&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -558,34 +558,42 @@
               </Subbinding>
               <Subbinding sourcePath="${nombreCompleto}">
                 <BindingParameter name="NAME" value="Nombre"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${ctacte}">
                 <BindingParameter name="NAME" value="Ctacte"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${rucSinDv}">
                 <BindingParameter name="NAME" value="RUC"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${domicilio}">
                 <BindingParameter name="NAME" value="Domicilio"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${box}">
                 <BindingParameter name="NAME" value="Casilla Correo"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${aporteMensual}">
                 <BindingParameter name="NAME" value="Aporte Menusal"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
-              </Subbinding>
-              <Subbinding sourcePath="${idFormaDePagoPreferida}">
-                <BindingParameter name="NAME" value="Form de Pago pref."/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblFormasDePago.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${idEntidadPaganteAportes}">
                 <BindingParameter name="NAME" value="Pagante"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.miembros.TblEntidades.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.gnadenheimer.mg.domain.miembros.TblEntidades.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+              </Subbinding>
+              <Subbinding sourcePath="${idMiembrosCategoriaDePago.descripcion}">
+                <BindingParameter name="NAME" value="Categoria"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
             </BindingProperty>
           </BindingProperties>

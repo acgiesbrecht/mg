@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
@@ -237,8 +238,8 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                     }
                 }
             });
-            
-                        KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+
+            KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
             KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
             KeyStroke ctrlTab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, KeyEvent.CTRL_DOWN_MASK);
             Set<KeyStroke> keys = new HashSet<>();
@@ -246,7 +247,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
             keys.add(tab);
             keys.add(ctrlTab);
             KeyboardFocusManager.getCurrentKeyboardFocusManager().setDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, keys);
-            
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -835,6 +836,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
             t.setMontoAporte(0);
             t.setMontoDonacion(0);
             t.setIdEventoTipo(idEventoTipo);
+            t.setSeqPago((new Random()).nextInt(10000));
 
             listTransferencias.add(t);
             Integer row = listTransferencias.size() - 1;

@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import javax.persistence.Persistence;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -89,7 +90,7 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame implements 
                 "marcarCobrado");
         masterTable.getActionMap().put("marcarCobrado",
                 marcarCobrado);
-        
+
         masterTable.getModel().addTableModelListener(this);
     }
 
@@ -108,7 +109,7 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame implements 
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -335,6 +336,7 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame implements 
                 if (t.getCobrado()) {
                     t.setCobrado(true);
                     t.setFechahora(dtpFechaCobro.getDate());
+                    t.setSeqPago((new Random()).nextInt(10000));
 
                     /*Query queryEvd = entityManager.createQuery("SELECT t FROM TblEventoDetalle t "
                             + "WHERE t.idEntidad = :entidad"

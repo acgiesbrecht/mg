@@ -35,6 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.AbstractAction;
@@ -350,6 +351,7 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
                     t.setIdEventoDetalle(pago.getTblEventoDetalle());
                     t.setIdEventoTipo(pago.getTblEventoDetalle().getIdEvento().getIdEventoTipo());
                     t.setIdUser(currentUser.getUser());
+                    t.setSeqPago((new Random()).nextInt(10000));
 
                     List<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesList();
                     if (listAsientosTemporales == null) {

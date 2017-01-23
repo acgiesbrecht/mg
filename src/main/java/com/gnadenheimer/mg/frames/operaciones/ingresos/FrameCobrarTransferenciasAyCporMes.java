@@ -12,7 +12,6 @@ import com.gnadenheimer.mg.domain.TblAsientosTemporales;
 import com.gnadenheimer.mg.domain.TblCuentasContablesPorDefecto;
 import com.gnadenheimer.mg.domain.TblEventoDetalle;
 import com.gnadenheimer.mg.domain.TblEventoTipos;
-import com.gnadenheimer.mg.domain.TblRecibos;
 import com.gnadenheimer.mg.domain.TblTransferencias;
 import com.gnadenheimer.mg.domain.miembros.TblEntidades;
 import com.gnadenheimer.mg.domain.models.PagosMensualesPendientes;
@@ -31,6 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.AbstractAction;
@@ -364,6 +364,7 @@ public class FrameCobrarTransferenciasAyCporMes extends JInternalFrame implement
                     t.setFechahora(dtpFechaCobro.getDate());
                     t.setIdEventoTipo((TblEventoTipos) cboEventoTipo.getSelectedItem());
                     t.setIdUser(currentUser.getUser());
+                    t.setSeqPago((new Random()).nextInt(10000));
 
                     Query queryEvd = entityManager.createQuery("SELECT t FROM TblEventoDetalle t "
                             + "WHERE t.idEntidad = :entidad"
