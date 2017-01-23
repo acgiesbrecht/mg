@@ -178,12 +178,25 @@
                       <Component id="jButton4" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
+                      <Component id="nombreLabel10" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txtMesInicioAporteC" min="-2" pref="33" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="nombreLabel9" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txtMesFinAporteC" min="-2" pref="29" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="nombreLabel11" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="cmdCargarMesAporte" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
                       <Component id="jButton3" min="-2" pref="221" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="ctacteLabel2" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="32" max="32767" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
@@ -270,14 +283,8 @@
                                                   <Component id="dtpFechaCongregacion" min="-2" max="-2" attributes="0"/>
                                                   <Component id="dtpFechaDescongregacion" alignment="0" min="-2" max="-2" attributes="0"/>
                                                   <Component id="dtpFechaDefuncion" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Group type="102" alignment="0" attributes="0">
-                                                      <Group type="103" groupAlignment="0" attributes="0">
-                                                          <Component id="txtMesInicioAporte" min="-2" pref="47" max="-2" attributes="0"/>
-                                                          <Component id="txtMesFinAporte" min="-2" pref="47" max="-2" attributes="0"/>
-                                                      </Group>
-                                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                                                  </Group>
+                                                  <Component id="txtMesInicioAporte" min="-2" pref="47" max="-2" attributes="0"/>
+                                                  <Component id="txtMesFinAporte" min="-2" pref="47" max="-2" attributes="0"/>
                                                   <Group type="102" alignment="0" attributes="0">
                                                       <Component id="dtpFechaBautismo" min="-2" max="-2" attributes="0"/>
                                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -318,7 +325,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="52" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" pref="54" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -399,23 +406,18 @@
                           <Component id="nombreLabel7" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="nombreLabel6" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                                  <Component id="txtMesInicioAporte" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="nombreLabel8" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                                  <Component id="txtMesFinAporte" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Component id="jButton1" alignment="1" min="-2" pref="49" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="nombreLabel6" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="txtMesInicioAporte" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="nombreLabel8" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="txtMesFinAporte" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -454,7 +456,7 @@
                   <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" pref="13" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" pref="15" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="ctacteLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -466,13 +468,23 @@
                   <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="txtMesInicioAporteC" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="nombreLabel9" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="txtMesFinAporteC" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="nombreLabel10" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="cmdCargarMesAporte" alignment="3" max="32767" attributes="0"/>
+                      <Component id="nombreLabel11" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -789,6 +801,7 @@
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
           <Format subtype="1" type="0"/>
         </Property>
+        <Property name="horizontalAlignment" type="int" value="11"/>
       </Properties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="txtAporteBaseMouseClicked"/>
@@ -1080,28 +1093,24 @@
         <Property name="text" type="java.lang.String" value="Mes Fin de Compromiso de Aportar:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="cmdCargarMesAporte">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Calcular Meses Compromiso Aporte"/>
+        <Property name="text" type="java.lang.String" value="Cargar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdCargarMesAporteActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="txtMesInicioAporte">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="2"/>
-      </Properties>
       <BindingProperties>
         <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.mesInicioAporte}" target="txtMesInicioAporte" targetPath="value" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="txtMesInicioAporte" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="txtMesFinAporte">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="11"/>
-      </Properties>
       <BindingProperties>
         <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.mesFinAporte}" target="txtMesFinAporte" targetPath="value" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="txtMesFinAporte" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblEdad">
@@ -1113,6 +1122,42 @@
       <BindingProperties>
         <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.edadBautismoText}" target="lblEdadBautismo" targetPath="text" updateStrategy="0" immediately="false"/>
       </BindingProperties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="nombreLabel9">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="y ultimo mes "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="txtMesInicioAporteC">
+      <Properties>
+        <Property name="columns" type="int" value="2"/>
+        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+          <Format format="#0" subtype="-1" type="0"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="11"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtMesInicioAporteCActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="txtMesFinAporteC">
+      <Properties>
+        <Property name="columns" type="int" value="2"/>
+        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+          <Format format="#0" subtype="-1" type="0"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="11"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="nombreLabel10">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cargar primer de mes"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="nombreLabel11">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="de aportes a todos los miembros aportantes "/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

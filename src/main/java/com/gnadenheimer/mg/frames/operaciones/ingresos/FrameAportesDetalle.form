@@ -38,15 +38,15 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.miembros.TblEntidades&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.miembros.TblEntidades&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="com.parah.mg.utils.NormalTableCellRenderer" name="normalTableCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.NormalTableCellRenderer" name="normalTableCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="normalTableCellRenderer1"/>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.CategoriasConverter" name="categoriasConverter1">
+    <Component class="com.gnadenheimer.mg.utils.CategoriasConverter" name="categoriasConverter1">
     </Component>
     <Component class="javax.persistence.Query" name="queryEventos">
       <Properties>
@@ -69,7 +69,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblEventos&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblEventos&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -96,27 +96,27 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblEventoDetalle&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblEventoDetalle&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
     <Component class="org.jdesktop.swingx.JXDatePicker" name="jXDatePicker1">
     </Component>
-    <Component class="com.parah.mg.utils.DateTimeTableCellRenderer" name="dateTimeTableCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.DateTimeTableCellRenderer" name="dateTimeTableCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="dateTimeTableCellRenderer1"/>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.IntegerLongConverter" name="integerLongConverter1">
+    <Component class="com.gnadenheimer.mg.utils.IntegerLongConverter" name="integerLongConverter1">
     </Component>
-    <Component class="com.parah.mg.utils.NumberCellRenderer" name="numberCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.NumberCellRenderer" name="numberCellRenderer1">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="4"/>
         <Property name="text" type="java.lang.String" value="numberCellRenderer1"/>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.DateTimeToStringConverter" name="dateTimeToStringConverter1">
+    <Component class="com.gnadenheimer.mg.utils.DateTimeToStringConverter" name="dateTimeToStringConverter1">
     </Component>
     <Component class="javax.persistence.Query" name="tblCategoriasArticulosQuery">
       <Properties>
@@ -134,7 +134,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblCategoriasArticulos&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblCategoriasArticulos&gt;"/>
       </AuxValues>
     </Component>
     <Component class="javax.persistence.Query" name="tblFormasDePagoQuery">
@@ -153,10 +153,10 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblCategoriasArticulos&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblCategoriasArticulos&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="com.parah.mg.utils.CtaCteTableCellRenderer" name="ctaCteTableCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.CtaCteTableCellRenderer" name="ctaCteTableCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="ctaCteTableCellRenderer1"/>
       </Properties>
@@ -375,7 +375,7 @@
               </Subbinding>
               <Subbinding sourcePath="${idEntidad}">
                 <BindingParameter name="NAME" value="Miembro"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.miembros.TblEntidades.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.gnadenheimer.mg.domain.miembros.TblEntidades.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${observacion}">
@@ -518,7 +518,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.DateTimeTableCellRenderer" name="dateTableCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.DateTimeTableCellRenderer" name="dateTableCellRenderer1">
     </Component>
     <Component class="javax.swing.JComboBox" name="cboEntidad">
       <Properties>
