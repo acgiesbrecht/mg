@@ -141,17 +141,17 @@ ORDER BY FECHAHORA, NRO]]>
         <fieldDescription><![CDATA[]]></fieldDescription>
     </field>
     <field name="IMPORTE" class="java.lang.Integer"/>
-    <variable name="SALDO_ANTERIOR" class="java.lang.Integer" calculation="System"/>
-    <variable name="SUM_ACUMULADO" class="java.lang.Integer" calculation="Sum">
+    <variable name="SALDO_ANTERIOR" class="java.lang.Long" calculation="System"/>
+    <variable name="SUM_ACUMULADO" class="java.lang.Long" calculation="Sum">
         <variableExpression><![CDATA[$F{IMPORTE}]]></variableExpression>
     </variable>
-    <variable name="SALDO_ACUMULADO" class="java.lang.Integer">
+    <variable name="SALDO_ACUMULADO" class="java.lang.Long">
         <variableExpression><![CDATA[$V{SUM_ACUMULADO}+$V{SALDO_ANTERIOR}]]></variableExpression>
     </variable>
-    <variable name="SUM_DEBE" class="java.lang.Integer" calculation="Sum">
+    <variable name="SUM_DEBE" class="java.lang.Long" calculation="Sum">
         <variableExpression><![CDATA[$F{IMPORTE}>0?$F{IMPORTE}:0]]></variableExpression>
     </variable>
-    <variable name="SUM_HABER" class="java.lang.Integer" calculation="Sum">
+    <variable name="SUM_HABER" class="java.lang.Long" calculation="Sum">
         <variableExpression><![CDATA[$F{IMPORTE}<0?$F{IMPORTE}:0]]></variableExpression>
     </variable>
     <group name="Group1">

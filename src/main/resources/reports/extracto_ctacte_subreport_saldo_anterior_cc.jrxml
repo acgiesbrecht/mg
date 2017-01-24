@@ -90,8 +90,8 @@
                             GROUP BY t.FECHAHORA, et.DESCRIPCION
                     ORDER BY FECHAHORA) t]]>
     </queryString>
-    <field name="SALDO" class="java.lang.Integer"/>
-    <variable name="SALDO_ANTERIOR" class="java.lang.Integer">
+    <field name="SALDO" class="java.lang.Long"/>
+    <variable name="SALDO_ANTERIOR" class="java.lang.Long">
         <variableExpression><![CDATA[$F{SALDO}]]></variableExpression>
     </variable>
     <detail>

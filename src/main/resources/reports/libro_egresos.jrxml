@@ -52,22 +52,22 @@ ORDER BY FECHAHORA]]>
     <field name="RUC" class="java.lang.String">
         <fieldDescription><![CDATA[]]></fieldDescription>
     </field>
-    <field name="MONTO_EXENTAS" class="java.lang.Integer">
+    <field name="MONTO_EXENTAS" class="java.lang.Long">
         <fieldDescription><![CDATA[]]></fieldDescription>
     </field>
-    <field name="MONTO_IVA5" class="java.lang.Integer">
+    <field name="MONTO_IVA5" class="java.lang.Long">
         <fieldDescription><![CDATA[]]></fieldDescription>
     </field>
-    <field name="MONTO_IVA10" class="java.lang.Integer">
+    <field name="MONTO_IVA10" class="java.lang.Long">
         <fieldDescription><![CDATA[]]></fieldDescription>
     </field>
-    <variable name="sum_exentas" class="java.lang.Integer" calculation="Sum">
+    <variable name="sum_exentas" class="java.lang.Long" calculation="Sum">
         <variableExpression><![CDATA[$F{MONTO_EXENTAS}]]></variableExpression>
     </variable>
-    <variable name="sum_iva5" class="java.lang.Integer" calculation="Sum">
+    <variable name="sum_iva5" class="java.lang.Long" calculation="Sum">
         <variableExpression><![CDATA[$F{MONTO_IVA5}]]></variableExpression>
     </variable>
-    <variable name="sum_iva10" class="java.lang.Integer" calculation="Sum">
+    <variable name="sum_iva10" class="java.lang.Long" calculation="Sum">
         <variableExpression><![CDATA[$F{MONTO_IVA10}]]></variableExpression>
     </variable>
     <background>

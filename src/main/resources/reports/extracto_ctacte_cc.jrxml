@@ -92,13 +92,13 @@
     </queryString>
     <field name="NOMBRE" class="java.lang.String"/>
     <field name="IMPORTE" class="java.lang.Integer"/>
-    <variable name="sum_ingresos" class="java.lang.Integer" calculation="Sum">
+    <variable name="sum_ingresos" class="java.lang.Long" calculation="Sum">
         <variableExpression><![CDATA[$F{IMPORTE} > 0 ? $F{IMPORTE} : 0]]></variableExpression>
     </variable>
-    <variable name="sum_egresos" class="java.lang.Integer" calculation="Sum">
+    <variable name="sum_egresos" class="java.lang.Long" calculation="Sum">
         <variableExpression><![CDATA[$F{IMPORTE} < 0 ? $F{IMPORTE} : 0]]></variableExpression>
     </variable>
-    <variable name="SALDO_ANTERIOR_S" class="java.lang.Integer" calculation="System"/>
+    <variable name="SALDO_ANTERIOR_S" class="java.lang.Long" calculation="System"/>
     <background>
         <band splitType="Stretch"/>
     </background>
