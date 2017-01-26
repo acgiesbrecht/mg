@@ -125,7 +125,7 @@ ORDER BY FECHAHORA, NRO]]>
     <field name="FECHAHORA" class="java.sql.Timestamp">
         <fieldDescription><![CDATA[]]></fieldDescription>
     </field>
-    <field name="IMPORTE" class="java.lang.Integer"/>
+    <field name="IMPORTE" class="java.lang.Long"/>
     <variable name="SALDO_ANTERIOR" class="java.lang.Long" calculation="System"/>
     <variable name="SUM_ACUMULADO" class="java.lang.Long" calculation="Sum">
         <variableExpression><![CDATA[$F{IMPORTE}]]></variableExpression>
