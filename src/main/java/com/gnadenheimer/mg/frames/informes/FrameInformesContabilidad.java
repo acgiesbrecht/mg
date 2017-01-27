@@ -144,6 +144,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         cmdExtractoCtaCte1 = new javax.swing.JButton();
         cmdExtractoCtaCte2 = new javax.swing.JButton();
         cmdExtractoCtaCte3 = new javax.swing.JButton();
+        cmdExtractoCtaCteSaldos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -273,6 +274,13 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             }
         });
 
+        cmdExtractoCtaCteSaldos.setText("Ver Saldos");
+        cmdExtractoCtaCteSaldos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdExtractoCtaCteSaldosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -329,7 +337,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(cmdExtractoCtaCteCC)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmdExtractoCtaCte3)))))
+                                .addComponent(cmdExtractoCtaCte3))
+                            .addComponent(cmdExtractoCtaCteSaldos))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -387,7 +396,9 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                             .addComponent(cboCentroDeCostoExtractoCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cmdExtractoCtaCte2))))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmdExtractoCtaCteSaldos)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
@@ -577,6 +588,18 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_cmdExtractoCtaCte3ActionPerformed
 
+    private void cmdExtractoCtaCteSaldosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExtractoCtaCteSaldosActionPerformed
+        try {
+            Map parameters = new HashMap();
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
+            Utils.getInstance().showReport("extracto_ctacte_saldos", "extracto_ctacte_saldos_subreport", "extracto_ctacte_saldos_subreport_saldo_anterior", parameters, false);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdExtractoCtaCteSaldosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -640,6 +663,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
     private javax.swing.JButton cmdExtractoCtaCte2;
     private javax.swing.JButton cmdExtractoCtaCte3;
     private javax.swing.JButton cmdExtractoCtaCteCC;
+    private javax.swing.JButton cmdExtractoCtaCteSaldos;
     private javax.swing.JButton cmdLibroCompras;
     private javax.swing.JButton cmdLibroDiario;
     private javax.swing.JButton cmdLibroMayor;

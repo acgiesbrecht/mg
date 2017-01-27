@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-01-26T22:01:37 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="fechaDesde" class="java.sql.Timestamp"/>
+	<parameter name="fechaHasta" class="java.sql.Timestamp"/>
+	<parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="subreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="subSubreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM TBL_CENTROS_DE_COSTO]]>
+	</queryString>
+	<field name="ID" class="java.lang.Integer"/>
+	<field name="DESCRIPCION" class="java.lang.String"/>
+	<variable name="sum_ingresos" class="java.lang.Long" calculation="System"/>
+	<variable name="sum_egresos" class="java.lang.Long" calculation="System"/>
+	<variable name="sum_saldo_anterior" class="java.lang.Long" calculation="System"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="120" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="40" y="30" width="514" height="30" uuid="a63323e5-1d25-45b0-bc23-c36c39a4393e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Extracto de Cuenta Corriente - Saldos"]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="20" uuid="e3d4dc27-5db1-48be-ab9f-5dbed0fab1d6">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{subreportHeader}]]></subreportExpression>
+			</subreport>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="120" y="80" width="95" height="20" uuid="fce19011-8320-47c8-9fa8-183b9c596579"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="80" width="80" height="20" uuid="46c33761-c1c0-480d-9947-252d69ce4888"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="120" y="100" width="95" height="20" uuid="6520d3e0-50d0-495d-9597-33e486b32b58"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="100" width="80" height="20" uuid="0015e0d8-17f2-4ace-84e4-155ca1f31764"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="55" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport>
+				<reportElement x="40" y="0" width="400" height="55" uuid="52e891d3-b146-401a-875f-3e59a43ea4b9">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<subreportParameter name="fechaDesde">
+					<subreportParameterExpression><![CDATA[$P{fechaDesde}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechaHasta">
+					<subreportParameterExpression><![CDATA[$P{fechaHasta}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="centroDeCosto">
+					<subreportParameterExpression><![CDATA[$F{ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="centroDeCostoNombre">
+					<subreportParameterExpression><![CDATA[$F{DESCRIPCION}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="subreportObject">
+					<subreportParameterExpression><![CDATA[$P{subreportObject}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="subSubreportObject">
+					<subreportParameterExpression><![CDATA[$P{subSubreportObject}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="SALDO_ANTERIOR_S" toVariable="sum_saldo_anterior" calculation="Sum"/>
+				<returnValue subreportVariable="sum_ingresos" toVariable="sum_ingresos" calculation="Sum"/>
+				<returnValue subreportVariable="sum_egresos" toVariable="sum_egresos" calculation="Sum"/>
+				<subreportExpression><![CDATA[$P{subreportObject}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<summary>
+		<band height="40">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField pattern="#,##0">
+				<reportElement x="340" y="20" width="100" height="20" uuid="fe4beec3-d297-417e-892d-85f533daa201"/>
+				<box leftPadding="3" rightPadding="3">
+					<topPen lineWidth="0.4"/>
+					<leftPen lineWidth="0.4"/>
+					<bottomPen lineWidth="0.4"/>
+					<rightPen lineWidth="0.4"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_saldo_anterior}+$V{sum_egresos}+$V{sum_ingresos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="240" y="20" width="100" height="20" uuid="0c9e3e01-b8ee-48d2-ac09-7ba58f83a199"/>
+				<box leftPadding="3" rightPadding="3">
+					<topPen lineWidth="0.4"/>
+					<leftPen lineWidth="0.4"/>
+					<bottomPen lineWidth="0.4"/>
+					<rightPen lineWidth="0.4"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[-$V{sum_egresos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="140" y="20" width="100" height="20" uuid="a2b3dad5-9b9d-4199-95d3-79b5fda4c378"/>
+				<box leftPadding="3" rightPadding="3">
+					<topPen lineWidth="0.4"/>
+					<leftPen lineWidth="0.4"/>
+					<bottomPen lineWidth="0.4"/>
+					<rightPen lineWidth="0.4"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_ingresos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="40" y="20" width="100" height="20" uuid="1f6c219c-3b8a-4c2a-847b-0adc96c9481e"/>
+				<box leftPadding="3" rightPadding="3">
+					<topPen lineWidth="0.4"/>
+					<leftPen lineWidth="0.4"/>
+					<bottomPen lineWidth="0.4"/>
+					<rightPen lineWidth="0.4"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_saldo_anterior}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="0" width="80" height="20" uuid="02270b9d-9e41-4ce5-a9a8-748e6a00ae4b"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
