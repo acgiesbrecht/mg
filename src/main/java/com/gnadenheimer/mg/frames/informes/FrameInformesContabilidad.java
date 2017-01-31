@@ -337,8 +337,9 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(cmdExtractoCtaCteCC)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmdExtractoCtaCte3))
-                            .addComponent(cmdExtractoCtaCteSaldos))))
+                                .addComponent(cmdExtractoCtaCte3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmdExtractoCtaCteSaldos)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -391,14 +392,13 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cmdExtractoCtaCteCC)
-                            .addComponent(cmdExtractoCtaCte3))
+                            .addComponent(cmdExtractoCtaCte3)
+                            .addComponent(cmdExtractoCtaCteSaldos))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cboCentroDeCostoExtractoCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cmdExtractoCtaCte2))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmdExtractoCtaCteSaldos)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         pack();

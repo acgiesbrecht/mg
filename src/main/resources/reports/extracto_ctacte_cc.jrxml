@@ -11,7 +11,7 @@
     <parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
     <parameter name="subreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
     <queryString language="SQL">
-		<![CDATA[SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -(a.MONTO) AS IMPORTE
+		<![CDATA[SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
                         AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
@@ -19,9 +19,9 @@
                             AND a.ID = fa.ID_ASIENTO
                             AND f.ID = fa.ID_FACTURA_COMPRA
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY f.FECHAHORA, f.RAZON_SOCIAL, a.MONTO, f.ID
+                            GROUP BY f.FECHAHORA, f.RAZON_SOCIAL, f.ID
                     UNION ALL
-                        SELECT n.FECHAHORA, 'NdC - '  || n.RAZON_SOCIAL AS NOMBRE, a.MONTO AS IMPORTE
+                        SELECT n.FECHAHORA, 'NdC - '  || n.RAZON_SOCIAL AS NOMBRE, SUM(a.MONTO) AS IMPORTE
                         FROM TBL_NOTAS_DE_CREDITO_COMPRAS n, TBL_NOTAS_DE_CREDITO_COMPRAS_ASIENTOS na, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_DEBE = ccpd.ID_CUENTA_CTA_CTE
                         AND a.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
@@ -29,9 +29,9 @@
                             AND a.ID = na.ID_ASIENTO
                             AND n.ID = na.ID_NOTA_DE_CREDITO
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY n.FECHAHORA, n.RAZON_SOCIAL, a.MONTO, n.ID
+                            GROUP BY n.FECHAHORA, n.RAZON_SOCIAL, n.ID
                     UNION ALL
-                        SELECT r.FECHAHORA, 'Rec - '  || r.RAZON_SOCIAL AS NOMBRE, -a.MONTO AS IMPORTE
+                        SELECT r.FECHAHORA, 'Rec - '  || r.RAZON_SOCIAL AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_RECIBOS_COMPRA r, TBL_RECIBOS_COMPRA_ASIENTOS ra, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
                         AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
@@ -39,9 +39,9 @@
                             AND a.ID = ra.ID_ASIENTO
                             AND r.ID = ra.ID_RECIBO
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY r.FECHAHORA, r.RAZON_SOCIAL, a.MONTO, r.ID
+                            GROUP BY r.FECHAHORA, r.RAZON_SOCIAL, r.ID
                     UNION ALL
-                        SELECT af.FECHAHORA, 'AuF - '  || af.NOMBRE AS NOMBRE, -a.MONTO AS IMPORTE
+                        SELECT af.FECHAHORA, 'AuF - '  || af.NOMBRE AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_AUTOFACTURAS af, TBL_AUTOFACTURAS_ASIENTOS afa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
                         AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
@@ -49,7 +49,8 @@
                             AND a.ID = afa.ID_ASIENTO
                             AND af.ID = afa.ID_AUTOFACTURA
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY af.FECHAHORA, af.NOMBRE, a.MONTO
+                            AND af.ANULADO = FALSE
+                            GROUP BY af.FECHAHORA, af.NOMBRE, af.ID
                     UNION ALL
                         SELECT a.FECHAHORA, ccd.DESCRIPCION || ' - ' || cdc.DESCRIPCION AS NOMBRE, -a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,
                             TBL_CUENTAS_CONTABLES ccd,

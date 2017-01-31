@@ -166,8 +166,9 @@
                               <Component id="cmdExtractoCtaCteCC" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Component id="cmdExtractoCtaCte3" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="cmdExtractoCtaCteSaldos" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="cmdExtractoCtaCteSaldos" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -239,6 +240,7 @@
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="cmdExtractoCtaCteCC" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="cmdExtractoCtaCte3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmdExtractoCtaCteSaldos" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="cboCentroDeCostoExtractoCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -247,9 +249,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="cmdExtractoCtaCteSaldos" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="31" max="32767" attributes="0"/>
+              <EmptySpace pref="64" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

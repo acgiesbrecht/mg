@@ -18,24 +18,20 @@
     <parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
     <queryString language="SQL">
 		<![CDATA[select nro, nro_timbrado, fechahora, razon_social, ruc, monto_exentas, monto_iva5, monto_iva10 from TBL_FACTURAS_COMPRA
-where CONDICION_CONTADO = TRUE
-AND fechahora >= $P{fechaDesde} AND fechahora <= $P{fechaHasta}
-UNION ALL
-select nro, '-' as nro_timbrado, fechahora, razon_social, ruc, monto as monto_exentas, 0 as monto_iva5, 0 as monto_iva10 from TBL_RECIBOS_COMPRA
-where fechahora >= $P{fechaDesde} AND fechahora <= $P{fechaHasta}
-UNION ALL
-select a.nro, t.nro as nro_timbrado, a.FECHAHORA, a.nombre as razon_social, a.ci as ruc, a.monto as monto_exentas, 0 as monto_iva5, 0 as monto_iva10
-from TBL_AUTOFACTURAS a, TBL_TIMBRADOS_AUTOFACTURAS t
-where t.ID = a.ID_TIMBRADO
-AND fechahora >= $P{fechaDesde} AND fechahora <= $P{fechaHasta}
-UNION ALL
-select nc.nro, t.nro as nro_timbrado, nc.FECHAHORA, f.razon_social, f.ruc,
-f.IMPORTE_APORTE + f.IMPORTE_DONACION as monto_exentas, 0 as monto_iva5, 0 as monto_iva10
-from TBL_NOTAS_DE_CREDITO nc, TBL_TIMBRADOS_NOTAS_DE_CREDITO t, TBL_FACTURAS f
-where t.ID = nc.ID_TIMBRADO
-AND f.NRO = nc.NRO_FACTURA
-AND nc.FECHAHORA >= $P{fechaDesde} AND nc.FECHAHORA <= $P{fechaHasta}
-ORDER BY FECHAHORA]]>
+                        AND fechahora BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+                    UNION ALL
+                        select a.nro, t.nro as nro_timbrado, a.FECHAHORA, a.nombre as razon_social, a.ci as ruc, a.monto as monto_exentas, 0 as monto_iva5, 0 as monto_iva10
+                        from TBL_AUTOFACTURAS a, TBL_TIMBRADOS_AUTOFACTURAS t
+                        where t.ID = a.ID_TIMBRADO
+                        AND fechahora BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+                    UNION ALL
+                        select nc.nro, t.nro as nro_timbrado, nc.FECHAHORA, f.razon_social, f.ruc,
+                        f.IMPORTE_APORTE + f.IMPORTE_DONACION as monto_exentas, 0 as monto_iva5, 0 as monto_iva10
+                        from TBL_NOTAS_DE_CREDITO nc, TBL_TIMBRADOS_NOTAS_DE_CREDITO t, TBL_FACTURAS f
+                        where t.ID = nc.ID_TIMBRADO
+                        AND f.NRO = nc.NRO_FACTURA
+                        AND nc.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+                        ORDER BY FECHAHORA]]>
     </queryString>
     <field name="NRO" class="java.lang.String">
         <fieldDescription><![CDATA[]]></fieldDescription>

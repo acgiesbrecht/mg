@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-01-26T22:01:37 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
+<!-- 2017-01-30T21:50:31 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="saldos" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="fechaDesde" class="java.sql.Timestamp"/>
@@ -21,12 +21,12 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="120" splitType="Stretch">
+		<band height="160" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField>
-				<reportElement x="40" y="30" width="514" height="30" uuid="a63323e5-1d25-45b0-bc23-c36c39a4393e"/>
+				<reportElement x="0" y="20" width="554" height="30" uuid="a63323e5-1d25-45b0-bc23-c36c39a4393e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="22" isBold="true"/>
+					<font size="13" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Extracto de Cuenta Corriente - Saldos"]]></textFieldExpression>
 			</textField>
@@ -62,13 +62,84 @@
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Hasta:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="460" y="145" width="80" height="15" uuid="a853475f-fa61-44de-989a-c3e6f4509149"/>
+				<box leftPadding="5">
+					<topPen lineWidth="0.4"/>
+					<leftPen lineWidth="0.4"/>
+					<bottomPen lineWidth="0.4"/>
+					<rightPen lineWidth="0.4"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="145" width="80" height="15" uuid="4536f26c-1238-480a-9848-03cec622dbea"/>
+				<box leftPadding="5">
+					<topPen lineWidth="0.4"/>
+					<leftPen lineWidth="0.4"/>
+					<bottomPen lineWidth="0.4"/>
+					<rightPen lineWidth="0.4"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Egresos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="145" width="80" height="15" uuid="34eec32c-32fc-4395-a4f6-d02d0d6ac0bc"/>
+				<box leftPadding="5">
+					<topPen lineWidth="0.4"/>
+					<leftPen lineWidth="0.4"/>
+					<bottomPen lineWidth="0.4"/>
+					<rightPen lineWidth="0.4"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ingresos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="145" width="80" height="15" uuid="8b267b4e-3dd0-4fdb-b701-d5301cba0977">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box leftPadding="5">
+					<topPen lineWidth="0.4"/>
+					<leftPen lineWidth="0.4"/>
+					<bottomPen lineWidth="0.4"/>
+					<rightPen lineWidth="0.4"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo Anterior]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="145" width="180" height="15" uuid="84769b12-db11-48f2-8c1e-7f3873fb8c04">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box leftPadding="5">
+					<topPen lineWidth="0.4"/>
+					<leftPen lineWidth="0.4"/>
+					<bottomPen lineWidth="0.4"/>
+					<rightPen lineWidth="0.4"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Centro de Costo]]></text>
+			</staticText>
 		</band>
 	</title>
 	<detail>
-		<band height="55" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<subreport>
-				<reportElement x="40" y="0" width="400" height="55" uuid="52e891d3-b146-401a-875f-3e59a43ea4b9">
+				<reportElement x="40" y="0" width="500" height="20" isRemoveLineWhenBlank="true" uuid="52e891d3-b146-401a-875f-3e59a43ea4b9">
 					<property name="local_mesure_unitx" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -101,10 +172,12 @@
 		</band>
 	</detail>
 	<summary>
-		<band height="40">
+		<band height="20">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField pattern="#,##0">
-				<reportElement x="340" y="20" width="100" height="20" uuid="fe4beec3-d297-417e-892d-85f533daa201"/>
+				<reportElement x="460" y="0" width="80" height="20" uuid="fe4beec3-d297-417e-892d-85f533daa201">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.4"/>
 					<leftPen lineWidth="0.4"/>
@@ -117,7 +190,7 @@
 				<textFieldExpression><![CDATA[$V{sum_saldo_anterior}+$V{sum_egresos}+$V{sum_ingresos}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="240" y="20" width="100" height="20" uuid="0c9e3e01-b8ee-48d2-ac09-7ba58f83a199"/>
+				<reportElement x="380" y="0" width="80" height="20" uuid="0c9e3e01-b8ee-48d2-ac09-7ba58f83a199"/>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.4"/>
 					<leftPen lineWidth="0.4"/>
@@ -130,7 +203,7 @@
 				<textFieldExpression><![CDATA[-$V{sum_egresos}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="140" y="20" width="100" height="20" uuid="a2b3dad5-9b9d-4199-95d3-79b5fda4c378"/>
+				<reportElement x="300" y="0" width="80" height="20" uuid="a2b3dad5-9b9d-4199-95d3-79b5fda4c378"/>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.4"/>
 					<leftPen lineWidth="0.4"/>
@@ -143,7 +216,7 @@
 				<textFieldExpression><![CDATA[$V{sum_ingresos}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="40" y="20" width="100" height="20" uuid="1f6c219c-3b8a-4c2a-847b-0adc96c9481e"/>
+				<reportElement x="220" y="0" width="80" height="20" uuid="1f6c219c-3b8a-4c2a-847b-0adc96c9481e"/>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.4"/>
 					<leftPen lineWidth="0.4"/>
@@ -156,7 +229,13 @@
 				<textFieldExpression><![CDATA[$V{sum_saldo_anterior}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="40" y="0" width="80" height="20" uuid="02270b9d-9e41-4ce5-a9a8-748e6a00ae4b"/>
+				<reportElement x="40" y="0" width="180" height="20" uuid="02270b9d-9e41-4ce5-a9a8-748e6a00ae4b"/>
+				<box leftPadding="3" rightPadding="3">
+					<topPen lineWidth="0.4"/>
+					<leftPen lineWidth="0.4"/>
+					<bottomPen lineWidth="0.4"/>
+					<rightPen lineWidth="0.4"/>
+				</box>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>

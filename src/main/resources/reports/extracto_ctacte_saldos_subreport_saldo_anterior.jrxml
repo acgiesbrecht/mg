@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-01-26T21:23:03 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libro_mayor_saldo_anterior" pageWidth="100" pageHeight="842" columnWidth="100" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96688">
+<!-- 2017-01-30T23:09:38 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="saldo_anterior" pageWidth="80" pageHeight="842" columnWidth="80" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96688">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg.xml"/>
     <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
     <parameter name="fechaDesde" class="java.sql.Timestamp"/>
     <parameter name="centroDeCosto" class="java.lang.Integer"/>
     <queryString language="SQL">
 		<![CDATA[SELECT COALESCE(SUM(IMPORTE),0) AS SALDO FROM
-                        (SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -(a.MONTO) AS IMPORTE
+                        (SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
                         AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
@@ -17,9 +17,9 @@
                             AND f.ID = fa.ID_FACTURA_COMPRA
                             AND a.FECHAHORA < $P{fechaDesde}
                             AND YEAR(a.FECHAHORA) = YEAR(CAST($P{fechaDesde} AS VARCHAR(20)))
-                            GROUP BY f.FECHAHORA, f.RAZON_SOCIAL, a.MONTO, f.ID
+                            GROUP BY f.FECHAHORA, f.RAZON_SOCIAL, f.ID
                     UNION ALL
-                        SELECT n.FECHAHORA, 'NdC - '  || n.RAZON_SOCIAL AS NOMBRE, a.MONTO AS IMPORTE
+                        SELECT n.FECHAHORA, 'NdC - '  || n.RAZON_SOCIAL AS NOMBRE, SUM(a.MONTO) AS IMPORTE
                         FROM TBL_NOTAS_DE_CREDITO_COMPRAS n, TBL_NOTAS_DE_CREDITO_COMPRAS_ASIENTOS na, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_DEBE = ccpd.ID_CUENTA_CTA_CTE
                         AND a.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
@@ -28,9 +28,9 @@
                             AND n.ID = na.ID_NOTA_DE_CREDITO
                             AND a.FECHAHORA < $P{fechaDesde}
                             AND YEAR(a.FECHAHORA) = YEAR(CAST($P{fechaDesde} AS VARCHAR(20)))
-                            GROUP BY n.FECHAHORA, n.RAZON_SOCIAL, a.MONTO, n.ID
+                            GROUP BY n.FECHAHORA, n.RAZON_SOCIAL, n.ID
                     UNION ALL
-                        SELECT r.FECHAHORA, 'Rec - '  || r.RAZON_SOCIAL AS NOMBRE, -a.MONTO AS IMPORTE
+                        SELECT r.FECHAHORA, 'Rec - '  || r.RAZON_SOCIAL AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_RECIBOS_COMPRA r, TBL_RECIBOS_COMPRA_ASIENTOS ra, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
                         AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
@@ -39,9 +39,9 @@
                             AND r.ID = ra.ID_RECIBO
                             AND a.FECHAHORA < $P{fechaDesde}
                             AND YEAR(a.FECHAHORA) = YEAR(CAST($P{fechaDesde} AS VARCHAR(20)))
-                            GROUP BY r.FECHAHORA, r.RAZON_SOCIAL, a.MONTO, r.ID
+                            GROUP BY r.FECHAHORA, r.RAZON_SOCIAL, r.ID
                     UNION ALL
-                        SELECT af.FECHAHORA, 'AuF - '  || af.NOMBRE AS NOMBRE, -a.MONTO AS IMPORTE
+                        SELECT af.FECHAHORA, 'AuF - '  || af.NOMBRE AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_AUTOFACTURAS af, TBL_AUTOFACTURAS_ASIENTOS afa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
                         AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
@@ -50,35 +50,40 @@
                             AND af.ID = afa.ID_AUTOFACTURA
                             AND a.FECHAHORA < $P{fechaDesde}
                             AND YEAR(a.FECHAHORA) = YEAR(CAST($P{fechaDesde} AS VARCHAR(20)))
-                            GROUP BY af.FECHAHORA, af.NOMBRE, a.MONTO
+                            AND af.ANULADO = FALSE
+                            GROUP BY af.FECHAHORA, af.NOMBRE, af.ID
                     UNION ALL
-                        SELECT a.FECHAHORA, ccd.DESCRIPCION AS NOMBRE, -a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,
+                        SELECT a.FECHAHORA, ccd.DESCRIPCION || ' - ' || cdc.DESCRIPCION AS NOMBRE, -a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,
                             TBL_CUENTAS_CONTABLES ccd,
                             TBL_CUENTAS_CONTABLES cch,
-                            TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                            TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd,
+                            TBL_CENTROS_DE_COSTO cdc
                         WHERE a.ID_CUENTA_CONTABLE_DEBE = ccd.ID
                             AND a.ID_CUENTA_CONTABLE_HABER = cch.ID
                             AND cch.ID = ccpd.ID_CUENTA_CTA_CTE
                             AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
+                            AND a.ID_CENTRO_DE_COSTO_DEBE = cdc.ID
                             AND ccpd.ID = 1
                             AND a.ASIENTO_MANUAL = TRUE
                             AND a.FECHAHORA < $P{fechaDesde}
                             AND YEAR(a.FECHAHORA) = YEAR(CAST($P{fechaDesde} AS VARCHAR(20)))
                     UNION ALL
-                        SELECT a.FECHAHORA, cch.DESCRIPCION AS NOMBRE, a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,
+                        SELECT a.FECHAHORA, cch.DESCRIPCION || ' - ' || cdc.DESCRIPCION AS NOMBRE, a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,
                             TBL_CUENTAS_CONTABLES ccd,
                             TBL_CUENTAS_CONTABLES cch,
-                            TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                            TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd,
+                            TBL_CENTROS_DE_COSTO cdc
                         WHERE a.ID_CUENTA_CONTABLE_DEBE = ccd.ID
                             AND a.ID_CUENTA_CONTABLE_HABER = cch.ID
                             AND ccd.ID = ccpd.ID_CUENTA_CTA_CTE
                             AND a.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
+                            AND a.ID_CENTRO_DE_COSTO_HABER = cdc.ID
                             AND ccpd.ID = 1
                             AND a.ASIENTO_MANUAL = TRUE
                             AND a.FECHAHORA < $P{fechaDesde}
                             AND YEAR(a.FECHAHORA) = YEAR(CAST($P{fechaDesde} AS VARCHAR(20)))
                     UNION ALL
-                        SELECT t.FECHAHORA, 'Transferencias 0.00% - ' || et.DESCRIPCION as NOMBRE, SUM(t.MONTO_APORTE + t.MONTO_DONACION) AS IMPORTE
+                        SELECT t.FECHAHORA, 'Transferencias 0.00% - ' || et.DESCRIPCION as NOMBRE, SUM(aat.MONTO) AS IMPORTE
                         FROM TBL_TRANSFERENCIAS t, TBL_EVENTO_TIPOS et, TBL_TRANSFERENCIAS_ASIENTOS_TEMPORALES tat, TBL_ASIENTOS_TEMPORALES aat
                         WHERE t.COBRADO = TRUE
                         AND t.ID_EVENTO_TIPO = et.ID
@@ -87,7 +92,7 @@
                         AND aat.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
                         AND aat.FECHAHORA < $P{fechaDesde}
                         AND YEAR(aat.FECHAHORA) = YEAR(CAST($P{fechaDesde} AS VARCHAR(20)))
-                            GROUP BY t.FECHAHORA, et.DESCRIPCION
+                            GROUP BY t.FECHAHORA, et.DESCRIPCION, t.SEQ_PAGO
                     ORDER BY FECHAHORA) t]]>
     </queryString>
     <field name="SALDO" class="java.lang.Long"/>
@@ -98,17 +103,14 @@
         <band height="20" splitType="Stretch">
             <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
             <textField pattern="#,##0.###">
-                <reportElement x="0" y="0" width="100" height="20" forecolor="#FFFFFF" uuid="0478e450-09e3-4273-a256-163e494b3123">
+                <reportElement x="0" y="0" width="80" height="20" forecolor="#000000" uuid="0478e450-09e3-4273-a256-163e494b3123">
                     <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
                 </reportElement>
-                <box padding="2">
-                    <topPen lineWidth="0.5"/>
-                    <leftPen lineWidth="0.5"/>
-                    <bottomPen lineWidth="0.5"/>
-                    <rightPen lineWidth="0.5"/>
+                <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
+                    <pen lineWidth="0.4"/>
                 </box>
                 <textElement textAlignment="Right" verticalAlignment="Middle">
-                    <font size="10"/>
+                    <font fontName="SansSerif" size="10"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{SALDO}]]></textFieldExpression>
             </textField>

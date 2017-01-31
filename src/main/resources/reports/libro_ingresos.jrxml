@@ -21,7 +21,7 @@
 where fechahora >= $P{fechaDesde} AND fechahora <= $P{fechaHasta}
 union all
 select ncc.NRO_TIMBRADO, ncc.NRO, ncc.FECHAHORA, ncc.RAZON_SOCIAL, ncc.RUC, monto_exentas, monto_iva5, monto_iva10, FALSE AS ANULADO from TBL_NOTAS_DE_CREDITO_COMPRAS ncc
-where fechahora >= $P{fechaDesde} AND fechahora <= $P{fechaHasta}
+where fechahora BETWEEN $P{fechaDesde} AND $P{fechaHasta}
 order by fechahora]]>
     </queryString>
     <field name="NRO" class="java.lang.String">

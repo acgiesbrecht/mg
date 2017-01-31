@@ -11,7 +11,7 @@
     <parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
     <parameter name="subreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
     <queryString language="SQL">
-		<![CDATA[SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -(a.MONTO) AS IMPORTE
+		<![CDATA[SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
                             AND ccpd.ID = 1
@@ -20,7 +20,7 @@
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                             GROUP BY f.FECHAHORA, f.RAZON_SOCIAL, a.MONTO, f.ID
                     UNION ALL
-                        SELECT n.FECHAHORA, 'NdC - '  || n.RAZON_SOCIAL AS NOMBRE, a.MONTO AS IMPORTE
+                        SELECT n.FECHAHORA, 'NdC - '  || n.RAZON_SOCIAL AS NOMBRE, SUM(a.MONTO) AS IMPORTE
                         FROM TBL_NOTAS_DE_CREDITO_COMPRAS n, TBL_NOTAS_DE_CREDITO_COMPRAS_ASIENTOS na, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_DEBE = ccpd.ID_CUENTA_CTA_CTE
                             AND ccpd.ID = 1
@@ -29,7 +29,7 @@
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                             GROUP BY n.FECHAHORA, n.RAZON_SOCIAL, a.MONTO, n.ID
                     UNION ALL
-                        SELECT r.FECHAHORA, 'Rec - '  || r.RAZON_SOCIAL AS NOMBRE, -a.MONTO AS IMPORTE
+                        SELECT r.FECHAHORA, 'Rec - '  || r.RAZON_SOCIAL AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_RECIBOS_COMPRA r, TBL_RECIBOS_COMPRA_ASIENTOS ra, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
                             AND ccpd.ID = 1
@@ -38,7 +38,7 @@
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                             GROUP BY r.FECHAHORA, r.RAZON_SOCIAL, a.MONTO, r.ID
                     UNION ALL
-                        SELECT af.FECHAHORA, 'AuF - '  || af.NOMBRE AS NOMBRE, -a.MONTO AS IMPORTE
+                        SELECT af.FECHAHORA, 'AuF - '  || af.NOMBRE AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_AUTOFACTURAS af, TBL_AUTOFACTURAS_ASIENTOS afa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
                             AND ccpd.ID = 1
@@ -76,11 +76,13 @@
                             AND a.ASIENTO_MANUAL = TRUE
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                     UNION ALL
-                        SELECT t.FECHAHORA, 'Transferencias 0.00% - ' || et.DESCRIPCION as NOMBRE, SUM(t.MONTO_APORTE + t.MONTO_DONACION) AS IMPORTE
-                        FROM TBL_TRANSFERENCIAS t, TBL_EVENTO_TIPOS et
+                        SELECT t.FECHAHORA, 'Transferencias 0.00% - ' || et.DESCRIPCION as NOMBRE, SUM(aat.MONTO) AS IMPORTE
+                        FROM TBL_TRANSFERENCIAS t, TBL_EVENTO_TIPOS et, TBL_TRANSFERENCIAS_ASIENTOS_TEMPORALES tat, TBL_ASIENTOS_TEMPORALES aat
                         WHERE t.COBRADO = TRUE
                         AND t.ID_EVENTO_TIPO = et.ID
-                        AND t.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+                        AND tat.ID_TRANSFERENCIA = t.ID
+                        AND tat.ID_ASIENTO_TEMPORAL = aat.ID
+                        AND aat.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                             GROUP BY t.FECHAHORA, et.DESCRIPCION, t.SEQ_PAGO
                     ORDER BY FECHAHORA]]>
     </queryString>

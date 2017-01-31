@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-01-26T22:03:06 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="400" pageHeight="60" columnWidth="400" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
+<!-- 2017-01-30T23:08:35 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="500" pageHeight="60" columnWidth="500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="fechaDesde" class="java.sql.Timestamp"/>
@@ -10,7 +10,7 @@
 	<parameter name="centroDeCostoNombre" class="java.lang.String"/>
 	<parameter name="subSubreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -(a.MONTO) AS IMPORTE
+		<![CDATA[SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
                         AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
@@ -20,7 +20,7 @@
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                             GROUP BY f.FECHAHORA, f.RAZON_SOCIAL, a.MONTO, f.ID
                     UNION ALL
-                        SELECT n.FECHAHORA, 'NdC - '  || n.RAZON_SOCIAL AS NOMBRE, a.MONTO AS IMPORTE
+                        SELECT n.FECHAHORA, 'NdC - '  || n.RAZON_SOCIAL AS NOMBRE, SUM(a.MONTO) AS IMPORTE
                         FROM TBL_NOTAS_DE_CREDITO_COMPRAS n, TBL_NOTAS_DE_CREDITO_COMPRAS_ASIENTOS na, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_DEBE = ccpd.ID_CUENTA_CTA_CTE
                         AND a.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
@@ -30,7 +30,7 @@
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                             GROUP BY n.FECHAHORA, n.RAZON_SOCIAL, a.MONTO, n.ID
                     UNION ALL
-                        SELECT r.FECHAHORA, 'Rec - '  || r.RAZON_SOCIAL AS NOMBRE, -a.MONTO AS IMPORTE
+                        SELECT r.FECHAHORA, 'Rec - '  || r.RAZON_SOCIAL AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_RECIBOS_COMPRA r, TBL_RECIBOS_COMPRA_ASIENTOS ra, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
                         AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
@@ -40,7 +40,7 @@
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                             GROUP BY r.FECHAHORA, r.RAZON_SOCIAL, a.MONTO, r.ID
                     UNION ALL
-                        SELECT af.FECHAHORA, 'AuF - '  || af.NOMBRE AS NOMBRE, -a.MONTO AS IMPORTE
+                        SELECT af.FECHAHORA, 'AuF - '  || af.NOMBRE AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_AUTOFACTURAS af, TBL_AUTOFACTURAS_ASIENTOS afa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
                         AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
@@ -48,7 +48,8 @@
                             AND a.ID = afa.ID_ASIENTO
                             AND af.ID = afa.ID_AUTOFACTURA
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY af.FECHAHORA, af.NOMBRE, a.MONTO
+                            AND af.ANULADO = FALSE
+                            GROUP BY af.FECHAHORA, af.NOMBRE, af.ID
                     UNION ALL
                         SELECT a.FECHAHORA, ccd.DESCRIPCION || ' - ' || cdc.DESCRIPCION AS NOMBRE, -a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,
                             TBL_CUENTAS_CONTABLES ccd,
@@ -101,101 +102,13 @@
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<columnHeader>
-		<band height="35" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<subreport>
-				<reportElement mode="Opaque" x="40" y="0" width="29" height="15" forecolor="#000000" uuid="52e891d3-b146-401a-875f-3e59a43ea4b9">
-					<property name="local_mesure_unitx" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.x" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
-				<subreportParameter name="fechaDesde">
-					<subreportParameterExpression><![CDATA[$P{fechaDesde}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="centroDeCosto">
-					<subreportParameterExpression><![CDATA[$P{centroDeCosto}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<returnValue subreportVariable="SALDO_ANTERIOR" toVariable="SALDO_ANTERIOR_S" calculation="First"/>
-				<subreportExpression><![CDATA[$P{subSubreportObject}]]></subreportExpression>
-			</subreport>
-			<staticText>
-				<reportElement x="300" y="20" width="100" height="15" uuid="2ff52c03-a14b-4eab-b6f3-deeb020dae1a"/>
-				<box leftPadding="5">
-					<topPen lineWidth="0.4"/>
-					<leftPen lineWidth="0.4"/>
-					<bottomPen lineWidth="0.4"/>
-					<rightPen lineWidth="0.4"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Saldo]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="200" y="20" width="100" height="15" uuid="ae0999b4-c921-454f-a1e5-54968668cce8"/>
-				<box leftPadding="5">
-					<topPen lineWidth="0.4"/>
-					<leftPen lineWidth="0.4"/>
-					<bottomPen lineWidth="0.4"/>
-					<rightPen lineWidth="0.4"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Egresos]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="100" y="20" width="100" height="15" uuid="dc3e343e-00e9-4615-a102-5e3177ac4843"/>
-				<box leftPadding="5">
-					<topPen lineWidth="0.4"/>
-					<leftPen lineWidth="0.4"/>
-					<bottomPen lineWidth="0.4"/>
-					<rightPen lineWidth="0.4"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Ingresos]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="20" width="100" height="15" uuid="dec54cc1-5cfc-4b6e-b62d-2138a28e37b6">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box leftPadding="5">
-					<topPen lineWidth="0.4"/>
-					<leftPen lineWidth="0.4"/>
-					<bottomPen lineWidth="0.4"/>
-					<rightPen lineWidth="0.4"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Saldo Anterior]]></text>
-			</staticText>
-			<textField pattern="">
-				<reportElement stretchType="ContainerBottom" x="0" y="0" width="400" height="20" uuid="51643c9e-4396-431f-89a3-579456c4fc70"/>
-				<box leftPadding="3" rightPadding="3">
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="10" isBold="true"/>
-					<paragraph lineSpacing="Proportional"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{centroDeCostoNombre}]]></textFieldExpression>
-			</textField>
-		</band>
-	</columnHeader>
-	<summary>
-		<band height="20" splitType="Stretch">
+	<columnFooter>
+		<band height="20">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField pattern="#,##0">
-				<reportElement x="200" y="0" width="100" height="20" uuid="42e527ad-ea36-4acc-9ccc-bc9199249333"/>
+				<reportElement x="340" y="0" width="80" height="20" uuid="42e527ad-ea36-4acc-9ccc-bc9199249333">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.4"/>
 					<leftPen lineWidth="0.4"/>
@@ -209,7 +122,9 @@
 				<textFieldExpression><![CDATA[-$V{sum_egresos}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="100" y="0" width="100" height="20" uuid="ba4e2998-fa74-4b5d-8269-a15ef5bdb43a"/>
+				<reportElement x="260" y="0" width="80" height="20" uuid="ba4e2998-fa74-4b5d-8269-a15ef5bdb43a">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.4"/>
 					<leftPen lineWidth="0.4"/>
@@ -221,8 +136,10 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sum_ingresos}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0">
-				<reportElement x="300" y="0" width="100" height="20" uuid="156f91b4-4adc-4ece-a0fe-cf807407ed1b"/>
+			<textField evaluationTime="Band" pattern="#,##0">
+				<reportElement x="420" y="0" width="80" height="20" uuid="156f91b4-4adc-4ece-a0fe-cf807407ed1b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.4"/>
 					<leftPen lineWidth="0.4"/>
@@ -234,20 +151,38 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SALDO_ANTERIOR_S}+$V{sum_ingresos}+$V{sum_egresos}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0">
-				<reportElement stretchType="ContainerBottom" x="0" y="0" width="100" height="20" uuid="ea75f702-0899-49cc-9c06-b3d3106ed6db"/>
+			<textField pattern="">
+				<reportElement stretchType="ContainerBottom" x="0" y="0" width="180" height="20" uuid="51643c9e-4396-431f-89a3-579456c4fc70"/>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.4"/>
 					<leftPen lineWidth="0.4"/>
 					<bottomPen lineWidth="0.4"/>
 					<rightPen lineWidth="0.4"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="DejaVu Sans" size="10" isBold="false"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
 					<paragraph lineSpacing="Proportional"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{SALDO_ANTERIOR_S}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{centroDeCostoNombre}]]></textFieldExpression>
 			</textField>
+			<subreport>
+				<reportElement mode="Opaque" x="180" y="0" width="80" height="20" forecolor="#000000" uuid="52e891d3-b146-401a-875f-3e59a43ea4b9">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<subreportParameter name="fechaDesde">
+					<subreportParameterExpression><![CDATA[$P{fechaDesde}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="centroDeCosto">
+					<subreportParameterExpression><![CDATA[$P{centroDeCosto}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="SALDO_ANTERIOR" toVariable="SALDO_ANTERIOR_S"/>
+				<subreportExpression><![CDATA[$P{subSubreportObject}]]></subreportExpression>
+			</subreport>
 		</band>
-	</summary>
+	</columnFooter>
 </jasperReport>
