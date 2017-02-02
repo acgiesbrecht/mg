@@ -11,63 +11,48 @@
     <parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
     <parameter name="subreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
     <queryString language="SQL">
-		<![CDATA[SELECT ccd.DESCRIPCION AS NOMBRE, -SUM(A.MONTO) AS IMPORTE
-                        FROM TBL_FACTURAS_COMPRA f,
-                            TBL_FACTURAS_COMPRA_ASIENTOS fa,
-                            TBL_ASIENTOS a,
-                            TBL_CUENTAS_CONTABLES ccd,
-                            TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+		<![CDATA[SELECT cc.DESCRIPCION AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
+                        FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd, TBL_CUENTAS_CONTABLES cc
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
-                            AND a.ID_CUENTA_CONTABLE_DEBE = ccd.ID
+                            AND a.ID_CUENTA_CONTABLE_DEBE = cc.ID
                             AND ccpd.ID = 1
                             AND a.ID = fa.ID_ASIENTO
                             AND f.ID = fa.ID_FACTURA_COMPRA
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY ccd.DESCRIPCION
+                            GROUP BY cc.DESCRIPCION
                     UNION ALL
-                        SELECT cch.DESCRIPCION AS NOMBRE, SUM(a.MONTO) AS IMPORTE
-                        FROM TBL_NOTAS_DE_CREDITO_COMPRAS n,
-                                TBL_NOTAS_DE_CREDITO_COMPRAS_ASIENTOS na,
-                                TBL_ASIENTOS a,
-                                TBL_CUENTAS_CONTABLES cch,
-                                TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        SELECT cc.DESCRIPCION AS NOMBRE, SUM(a.MONTO) AS IMPORTE
+                        FROM TBL_NOTAS_DE_CREDITO_COMPRAS n, TBL_NOTAS_DE_CREDITO_COMPRAS_ASIENTOS na, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd, TBL_CUENTAS_CONTABLES cc
                         WHERE a.ID_CUENTA_CONTABLE_DEBE = ccpd.ID_CUENTA_CTA_CTE
-                            AND a.ID_CUENTA_CONTABLE_HABER = cch.ID
+                            AND a.ID_CUENTA_CONTABLE_HABER = cc.ID
                             AND ccpd.ID = 1
                             AND a.ID = na.ID_ASIENTO
                             AND n.ID = na.ID_NOTA_DE_CREDITO
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY cch.DESCRIPCION
+                            GROUP BY cc.DESCRIPCION
                     UNION ALL
-                        SELECT ccd.DESCRIPCION AS NOMBRE, SUM(-a.MONTO) AS IMPORTE
-                        FROM TBL_RECIBOS_COMPRA r,
-                             TBL_RECIBOS_COMPRA_ASIENTOS ra,
-                             TBL_ASIENTOS a,
-                             TBL_CUENTAS_CONTABLES ccd,
-                             TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        SELECT cc.DESCRIPCION AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
+                        FROM TBL_RECIBOS_COMPRA r, TBL_RECIBOS_COMPRA_ASIENTOS ra, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd, TBL_CUENTAS_CONTABLES cc
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
-                            AND a.ID_CUENTA_CONTABLE_HABER = ccd.ID
+                            AND a.ID_CUENTA_CONTABLE_DEBE = cc.ID                            
                             AND ccpd.ID = 1
                             AND a.ID = ra.ID_ASIENTO
                             AND r.ID = ra.ID_RECIBO
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY ccd.DESCRIPCION
+                            GROUP BY cc.DESCRIPCION 
                     UNION ALL
-                        SELECT ccd.DESCRIPCION AS NOMBRE, SUM(-a.MONTO) AS IMPORTE
-                        FROM TBL_AUTOFACTURAS af,
-                            TBL_AUTOFACTURAS_ASIENTOS afa,
-                            TBL_ASIENTOS a,
-                            TBL_CUENTAS_CONTABLES ccd,
-                            TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
+                        SELECT cc.DESCRIPCION AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
+                        FROM TBL_AUTOFACTURAS af, TBL_AUTOFACTURAS_ASIENTOS afa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd, TBL_CUENTAS_CONTABLES cc
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
-                            AND a.ID_CUENTA_CONTABLE_DEBE = ccd.ID
+                            AND a.ID_CUENTA_CONTABLE_DEBE = cc.ID
                             AND ccpd.ID = 1
                             AND a.ID = afa.ID_ASIENTO
                             AND af.ID = afa.ID_AUTOFACTURA
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY ccd.DESCRIPCION
+                            AND af.ANULADO = FALSE
+                            GROUP BY cc.DESCRIPCION 
                     UNION ALL
-                        SELECT ccd.DESCRIPCION AS NOMBRE, SUM(-a.MONTO) AS IMPORTE FROM   TBL_ASIENTOS a,
+                        SELECT ccd.DESCRIPCION AS NOMBRE, -a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,
                             TBL_CUENTAS_CONTABLES ccd,
                             TBL_CUENTAS_CONTABLES cch,
                             TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd,
@@ -80,9 +65,9 @@
                             AND ccpd.ID = 1
                             AND a.ASIENTO_MANUAL = TRUE
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY ccd.DESCRIPCION
+                            GROUP BY ccd.DESCRIPCION 
                     UNION ALL
-                        SELECT cch.DESCRIPCION AS NOMBRE, SUM(a.MONTO) AS IMPORTE FROM   TBL_ASIENTOS a,
+                        SELECT cch.DESCRIPCION AS NOMBRE, a.MONTO AS IMPORTE FROM   TBL_ASIENTOS a,
                             TBL_CUENTAS_CONTABLES ccd,
                             TBL_CUENTAS_CONTABLES cch,
                             TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd,
@@ -97,12 +82,15 @@
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                             GROUP BY cch.DESCRIPCION
                     UNION ALL
-                        SELECT et.DESCRIPCION as NOMBRE, SUM(t.MONTO_APORTE + t.MONTO_DONACION) AS IMPORTE
-                        FROM TBL_TRANSFERENCIAS t, TBL_EVENTO_TIPOS et
+                        SELECT et.DESCRIPCION as NOMBRE, SUM(aat.MONTO) AS IMPORTE
+                        FROM TBL_TRANSFERENCIAS t, TBL_EVENTO_TIPOS et, TBL_TRANSFERENCIAS_ASIENTOS_TEMPORALES tat, TBL_ASIENTOS_TEMPORALES aat
                         WHERE t.COBRADO = TRUE
                         AND t.ID_EVENTO_TIPO = et.ID
-                        AND t.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY et.DESCRIPCION]]>
+                        AND tat.ID_TRANSFERENCIA = t.ID
+                        AND tat.ID_ASIENTO_TEMPORAL = aat.ID
+                        AND aat.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+                            GROUP BY et.DESCRIPCION
+                    ]]>
     </queryString>
     <field name="NOMBRE" class="java.lang.String"/>
     <field name="IMPORTE" class="java.lang.Integer"/>
