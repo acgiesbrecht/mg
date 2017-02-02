@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-01-30T23:08:35 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="500" pageHeight="60" columnWidth="500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
+<!-- 2017-02-01T21:01:12 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="160" pageHeight="60" whenNoDataType="NoDataSection" columnWidth="160" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="fechaDesde" class="java.sql.Timestamp"/>
 	<parameter name="fechaHasta" class="java.sql.Timestamp"/>
 	<parameter name="centroDeCosto" class="java.lang.Integer"/>
-	<parameter name="centroDeCostoNombre" class="java.lang.String"/>
-	<parameter name="subSubreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
@@ -94,19 +92,20 @@
 	<field name="IMPORTE" class="java.lang.Integer"/>
 	<variable name="sum_ingresos" class="java.lang.Long" calculation="Sum">
 		<variableExpression><![CDATA[$F{IMPORTE} > 0 ? $F{IMPORTE} : 0]]></variableExpression>
+		<initialValueExpression><![CDATA[0L]]></initialValueExpression>
 	</variable>
 	<variable name="sum_egresos" class="java.lang.Long" calculation="Sum">
 		<variableExpression><![CDATA[$F{IMPORTE} < 0 ? $F{IMPORTE} : 0]]></variableExpression>
+		<initialValueExpression><![CDATA[0L]]></initialValueExpression>
 	</variable>
-	<variable name="SALDO_ANTERIOR_S" class="java.lang.Long" calculation="System"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<columnFooter>
+	<summary>
 		<band height="20">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField pattern="#,##0">
-				<reportElement x="340" y="0" width="80" height="20" uuid="42e527ad-ea36-4acc-9ccc-bc9199249333">
+				<reportElement x="80" y="0" width="80" height="20" uuid="42e527ad-ea36-4acc-9ccc-bc9199249333">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box leftPadding="3" rightPadding="3">
@@ -122,7 +121,7 @@
 				<textFieldExpression><![CDATA[-$V{sum_egresos}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="260" y="0" width="80" height="20" uuid="ba4e2998-fa74-4b5d-8269-a15ef5bdb43a">
+				<reportElement x="0" y="0" width="80" height="20" uuid="ba4e2998-fa74-4b5d-8269-a15ef5bdb43a">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box leftPadding="3" rightPadding="3">
@@ -136,53 +135,27 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sum_ingresos}]]></textFieldExpression>
 			</textField>
-			<textField evaluationTime="Band" pattern="#,##0">
-				<reportElement x="420" y="0" width="80" height="20" uuid="156f91b4-4adc-4ece-a0fe-cf807407ed1b">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
-				<box leftPadding="3" rightPadding="3">
-					<topPen lineWidth="0.4"/>
-					<leftPen lineWidth="0.4"/>
-					<bottomPen lineWidth="0.4"/>
-					<rightPen lineWidth="0.4"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{SALDO_ANTERIOR_S}+$V{sum_ingresos}+$V{sum_egresos}]]></textFieldExpression>
-			</textField>
-			<textField pattern="">
-				<reportElement stretchType="ContainerBottom" x="0" y="0" width="180" height="20" uuid="51643c9e-4396-431f-89a3-579456c4fc70"/>
-				<box leftPadding="3" rightPadding="3">
-					<topPen lineWidth="0.4"/>
-					<leftPen lineWidth="0.4"/>
-					<bottomPen lineWidth="0.4"/>
-					<rightPen lineWidth="0.4"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="10" isBold="true"/>
-					<paragraph lineSpacing="Proportional"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{centroDeCostoNombre}]]></textFieldExpression>
-			</textField>
-			<subreport>
-				<reportElement mode="Opaque" x="180" y="0" width="80" height="20" forecolor="#000000" uuid="52e891d3-b146-401a-875f-3e59a43ea4b9">
-					<property name="local_mesure_unitx" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-				</reportElement>
-				<subreportParameter name="fechaDesde">
-					<subreportParameterExpression><![CDATA[$P{fechaDesde}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="centroDeCosto">
-					<subreportParameterExpression><![CDATA[$P{centroDeCosto}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<returnValue subreportVariable="SALDO_ANTERIOR" toVariable="SALDO_ANTERIOR_S"/>
-				<subreportExpression><![CDATA[$P{subSubreportObject}]]></subreportExpression>
-			</subreport>
 		</band>
-	</columnFooter>
+	</summary>
+	<noData>
+		<band height="20">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="0" y="0" width="80" height="20" uuid="3f8976f7-cd27-4488-9ec7-c00981c1eaf9"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.4"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="0" width="80" height="20" uuid="92d7aefe-91c8-403e-b91f-1d500b84ab2a"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.4"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[0]]></text>
+			</staticText>
+		</band>
+	</noData>
 </jasperReport>
