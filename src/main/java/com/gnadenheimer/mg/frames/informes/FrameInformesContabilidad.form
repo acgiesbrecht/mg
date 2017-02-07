@@ -125,6 +125,7 @@
                       <Component id="txtFechaHasta" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel21" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
@@ -133,9 +134,11 @@
                               <Component id="jLabel15" alignment="0" max="32767" attributes="0"/>
                               <Component id="jLabel18" alignment="0" min="-2" pref="79" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="jLabel19" alignment="0" min="-2" pref="79" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="cmdBalanceGeneral" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="cmdLibroMayor" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -258,7 +261,12 @@
                       <Component id="cmdExtractoCtaCteSaldos" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="68" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel19" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                  <Component id="cmdBalanceGeneral" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="43" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -369,10 +377,11 @@
     <Component class="javax.swing.JComboBox" name="cboPeriodo">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="3">
+          <StringArray count="4">
             <StringItem index="0" value="Este a&#xf1;o"/>
             <StringItem index="1" value="Este mes"/>
             <StringItem index="2" value="Hoy"/>
+            <StringItem index="3" value="A&#xf1;o pasado"/>
           </StringArray>
         </Property>
       </Properties>
@@ -466,6 +475,19 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdExtractoCtaCteSaldosActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel19">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Balance General"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="cmdBalanceGeneral">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ver"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdBalanceGeneralActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

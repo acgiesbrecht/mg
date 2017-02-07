@@ -396,6 +396,28 @@ public class Utils extends Component {
         }
     }
 
+    public void showReport(String reportFile, String subReportFile, String subSubReportFile, String subSubSubReportFile, Map parameters, Boolean landscape) {
+        try {
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + subSubSubReportFile + ".jrxml"));
+            parameters.put("subSubSubreportObject", report);
+            showReport(reportFile, subReportFile, subSubReportFile, parameters, landscape);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }
+
+    public void showReport(String reportFile, String subReportFile, String subSubReportFile, String subSubSubReportFile, String subSubSubSubReportFile, Map parameters, Boolean landscape) {
+        try {
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + subSubSubSubReportFile + ".jrxml"));
+            parameters.put("subSubSubSubreportObject", report);
+            showReport(reportFile, subReportFile, subSubReportFile, subSubSubReportFile, parameters, landscape);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }
+
     public void showReport(String reportFile, Map parameters, Boolean landscape) {
         try {
             String url = getPersistenceMap().get("javax.persistence.jdbc.url");
