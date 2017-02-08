@@ -11,7 +11,8 @@
     <parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
     <parameter name="subreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
     <queryString language="SQL">
-		<![CDATA[SELECT cc.DESCRIPCION AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
+		<![CDATA[SELECT NOMBRE, SUM(IMPORTE) AS IMPORTE FROM
+                        (SELECT cc.DESCRIPCION AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd, TBL_CUENTAS_CONTABLES cc
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
                             AND a.ID_CUENTA_CONTABLE_DEBE = cc.ID
@@ -89,7 +90,9 @@
                         AND tat.ID_TRANSFERENCIA = t.ID
                         AND tat.ID_ASIENTO_TEMPORAL = aat.ID
                         AND aat.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY et.DESCRIPCION
+                            GROUP BY et.DESCRIPCION) r
+                            GROUP BY NOMBRE
+                            ORDER BY NOMBRE
                     ]]>
     </queryString>
     <field name="NOMBRE" class="java.lang.String"/>

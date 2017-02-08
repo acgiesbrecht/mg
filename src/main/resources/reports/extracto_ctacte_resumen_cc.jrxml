@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-01-07T10:18:02 -->
+<!-- 2017-02-07T06:55:45 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pendientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg.xml"/>
     <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -13,7 +13,8 @@
     <parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
     <parameter name="subreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
     <queryString language="SQL">
-		<![CDATA[SELECT cc.DESCRIPCION AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
+		<![CDATA[SELECT NOMBRE, SUM(IMPORTE) AS IMPORTE FROM
+                        (SELECT cc.DESCRIPCION AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd, TBL_CUENTAS_CONTABLES cc
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
                             AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
@@ -86,7 +87,7 @@
                             AND ccpd.ID = 1
                             AND a.ASIENTO_MANUAL = TRUE
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY cch.DESCRIPCION, cdc.DESCRIPCION 
+                            GROUP BY cch.DESCRIPCION, cdc.DESCRIPCION
                     UNION ALL
                         SELECT et.DESCRIPCION as NOMBRE, SUM(aat.MONTO) AS IMPORTE
                         FROM TBL_TRANSFERENCIAS t, TBL_EVENTO_TIPOS et, TBL_TRANSFERENCIAS_ASIENTOS_TEMPORALES tat, TBL_ASIENTOS_TEMPORALES aat
@@ -96,8 +97,9 @@
                         AND tat.ID_ASIENTO_TEMPORAL = aat.ID
                         AND aat.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
                         AND aat.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY et.DESCRIPCION
-                    ]]>
+                            GROUP BY et.DESCRIPCION) r
+                            GROUP BY NOMBRE
+                            ORDER BY NOMBRE]]>
     </queryString>
     <field name="NOMBRE" class="java.lang.String"/>
     <field name="IMPORTE" class="java.lang.Integer"/>
@@ -112,7 +114,8 @@
         <band splitType="Stretch"/>
     </background>
     <title>
-        <band height="120" splitType="Stretch">
+        <band height="140" splitType="Stretch">
+            <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
             <textField>
                 <reportElement x="40" y="30" width="514" height="30" uuid="a63323e5-1d25-45b0-bc23-c36c39a4393e"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
@@ -152,6 +155,18 @@
                 <textElement verticalAlignment="Middle"/>
                 <text><![CDATA[Hasta:]]></text>
             </staticText>
+            <textField pattern="dd/MM/yyyy">
+                <reportElement x="120" y="120" width="260" height="20" uuid="b5783e9e-179f-4e40-bc9e-b341555fac53"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="9" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{centroDeCostoNombre}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="40" y="120" width="80" height="20" uuid="e9d47c00-f370-426a-9170-77f1596536ee"/>
+                <textElement verticalAlignment="Middle"/>
+                <text><![CDATA[Centro de Costo:]]></text>
+            </staticText>
         </band>
     </title>
     <columnHeader>
@@ -186,6 +201,9 @@
                 </reportElement>
                 <subreportParameter name="fechaDesde">
                     <subreportParameterExpression><![CDATA[$P{fechaDesde}]]></subreportParameterExpression>
+                </subreportParameter>
+                <subreportParameter name="centroDeCosto">
+                    <subreportParameterExpression><![CDATA[$P{centroDeCosto}]]></subreportParameterExpression>
                 </subreportParameter>
                 <connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
                 <returnValue subreportVariable="SALDO_ANTERIOR" toVariable="SALDO_ANTERIOR_S" calculation="First"/>

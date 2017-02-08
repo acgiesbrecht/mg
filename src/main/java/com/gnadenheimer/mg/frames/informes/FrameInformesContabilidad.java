@@ -490,7 +490,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
             parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
             //parameters.put("ctaContable", 101020100);
-            Utils.getInstance().showReport("libro_mayor", "libro_mayor_solo_totales_subreport", "libro_mayor_subreport_saldo_anterior", parameters, false);
+            Utils.getInstance().showReport("libro_mayor_solo_totales", "libro_mayor_solo_totales_subreport", "libro_mayor_solo_totales_subreport_saldo_anterior", parameters, false);
             //Utils.getInstance().showReport("libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -506,7 +506,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             parameters.put("centroDeCosto", ((TblCentrosDeCosto) cboCentroDeCosto.getSelectedItem()).getId());
             parameters.put("centroDeCostoNombre", ((TblCentrosDeCosto) cboCentroDeCosto.getSelectedItem()).getDescripcion());
             //parameters.put("ctaContable", 101020100);
-            Utils.getInstance().showReport("libro_mayor_cc", "libro_mayor_solo_totales_subreport_cc", "libro_mayor_subreport_saldo_anterior_cc", parameters, false);
+            Utils.getInstance().showReport("libro_mayor_solo_totales_cc", "libro_mayor_solo_totales_subreport_cc", "libro_mayor_solo_totales_subreport_saldo_anterior_cc", parameters, false);
             //Utils.getInstance().showReport("libro_mayor_subreport", "libro_mayor_subreport_saldo_anterior", parameters);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -632,7 +632,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
             parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
-            Utils.getInstance().showReport("balance_general", "balance_general_nivel_2", "balance_general_nivel_3", "balance_general_nivel_4", "balance_general_nivel_5", parameters, false);
+            Utils.getInstance().showReport("balance_general", "balance_general_subreport", parameters, false);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
