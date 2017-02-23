@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-02-08T18:01:36 -->
+<!-- 2017-02-08T21:05:58 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="balance_general_subreport" pageWidth="400" pageHeight="842" columnWidth="400" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="eb6130fa-49c5-4919-b5f4-270d4548b962">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -15,7 +15,7 @@ ON cc.ID = A.ID_CUENTA_CONTABLE_DEBE
 WHERE cc.ID_CUENTA_MADRE = $P{ctaContable} 
 GROUP BY cc.ID, cc.DESCRIPCION
 UNION ALL
-SELECT cc.ID, cc.DESCRIPCION, SUM(CAST(COALESCE(A.MONTO,0) AS BIGINT)) AS IMPORTE
+SELECT cc.ID, cc.DESCRIPCION, SUM(CAST(COALESCE(-A.MONTO,0) AS BIGINT)) AS IMPORTE
 FROM TBL_CUENTAS_CONTABLES cc LEFT JOIN TBL_ASIENTOS A
 ON cc.ID = A.ID_CUENTA_CONTABLE_HABER
 WHERE cc.ID_CUENTA_MADRE = $P{ctaContable} 
@@ -26,18 +26,45 @@ GROUP BY ID, DESCRIPCION]]>
 	<field name="ID" class="java.lang.Integer"/>
 	<field name="DESCRIPCION" class="java.lang.String"/>
 	<field name="IMPORTE" class="java.lang.Long"/>
-	<variable name="SUM_RET" class="java.lang.Long" calculation="Sum">
-		<variableExpression><![CDATA[$V{RET}==null?0:$V{RET}]]></variableExpression>
-	</variable>
-	<variable name="SUM_IMPORTE" class="java.lang.Long" calculation="Sum">
-		<variableExpression><![CDATA[$F{IMPORTE}==null?0:$F{IMPORTE}]]></variableExpression>
-	</variable>
 	<variable name="SUM_ACUMULADO" class="java.lang.Long" calculation="Sum">
-		<variableExpression><![CDATA[($V{RET}==null?0:$V{RET})+($F{IMPORTE}==null?0:$F{IMPORTE})]]></variableExpression>
+		<variableExpression><![CDATA[($V{RET} == null ? 0 : $V{RET}) + ($F{IMPORTE} == null ? 0 : $F{IMPORTE})]]></variableExpression>
+		<initialValueExpression><![CDATA[0L]]></initialValueExpression>
 	</variable>
 	<variable name="RET" class="java.lang.Long" calculation="System">
 		<initialValueExpression><![CDATA[0L]]></initialValueExpression>
 	</variable>
+	<variable name="SUM_RET" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$V{RET}]]></variableExpression>
+		<initialValueExpression><![CDATA[0L]]></initialValueExpression>
+	</variable>
+	<group name="Group1">
+		<groupFooter>
+			<band height="15">
+				<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				<textField evaluationTime="Band" pattern="#,##0.###">
+					<reportElement x="250" y="0" width="146" height="15" uuid="1397dc80-f168-4d67-bdd6-5e5ed653611b"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_ACUMULADO}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Band" pattern="#,##0.###">
+					<reportElement x="104" y="0" width="146" height="15" uuid="a683881f-0373-4706-8f33-b9849f994f84"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_RET}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Band">
+					<reportElement x="10" y="0" width="100" height="15" uuid="09ad9501-f9a4-41eb-ac89-2bf7f97c38a4"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{ctaContable}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
 	<detail>
 		<band height="30" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -60,7 +87,7 @@ GROUP BY ID, DESCRIPCION]]>
 				<returnValue subreportVariable="SUM_ACUMULADO" toVariable="RET"/>
 				<subreportExpression><![CDATA[$P{subreportObject}]]></subreportExpression>
 			</subreport>
-			<textField evaluationTime="Auto" pattern="#,##0.###" isBlankWhenNull="true">
+			<textField evaluationTime="Band" pattern="#,##0.###" isBlankWhenNull="true">
 				<reportElement x="240" y="0" width="80" height="15" isRemoveLineWhenBlank="true" uuid="0478e450-09e3-4273-a256-163e494b3619"/>
 				<box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
 					<topPen lineWidth="0.5"/>
@@ -86,34 +113,8 @@ GROUP BY ID, DESCRIPCION]]>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new String(new char[$P{nivel}]).replace('\0', ' ') + $F{DESCRIPCION}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new String(new char[$P{nivel}]).replace('\0', ' ') + $F{ID} + " - " + $F{DESCRIPCION}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
-	<summary>
-		<band height="15">
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<textField evaluationTime="Band" pattern="#,##0.###">
-				<reportElement x="240" y="0" width="146" height="15" uuid="1397dc80-f168-4d67-bdd6-5e5ed653611b"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{SUM_ACUMULADO}]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Band" pattern="#,##0.###">
-				<reportElement x="94" y="0" width="146" height="15" uuid="a683881f-0373-4706-8f33-b9849f994f84"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{RET}]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Band">
-				<reportElement x="0" y="0" width="100" height="15" uuid="09ad9501-f9a4-41eb-ac89-2bf7f97c38a4"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{ctaContable}]]></textFieldExpression>
-			</textField>
-		</band>
-	</summary>
 </jasperReport>

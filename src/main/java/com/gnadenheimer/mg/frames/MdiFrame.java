@@ -40,9 +40,10 @@ import com.gnadenheimer.mg.frames.operaciones.egresos.FrameFacturasCompra;
 import com.gnadenheimer.mg.frames.operaciones.ingresos.FrameNotaDeCredito;
 import com.gnadenheimer.mg.frames.operaciones.egresos.FrameNotasDeCreditoCompra;
 import com.gnadenheimer.mg.frames.operaciones.egresos.FrameRecibosCompra;
+import com.gnadenheimer.mg.frames.operaciones.ingresos.FrameAportesVariosDetalle;
 import com.gnadenheimer.mg.frames.operaciones.ingresos.FrameCobrarTransferenciasAyCporEvento;
 import com.gnadenheimer.mg.frames.operaciones.ingresos.FrameCobrarTransferenciasAyCporMes;
-import com.gnadenheimer.mg.frames.operaciones.ingresos.FrameAportesDonacionesVariasDetalle;
+import com.gnadenheimer.mg.frames.operaciones.ingresos.FrameDonacionesVariasDetalle;
 import com.gnadenheimer.mg.frames.operaciones.ingresos.FrameRematesDetalle;
 import com.gnadenheimer.mg.frames.operaciones.ingresos.FrameRematesPagos;
 import com.gnadenheimer.mg.utils.CurrentUser;
@@ -140,6 +141,7 @@ public class MdiFrame extends javax.swing.JFrame {
                             mnuOpColectas.setEnabled(currentUser.hasRole(1));
                             mnuOpAportes.setEnabled(currentUser.hasRole(1));
                             mnuOpDonacionesVarias.setEnabled(currentUser.hasRole(1));
+                            mnuOpAportesVarios.setEnabled(currentUser.hasRole(1));
 
                             mnuOpFacturaUnica.setEnabled(currentUser.hasRole(2));
                             mnuOpFacturaPendientes.setEnabled(currentUser.hasRole(2));
@@ -296,6 +298,9 @@ public class MdiFrame extends javax.swing.JFrame {
                 }
             }
 
+            //--------TEST LAUNCH
+            //Map parameters = new HashMap();
+            //Utils.getInstance().showReport("balance_general", "balance_general_subreport", parameters, false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -327,6 +332,7 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOpColectas = new javax.swing.JMenuItem();
         mnuOpCobrarTransferenciasAyC = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
+        mnuOpAportesVarios = new javax.swing.JMenuItem();
         mnuOpDonacionesVarias = new javax.swing.JMenuItem();
         jSeparator14 = new javax.swing.JPopupMenu.Separator();
         mnuOpFacturaPendientes = new javax.swing.JMenuItem();
@@ -457,6 +463,16 @@ public class MdiFrame extends javax.swing.JFrame {
         });
         mnuOpFacturacion.add(mnuOpCobrarTransferenciasAyC);
         mnuOpFacturacion.add(jSeparator9);
+
+        mnuOpAportesVarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        mnuOpAportesVarios.setText("Aportes Varios");
+        mnuOpAportesVarios.setEnabled(false);
+        mnuOpAportesVarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuOpAportesVariosActionPerformed(evt);
+            }
+        });
+        mnuOpFacturacion.add(mnuOpAportesVarios);
 
         mnuOpDonacionesVarias.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
         mnuOpDonacionesVarias.setText("Donaciones Varias");
@@ -1381,7 +1397,7 @@ public class MdiFrame extends javax.swing.JFrame {
 
     private void mnuOpDonacionesVariasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpDonacionesVariasActionPerformed
         try {
-            FrameAportesDonacionesVariasDetalle frame = new FrameAportesDonacionesVariasDetalle();
+            FrameDonacionesVariasDetalle frame = new FrameDonacionesVariasDetalle();
             frame.setVisible(true);
 
             desktop.add(frame);
@@ -1393,6 +1409,21 @@ public class MdiFrame extends javax.swing.JFrame {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_mnuOpDonacionesVariasActionPerformed
+
+    private void mnuOpAportesVariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpAportesVariosActionPerformed
+        try {
+            FrameAportesVariosDetalle frame = new FrameAportesVariosDetalle();
+            frame.setVisible(true);
+
+            desktop.add(frame);
+
+            frame.setSelected(true);
+            frame.setMaximum(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_mnuOpAportesVariosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1492,6 +1523,7 @@ public class MdiFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuInformesCyA;
     private javax.swing.JMenuItem mnuLogin;
     private javax.swing.JMenuItem mnuOpAportes;
+    private javax.swing.JMenuItem mnuOpAportesVarios;
     private javax.swing.JMenuItem mnuOpCobrarTransferencias;
     private javax.swing.JMenuItem mnuOpCobrarTransferenciasAyC;
     private javax.swing.JMenuItem mnuOpColectas;

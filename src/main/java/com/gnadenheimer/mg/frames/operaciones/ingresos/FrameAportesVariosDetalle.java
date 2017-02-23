@@ -64,9 +64,9 @@ import org.apache.logging.log4j.Logger;
  *
  * @author user
  */
-public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
+public class FrameAportesVariosDetalle extends JInternalFrame {
 
-    private static final Logger LOGGER = LogManager.getLogger(FrameAportesDonacionesVariasDetalle.class);
+    private static final Logger LOGGER = LogManager.getLogger(FrameAportesVariosDetalle.class);
     Map<String, String> persistenceMap = new HashMap<>();
     EventList<TblEntidades> eventListMiembros = new BasicEventList<>();
     CurrentUser currentUser = CurrentUser.getInstance();
@@ -81,8 +81,8 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
     Set newForwardKeys = new HashSet(forwardKeys);
     DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.getDefault());
 
-    public FrameAportesDonacionesVariasDetalle() {
-        super("Donaciones Varias",
+    public FrameAportesVariosDetalle() {
+        super("Aportes Varios",
                 true, //resizable
                 true, //closable
                 true, //maximizable
@@ -101,7 +101,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                 @Override
                 public void keyReleased(java.awt.event.KeyEvent evt) {
                     if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                        montoDonacionField.requestFocusInWindow();
+                        montoAporteField.requestFocusInWindow();
                     }
                 }
             });
@@ -146,34 +146,6 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
             support4.setFilterMode(TextMatcherEditor.CONTAINS);
 
             idEventoTipo = entityManager.find(TblEventoTipos.class, 4);
-
-            montoDonacionField.getDocument().addDocumentListener(new DocumentListener() {
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    process();
-                }
-
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    process();
-                }
-
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    process();
-                }
-
-                public void process() {
-                    try {
-                        if (montoDonacionField.getText().length() > 0 && montoDonacionField.getValue() != null) {
-                            updateAsientoInicial();
-                        }
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-                        LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-                    }
-                }
-            });
 
             montoAporteField.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
@@ -265,7 +237,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                         //asientosTable.getModel().setValueAt(T.getMontoDonacion() + T.getMontoAporte(), 0, 4);
                         TblAsientosTemporales asiento = ts.get(0);
                         asiento.setFechahora(T.getFechahora() != null ? T.getFechahora().atStartOfDay() : null);
-                        asientosTable.getModel().setValueAt(T.getMontoDonacion(), 0, 4);
+                        asientosTable.getModel().setValueAt(T.getMontoAporte(), 0, 4);
                         entityManager.merge(asiento);
                     }
                 }
@@ -293,7 +265,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
         normalTableCellRenderer1 = new com.gnadenheimer.mg.utils.NormalTableCellRenderer();
         categoriasConverter1 = new com.gnadenheimer.mg.utils.CategoriasConverter();
-        queryTransferencias = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t WHERE t.idEventoTipo.id = 4 ORDER BY t.id");
+        queryTransferencias = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t WHERE t.idEventoTipo.id = 4 AND t.montoAporte > 0 ORDER BY t.id");
         listTransferencias = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTransferencias.getResultList());
         jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
         dateTimeTableCellRenderer1 = new com.gnadenheimer.mg.utils.DateTimeTableCellRenderer();
@@ -313,7 +285,6 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         listCuentasContablesPorDefecto = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryCuentasContablesPorDefecto.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
-        montoLabel = new javax.swing.JLabel();
         idMiembroLabel = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
@@ -324,7 +295,6 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         idMiembroLabel2 = new javax.swing.JLabel();
         dateTableCellRenderer1 = new com.gnadenheimer.mg.utils.DateTimeTableCellRenderer();
         cboMiembro = new javax.swing.JComboBox();
-        montoDonacionField = new javax.swing.JFormattedTextField();
         jButton2 = new javax.swing.JButton();
         fechahoraLabel = new javax.swing.JLabel();
         txtObservacion = new javax.swing.JTextField();
@@ -391,9 +361,6 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
             masterTable.getColumnModel().getColumn(4).setCellRenderer(numberCellRenderer1);
         }
 
-        montoLabel.setText("Improte Donacion:");
-        montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
         idMiembroLabel.setText("Donador:");
         idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -409,8 +376,8 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         newButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         newButton.addActionListener(formListener);
 
-        deleteButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         deleteButton.setText("Eliminar");
+        deleteButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -443,22 +410,6 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         cboMiembro.addPopupMenuListener(formListener);
         cboMiembro.addActionListener(formListener);
         cboMiembro.addKeyListener(formListener);
-
-        montoDonacionField.setColumns(9);
-        montoDonacionField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        montoDonacionField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        montoDonacionField.setText("0");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoDonacion}"), montoDonacionField, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        binding.setConverter(integerLongConverter1);
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoDonacionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        montoDonacionField.addFocusListener(formListener);
-        montoDonacionField.addMouseListener(formListener);
-        montoDonacionField.addActionListener(formListener);
-        montoDonacionField.addKeyListener(formListener);
 
         jButton2.setText("Actualizar");
         jButton2.addActionListener(formListener);
@@ -508,13 +459,15 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         montoLabel1.setText("Improte Aporte:");
         montoLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        montoAporteField.setEditable(false);
         montoAporteField.setColumns(9);
         montoAporteField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         montoAporteField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
         montoAporteField.setText("0");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoAporte}"), montoAporteField, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding.setConverter(integerLongConverter1);
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoAporteField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         montoAporteField.addFocusListener(formListener);
@@ -563,13 +516,11 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                             .addComponent(idMiembroLabel)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(montoLabel)
                                     .addComponent(descripcionLabel)
                                     .addComponent(montoLabel1))
-                                .addGap(48, 48, 48)
+                                .addGap(60, 60, 60)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(montoAporteField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(montoDonacionField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(fechahoraLabel)
@@ -615,13 +566,9 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                     .addComponent(montoLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(montoDonacionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(montoLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(descripcionLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(37, 37, 37)
                 .addComponent(montoLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -638,7 +585,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                         .addComponent(deleteButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(refreshButton)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(dateTableCellRenderer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29))
         );
@@ -652,46 +599,40 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                FrameAportesDonacionesVariasDetalle.this.saveButtonActionPerformed(evt);
+                FrameAportesVariosDetalle.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                FrameAportesDonacionesVariasDetalle.this.refreshButtonActionPerformed(evt);
+                FrameAportesVariosDetalle.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                FrameAportesDonacionesVariasDetalle.this.newButtonActionPerformed(evt);
+                FrameAportesVariosDetalle.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                FrameAportesDonacionesVariasDetalle.this.deleteButtonActionPerformed(evt);
+                FrameAportesVariosDetalle.this.deleteButtonActionPerformed(evt);
             }
             else if (evt.getSource() == cboMiembro) {
-                FrameAportesDonacionesVariasDetalle.this.cboMiembroActionPerformed(evt);
-            }
-            else if (evt.getSource() == montoDonacionField) {
-                FrameAportesDonacionesVariasDetalle.this.montoDonacionFieldActionPerformed(evt);
+                FrameAportesVariosDetalle.this.cboMiembroActionPerformed(evt);
             }
             else if (evt.getSource() == jButton2) {
-                FrameAportesDonacionesVariasDetalle.this.jButton2ActionPerformed(evt);
+                FrameAportesVariosDetalle.this.jButton2ActionPerformed(evt);
             }
             else if (evt.getSource() == cmdBorrarAsiento) {
-                FrameAportesDonacionesVariasDetalle.this.cmdBorrarAsientoActionPerformed(evt);
+                FrameAportesVariosDetalle.this.cmdBorrarAsientoActionPerformed(evt);
             }
             else if (evt.getSource() == cmdAddAsiento) {
-                FrameAportesDonacionesVariasDetalle.this.cmdAddAsientoActionPerformed(evt);
+                FrameAportesVariosDetalle.this.cmdAddAsientoActionPerformed(evt);
             }
             else if (evt.getSource() == montoAporteField) {
-                FrameAportesDonacionesVariasDetalle.this.montoAporteFieldActionPerformed(evt);
+                FrameAportesVariosDetalle.this.montoAporteFieldActionPerformed(evt);
             }
         }
 
         public void focusGained(java.awt.event.FocusEvent evt) {
             if (evt.getSource() == txtCtaCte) {
-                FrameAportesDonacionesVariasDetalle.this.txtCtaCteFocusGained(evt);
-            }
-            else if (evt.getSource() == montoDonacionField) {
-                FrameAportesDonacionesVariasDetalle.this.montoDonacionFieldFocusGained(evt);
+                FrameAportesVariosDetalle.this.txtCtaCteFocusGained(evt);
             }
             else if (evt.getSource() == montoAporteField) {
-                FrameAportesDonacionesVariasDetalle.this.montoAporteFieldFocusGained(evt);
+                FrameAportesVariosDetalle.this.montoAporteFieldFocusGained(evt);
             }
         }
 
@@ -703,16 +644,13 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
 
         public void keyReleased(java.awt.event.KeyEvent evt) {
             if (evt.getSource() == txtCtaCte) {
-                FrameAportesDonacionesVariasDetalle.this.txtCtaCteKeyReleased(evt);
+                FrameAportesVariosDetalle.this.txtCtaCteKeyReleased(evt);
             }
             else if (evt.getSource() == cboMiembro) {
-                FrameAportesDonacionesVariasDetalle.this.cboMiembroKeyReleased(evt);
-            }
-            else if (evt.getSource() == montoDonacionField) {
-                FrameAportesDonacionesVariasDetalle.this.montoDonacionFieldKeyReleased(evt);
+                FrameAportesVariosDetalle.this.cboMiembroKeyReleased(evt);
             }
             else if (evt.getSource() == montoAporteField) {
-                FrameAportesDonacionesVariasDetalle.this.montoAporteFieldKeyReleased(evt);
+                FrameAportesVariosDetalle.this.montoAporteFieldKeyReleased(evt);
             }
         }
 
@@ -720,11 +658,8 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         }
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
-            if (evt.getSource() == montoDonacionField) {
-                FrameAportesDonacionesVariasDetalle.this.montoDonacionFieldMouseClicked(evt);
-            }
-            else if (evt.getSource() == montoAporteField) {
-                FrameAportesDonacionesVariasDetalle.this.montoAporteFieldMouseClicked(evt);
+            if (evt.getSource() == montoAporteField) {
+                FrameAportesVariosDetalle.this.montoAporteFieldMouseClicked(evt);
             }
         }
 
@@ -741,8 +676,8 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         }
 
         public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            if (evt.getSource() == FrameAportesDonacionesVariasDetalle.this) {
-                FrameAportesDonacionesVariasDetalle.this.formInternalFrameActivated(evt);
+            if (evt.getSource() == FrameAportesVariosDetalle.this) {
+                FrameAportesVariosDetalle.this.formInternalFrameActivated(evt);
             }
         }
 
@@ -769,7 +704,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
 
         public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
             if (evt.getSource() == cboMiembro) {
-                FrameAportesDonacionesVariasDetalle.this.cboMiembroPopupMenuWillBecomeInvisible(evt);
+                FrameAportesVariosDetalle.this.cboMiembroPopupMenuWillBecomeInvisible(evt);
             }
         }
 
@@ -863,9 +798,9 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
 
     private void save() {
         try {
-            if (((Number) montoDonacionField.getValue()).intValue() == 0 && ((Number) montoAporteField.getValue()).intValue() == 0) {
+            if (((Number) montoAporteField.getValue()).intValue() == 0) {
                 JOptionPane.showMessageDialog(null, "El monto no puede ser 0.");
-                montoDonacionField.requestFocusInWindow();
+                montoAporteField.requestFocusInWindow();
                 return;
             }
 
@@ -908,7 +843,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                 if (value.isPresent()) {
                     cboMiembro.setSelectedItem(value.get());
                     txtCtaCte.setBackground(Color.green);
-                    montoDonacionField.requestFocus();
+                    montoAporteField.requestFocus();
                 }
 
             }
@@ -940,18 +875,6 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         refresh();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
-    private void montoDonacionFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_montoDonacionFieldFocusGained
-        montoDonacionField.selectAll();
-    }//GEN-LAST:event_montoDonacionFieldFocusGained
-
-    private void montoDonacionFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_montoDonacionFieldMouseClicked
-
-    }//GEN-LAST:event_montoDonacionFieldMouseClicked
-
-    private void montoDonacionFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_montoDonacionFieldActionPerformed
-
-    }//GEN-LAST:event_montoDonacionFieldActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             List data = queryMiembros.getResultList();
@@ -981,31 +904,6 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cboMiembroActionPerformed
-
-    private void montoDonacionFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoDonacionFieldKeyReleased
-        try {
-            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                if (((Number) montoDonacionField.getValue()).intValue() == 0) {
-                    JOptionPane.showMessageDialog(null, "El monto no puede ser 0.");
-                    montoDonacionField.requestFocusInWindow();
-                    return;
-                }
-                if (cboMiembro.getSelectedItem() == null) {
-                    JOptionPane.showMessageDialog(null, "No ha eligido un donador.");
-                    txtCtaCte.requestFocusInWindow();
-                    return;
-                }
-                save();
-                Integer reply = JOptionPane.showConfirmDialog(null, "Desea crear un nuevo registro?", title, JOptionPane.YES_NO_OPTION);
-                if (reply == JOptionPane.YES_OPTION) {
-                    newDetalle();
-                }
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_montoDonacionFieldKeyReleased
 
     private void cboMiembroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cboMiembroKeyReleased
 
@@ -1064,7 +962,28 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
     }//GEN-LAST:event_montoAporteFieldActionPerformed
 
     private void montoAporteFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoAporteFieldKeyReleased
-        // TODO add your handling code here:
+        try {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (((Number) montoAporteField.getValue()).intValue() == 0) {
+                    JOptionPane.showMessageDialog(null, "El monto no puede ser 0.");
+                    montoAporteField.requestFocusInWindow();
+                    return;
+                }
+                if (cboMiembro.getSelectedItem() == null) {
+                    JOptionPane.showMessageDialog(null, "No ha eligido un aportante.");
+                    txtCtaCte.requestFocusInWindow();
+                    return;
+                }
+                save();
+                Integer reply = JOptionPane.showConfirmDialog(null, "Desea crear un nuevo registro?", title, JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                    newDetalle();
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }//GEN-LAST:event_montoAporteFieldKeyReleased
 
     private void addAsiento() {
@@ -1084,13 +1003,13 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
             t.setIdCentroDeCostoHaber(centroDeCostoPreferido);
             t.setIdCuentaContableDebe(listCuentasContablesPorDefecto.get(0).getIdCuentaCtaCte());
 
-//-----------------------SOLO DONACIONES-------------------------------
-            t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaDonaciones());
+//-----------------------SOLO APORTES-------------------------------
+            t.setIdCuentaContableHaber(listCuentasContablesPorDefecto.get(0).getIdCuentaAportes());
 
-            t.setEsAporte(false);
+            t.setEsAporte(true);
 
             if (ts.isEmpty()) {
-                t.setMonto(T.getMontoDonacion());
+                t.setMonto(T.getMontoAporte());
             }
 //---------------------------------------------------------------
             ts.add(t);
@@ -1153,8 +1072,6 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JFormattedTextField montoAporteField;
-    private javax.swing.JFormattedTextField montoDonacionField;
-    private javax.swing.JLabel montoLabel;
     private javax.swing.JLabel montoLabel1;
     private javax.swing.JLabel montoLabel6;
     private javax.swing.JButton newButton;
@@ -1192,14 +1109,78 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameAportesDonacionesVariasDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameAportesVariosDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameAportesDonacionesVariasDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameAportesVariosDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameAportesDonacionesVariasDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameAportesVariosDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameAportesDonacionesVariasDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameAportesVariosDetalle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -1269,7 +1250,7 @@ public class FrameAportesDonacionesVariasDetalle extends JInternalFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new FrameAportesDonacionesVariasDetalle());
+                frame.setContentPane(new FrameAportesVariosDetalle());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

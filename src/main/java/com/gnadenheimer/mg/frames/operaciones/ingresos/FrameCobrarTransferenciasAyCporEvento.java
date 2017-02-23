@@ -79,9 +79,6 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
 
         cuentasContablesPorDefecto = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
 
-        AutoCompleteSupport support = AutoCompleteSupport.install(cboEvento, GlazedLists.eventListOf(listEventos.toArray()));
-        support.setFilterMode(TextMatcherEditor.CONTAINS);
-
         TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.DISABLED);
         filterHeader.setAdaptiveChoices(false);
         filterHeader.getParserModel().setIgnoreCase(true);
@@ -101,6 +98,8 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
                 marcarCobrado);
 
         masterTable.getModel().addTableModelListener(this);
+
+        refresh();
     }
 
     @Override
@@ -147,8 +146,6 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
         masterTable = new javax.swing.JTable();
         saveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
-        cboEvento = new javax.swing.JComboBox();
-        descripcionLabel3 = new javax.swing.JLabel();
         cboMarcarSeleccionados = new javax.swing.JButton();
         descripcionLabel4 = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
@@ -178,6 +175,15 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tblEventoDetalle.idEntidad.nombreCompleto}"));
         columnBinding.setColumnName("Nombre");
         columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tblEventoDetalle.fechahora}"));
+        columnBinding.setColumnName("Fecha de Evento");
+        columnBinding.setColumnClass(java.time.LocalDateTime.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tblEventoDetalle.idEvento.descripcion}"));
+        columnBinding.setColumnName("Evento");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tblEventoDetalle.idEvento.idEventoTipo.descripcion}"));
+        columnBinding.setColumnName("Tipo de Evento");
+        columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tblEventoDetalle.monto}"));
         columnBinding.setColumnName("Importe");
         columnBinding.setColumnClass(Integer.class);
@@ -188,11 +194,13 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
-            masterTable.getColumnModel().getColumn(0).setPreferredWidth(200);
+            masterTable.getColumnModel().getColumn(0).setPreferredWidth(50);
             masterTable.getColumnModel().getColumn(0).setCellRenderer(ctaCteTableCellRenderer1);
-            masterTable.getColumnModel().getColumn(2).setCellRenderer(numberCellRenderer1);
-            masterTable.getColumnModel().getColumn(3).setPreferredWidth(50);
-            masterTable.getColumnModel().getColumn(3).setCellRenderer(null);
+            masterTable.getColumnModel().getColumn(1).setPreferredWidth(200);
+            masterTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+            masterTable.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer1);
+            masterTable.getColumnModel().getColumn(5).setCellRenderer(numberCellRenderer1);
+            masterTable.getColumnModel().getColumn(6).setPreferredWidth(50);
         }
 
         saveButton.setText("Guardar");
@@ -200,16 +208,6 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
 
         refreshButton.setText("Cancelar");
         refreshButton.addActionListener(formListener);
-
-        cboEvento.setEditable(true);
-        cboEvento.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
-        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEventos, cboEvento);
-        bindingGroup.addBinding(jComboBoxBinding);
-
-        cboEvento.addActionListener(formListener);
-
-        descripcionLabel3.setText("Fecha de Evento:");
 
         cboMarcarSeleccionados.setText("Marcar como cobrado a las filas seleccionadas");
         cboMarcarSeleccionados.addActionListener(formListener);
@@ -231,14 +229,9 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(masterScrollPane, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(descripcionLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cboEvento, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cboMarcarSeleccionados)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 206, Short.MAX_VALUE)
                         .addComponent(saveButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(refreshButton))
@@ -259,12 +252,8 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(descripcionLabel3)
-                    .addComponent(cboEvento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -294,9 +283,6 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
             }
             else if (evt.getSource() == refreshButton) {
                 FrameCobrarTransferenciasAyCporEvento.this.refreshButtonActionPerformed(evt);
-            }
-            else if (evt.getSource() == cboEvento) {
-                FrameCobrarTransferenciasAyCporEvento.this.cboEventoActionPerformed(evt);
             }
             else if (evt.getSource() == cboMarcarSeleccionados) {
                 FrameCobrarTransferenciasAyCporEvento.this.cboMarcarSeleccionadosActionPerformed(evt);
@@ -404,15 +390,6 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
 
     }//GEN-LAST:event_formInternalFrameActivated
 
-    private void cboEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEventoActionPerformed
-        try {
-            refresh();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_cboEventoActionPerformed
-
     private void cboMarcarSeleccionadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMarcarSeleccionadosActionPerformed
         try {
             int[] selectedRows = masterTable.getSelectedRows();
@@ -428,26 +405,21 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
 
     void refresh() {
         try {
-            if (cboEvento.getSelectedItem() != null && entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-                entityManager.getTransaction().begin();
-                query = entityManager.createQuery("SELECT new com.gnadenheimer.mg.domain.models.PagosEventoPendientes(evd, false) FROM TblEventoDetalle evd WHERE evd.idEvento = :eventoId AND evd.id NOT IN (SELECT t.idEventoDetalle.id FROM TblTransferencias t)");
-                query.setParameter("eventoId", (TblEventos) cboEvento.getSelectedItem());
-                list.clear();
-                list.addAll(query.getResultList());
-            }
+            entityManager.getTransaction().rollback();
+            entityManager.getTransaction().begin();
+            query = entityManager.createQuery("SELECT new com.gnadenheimer.mg.domain.models.PagosEventoPendientes(evd, false) FROM TblEventoDetalle evd WHERE (evd.idEvento.idEventoTipo.id = 2 OR evd.idEvento.idEventoTipo.id = 3) AND evd.id NOT IN (SELECT t.idEventoDetalle.id FROM TblTransferencias t) ORDER BY evd.idEntidad.ctacte, evd.fechahora");
+            list.clear();
+            list.addAll(query.getResultList());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox cboEvento;
     private javax.swing.JButton cboMarcarSeleccionados;
     private com.gnadenheimer.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
     private com.gnadenheimer.mg.utils.DateTimeTableCellRenderer dateTableCellRenderer1;
     private com.gnadenheimer.mg.utils.DateToStringConverter dateToStringConverter1;
-    private javax.swing.JLabel descripcionLabel3;
     private javax.swing.JLabel descripcionLabel4;
     private javax.swing.JLabel descripcionLabel5;
     private com.github.lgooddatepicker.components.DatePicker dtpFechaCobro;
