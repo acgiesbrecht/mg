@@ -172,6 +172,10 @@ public class TblEntidades implements Serializable {
     @NotNull
     @Column(name = "MES_FIN_APORTE")
     private Integer mesFinAporte;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad", fetch = FetchType.LAZY)
+    private List<TblEntidadesHistoricoCategorias> tblEntidadesHistoricoCategoriasList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEntidad", fetch = FetchType.LAZY)
+    private List<TblAportesImporteMensualSaldoAnterior> tblAportesImporteMensualSaldoAnteriorList;
     @JoinColumn(name = "ID_USER", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private TblUsers idUser;
@@ -415,6 +419,24 @@ public class TblEntidades implements Serializable {
 
     public void setIdMiembrosCategoriaDePago(TblMiembrosCategoriasDePago idMiembrosCategoriaDePago) {
         this.idMiembrosCategoriaDePago = idMiembrosCategoriaDePago;
+    }
+
+    @XmlTransient
+    public List<TblAportesImporteMensualSaldoAnterior> getTblAportesImporteMensualSaldoAnteriorList() {
+        return tblAportesImporteMensualSaldoAnteriorList;
+    }
+
+    public void setTblAportesImporteMensualSaldoAnteriorList(List<TblAportesImporteMensualSaldoAnterior> tblAportesImporteMensualSaldoAnteriorList) {
+        this.tblAportesImporteMensualSaldoAnteriorList = tblAportesImporteMensualSaldoAnteriorList;
+    }
+
+    @XmlTransient
+    public List<TblEntidadesHistoricoCategorias> getTblEntidadesHistoricoCategoriasList() {
+        return tblEntidadesHistoricoCategoriasList;
+    }
+
+    public void setTblEntidadesHistoricoCategoriasList(List<TblEntidadesHistoricoCategorias> tblEntidadesHistoricoCategoriasList) {
+        this.tblEntidadesHistoricoCategoriasList = tblEntidadesHistoricoCategoriasList;
     }
 
     public TblUsers getIdUser() {
