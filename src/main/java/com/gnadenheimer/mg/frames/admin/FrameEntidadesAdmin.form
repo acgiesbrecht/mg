@@ -146,6 +146,11 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
+    <Component class="com.gnadenheimer.mg.utils.AnoMesCellRenderer" name="anoMesCellRenderer1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="anoMesCellRenderer1"/>
+      </Properties>
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -189,21 +194,7 @@
                       <Component id="nombreLabel11" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cmdCargarMesAporte" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jButton3" min="-2" pref="221" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="ctacteLabel2" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace min="0" pref="32" max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="masterScrollPane" max="32767" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="169" max="-2" attributes="0"/>
                       <Component id="newButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="deleteButton" linkSize="1" min="-2" max="-2" attributes="0"/>
@@ -212,19 +203,20 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="saveButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jButton3" min="-2" pref="221" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="ctacteLabel2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="masterScrollPane" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="idMiembroLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="idMiembroLabel1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="txtCtaCte" min="-2" pref="61" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                              <Component id="idMiembroLabel2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cboEntidad" min="-2" pref="200" max="-2" attributes="0"/>
-                          </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="ctacteLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -241,80 +233,117 @@
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtAporteBase2" min="-2" pref="123" max="-2" attributes="0"/>
-                                  <Component id="cboFormaDePago" min="-2" pref="197" max="-2" attributes="0"/>
+                                  <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="nombreField" min="-2" pref="249" max="-2" attributes="0"/>
+                                      <Component id="idField" min="-2" pref="83" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="ctacteField" min="-2" pref="58" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="ctacteLabel1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="apellidosField" alignment="0" min="-2" pref="249" max="-2" attributes="0"/>
+                                      <Component id="rucField" alignment="0" min="-2" pref="104" max="-2" attributes="0"/>
+                                      <Component id="txtRazonSocial" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txtAporteBase1" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
+                                      <Component id="ctacteField1" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
+                                      <Component id="direccionField" alignment="0" min="-2" pref="295" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="txtAporteBase2" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
+                                  <Component id="cboFormaDePago" alignment="0" min="-2" pref="197" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="idMiembroLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="idMiembroLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="txtCtaCte" min="-2" pref="61" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                              <Component id="idMiembroLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="cboEntidad" min="-2" pref="200" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="nombreLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="nombreLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="nombreLabel4" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="nombreLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="nombreLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="nombreField" min="-2" pref="249" max="-2" attributes="0"/>
-                                          <Component id="idField" min="-2" pref="83" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="ctacteField" min="-2" pref="58" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="ctacteLabel1" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Component id="apellidosField" alignment="0" min="-2" pref="249" max="-2" attributes="0"/>
-                                          <Component id="rucField" alignment="0" min="-2" pref="104" max="-2" attributes="0"/>
-                                          <Component id="txtRazonSocial" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="txtAporteBase1" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
-                                          <Component id="ctacteField1" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
-                                          <Component id="direccionField" alignment="0" min="-2" pref="295" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="145" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="161" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="nombreLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="nombreLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="idCategoriaLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                                                      <Group type="102" alignment="0" attributes="0">
-                                                          <Component id="nombreLabel4" min="-2" max="-2" attributes="0"/>
-                                                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                                                      </Group>
-                                                      <Component id="nombreLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <Component id="nombreLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="nombreLabel6" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="nombreLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                  <Component id="cboCategoria" min="-2" pref="197" max="-2" attributes="0"/>
-                                                  <Component id="dtpFechaCongregacion" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="dtpFechaDescongregacion" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="dtpFechaDefuncion" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="txtMesInicioAporte" min="-2" pref="47" max="-2" attributes="0"/>
-                                                  <Component id="txtMesFinAporte" min="-2" pref="47" max="-2" attributes="0"/>
-                                                  <Group type="102" alignment="0" attributes="0">
-                                                      <Component id="dtpFechaBautismo" min="-2" max="-2" attributes="0"/>
-                                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                      <Component id="lblEdadBautismo" max="32767" attributes="0"/>
-                                                  </Group>
-                                                  <Group type="102" alignment="0" attributes="0">
-                                                      <Component id="dtpFechaNacimiento" min="-2" max="-2" attributes="0"/>
-                                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                      <Component id="lblEdad" min="-2" pref="237" max="-2" attributes="0"/>
-                                                  </Group>
-                                              </Group>
-                                          </Group>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                                                  <Group type="102" alignment="0" attributes="0">
-                                                      <EmptySpace min="-2" pref="183" max="-2" attributes="0"/>
-                                                      <Component id="cboAlergia" min="-2" pref="197" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <Component id="cboAreaServicio" alignment="1" min="-2" pref="197" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Component id="idCategoriaLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="idCategoriaLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="dtpFechaCongregacion" min="-2" max="-2" attributes="0"/>
+                                          <Component id="dtpFechaDescongregacion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="dtpFechaDefuncion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="dtpFechaBautismo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="dtpFechaNacimiento" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
+                                  </Group>
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="montoLabel7" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
+                                          <Component id="cmdAddImporteAporte" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="cmdBorrarImporteAporte" min="-2" pref="41" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="jScrollPane2" alignment="1" min="-2" pref="315" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="nombreLabel6" min="-2" max="-2" attributes="0"/>
+                                          <Component id="nombreLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="txtMesInicioAporte" min="-2" pref="47" max="-2" attributes="0"/>
+                                          <Component id="txtMesFinAporte" min="-2" pref="47" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="idCategoriaLabel3" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
+                                      <Component id="cboAlergia" min="-2" pref="197" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="idCategoriaLabel2" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="cboAreaServicio" min="-2" pref="197" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="montoLabel6" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
+                                      <Component id="cmdAddCategoria" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="cmdBorrarCategoria" min="-2" pref="41" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jScrollPane1" min="-2" pref="315" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="idCategoriaLabel1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="cboCategoria" min="-2" pref="197" max="-2" attributes="0"/>
+                                  <Component id="jCheckBox1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
-                      <EmptySpace pref="171" max="32767" attributes="0"/>
+                      <EmptySpace pref="273" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -325,10 +354,10 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="54" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="masterScrollPane" min="-2" pref="148" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace pref="36" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="idField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="idLabel" alignment="3" min="-2" pref="12" max="-2" attributes="0"/>
@@ -369,57 +398,7 @@
                           <Component id="ctacteField1" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="direccionLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                      <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="idCategoriaLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cboCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="nombreLabel2" min="-2" pref="19" max="-2" attributes="0"/>
-                          <Component id="dtpFechaNacimiento" max="32767" attributes="0"/>
-                          <Component id="lblEdad" alignment="1" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="dtpFechaBautismo" max="32767" attributes="0"/>
-                          <Component id="nombreLabel3" max="32767" attributes="0"/>
-                          <Component id="lblEdadBautismo" alignment="1" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="dtpFechaCongregacion" max="32767" attributes="0"/>
-                          <Component id="nombreLabel4" min="-2" pref="20" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="nombreLabel5" max="32767" attributes="0"/>
-                          <Component id="dtpFechaDescongregacion" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="dtpFechaDefuncion" min="-2" max="-2" attributes="0"/>
-                          <Component id="nombreLabel7" min="-2" pref="20" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="nombreLabel6" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                          <Component id="txtMesInicioAporte" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="nombreLabel8" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                          <Component id="txtMesFinAporte" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-              </Group>
-              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="txtAporteBase1" max="32767" attributes="0"/>
                           <Component id="ctacteLabel6" min="-2" pref="20" max="-2" attributes="0"/>
@@ -435,26 +414,103 @@
                           <Component id="idCategoriaLabel" min="-2" pref="21" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="cboAreaServicio" min="-2" max="-2" attributes="0"/>
-                          <Component id="idCategoriaLabel2" min="-2" pref="23" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="montoLabel6" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                              <Component id="cmdAddCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cmdBorrarCategoria" alignment="3" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="idCategoriaLabel3" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
-                          <Component id="cboAlergia" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="idCategoriaLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="cboCategoria" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jScrollPane1" min="-2" pref="97" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="montoLabel7" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                                      <Component id="cmdAddImporteAporte" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cmdBorrarImporteAporte" alignment="3" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jScrollPane2" min="-2" pref="59" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="nombreLabel2" min="-2" pref="19" max="-2" attributes="0"/>
+                                  <Component id="dtpFechaNacimiento" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="dtpFechaBautismo" max="32767" attributes="0"/>
+                                  <Component id="nombreLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="dtpFechaCongregacion" max="32767" attributes="0"/>
+                                  <Component id="nombreLabel4" min="-2" pref="20" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="nombreLabel5" max="32767" attributes="0"/>
+                                  <Component id="dtpFechaDescongregacion" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="dtpFechaDefuncion" min="-2" max="-2" attributes="0"/>
+                                  <Component id="nombreLabel7" min="-2" pref="20" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="nombreLabel6" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                                  <Component id="txtMesInicioAporte" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="nombreLabel8" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                                  <Component id="txtMesFinAporte" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace min="26" pref="26" max="-2" attributes="0"/>
+                                      <Component id="idCategoriaLabel3" min="-2" pref="24" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="cboAreaServicio" min="-2" max="-2" attributes="0"/>
+                                          <Component id="idCategoriaLabel2" min="-2" pref="23" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="cboAlergia" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
-              </Group>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="idMiembroLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtCtaCte" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="idMiembroLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="idMiembroLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" pref="15" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -468,21 +524,17 @@
                   <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                      <Component id="txtMesInicioAporteC" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="nombreLabel9" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="txtMesFinAporteC" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="nombreLabel10" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="cmdCargarMesAporte" alignment="3" max="32767" attributes="0"/>
-                      <Component id="nombreLabel11" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                  </Group>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="txtMesInicioAporteC" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nombreLabel9" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="txtMesFinAporteC" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nombreLabel10" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="cmdCargarMesAporte" alignment="3" max="32767" attributes="0"/>
+                  <Component id="nombreLabel11" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -938,7 +990,7 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="jCheckBox1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Es miembro activo"/>
+        <Property name="text" type="java.lang.String" value="VIEJO Es miembro activo"/>
       </Properties>
       <BindingProperties>
         <BindingProperty name="selected" source="masterTable" sourcePath="${selectedElement.isMiembroActivo}" target="jCheckBox1" targetPath="selected" updateStrategy="0" immediately="false">
@@ -975,7 +1027,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="idCategoriaLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Categoria de Aporte de Miembro:"/>
+        <Property name="text" type="java.lang.String" value="VIEJO Categoria de Aporte de Miembro:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cboCategoria">
@@ -1113,16 +1165,6 @@
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="txtMesFinAporte" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblEdad">
-      <BindingProperties>
-        <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.edadText}" target="lblEdad" targetPath="text" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblEdadBautismo">
-      <BindingProperties>
-        <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.edadBautismoText}" target="lblEdadBautismo" targetPath="text" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
-    </Component>
     <Component class="javax.swing.JLabel" name="nombreLabel9">
       <Properties>
         <Property name="text" type="java.lang.String" value="y ultimo mes "/>
@@ -1157,6 +1199,167 @@
     <Component class="javax.swing.JLabel" name="nombreLabel11">
       <Properties>
         <Property name="text" type="java.lang.String" value="de aportes a todos los miembros aportantes "/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="categoriasTable">
+          <Properties>
+            <Property name="autoCreateRowSorter" type="boolean" value="true"/>
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+              <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
+                    <ComponentRef name="numberCellRenderer1"/>
+                  </Renderer>
+                </Column>
+              </TableColumnModel>
+            </Property>
+            <Property name="rowHeight" type="int" value="20"/>
+            <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+            </Property>
+          </Properties>
+          <BindingProperties>
+            <BindingProperty name="elements" source="masterTable" sourcePath="${selectedElement.tblEntidadesHistoricoCategoriasList}" target="categoriasTable" targetPath="elements" updateStrategy="0" immediately="true">
+              <Subbinding sourcePath="${anoMes}">
+                <BindingParameter name="NAME" value="A&#xf1;o Mes"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${idCategoriaDePago}">
+                <BindingParameter name="NAME" value="Categoria De Pago"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.gnadenheimer.mg.domain.miembros.TblMiembrosCategoriasDePago.class"/>
+              </Subbinding>
+            </BindingProperty>
+            <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="categoriasTable" targetPath="enabled" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
+          </AuxValues>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JButton" name="cmdBorrarCategoria">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="-"/>
+      </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="cmdBorrarCategoria" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdBorrarCategoriaActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="cmdAddCategoria">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="+"/>
+      </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="cmdAddCategoria" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdAddCategoriaActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="montoLabel6">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Categoria de Miembro"/>
+      </Properties>
+      <BindingProperties>
+        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="montoLabel6" targetPath="enabled" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="aportesImportesTable">
+          <Properties>
+            <Property name="autoCreateRowSorter" type="boolean" value="true"/>
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+              <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
+                    <ComponentRef name="numberCellRenderer1"/>
+                  </Renderer>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
+                    <ComponentRef name="numberCellRenderer1"/>
+                  </Renderer>
+                </Column>
+              </TableColumnModel>
+            </Property>
+            <Property name="rowHeight" type="int" value="20"/>
+            <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+            </Property>
+          </Properties>
+          <BindingProperties>
+            <BindingProperty name="elements" source="masterTable" sourcePath="${selectedElement.tblAportesImporteMensualSaldoAnteriorList}" target="aportesImportesTable" targetPath="elements" updateStrategy="0" immediately="true">
+              <Subbinding sourcePath="${ano}">
+                <BindingParameter name="NAME" value="A&#xf1;o"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${importeMesnual}">
+                <BindingParameter name="NAME" value="Importe Mesnual"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Long.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${saldoAnterior}">
+                <BindingParameter name="NAME" value="Saldo Anterior"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Long.class"/>
+              </Subbinding>
+            </BindingProperty>
+          </BindingProperties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
+          </AuxValues>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JButton" name="cmdBorrarImporteAporte">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="-"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdBorrarImporteAporteActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="cmdAddImporteAporte">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="+"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdAddImporteAporteActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="montoLabel7">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Importes de Aporte"/>
       </Properties>
     </Component>
   </SubComponents>
