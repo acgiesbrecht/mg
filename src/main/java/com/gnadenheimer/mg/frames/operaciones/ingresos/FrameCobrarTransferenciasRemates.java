@@ -332,11 +332,12 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame implements 
                 JOptionPane.showMessageDialog(null, "Fecha de cobro invalida o no especificada.");
                 return;
             }
+            int secuencia = (new Random()).nextInt(10000);
             for (TblTransferencias t : list) {
                 if (t.getCobrado()) {
                     t.setCobrado(true);
                     t.setFechahora(dtpFechaCobro.getDate());
-                    t.setSeqPago((new Random()).nextInt(10000));
+                    t.setSeqPago(secuencia);
 
                     /*Query queryEvd = entityManager.createQuery("SELECT t FROM TblEventoDetalle t "
                             + "WHERE t.idEntidad = :entidad"

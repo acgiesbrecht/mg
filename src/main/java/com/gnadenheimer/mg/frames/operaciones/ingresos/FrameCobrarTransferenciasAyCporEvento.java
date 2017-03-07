@@ -321,6 +321,7 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
+            int secuencia = (new Random()).nextInt(10000);
             for (PagosEventoPendientes pago : list) {
                 if (pago.getCobrado()) {
 
@@ -337,7 +338,7 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
                     t.setIdEventoDetalle(pago.getTblEventoDetalle());
                     t.setIdEventoTipo(pago.getTblEventoDetalle().getIdEvento().getIdEventoTipo());
                     t.setIdUser(currentUser.getUser());
-                    t.setSeqPago((new Random()).nextInt(10000));
+                    t.setSeqPago(secuencia);
 
                     List<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesList();
                     if (listAsientosTemporales == null) {

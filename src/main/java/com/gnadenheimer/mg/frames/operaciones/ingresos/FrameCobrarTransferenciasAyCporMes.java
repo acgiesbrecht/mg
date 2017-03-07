@@ -342,6 +342,7 @@ public class FrameCobrarTransferenciasAyCporMes extends JInternalFrame implement
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
+            int secuencia = (new Random()).nextInt(10000);
             for (PagosMensualesPendientes pago : list) {
                 if (pago.getCobrado()) {
 
@@ -364,7 +365,7 @@ public class FrameCobrarTransferenciasAyCporMes extends JInternalFrame implement
                     t.setFechahora(dtpFechaCobro.getDate());
                     t.setIdEventoTipo((TblEventoTipos) cboEventoTipo.getSelectedItem());
                     t.setIdUser(currentUser.getUser());
-                    t.setSeqPago((new Random()).nextInt(10000));
+                    t.setSeqPago(secuencia);
 
                     Query queryEvd = entityManager.createQuery("SELECT t FROM TblEventoDetalle t "
                             + "WHERE t.idEntidad = :entidad"

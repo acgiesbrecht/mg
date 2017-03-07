@@ -37,6 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Timer;
 import java.util.prefs.Preferences;
 import javax.persistence.Persistence;
@@ -909,6 +910,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             //if (Integer.valueOf(txtTransferencia.getValue()) > 0) {
             Integer transferenciaMonto = ((Number) txtTransferencia.getValue()).intValue();
             if (transferenciaMonto > 0) {
+                int secuencia = (new Random()).nextInt(10000);
                 //List<CuotaModel> cuotasList = Varios.getCuotas(remateCuotas, Integer.valueOf(txtTransferencia1.getText()));
                 if (rbCuotas.isSelected()) {
                     List<CuotaModel> cuotasList = Utils.getInstance().getCuotas(remateCuotas, transferenciaMonto);
@@ -923,6 +925,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                         transferencia.setIdEventoTipo(((TblEventos) cboFechaRemate.getSelectedItem()).getIdEventoTipo());
                         transferencia.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
                         transferencia.setCobrado(false);
+                        transferencia.setSeqPago(secuencia);
                         transferencia.setIdUser(currentUser.getUser());
 
                         /*--------ASIENTOS TEMPROALES RECIEN SE GENERAN AL COBRAR LA TRANSFERENCIA-----------
