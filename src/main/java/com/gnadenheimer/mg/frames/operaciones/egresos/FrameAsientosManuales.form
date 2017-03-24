@@ -32,25 +32,25 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblAsientos&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblAsientos&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="com.parah.mg.utils.DateToStringConverter" name="dateToStringConverter1">
+    <Component class="com.gnadenheimer.mg.utils.DateToStringConverter" name="dateToStringConverter1">
     </Component>
-    <Component class="com.parah.mg.utils.DateTimeTableCellRenderer" name="dateTableCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.DateTimeTableCellRenderer" name="dateTableCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="dateTableCellRenderer1"/>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.NumberCellRenderer" name="numberCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.NumberCellRenderer" name="numberCellRenderer1">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="4"/>
         <Property name="text" type="java.lang.String" value="numberCellRenderer1"/>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.IntegerLongConverter" name="integerLongConverter1">
+    <Component class="com.gnadenheimer.mg.utils.IntegerLongConverter" name="integerLongConverter1">
     </Component>
     <Component class="javax.persistence.Query" name="queryCuentasContables">
       <Properties>
@@ -72,7 +72,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblCuentasContables&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblCuentasContables&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -97,14 +97,14 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblCentrosDeCosto&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblCentrosDeCosto&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="com.parah.mg.utils.LocalDateTimeToDateTimeConverter" name="localDateTimeToDateTimeConverter1">
+    <Component class="com.gnadenheimer.mg.utils.LocalDateTimeToDateTimeConverter" name="localDateTimeToDateTimeConverter1">
     </Component>
-    <Component class="com.parah.mg.utils.DateTimeTableCellRenderer" name="dateTimeTableCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.DateTimeTableCellRenderer" name="dateTimeTableCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="dateTimeTableCellRenderer1"/>
       </Properties>
@@ -321,22 +321,22 @@
               </Subbinding>
               <Subbinding sourcePath="${idCentroDeCostoDebe}">
                 <BindingParameter name="NAME" value="Centro de Costo Debe"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblCentrosDeCosto.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.gnadenheimer.mg.domain.TblCentrosDeCosto.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${idCuentaContableDebe}">
                 <BindingParameter name="NAME" value="Cuenta Debe"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblCuentasContables.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.gnadenheimer.mg.domain.TblCuentasContables.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${idCentroDeCostoHaber}">
                 <BindingParameter name="NAME" value="Centro de Costo Haber"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblCentrosDeCosto.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.gnadenheimer.mg.domain.TblCentrosDeCosto.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${idCuentaContableHaber}">
                 <BindingParameter name="NAME" value="Cuenta Haber"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblCuentasContables.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.gnadenheimer.mg.domain.TblCuentasContables.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${monto}">

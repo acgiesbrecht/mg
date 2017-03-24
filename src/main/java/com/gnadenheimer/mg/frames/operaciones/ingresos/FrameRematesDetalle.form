@@ -44,7 +44,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblEventoDetalle&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblEventoDetalle&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -65,7 +65,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblCategoriasArticulos&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblCategoriasArticulos&gt;"/>
       </AuxValues>
     </Component>
     <Component class="javax.persistence.Query" name="queryEntidades">
@@ -84,7 +84,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.miembros.TblEntidades&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.miembros.TblEntidades&gt;"/>
       </AuxValues>
     </Component>
     <Component class="javax.persistence.Query" name="queryEventos">
@@ -108,7 +108,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblEventos&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblEventos&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -135,29 +135,29 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblFormasDePago&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblFormasDePago&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="com.parah.mg.utils.DateTimeTableCellRenderer" name="dateTimeTableCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.DateTimeTableCellRenderer" name="dateTimeTableCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="dateTimeTableCellRenderer1"/>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.NumberCellRenderer" name="numberCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.NumberCellRenderer" name="numberCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="numberCellRenderer1"/>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.NormalTableCellRenderer" name="normalTableCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.NormalTableCellRenderer" name="normalTableCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="normalTableCellRenderer1"/>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.DateTimeToStringConverter" name="dateTimeToStringConverter1">
+    <Component class="com.gnadenheimer.mg.utils.DateTimeToStringConverter" name="dateTimeToStringConverter1">
     </Component>
-    <Component class="com.parah.mg.utils.IntegerLongConverter" name="integerLongConverter1">
+    <Component class="com.gnadenheimer.mg.utils.IntegerLongConverter" name="integerLongConverter1">
     </Component>
   </NonVisualComponents>
   <SyntheticProperties>
@@ -397,12 +397,12 @@
               </Subbinding>
               <Subbinding sourcePath="${idEntidad}">
                 <BindingParameter name="NAME" value="Miembro"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.miembros.TblEntidades.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.gnadenheimer.mg.domain.miembros.TblEntidades.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${idCategoriaArticulo}">
                 <BindingParameter name="NAME" value="Categoria"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.parah.mg.domain.TblCategoriasArticulos.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.gnadenheimer.mg.domain.TblCategoriasArticulos.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${observacion}">
@@ -599,7 +599,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboEntidadActionPerformed"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.miembros.TblEntidades&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.miembros.TblEntidades&gt;"/>
       </AuxValues>
     </Component>
     <Container class="javax.swing.JPanel" name="jPanel1">
@@ -771,7 +771,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboFormaDePagoPreferidaActionPerformed"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblFormasDePago&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblFormasDePago&gt;"/>
       </AuxValues>
     </Component>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="fechahoraField">

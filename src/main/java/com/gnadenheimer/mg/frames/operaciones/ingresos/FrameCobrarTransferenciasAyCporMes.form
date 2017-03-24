@@ -30,7 +30,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.models.PagosMensualesPendientes&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.models.PagosMensualesPendientes&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -51,20 +51,20 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.DateToStringConverter" name="dateToStringConverter1">
+    <Component class="com.gnadenheimer.mg.utils.DateToStringConverter" name="dateToStringConverter1">
     </Component>
-    <Component class="com.parah.mg.utils.DateTimeTableCellRenderer" name="dateTableCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.DateTimeTableCellRenderer" name="dateTableCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="dateTableCellRenderer1"/>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.NumberCellRenderer" name="numberCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.NumberCellRenderer" name="numberCellRenderer1">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="4"/>
         <Property name="text" type="java.lang.String" value="numberCellRenderer1"/>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.IntegerLongConverter" name="integerLongConverter1">
+    <Component class="com.gnadenheimer.mg.utils.IntegerLongConverter" name="integerLongConverter1">
     </Component>
     <Component class="javax.persistence.Query" name="queryEventos">
       <Properties>
@@ -87,7 +87,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblEventos&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblEventos&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -112,17 +112,17 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.parah.mg.domain.TblEventoTipos&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.gnadenheimer.mg.domain.TblEventoTipos&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
     </Component>
-    <Component class="com.parah.mg.utils.CtaCteTableCellRenderer" name="ctaCteTableCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.CtaCteTableCellRenderer" name="ctaCteTableCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="ctaCteTableCellRenderer1"/>
       </Properties>
     </Component>
-    <Component class="com.parah.mg.utils.MesTableCellRenderer" name="mesTableCellRenderer1">
+    <Component class="com.gnadenheimer.mg.utils.MesTableCellRenderer" name="mesTableCellRenderer1">
       <Properties>
         <Property name="text" type="java.lang.String" value="mesTableCellRenderer1"/>
       </Properties>
