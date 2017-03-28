@@ -11,12 +11,12 @@ public class AportesPendientes implements Serializable {
 
     private String nombre;
     private Integer ctacte;
-    private Integer anomes;
+    private Long importeCompromiso;
 
     public AportesPendientes() {
     }
 
-    public AportesPendientes(String nombre, Integer ctacte, Integer anomes) {
+    public AportesPendientes(String nombre, Integer ctacte, Long importeCompromiso) {
     }
 
     /**
@@ -48,17 +48,17 @@ public class AportesPendientes implements Serializable {
     }
 
     /**
-     * @return the anomes
+     * @return the compromiso
      */
-    public Integer getAnomes() {
-        return anomes;
+    public Long getImporteCompromiso() {
+        return importeCompromiso;
     }
 
     /**
-     * @param anomes the anomes to set
+     * @param compromiso the compromiso to set
      */
-    public void setAnomes(Integer anomes) {
-        this.anomes = anomes;
+    public void setImporteCompromiso(Long importeCompromiso) {
+        this.importeCompromiso = importeCompromiso;
     }
 
 }

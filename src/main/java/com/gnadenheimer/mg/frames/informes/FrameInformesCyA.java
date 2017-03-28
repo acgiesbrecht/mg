@@ -12,6 +12,7 @@ import com.gnadenheimer.mg.utils.CurrentUser;
 import com.gnadenheimer.mg.utils.Utils;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -590,13 +591,46 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
             EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
             entityManager.getTransaction().begin();
-            List<TblEntidadesHistoricoCategorias> listEHC = entityManager.createQuery("select t from TblEntidadesHistoricoCategorias t").getResultList();
+            List<TblEntidades> listE = entityManager.createQuery("select e from TblEntidades e where e in (select t.idEntidad from TblEntidadesHistoricoCategorias t)").getResultList();
 
-            for (TblEntidadesHistoricoCategorias e : listEHC) {
+            Integer anoMesEnero = LocalDate.now().getYear() * 100 + 1;
+            Boolean haPasadoDeAno = false;
+
+            for (TblEntidades e : listE) {
+                System.out.println(e.getId());
+                System.out.println(e.getNombreCompleto());
+                Long importeMensual = 0L;
+                try {
+                    importeMensual = (Long) entityManager.createQuery("select COALESCE(t.importeMesnual,0) from TblAportesImporteMensualSaldoAnterior t where t.idEntidad.id = " + e.getId().toString()).getSingleResult();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, e.getNombreCompleto() + " no tiene Importe Mnsual de Aportes definido. Se considera 0.");
+                    importeMensual = 0L;
+                }
+
+                System.out.println(importeMensual);
+                List<TblEntidadesHistoricoCategorias> listEHC = entityManager.createQuery("select t from TblEntidadesHistoricoCategorias t where t.idEntidad.id = " + e.getId().toString() + " order by t.anoMes DESC").getResultList();
+                List<TblEntidadesHistoricoCategorias> listEHCtoRemove = new ArrayList<>();
+                for (TblEntidadesHistoricoCategorias ehc : listEHC) {
+                    if (ehc.getAnoMes() < anoMesEnero && !haPasadoDeAno) {
+                        ehc.setAnoMes(anoMesEnero);
+                        haPasadoDeAno = true;
+                    } else {
+                        listEHCtoRemove.add(ehc);
+                    }
+                }
+                listEHC.removeAll(listEHCtoRemove);
+                Long importeCompromiso = 0L;
+                for (int x = 0; x < listEHC.size() - 1; x++) {
+                    Integer cantidadMeses = 0;
+                    if (listEHC.get(x).getIdCategoriaDePago().getEsActivacion()) {
+                        cantidadMeses = listEHC.get(x + 1).getAnoMes() - listEHC.get(x).getAnoMes() + 1;
+                        importeCompromiso += cantidadMeses * importeMensual;
+                    }
+                }
                 AportesPendientes ap = new AportesPendientes();
-                ap.setNombre(e.getIdEntidad().getNombreCompleto());
-                ap.setCtacte(e.getIdEntidad().getCtacte());
-                ap.setAnomes(e.getAnoMes());
+                ap.setNombre(e.getNombreCompleto());
+                ap.setCtacte(e.getCtacte());
+                ap.setImporteCompromiso(importeCompromiso);
                 coll.add(ap);
             }
 
