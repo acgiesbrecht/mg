@@ -6,10 +6,13 @@
 package com.gnadenheimer.mg.frames.informes;
 
 import com.gnadenheimer.mg.domain.miembros.TblEntidades;
+import com.gnadenheimer.mg.domain.miembros.TblEntidadesHistoricoCategorias;
+import com.gnadenheimer.mg.domain.models.AportesPendientes;
 import com.gnadenheimer.mg.utils.CurrentUser;
 import com.gnadenheimer.mg.utils.Utils;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +21,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -130,6 +135,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         jLabel21 = new javax.swing.JLabel();
         jspAnoAportesResumenPendientes = new javax.swing.JSpinner();
         cmdAportesResumenPendientes = new javax.swing.JButton();
+        cmdAportesResumenPendientesTest = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -265,6 +271,13 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             }
         });
 
+        cmdAportesResumenPendientesTest.setText("TEST");
+        cmdAportesResumenPendientesTest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdAportesResumenPendientesTestActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -313,48 +326,51 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                         .addComponent(jspAnoCPAD, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(cmdResumenCP1))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel20)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel21)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jspAnoAportesResumenPendientes, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(cmdAportesResumenPendientes))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel11)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel13)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jspAnoAportesResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(cmdAportesResumen))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel10)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel12)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jspAnoDebitoManual, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(cmdAportesDebitoManual))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel8)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmdPendientesPorMesA))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel9)
-                            .addGap(12, 12, 12)
-                            .addComponent(jLabel6)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(cboMesA, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jLabel7)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jspAnoA, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(cmdResumenPorMesA))))
-                .addContainerGap(205, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel20)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel21)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jspAnoAportesResumenPendientes, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmdAportesResumenPendientes))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jspAnoAportesResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmdAportesResumen))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jspAnoDebitoManual, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmdAportesDebitoManual))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cmdPendientesPorMesA))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cboMesA, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jspAnoA, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmdResumenPorMesA)))
+                        .addGap(38, 38, 38)
+                        .addComponent(cmdAportesResumenPendientesTest)))
+                .addContainerGap(169, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -400,7 +416,8 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                     .addComponent(jLabel20)
                     .addComponent(jLabel21)
                     .addComponent(jspAnoAportesResumenPendientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmdAportesResumenPendientes))
+                    .addComponent(cmdAportesResumenPendientes)
+                    .addComponent(cmdAportesResumenPendientesTest))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
@@ -417,7 +434,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                     .addComponent(jLabel19)
                     .addComponent(jspAnoCPAD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmdResumenCP1))
-                .addContainerGap(318, Short.MAX_VALUE))
+                .addContainerGap(322, Short.MAX_VALUE))
         );
 
         pack();
@@ -552,6 +569,45 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_cmdAportesResumenPendientesActionPerformed
 
+    private void cmdAportesResumenPendientesTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAportesResumenPendientesTestActionPerformed
+        try {
+            Map parameters = new HashMap();
+            parameters.put("ano", Integer.parseInt(jspAnoAportesResumenPendientes.getValue().toString()));
+            Utils.getInstance().showReport("aportes_resumen_anual_pendientes_test", parameters, true, getDataSourceAportesPendientes());
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdAportesResumenPendientesTestActionPerformed
+
+    private List<AportesPendientes> getAportesList() {
+        return new ArrayList<>();
+    }
+
+    private static JRDataSource getDataSourceAportesPendientes() {
+        try {
+            List<AportesPendientes> coll = new ArrayList<>();
+            Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
+            EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
+            entityManager.getTransaction().begin();
+            List<TblEntidadesHistoricoCategorias> listEHC = entityManager.createQuery("select t from TblEntidadesHistoricoCategorias t").getResultList();
+
+            for (TblEntidadesHistoricoCategorias e : listEHC) {
+                AportesPendientes ap = new AportesPendientes();
+                ap.setNombre(e.getIdEntidad().getNombreCompleto());
+                ap.setCtacte(e.getIdEntidad().getCtacte());
+                ap.setAnomes(e.getAnoMes());
+                coll.add(ap);
+            }
+
+            return new JRBeanCollectionDataSource(coll);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            return null;
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -600,6 +656,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
     private javax.swing.JButton cmdAportesDebitoManual;
     private javax.swing.JButton cmdAportesResumen;
     private javax.swing.JButton cmdAportesResumenPendientes;
+    private javax.swing.JButton cmdAportesResumenPendientesTest;
     private javax.swing.JButton cmdPendientesPorMes;
     private javax.swing.JButton cmdPendientesPorMesA;
     private javax.swing.JButton cmdResumenCP;

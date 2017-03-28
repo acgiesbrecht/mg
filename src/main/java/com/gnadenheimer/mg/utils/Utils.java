@@ -33,6 +33,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -436,6 +437,32 @@ public class Utils extends Component {
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFile + ".jrxml"));
             report.setWhenNoDataType(WhenNoDataTypeEnum.NO_DATA_SECTION);
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, DriverManager.getConnection(url, user, pass));
+            JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
+            jReportsViewer.setVisible(true);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }
+
+    public void showReport(String reportFile, Map parameters, Boolean landscape, JRDataSource ds) {
+        try {
+            parameters.put("user", currentUser.getUser().getNombrecompleto());
+
+            if (landscape) {
+                JasperReport reportHeader = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/header_landscape.jrxml"));
+                parameters.put("subreportHeader", reportHeader);
+            } else {
+                JasperReport reportHeader = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/header.jrxml"));
+                parameters.put("subreportHeader", reportHeader);
+            }
+
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFile + ".jrxml"));
+            report.setWhenNoDataType(WhenNoDataTypeEnum.NO_DATA_SECTION);
+            JasperPrint jasperPrint;
+
+            jasperPrint = JasperFillManager.fillReport(report, parameters, ds);
+
             JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
             jReportsViewer.setVisible(true);
         } catch (Exception ex) {
