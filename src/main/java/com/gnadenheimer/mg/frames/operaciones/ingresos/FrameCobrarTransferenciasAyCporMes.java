@@ -104,8 +104,10 @@ public class FrameCobrarTransferenciasAyCporMes extends JInternalFrame implement
             for (PagosMensualesPendientes pago : list) {
                 if (pago.getCobrado()) {
                     suma += pago.getMontoTotal();
+                    dtpFechaCobro.setDate((LocalDate.of(pago.getAno(), pago.getMes(), 1).with(lastDayOfMonth())));
                 }
             }
+
             lblTotal.setText(String.format("%(,d", suma));
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());

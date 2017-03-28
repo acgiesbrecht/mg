@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2016-12-28T19:35:22 -->
+<!-- 2017-03-22T10:53:31 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="78c20e98-1bd9-416f-bdbe-337f3341ab83">
 	<parameter name="factura_id" class="java.lang.Integer"/>
 	<parameter name="fechahora" class="java.sql.Date"/>
@@ -66,22 +66,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fechahora}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="55" y="174" width="106" height="15" uuid="0e7324f6-ee53-4670-9865-13073f402bb0"/>
-				<box leftPadding="5" rightPadding="5"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Donación]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="55" y="189" width="106" height="15" uuid="fa981161-27df-403d-8d98-97b4ca89deb3"/>
-				<box leftPadding="5" rightPadding="5"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Aporte]]></text>
-			</staticText>
 			<textField pattern="">
 				<reportElement x="115" y="124" width="375" height="20" uuid="e9c030c0-7389-479e-b406-fdfc5897cc2b"/>
 				<box padding="0">
@@ -114,22 +98,6 @@
 					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[String.format("001-001-%07d", $P{factura_id})]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0">
-				<reportElement x="319" y="174" width="77" height="15" uuid="c84ed53c-5d42-4097-89d0-4a8d1e50159b"/>
-				<box leftPadding="5" rightPadding="5"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_donacion}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0">
-				<reportElement x="320" y="189" width="76" height="15" uuid="53b90bb6-f71c-438d-b704-722d6786cc57"/>
-				<box leftPadding="5" rightPadding="5"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_aporte}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="320" y="314" width="76" height="15" uuid="caa97086-a9f5-4d71-8110-9252cede0752"/>
@@ -441,7 +409,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_donacion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{importe_donacion}==0 ? $P{importe_aporte} : $P{importe_donacion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="320" y="606" width="76" height="15" uuid="a5592893-4ce9-431f-9cf9-2490dfae9488"/>
@@ -449,7 +417,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_aporte}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{importe_donacion} == 0 ? "" : $P{importe_aporte} == 0 ? "" : $P{importe_aporte}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement x="115" y="541" width="375" height="20" uuid="a464e97d-aa29-4c1e-9699-03dfe16bb26c"/>
@@ -524,14 +492,6 @@
 				<text><![CDATA[IVA 10%]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="55" y="591" width="106" height="15" uuid="984c7b38-fe9a-4877-94a6-ffb4fb361613"/>
-				<box leftPadding="5" rightPadding="5"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Donación]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="5" y="731" width="544" height="15" uuid="1c6d2ea1-f7dc-41e3-b619-85e5840dfa5b"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
@@ -543,14 +503,6 @@
 					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
 				<text><![CDATA[SUBTOTAL]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="55" y="606" width="106" height="15" uuid="ea8f50df-cc3c-4045-8103-6754e12b8c1f"/>
-				<box leftPadding="5" rightPadding="5"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Aporte]]></text>
 			</staticText>
 			<textField pattern="">
 				<reportElement x="328" y="521" width="218" height="20" uuid="b5399f2d-4303-455e-ba39-7f329069c947"/>
@@ -605,6 +557,54 @@
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Cajero: " + $P{usuario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="55" y="174" width="195" height="15" uuid="7d0ba534-25e6-4e87-b0de-7e6faa3038cb"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{importe_donacion}==0 ? "Aporte" : "Donación"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="55" y="591" width="195" height="15" uuid="5f3ea01b-1046-4d6b-b8b8-7c26741f3abe"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{importe_donacion}==0 ? "Aporte" : "Donación"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="320" y="174" width="77" height="15" uuid="023ba6e7-6707-4e86-b9ba-f0ce835c4cfc"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{importe_donacion}==0 ? $P{importe_aporte} : $P{importe_donacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="320" y="189" width="76" height="15" uuid="41ad71af-6b50-47ed-addf-748fd3c08fc5"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{importe_donacion} == 0 ? "" : $P{importe_aporte} == 0 ? "" : $P{importe_aporte}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="55" y="189" width="195" height="15" uuid="ae4fb256-ffd2-410c-b7f5-3237f33b6f0d"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{importe_donacion}==0 ? "" : $P{importe_aporte} == 0 ? "" : "Aporte"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="55" y="606" width="195" height="15" uuid="ce82d7b0-6e3d-4650-be5c-a046e0fd3a1e"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{importe_donacion}==0 ? "" : $P{importe_aporte} == 0 ? "" : "Aporte"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
