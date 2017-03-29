@@ -10,13 +10,11 @@ import java.io.Serializable;
 public class AportesPendientes implements Serializable {
 
     private String nombre;
-    private Integer ctacte;
+    private String ctacte;
     private Long importeCompromiso;
+    private Long importePagos;
 
     public AportesPendientes() {
-    }
-
-    public AportesPendientes(String nombre, Integer ctacte, Long importeCompromiso) {
     }
 
     /**
@@ -36,14 +34,14 @@ public class AportesPendientes implements Serializable {
     /**
      * @return the ctacte
      */
-    public Integer getCtacte() {
+    public String getCtacte() {
         return ctacte;
     }
 
     /**
      * @param ctacte the ctacte to set
      */
-    public void setCtacte(Integer ctacte) {
+    public void setCtacte(String ctacte) {
         this.ctacte = ctacte;
     }
 
@@ -59,6 +57,20 @@ public class AportesPendientes implements Serializable {
      */
     public void setImporteCompromiso(Long importeCompromiso) {
         this.importeCompromiso = importeCompromiso;
+    }
+
+    /**
+     * @return the importePagos
+     */
+    public Long getImportePagos() {
+        return importePagos;
+    }
+
+    /**
+     * @param importePagos the importePagos to set
+     */
+    public void setImportePagos(Long importePagos) {
+        this.importePagos = importePagos;
     }
 
 }

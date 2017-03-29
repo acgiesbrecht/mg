@@ -10,6 +10,7 @@ import com.gnadenheimer.mg.domain.miembros.TblEntidadesHistoricoCategorias;
 import com.gnadenheimer.mg.domain.models.AportesPendientes;
 import com.gnadenheimer.mg.utils.CurrentUser;
 import com.gnadenheimer.mg.utils.Utils;
+import com.gnadenheimer.utils.FormatCtaCte;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.time.LocalDate;
@@ -574,7 +575,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("ano", Integer.parseInt(jspAnoAportesResumenPendientes.getValue().toString()));
-            Utils.getInstance().showReport("aportes_resumen_anual_pendientes_test", parameters, true, getDataSourceAportesPendientes());
+            Utils.getInstance().showReport("aportes_resumen_anual_pendientes_test", parameters, true, getDataSourceAportesPendientes(Integer.parseInt(jspAnoAportesResumenPendientes.getValue().toString())));
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -585,7 +586,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         return new ArrayList<>();
     }
 
-    private static JRDataSource getDataSourceAportesPendientes() {
+    private static JRDataSource getDataSourceAportesPendientes(Integer ano) {
         try {
             List<AportesPendientes> coll = new ArrayList<>();
             Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
@@ -593,17 +594,24 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             entityManager.getTransaction().begin();
             List<TblEntidades> listE = entityManager.createQuery("select e from TblEntidades e where e in (select t.idEntidad from TblEntidadesHistoricoCategorias t)").getResultList();
 
-            Integer anoMesEnero = LocalDate.now().getYear() * 100 + 1;
-            Boolean haPasadoDeAno = false;
+            Integer anoMesEnero = ano * 100 + 1;
+            Integer anoMesUltimo;
+            if (ano == LocalDate.now().getYear()) {
+                anoMesUltimo = LocalDate.now().getYear() * 100 + LocalDate.now().getMonth().getValue() - 1;
+            } else {
+                anoMesUltimo = ano * 100 + 11;
+            }
 
             for (TblEntidades e : listE) {
+
                 System.out.println(e.getId());
                 System.out.println(e.getNombreCompleto());
+                Boolean haPasadoDeAno = false;
                 Long importeMensual = 0L;
                 try {
                     importeMensual = (Long) entityManager.createQuery("select COALESCE(t.importeMesnual,0) from TblAportesImporteMensualSaldoAnterior t where t.idEntidad.id = " + e.getId().toString()).getSingleResult();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, e.getNombreCompleto() + " no tiene Importe Mnsual de Aportes definido. Se considera 0.");
+                    //JOptionPane.showMessageDialog(null, e.getNombreCompleto() + " no tiene Importe Mnsual de Aportes definido. Se considera 0.");
                     importeMensual = 0L;
                 }
 
@@ -614,23 +622,36 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                     if (ehc.getAnoMes() < anoMesEnero && !haPasadoDeAno) {
                         ehc.setAnoMes(anoMesEnero);
                         haPasadoDeAno = true;
-                    } else {
+                    } else if (ehc.getAnoMes() < anoMesEnero) {
                         listEHCtoRemove.add(ehc);
                     }
                 }
                 listEHC.removeAll(listEHCtoRemove);
+
                 Long importeCompromiso = 0L;
-                for (int x = 0; x < listEHC.size() - 1; x++) {
+                for (int x = 0; x < listEHC.size(); x++) {
                     Integer cantidadMeses = 0;
                     if (listEHC.get(x).getIdCategoriaDePago().getEsActivacion()) {
-                        cantidadMeses = listEHC.get(x + 1).getAnoMes() - listEHC.get(x).getAnoMes() + 1;
+                        if (x < listEHC.size() - 1) {
+                            cantidadMeses = listEHC.get(x + 1).getAnoMes() - listEHC.get(x).getAnoMes() + 1;
+                        } else {
+                            cantidadMeses = anoMesUltimo - listEHC.get(x).getAnoMes() + 1;
+                        }
+
                         importeCompromiso += cantidadMeses * importeMensual;
                     }
                 }
+                String sQuery = "SELECT CAST(COALESCE(SUM(t.MONTO_APORTE),0) AS BIGINT) as importe "
+                        + "FROM MG.TBL_TRANSFERENCIAS t WHERE t.ID_EVENTO_TIPO = 3 "
+                        + "AND YEAR(t.FECHAHORA) = " + ano.toString() + " "
+                        + "AND t.COBRADO = TRUE AND t.ID_ENTIDAD = " + e.getId().toString();
+                Long importePagos = (Long) entityManager.createNativeQuery(sQuery).getSingleResult();
+
                 AportesPendientes ap = new AportesPendientes();
                 ap.setNombre(e.getNombreCompleto());
-                ap.setCtacte(e.getCtacte());
+                ap.setCtacte(FormatCtaCte.format(e.getCtacte()));
                 ap.setImporteCompromiso(importeCompromiso);
+                ap.setImportePagos(importePagos);
                 coll.add(ap);
             }
 
