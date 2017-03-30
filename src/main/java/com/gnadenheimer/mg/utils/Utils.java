@@ -311,7 +311,7 @@ public class Utils extends Component {
         try {
             Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
             Boolean error = false;
-            Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
+            Connection conn = getDatabaseConnection();
             //JOptionPane.showMessageDialog(null, filename);
             String ss = IOUtils.toString(getClass().getResourceAsStream(filename));
             List<String> sql = Arrays.asList(ss.split(";"));
@@ -356,7 +356,7 @@ public class Utils extends Component {
             //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
             //String backupfile = backupDirectory + "\\BackUp_" + sdf.format(new LocalDateTime());
             String backupfile = backupDirectory + "\\BackUp_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"));
-            Connection conn = DriverManager.getConnection(getPersistenceMap().get("javax.persistence.jdbc.url"), getPersistenceMap().get("javax.persistence.jdbc.user"), getPersistenceMap().get("javax.persistence.jdbc.password"));
+            Connection conn = getDatabaseConnection();
 
             try (CallableStatement cs = conn.prepareCall("CALL SYSCS_UTIL.SYSCS_BACKUP_DATABASE(?)")) {
                 cs.setString(1, backupfile);
@@ -421,9 +421,6 @@ public class Utils extends Component {
 
     public void showReport(String reportFile, Map parameters, Boolean landscape) {
         try {
-            String url = getPersistenceMap().get("javax.persistence.jdbc.url");
-            String user = getPersistenceMap().get("javax.persistence.jdbc.user");
-            String pass = getPersistenceMap().get("javax.persistence.jdbc.password");
             parameters.put("user", currentUser.getUser().getNombrecompleto());
 
             if (landscape) {
@@ -436,7 +433,7 @@ public class Utils extends Component {
 
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFile + ".jrxml"));
             report.setWhenNoDataType(WhenNoDataTypeEnum.NO_DATA_SECTION);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, DriverManager.getConnection(url, user, pass));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, getDatabaseConnection());
             JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
             jReportsViewer.setVisible(true);
         } catch (Exception ex) {
@@ -448,7 +445,7 @@ public class Utils extends Component {
     public void showReport(String reportFile, Map parameters, Boolean landscape, JRDataSource ds) {
         try {
             parameters.put("user", currentUser.getUser().getNombrecompleto());
-
+            parameters.put("connection", getDatabaseConnection());
             if (landscape) {
                 JasperReport reportHeader = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/header_landscape.jrxml"));
                 parameters.put("subreportHeader", reportHeader);
@@ -572,6 +569,19 @@ public class Utils extends Component {
             return generateFacturaNroFull(Integer.parseInt(nro.trim()));
         } else {
             return nro;
+        }
+    }
+
+    public Connection getDatabaseConnection() {
+        try {
+            String url = getPersistenceMap().get("javax.persistence.jdbc.url");
+            String user = getPersistenceMap().get("javax.persistence.jdbc.user");
+            String pass = getPersistenceMap().get("javax.persistence.jdbc.password");
+            return DriverManager.getConnection(url, user, pass);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            return null;
         }
     }
 }
