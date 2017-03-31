@@ -5,46 +5,16 @@
  */
 package com.gnadenheimer.mg.domain.models;
 
+import com.gnadenheimer.mg.domain.miembros.TblEntidades;
 import java.io.Serializable;
 
 public class AportesPendientes implements Serializable {
 
-    private String nombre;
-    private Integer ctacte;
+    private TblEntidades miembro;
     private Long importeCompromiso;
+    private Long importePagos;
 
     public AportesPendientes() {
-    }
-
-    public AportesPendientes(String nombre, Integer ctacte, Long importeCompromiso) {
-    }
-
-    /**
-     * @return the nombre
-     */
-    public String getNombre() {
-        return nombre;
-    }
-
-    /**
-     * @param nombre the nombre to set
-     */
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    /**
-     * @return the ctacte
-     */
-    public Integer getCtacte() {
-        return ctacte;
-    }
-
-    /**
-     * @param ctacte the ctacte to set
-     */
-    public void setCtacte(Integer ctacte) {
-        this.ctacte = ctacte;
     }
 
     /**
@@ -59,6 +29,34 @@ public class AportesPendientes implements Serializable {
      */
     public void setImporteCompromiso(Long importeCompromiso) {
         this.importeCompromiso = importeCompromiso;
+    }
+
+    /**
+     * @return the importePagos
+     */
+    public Long getImportePagos() {
+        return importePagos;
+    }
+
+    /**
+     * @param importePagos the importePagos to set
+     */
+    public void setImportePagos(Long importePagos) {
+        this.importePagos = importePagos;
+    }
+
+    /**
+     * @return the miembro
+     */
+    public TblEntidades getMiembro() {
+        return miembro;
+    }
+
+    /**
+     * @param miembro the miembro to set
+     */
+    public void setMiembro(TblEntidades miembro) {
+        this.miembro = miembro;
     }
 
 }
