@@ -977,6 +977,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                 });
                 listEventoDetalle.clear();*/
                 listEntidades.stream().forEach((miembro) -> {
+
                     if (miembro.getIdMiembrosCategoriaDePago() != null) {
                         if (miembro.getIdMiembrosCategoriaDePago().getId().equals(3) && miembro.getAporteMensual() > 0) {
                             TblEventoDetalle t = new TblEventoDetalle();

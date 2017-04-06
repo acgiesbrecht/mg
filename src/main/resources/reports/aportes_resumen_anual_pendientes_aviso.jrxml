@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-03-29T21:11:55 -->
+<!-- 2017-04-06T18:16:09 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="aportes_pendientes" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -15,6 +15,7 @@
 	<field name="importePagos" class="java.lang.Long"/>
 	<field name="miembro.box" class="java.lang.Integer"/>
 	<field name="miembro.domicilio" class="java.lang.String"/>
+	<field name="importeSaldoAnterior" class="java.lang.Long"/>
 	<variable name="sum_compromiso" class="java.lang.Long" calculation="Sum">
 		<variableExpression><![CDATA[$F{importeCompromiso}]]></variableExpression>
 	</variable>
@@ -32,7 +33,7 @@
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<printWhenExpression><![CDATA[$F{importePagos}-$F{importeCompromiso}<0]]></printWhenExpression>
 			<staticText>
-				<reportElement x="0" y="160" width="550" height="110" uuid="b1ec8d03-43a2-4a66-a9a4-8530b25eea11">
+				<reportElement x="0" y="160" width="550" height="125" uuid="b1ec8d03-43a2-4a66-a9a4-8530b25eea11">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box leftPadding="3" rightPadding="3"/>
@@ -41,7 +42,8 @@
 				</textElement>
 				<text><![CDATA[Wertes Glied:
 
-Hiermit benachrichtigen wir dich, dass du bis heute ledglich Gs.-                     von deiner Verpflichtung von Gs.-                     beglichen hast. Wir bitten dich, um unsere Verpflichtungen als Gemeinde nachzukommen, deine austehende Schuld von Gs.-                      so schnell möglich zu regeln.]]></text>
+Hiermit benachrichtigen wir dich, dass du bis heute ledglich Gs.-                     von deiner Verpflichtung von Gs.-                     beglichen hast. Wir bitten dich, um unsere Verpflichtungen als Gemeinde nachzukommen, deine austehende Schuld von Gs.-                      so schnell möglich zu regeln.
+Bemerkung: In der Verpflichtung sind fehlende Zahlungen von vorherigen Jahren mit eingeschlossen. Die Gesamtverpflichtung bis Ende Jahr beträgt Gs.-]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="0" y="60" width="230" height="20" uuid="8676c6ea-3acd-4261-82d0-e9a5a5b513fe"/>
@@ -54,7 +56,7 @@ Hiermit benachrichtigen wir dich, dass du bis heute ledglich Gs.-               
 				<textFieldExpression><![CDATA[$F{miembro.nombreCompleto}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###">
-				<reportElement x="49" y="221" width="70" height="20" backcolor="#EBEBEB" uuid="961634fe-3265-4b01-b4b0-ce9e113bdd09">
+				<reportElement x="49" y="213" width="70" height="20" backcolor="#EBEBEB" uuid="961634fe-3265-4b01-b4b0-ce9e113bdd09">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box leftPadding="3" rightPadding="3">
@@ -63,7 +65,7 @@ Hiermit benachrichtigen wir dich, dass du bis heute ledglich Gs.-               
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{importeCompromiso}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importeCompromiso}+$F{importeSaldoAnterior}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="80" width="130" height="16" uuid="72e129ff-215c-4a61-9a14-35a3a884aae0"/>
@@ -88,7 +90,7 @@ Hiermit benachrichtigen wir dich, dass du bis heute ledglich Gs.-               
 				<textFieldExpression><![CDATA[$F{miembro.box} != null ? "Postf.:" + $F{miembro.box} : ""]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###">
-				<reportElement x="344" y="204" width="70" height="20" backcolor="#EBEBEB" uuid="630b6bb7-8d1d-4039-a36d-aa8412f6f3f9">
+				<reportElement x="344" y="198" width="70" height="20" backcolor="#EBEBEB" uuid="630b6bb7-8d1d-4039-a36d-aa8412f6f3f9">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box leftPadding="3" rightPadding="3">
@@ -100,7 +102,7 @@ Hiermit benachrichtigen wir dich, dass du bis heute ledglich Gs.-               
 				<textFieldExpression><![CDATA[$F{importePagos}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###">
-				<reportElement x="281" y="235" width="70" height="20" backcolor="#EBEBEB" uuid="7bb03842-be58-4fea-bf8c-62db8ce98758">
+				<reportElement x="281" y="228" width="70" height="20" backcolor="#EBEBEB" uuid="7bb03842-be58-4fea-bf8c-62db8ce98758">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box leftPadding="3" rightPadding="3">
@@ -109,7 +111,7 @@ Hiermit benachrichtigen wir dich, dass du bis heute ledglich Gs.-               
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{importeCompromiso}-$F{importePagos}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importeCompromiso}-$F{importePagos}+$F{importeSaldoAnterior}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="285" width="550" height="50" uuid="e6c29fbd-4aee-46d5-a151-6c65df51b882">

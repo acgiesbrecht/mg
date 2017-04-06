@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class AportesPendientes implements Serializable {
 
     private TblEntidades miembro;
+    private Long importeSaldoAnterior;
     private Long importeCompromiso;
     private Long importePagos;
 
@@ -57,6 +58,20 @@ public class AportesPendientes implements Serializable {
      */
     public void setMiembro(TblEntidades miembro) {
         this.miembro = miembro;
+    }
+
+    /**
+     * @return the importeSaldoAnterior
+     */
+    public Long getImporteSaldoAnterior() {
+        return importeSaldoAnterior;
+    }
+
+    /**
+     * @param importeSaldoAnterior the importeSaldoAnterior to set
+     */
+    public void setImporteSaldoAnterior(Long importeSaldoAnterior) {
+        this.importeSaldoAnterior = importeSaldoAnterior;
     }
 
 }
