@@ -669,6 +669,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                 ap.setMiembro(e);
                 ap.setImporteSaldoAnterior(importeSaldoAnterior);
                 ap.setImporteCompromiso(importeCompromiso);
+                ap.setImporteCompromisoAnual(importeMensual * 10);
                 ap.setImportePagos(importePagos);
                 coll.add(ap);
             }

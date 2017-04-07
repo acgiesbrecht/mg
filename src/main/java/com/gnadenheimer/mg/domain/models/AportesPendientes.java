@@ -13,6 +13,7 @@ public class AportesPendientes implements Serializable {
     private TblEntidades miembro;
     private Long importeSaldoAnterior;
     private Long importeCompromiso;
+    private Long importeCompromisoAnual;
     private Long importePagos;
 
     public AportesPendientes() {
@@ -72,6 +73,20 @@ public class AportesPendientes implements Serializable {
      */
     public void setImporteSaldoAnterior(Long importeSaldoAnterior) {
         this.importeSaldoAnterior = importeSaldoAnterior;
+    }
+
+    /**
+     * @return the importeCompromisoAnual
+     */
+    public Long getImporteCompromisoAnual() {
+        return importeCompromisoAnual;
+    }
+
+    /**
+     * @param importeCompromisoAnual the importeCompromisoAnual to set
+     */
+    public void setImporteCompromisoAnual(Long importeCompromisoAnual) {
+        this.importeCompromisoAnual = importeCompromisoAnual;
     }
 
 }
