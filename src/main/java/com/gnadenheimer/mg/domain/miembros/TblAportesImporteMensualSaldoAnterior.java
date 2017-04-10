@@ -48,7 +48,7 @@ public class TblAportesImporteMensualSaldoAnterior implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "IMPORTE_MESNUAL")
-    private long importeMesnual;
+    private long importeMensual;
     @Basic(optional = false)
     @NotNull
     @Column(name = "SALDO_ANTERIOR")
@@ -64,10 +64,10 @@ public class TblAportesImporteMensualSaldoAnterior implements Serializable {
         this.id = id;
     }
 
-    public TblAportesImporteMensualSaldoAnterior(Integer id, int ano, long importeMesnual, long saldoAnterior) {
+    public TblAportesImporteMensualSaldoAnterior(Integer id, int ano, long importeMensual, long saldoAnterior) {
         this.id = id;
         this.ano = ano;
-        this.importeMesnual = importeMesnual;
+        this.importeMensual = importeMensual;
         this.saldoAnterior = saldoAnterior;
     }
 
@@ -87,12 +87,12 @@ public class TblAportesImporteMensualSaldoAnterior implements Serializable {
         this.ano = ano;
     }
 
-    public long getImporteMesnual() {
-        return importeMesnual;
+    public long getImporteMensual() {
+        return importeMensual;
     }
 
-    public void setImporteMesnual(long importeMesnual) {
-        this.importeMesnual = importeMesnual;
+    public void setImporteMensual(long importeMensual) {
+        this.importeMensual = importeMensual;
     }
 
     public long getSaldoAnterior() {

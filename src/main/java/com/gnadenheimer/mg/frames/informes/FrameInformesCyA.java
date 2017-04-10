@@ -619,7 +619,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                 Boolean haPasadoDeAno = false;
                 Long importeMensual = 0L;
                 try {
-                    importeMensual = (Long) entityManager.createQuery("select COALESCE(t.importeMesnual,0) from TblAportesImporteMensualSaldoAnterior t where t.ano = " + ano.toString() + " and t.idEntidad.id = " + e.getId().toString()).getSingleResult();
+                    importeMensual = (Long) entityManager.createQuery("select COALESCE(t.importeMensual,0) from TblAportesImporteMensualSaldoAnterior t where t.ano = " + ano.toString() + " and t.idEntidad.id = " + e.getId().toString()).getSingleResult();
                 } catch (Exception ex) {
                     //JOptionPane.showMessageDialog(null, e.getNombreCompleto() + " no tiene Importe Mnsual de Aportes definido. Se considera 0.");
                     importeMensual = 0L;

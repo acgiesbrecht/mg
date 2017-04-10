@@ -1589,7 +1589,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             }
             TblAportesImporteMensualSaldoAnterior t = new TblAportesImporteMensualSaldoAnterior();
             t.setIdEntidad(T);
-            t.setImporteMesnual(0);
+            t.setImporteMensual(0);
             t.setSaldoAnterior(0);
             t.setAno(LocalDate.now().getYear());
             ts.add(t);

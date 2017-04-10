@@ -978,8 +978,10 @@ public class FrameAportesDetalle extends JInternalFrame {
                 listEventoDetalle.clear();*/
                 listEntidades.stream().forEach((miembro) -> {
 
-                    if (miembro.getIdMiembrosCategoriaDePago() != null) {
-                        if (miembro.getIdMiembrosCategoriaDePago().getId().equals(3) && miembro.getAporteMensual() > 0) {
+                    if (miembro.getTblEntidadesHistoricoCategoriasList() != null) {
+                        if (miembro.getTblEntidadesHistoricoCategoriasList()
+                                .get(miembro.getTblEntidadesHistoricoCategoriasList().size() - 1)
+                                .getIdCategoriaDePago().getId().equals(3)) {
                             TblEventoDetalle t = new TblEventoDetalle();
                             entityManager.persist(t);
                             t.setFechahora(currEvento.getFecha().atStartOfDay());
@@ -996,7 +998,8 @@ public class FrameAportesDetalle extends JInternalFrame {
                             } else {
                                 t.setIdFormaDePagoPreferida(miembro.getIdFormaDePagoPreferida());
                             }
-                            t.setMonto(miembro.getAporteMensual());
+
+                            t.setMonto((Integer) entityManager.createQuery("select t.importeMensual from TblAportesImporteMensualSaldoAnterior t where t.idEntidad.id = " + miembro.getId().toString() + " and t.ano = " + String.valueOf(currEvento.getFecha().getYear())).getSingleResult());
                             t.setIdUser(currentUser.getUser());
                             listEventoDetalle.add(t);
                             Integer row = listEventoDetalle.size() - 1;
