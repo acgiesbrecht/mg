@@ -665,12 +665,15 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                         + "AND t.COBRADO = TRUE AND t.ID_ENTIDAD = " + e.getId().toString();
                 Long importePagos = (Long) entityManager.createNativeQuery(sQuery).getSingleResult();
 
+                Integer ctaCte = (Integer) entityManager.createQuery("select t.ctacte from TblIglesia t").getSingleResult();
+
                 AportesPendientes ap = new AportesPendientes();
                 ap.setMiembro(e);
                 ap.setImporteSaldoAnterior(importeSaldoAnterior);
                 ap.setImporteCompromiso(importeCompromiso);
                 ap.setImporteCompromisoAnual(importeMensual * 10);
                 ap.setImportePagos(importePagos);
+                ap.setCtaCteIglesia(FormatCtaCte.format(ctaCte));
                 coll.add(ap);
             }
 

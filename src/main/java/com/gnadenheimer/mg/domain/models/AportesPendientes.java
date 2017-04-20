@@ -15,6 +15,7 @@ public class AportesPendientes implements Serializable {
     private Long importeCompromiso;
     private Long importeCompromisoAnual;
     private Long importePagos;
+    private String ctaCteIglesia;
 
     public AportesPendientes() {
     }
@@ -87,6 +88,20 @@ public class AportesPendientes implements Serializable {
      */
     public void setImporteCompromisoAnual(Long importeCompromisoAnual) {
         this.importeCompromisoAnual = importeCompromisoAnual;
+    }
+
+    /**
+     * @return the ctaCteIglesia
+     */
+    public String getCtaCteIglesia() {
+        return ctaCteIglesia;
+    }
+
+    /**
+     * @param ctaCteIglesia the ctaCteIglesia to set
+     */
+    public void setCtaCteIglesia(String ctaCteIglesia) {
+        this.ctaCteIglesia = ctaCteIglesia;
     }
 
 }

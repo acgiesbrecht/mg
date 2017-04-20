@@ -37,6 +37,7 @@ import java.util.Optional;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -67,6 +68,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private static final Logger LOGGER = LogManager.getLogger(FrameEntidadesAdmin.class);
     Map<String, String> persistenceMap = new HashMap<>();
     CurrentUser currentUser = CurrentUser.getInstance();
+    private JComboBox cboCategoria = new JComboBox();
 
     public FrameEntidadesAdmin() {
         super("Administrar Entidades",
@@ -96,14 +98,14 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             AutoCompleteSupport support1 = AutoCompleteSupport.install(cboEntidad, GlazedLists.eventListOf(list.toArray()));
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCategoria, GlazedLists.eventListOf(listCategoria.toArray()));
-            support2.setFilterMode(TextMatcherEditor.CONTAINS);
-
             AutoCompleteSupport support3 = AutoCompleteSupport.install(cboAreaServicio, GlazedLists.eventListOf(listAreaServicio.toArray()));
             support3.setFilterMode(TextMatcherEditor.CONTAINS);
 
             AutoCompleteSupport support4 = AutoCompleteSupport.install(cboAlergia, GlazedLists.eventListOf(listAlergia.toArray()));
             support4.setFilterMode(TextMatcherEditor.CONTAINS);
+
+            AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCategoria, GlazedLists.eventListOf(listCategoria.toArray()));
+            support5.setFilterMode(TextMatcherEditor.CONTAINS);
 
             rucField.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
@@ -239,14 +241,10 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         cboEntidad = new javax.swing.JComboBox();
         idMiembroLabel = new javax.swing.JLabel();
         idMiembroLabel1 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
         nombreLabel2 = new javax.swing.JLabel();
         nombreLabel3 = new javax.swing.JLabel();
         nombreLabel4 = new javax.swing.JLabel();
         nombreLabel5 = new javax.swing.JLabel();
-        nombreLabel6 = new javax.swing.JLabel();
-        idCategoriaLabel1 = new javax.swing.JLabel();
-        cboCategoria = new javax.swing.JComboBox();
         idCategoriaLabel2 = new javax.swing.JLabel();
         cboAreaServicio = new javax.swing.JComboBox();
         idCategoriaLabel3 = new javax.swing.JLabel();
@@ -259,10 +257,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         txtAporteBase2 = new javax.swing.JFormattedTextField();
         ctacteLabel7 = new javax.swing.JLabel();
         nombreLabel7 = new javax.swing.JLabel();
-        nombreLabel8 = new javax.swing.JLabel();
         cmdCargarMesAporte = new javax.swing.JButton();
-        txtMesInicioAporte = new javax.swing.JFormattedTextField();
-        txtMesFinAporte = new javax.swing.JFormattedTextField();
         nombreLabel9 = new javax.swing.JLabel();
         txtMesInicioAporteC = new javax.swing.JFormattedTextField();
         txtMesFinAporteC = new javax.swing.JFormattedTextField();
@@ -499,15 +494,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         idMiembroLabel1.setText("Cta. Cte.:");
         idMiembroLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        jCheckBox1.setText("VIEJO Es miembro activo");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.isMiembroActivo}"), jCheckBox1, org.jdesktop.beansbinding.BeanProperty.create("selected"));
-        binding.setSourceNullValue(false);
-        binding.setSourceUnreadableValue(false);
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), jCheckBox1, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
         nombreLabel2.setText("Fecha Nacimiento:");
 
         nombreLabel3.setText("Fecha Bautismo:");
@@ -515,19 +501,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         nombreLabel4.setText("Fecha Congregacion:");
 
         nombreLabel5.setText("Fecha Descongregacion:");
-
-        nombreLabel6.setText("Mes Inicio de Compromiso de Aportar:");
-
-        idCategoriaLabel1.setText("VIEJO Categoria de Aporte de Miembro:");
-
-        cboCategoria.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idMiembrosCategoriaDePago}"), cboCategoria, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboCategoria, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        cboCategoria.addActionListener(formListener);
 
         idCategoriaLabel2.setText("Area de Servicio:");
 
@@ -593,20 +566,8 @@ public class FrameEntidadesAdmin extends JInternalFrame {
 
         nombreLabel7.setText("Fecha Defunción:");
 
-        nombreLabel8.setText("Mes Fin de Compromiso de Aportar:");
-
         cmdCargarMesAporte.setText("Cargar");
         cmdCargarMesAporte.addActionListener(formListener);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.mesInicioAporte}"), txtMesInicioAporte, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtMesInicioAporte, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.mesFinAporte}"), txtMesFinAporte, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtMesFinAporte, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
 
         nombreLabel9.setText("y ultimo mes ");
 
@@ -670,8 +631,8 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${ano}"));
         columnBinding.setColumnName("Año");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${importeMesnual}"));
-        columnBinding.setColumnName("Importe Mesnual");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${importeMensual}"));
+        columnBinding.setColumnName("Importe Mensual");
         columnBinding.setColumnClass(Long.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${saldoAnterior}"));
         columnBinding.setColumnName("Saldo Anterior");
@@ -795,24 +756,16 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                                             .addComponent(dtpFechaDefuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(dtpFechaBautismo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(dtpFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(montoLabel7)
                                             .addGap(125, 125, 125)
                                             .addComponent(cmdAddImporteAporte)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(cmdBorrarImporteAporte, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(cmdBorrarImporteAporte, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(60, 60, 60)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(nombreLabel6)
-                                            .addComponent(nombreLabel8))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtMesInicioAporte, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtMesFinAporte, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(idCategoriaLabel3)
                                         .addGap(85, 85, 85)
@@ -821,20 +774,14 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                                         .addComponent(idCategoriaLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(cboAreaServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(montoLabel6)
-                                        .addGap(125, 125, 125)
-                                        .addComponent(cmdAddCategoria)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(cmdBorrarCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(57, 57, 57)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(idCategoriaLabel1)
-                                    .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jCheckBox1))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(montoLabel6)
+                                    .addGap(125, 125, 125)
+                                    .addComponent(cmdAddCategoria)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(cmdBorrarCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 273, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -908,15 +855,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                                 .addComponent(cmdAddCategoria)
                                 .addComponent(cmdBorrarCategoria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jCheckBox1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(idCategoriaLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(9, 9, 9))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
@@ -948,15 +887,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                                     .addComponent(dtpFechaDefuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(nombreLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(90, 90, 90)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(nombreLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtMesInicioAporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(nombreLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtMesFinAporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(167, 167, 167)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(26, 26, 26)
@@ -968,7 +899,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(cboAlergia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(ctacteLabel2))
@@ -1035,9 +966,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             }
             else if (evt.getSource() == cboEntidad) {
                 FrameEntidadesAdmin.this.cboEntidadActionPerformed(evt);
-            }
-            else if (evt.getSource() == cboCategoria) {
-                FrameEntidadesAdmin.this.cboCategoriaActionPerformed(evt);
             }
             else if (evt.getSource() == cboAreaServicio) {
                 FrameEntidadesAdmin.this.cboAreaServicioActionPerformed(evt);
@@ -1463,10 +1391,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
          }*/
     }//GEN-LAST:event_cboEntidadActionPerformed
 
-    private void cboCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCategoriaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboCategoriaActionPerformed
-
     private void cboAreaServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboAreaServicioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cboAreaServicioActionPerformed
@@ -1617,7 +1541,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private javax.swing.JTable categoriasTable;
     private javax.swing.JComboBox cboAlergia;
     private javax.swing.JComboBox cboAreaServicio;
-    private javax.swing.JComboBox cboCategoria;
     private javax.swing.JComboBox cboEntidad;
     private javax.swing.JComboBox cboFormaDePago;
     private javax.swing.JButton cmdAddCategoria;
@@ -1646,7 +1569,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private com.github.lgooddatepicker.components.DatePicker dtpFechaNacimiento;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel idCategoriaLabel;
-    private javax.swing.JLabel idCategoriaLabel1;
     private javax.swing.JLabel idCategoriaLabel2;
     private javax.swing.JLabel idCategoriaLabel3;
     private javax.swing.JTextField idField;
@@ -1657,7 +1579,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private com.gnadenheimer.mg.utils.IntegerLongConverter integerLongConverter1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private java.util.List<com.gnadenheimer.mg.domain.miembros.TblEntidades> list;
@@ -1680,9 +1601,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private javax.swing.JLabel nombreLabel3;
     private javax.swing.JLabel nombreLabel4;
     private javax.swing.JLabel nombreLabel5;
-    private javax.swing.JLabel nombreLabel6;
     private javax.swing.JLabel nombreLabel7;
-    private javax.swing.JLabel nombreLabel8;
     private javax.swing.JLabel nombreLabel9;
     private com.gnadenheimer.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query query;
@@ -1698,9 +1617,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private javax.swing.JFormattedTextField txtAporteBase1;
     private javax.swing.JFormattedTextField txtAporteBase2;
     private javax.swing.JTextField txtCtaCte;
-    private javax.swing.JFormattedTextField txtMesFinAporte;
     private javax.swing.JFormattedTextField txtMesFinAporteC;
-    private javax.swing.JFormattedTextField txtMesInicioAporte;
     private javax.swing.JFormattedTextField txtMesInicioAporteC;
     private javax.swing.JTextField txtRazonSocial;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-07T17:36:43 -->
+<!-- 2017-04-20T09:14:36 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="aportes_pendientes" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -17,6 +17,7 @@
 	<field name="miembro.domicilio" class="java.lang.String"/>
 	<field name="importeSaldoAnterior" class="java.lang.Long"/>
 	<field name="importeCompromisoAnual" class="java.lang.Long"/>
+	<field name="ctaCteIglesia" class="java.lang.String"/>
 	<variable name="sum_compromiso" class="java.lang.Long" calculation="Sum">
 		<variableExpression><![CDATA[$F{importeCompromiso}]]></variableExpression>
 	</variable>
@@ -44,7 +45,8 @@
 				<text><![CDATA[Wertes Glied:
 
 Hiermit benachrichtigen wir dich, dass du bis heute ledglich Gs.-                     von deiner Verpflichtung von Gs.-                     beglichen hast. Wir bitten dich, um unsere Verpflichtungen als Gemeinde nachzukommen, deine austehende Schuld von Gs.-                      so schnell möglich zu regeln.
-Bemerkung: In der Verpflichtung sind fehlende und üiberschüssige Zahlungen von vorherigen Jahren mit eingeschlossen. 
+Bemerkung: Man kann die ausstehende Schuld auf das Konto Nr                     zahlen. In der 
+Verpflichtung sind fehlende und üiberschüssige Zahlungen von vorherigen Jahren mit eingeschlossen. 
 Die gesamt Verpflichtung fûr dieses Jahr betrâgt Gs.-]]></text>
 			</staticText>
 			<textField>
@@ -125,7 +127,7 @@ Die gesamt Verpflichtung fûr dieses Jahr betrâgt Gs.-]]></text>
 				</textElement>
 				<text><![CDATA[mit freundlichen Grüßen,
 
-Der Geimeinderat]]></text>
+Das Finanzkomitee]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="330" y="130" width="100" height="25" uuid="313d686c-dfde-48da-8bb6-a253611bf324">
@@ -170,6 +172,18 @@ Der Geimeinderat]]></text>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importeCompromisoAnual}+$F{importeSaldoAnterior}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="352" y="233" width="70" height="20" backcolor="#EBEBEB" uuid="fb26b57f-1937-4eec-88a1-a9110c1f3b8d">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ctaCteIglesia}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

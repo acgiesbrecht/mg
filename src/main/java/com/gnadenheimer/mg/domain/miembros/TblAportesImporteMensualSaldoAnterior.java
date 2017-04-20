@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TblAportesImporteMensualSaldoAnterior.findAll", query = "SELECT t FROM TblAportesImporteMensualSaldoAnterior t")
     , @NamedQuery(name = "TblAportesImporteMensualSaldoAnterior.findById", query = "SELECT t FROM TblAportesImporteMensualSaldoAnterior t WHERE t.id = :id")
     , @NamedQuery(name = "TblAportesImporteMensualSaldoAnterior.findByAno", query = "SELECT t FROM TblAportesImporteMensualSaldoAnterior t WHERE t.ano = :ano")
-    , @NamedQuery(name = "TblAportesImporteMensualSaldoAnterior.findByImporteMesnual", query = "SELECT t FROM TblAportesImporteMensualSaldoAnterior t WHERE t.importeMesnual = :importeMesnual")
+    , @NamedQuery(name = "TblAportesImporteMensualSaldoAnterior.findByImporteMesnual", query = "SELECT t FROM TblAportesImporteMensualSaldoAnterior t WHERE t.importeMensual = :importeMensual")
     , @NamedQuery(name = "TblAportesImporteMensualSaldoAnterior.findBySaldoAnterior", query = "SELECT t FROM TblAportesImporteMensualSaldoAnterior t WHERE t.saldoAnterior = :saldoAnterior")})
 public class TblAportesImporteMensualSaldoAnterior implements Serializable {
 

@@ -976,12 +976,20 @@ public class FrameAportesDetalle extends JInternalFrame {
 
                 });
                 listEventoDetalle.clear();*/
-                listEntidades.stream().forEach((miembro) -> {
-
-                    if (miembro.getTblEntidadesHistoricoCategoriasList() != null) {
+                //listEntidades.stream().forEach((miembro) -> {
+                for (TblEntidades miembro : listEntidades) {
+                    if (miembro.getTblEntidadesHistoricoCategoriasList().size() > 0) {
                         if (miembro.getTblEntidadesHistoricoCategoriasList()
                                 .get(miembro.getTblEntidadesHistoricoCategoriasList().size() - 1)
                                 .getIdCategoriaDePago().getId().equals(3)) {
+
+                            Integer monto = 0;
+                            try {
+                                monto = ((Long) entityManager.createQuery("select t.importeMensual from TblAportesImporteMensualSaldoAnterior t where t.idEntidad.id = " + miembro.getId().toString() + " and t.ano = " + String.valueOf(currEvento.getFecha().getYear())).getSingleResult()).intValue();
+                            } catch (Exception ex) {
+                                monto = 0;
+                            }
+
                             TblEventoDetalle t = new TblEventoDetalle();
                             entityManager.persist(t);
                             t.setFechahora(currEvento.getFecha().atStartOfDay());
@@ -999,7 +1007,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                                 t.setIdFormaDePagoPreferida(miembro.getIdFormaDePagoPreferida());
                             }
 
-                            t.setMonto((Integer) entityManager.createQuery("select t.importeMensual from TblAportesImporteMensualSaldoAnterior t where t.idEntidad.id = " + miembro.getId().toString() + " and t.ano = " + String.valueOf(currEvento.getFecha().getYear())).getSingleResult());
+                            t.setMonto(monto);
                             t.setIdUser(currentUser.getUser());
                             listEventoDetalle.add(t);
                             Integer row = listEventoDetalle.size() - 1;
@@ -1007,7 +1015,7 @@ public class FrameAportesDetalle extends JInternalFrame {
                             //masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
                         }
                     }
-                });
+                }
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
