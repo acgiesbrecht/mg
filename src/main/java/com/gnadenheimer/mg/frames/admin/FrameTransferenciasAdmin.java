@@ -104,7 +104,8 @@ public class FrameTransferenciasAdmin extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t JOIN FETCH t.idEntidad ORDER BY t.fechahora");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t JOIN FETCH t.idEntidad WHERE EXTRACT(YEAR FROM t.fechahora) = :anoActivo OR EXTRACT(YEAR FROM t.fechahoraCompromiso) = :anoActivo ORDER BY t.fechahora");
+        query.setParameter("anoActivo", persistenceMap.get("anoActivo"));
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         numberCellRenderer1 = new com.gnadenheimer.mg.utils.NumberCellRenderer();
         integerLongConverter1 = new com.gnadenheimer.mg.utils.IntegerLongConverter();

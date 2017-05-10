@@ -131,8 +131,9 @@ public class FrameCobrarTransferenciasRemates extends JInternalFrame implements 
         integerLongConverter1 = new com.gnadenheimer.mg.utils.IntegerLongConverter();
         ctaCteTableCellRenderer1 = new com.gnadenheimer.mg.utils.CtaCteTableCellRenderer();
         mesTableCellRenderer1 = new com.gnadenheimer.mg.utils.MesTableCellRenderer();
-        queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 1 AND t.idGrupo IN :grupos ORDER BY t.fecha");
+        queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id = 1 AND t.idGrupo IN :grupos AND EXTRACT(YEAR FROM t.fecha) = :anoActivo ORDER BY t.fecha");
         queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
+        queryEventos.setParameter("anoActivo", persistenceMap.get("anoActivo"));
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
         dateTableCellRenderer2 = new com.gnadenheimer.mg.utils.DateTableCellRenderer();
         masterScrollPane = new javax.swing.JScrollPane();

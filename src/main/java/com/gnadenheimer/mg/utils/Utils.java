@@ -126,6 +126,7 @@ public class Utils extends Component {
             persistenceMap.put("javax.persistence.jdbc.password", "123456");
             persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
             persistenceMap.put("backUpDir", Preferences.userRoot().node("MG").get("Datadir", (new JFileChooser()).getFileSystemView().getDefaultDirectory().toString() + "\\javadb") + "\\autoBackUp");
+            persistenceMap.put("anoActivo", Preferences.userRoot().node("MG").get("anoActivo", String.valueOf(LocalDate.now().getYear())));
             return persistenceMap;
         } catch (Exception exx) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + exx.getMessage());

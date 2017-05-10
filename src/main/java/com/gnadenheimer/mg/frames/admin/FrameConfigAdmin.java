@@ -22,6 +22,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -147,6 +148,8 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         rbCobrarACPorMes = new javax.swing.JRadioButton();
         rbCobrarACPorEvento = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jspAnoActivo = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -333,10 +336,29 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
         jLabel1.setText("Cobrar Aportes y Colectas:");
 
+        jLabel21.setText("Año fiscal activo:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton7))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(updateSETbutton)
+                    .addComponent(jButton4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3)
+                    .addComponent(jButton6)
+                    .addComponent(jButton5)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)))
+                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -385,24 +407,12 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                                 .addGap(18, 18, 18)
                                 .addComponent(cmdReset, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel7))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton7))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(updateSETbutton)
-                    .addComponent(jButton4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3)
-                    .addComponent(jButton6)
-                    .addComponent(jButton5)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)))
-                .addContainerGap())
+                        .addComponent(jLabel21)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jspAnoActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -446,7 +456,10 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                                 .addComponent(rbCobrarACPorMes)
                                 .addComponent(rbCobrarACPorEvento))
                             .addComponent(jLabel1))))
-                .addGap(11, 11, 11)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21)
+                    .addComponent(jspAnoActivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(47, 47, 47)
@@ -470,7 +483,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton7))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(updateSETbutton)))
                 .addGap(18, 18, 18))
         );
@@ -489,6 +502,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
             Preferences.userRoot().node("MG").put("facturaLeftMargin", txtFacturaX.getText());
             Preferences.userRoot().node("MG").put("facturaTopMargin", txtFacturaY.getText());
             Preferences.userRoot().node("MG").put("cobrarAC", String.valueOf(rbCobrarACPorMes.isSelected()));
+            Preferences.userRoot().node("MG").put("anoActivo", String.valueOf(jspAnoActivo.getValue()));
 
             this.setVisible(false);
 
@@ -512,6 +526,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         txtFacturaX.setText(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0"));
         txtFacturaY.setText(Preferences.userRoot().node("MG").get("facturaTopMargin", "0"));
         rbCobrarACPorMes.setSelected(Boolean.parseBoolean(Preferences.userRoot().node("MG").get("cobrarAC", "true")));
+        jspAnoActivo.setValue(Integer.parseInt(Preferences.userRoot().node("MG").get("anoActivo", String.valueOf(LocalDate.now().getYear()))));
 
         Preferences.userRoot().node("MG").put("facturaTopMargin", txtFacturaY.getText());
     }//GEN-LAST:event_formInternalFrameActivated
@@ -969,11 +984,13 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JSpinner jspAnoActivo;
     private javax.swing.JLabel lblStatusSET;
     private java.awt.Panel panelDatadir;
     private javax.swing.JRadioButton rbCobrarACPorEvento;

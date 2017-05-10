@@ -71,7 +71,8 @@ public class FrameNotasDeCreditoAdmin extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblNotasDeCredito t ORDER BY t.nro");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblNotasDeCredito t WHERE EXTRACT(YEAR FROM t.fechahora) = :anoActivo ORDER BY t.nro");
+        query.setParameter("anoActivo", persistenceMap.get("anoActivo"));
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         dateToStringConverter1 = new com.gnadenheimer.mg.utils.DateToStringConverter();
         dateTableCellRenderer1 = new com.gnadenheimer.mg.utils.DateTimeTableCellRenderer();
@@ -143,7 +144,6 @@ public class FrameNotasDeCreditoAdmin extends JInternalFrame {
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
-            masterTable.getColumnModel().getColumn(0).setCellRenderer(null);
             masterTable.getColumnModel().getColumn(1).setCellRenderer(facturaNroTableCellRenderer1);
             masterTable.getColumnModel().getColumn(2).setResizable(false);
             masterTable.getColumnModel().getColumn(2).setCellRenderer(dateTableCellRenderer1);
