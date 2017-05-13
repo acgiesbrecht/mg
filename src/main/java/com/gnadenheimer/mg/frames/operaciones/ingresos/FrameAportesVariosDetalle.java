@@ -265,7 +265,8 @@ public class FrameAportesVariosDetalle extends JInternalFrame {
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
         normalTableCellRenderer1 = new com.gnadenheimer.mg.utils.NormalTableCellRenderer();
         categoriasConverter1 = new com.gnadenheimer.mg.utils.CategoriasConverter();
-        queryTransferencias = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t WHERE t.idEventoTipo.id = 4 AND t.montoAporte > 0 ORDER BY t.id");
+        queryTransferencias = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t WHERE t.idEventoTipo.id = 4 AND t.montoAporte > 0 AND EXTRACT(YEAR FROM t.fechahora) = :anoActivo ORDER BY t.id");
+        queryTransferencias.setParameter("anoActivo", persistenceMap.get("anoActivo"));
         listTransferencias = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTransferencias.getResultList());
         jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
         dateTimeTableCellRenderer1 = new com.gnadenheimer.mg.utils.DateTimeTableCellRenderer();
@@ -376,8 +377,8 @@ public class FrameAportesVariosDetalle extends JInternalFrame {
         newButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         newButton.addActionListener(formListener);
 
-        deleteButton.setText("Eliminar");
         deleteButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        deleteButton.setText("Eliminar");
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);

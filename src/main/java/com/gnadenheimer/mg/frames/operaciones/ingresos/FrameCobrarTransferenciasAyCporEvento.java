@@ -135,8 +135,9 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
         dateTableCellRenderer1 = new com.gnadenheimer.mg.utils.DateTimeTableCellRenderer();
         numberCellRenderer1 = new com.gnadenheimer.mg.utils.NumberCellRenderer();
         integerLongConverter1 = new com.gnadenheimer.mg.utils.IntegerLongConverter();
-        queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id > 1 AND t.idGrupo IN :grupos ORDER BY t.fecha");
+        queryEventos = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEventos t WHERE t.idEventoTipo.id > 1 AND t.idGrupo IN :grupos AND  EXTRACT(YEAR FROM t.fecha) = :anoActivo ORDER BY t.fecha");
         queryEventos.setParameter("grupos", currentUser.getUser().getTblGruposList());
+        queryEventos.setParameter("anoActivo", persistenceMap.get("anoActivo"));
         listEventos = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventos.getResultList());
         ctaCteTableCellRenderer1 = new com.gnadenheimer.mg.utils.CtaCteTableCellRenderer();
         mesTableCellRenderer1 = new com.gnadenheimer.mg.utils.MesTableCellRenderer();
@@ -408,7 +409,7 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
         try {
             entityManager.getTransaction().rollback();
             entityManager.getTransaction().begin();
-            query = entityManager.createQuery("SELECT new com.gnadenheimer.mg.domain.models.PagosEventoPendientes(evd, false) FROM TblEventoDetalle evd WHERE (evd.idEvento.idEventoTipo.id = 2 OR evd.idEvento.idEventoTipo.id = 3) AND evd.id NOT IN (SELECT t.idEventoDetalle.id FROM TblTransferencias t) ORDER BY evd.idEntidad.ctacte, evd.fechahora");
+            query = entityManager.createQuery("SELECT new com.gnadenheimer.mg.domain.models.PagosEventoPendientes(evd, false) FROM TblEventoDetalle evd WHERE (evd.idEvento.idEventoTipo.id = 2 OR evd.idEvento.idEventoTipo.id = 3) AND evd.id NOT IN (SELECT t.idEventoDetalle.id FROM TblTransferencias t) AND EXTRACT(YEAR FROM evd.fechahora) = " + persistenceMap.get("anoActivo") + " ORDER BY evd.idEntidad.ctacte, evd.fechahora");
             list.clear();
             list.addAll(query.getResultList());
         } catch (Exception ex) {

@@ -14,13 +14,13 @@
     </Component>
     <Component class="javax.persistence.Query" name="query">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventos t WHERE t.idGrupo IN :grupos ORDER BY t.fecha"/>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblEventos t WHERE t.idGrupo IN :grupos AND EXTRACT(YEAR FROM t.fecha) = :anoActivo  ORDER BY t.fecha"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="entityManager"/>
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="query.setParameter(&quot;grupos&quot;, currentUser.getUser().getTblGruposList());"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="query.setParameter(&quot;grupos&quot;, currentUser.getUser().getTblGruposList());&#xd;&#xa;query.setParameter(&quot;anoActivo&quot;, persistenceMap.get(&quot;anoActivo&quot;));"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>

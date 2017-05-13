@@ -72,7 +72,7 @@ public class FrameCobrarTransferencias extends JInternalFrame {
         }
 
         datePickerSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
-        
+
         TableFilterHeader filterHeader = new TableFilterHeader(masterTable, AutoChoices.DISABLED);
         filterHeader.setAdaptiveChoices(false);
         filterHeader.getParserModel().setIgnoreCase(true);
@@ -111,8 +111,9 @@ public class FrameCobrarTransferencias extends JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t WHERE t.cobrado = false AND t.idEvento.idEventoTipo = :tipoEventoId ORDER BY t.id");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t WHERE t.cobrado = false AND t.idEvento.idEventoTipo = :tipoEventoId AND EXTRACT(YEAR FROM t.fechahora) = :anoActivo ORDER BY t.id");
         query.setParameter("tipoEventoId", null);
+        query.setParameter("anoActivo", persistenceMap.get("anoActivo"));
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         queryMiembros = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblEntidades t ORDER BY t.ctacte");
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
