@@ -223,7 +223,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
 
         jLabel13.setText("Año:");
 
-        cmdAportesResumen.setText("Ver Informe Viejo");
+        cmdAportesResumen.setText("Ver");
         cmdAportesResumen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdAportesResumenActionPerformed(evt);
@@ -532,7 +532,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("ano", Integer.parseInt(jspAnoAportesResumen.getValue().toString()));
-            Utils.getInstance().showReport("aportes_resumen_anual", "aportes_resumen_anual_subreport", parameters, true);
+            Utils.getInstance().showReport("aportes_resumen_anual", parameters, false, getDataSourceAportes(Integer.parseInt(jspAnoAportesResumen.getValue().toString())));
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -573,7 +573,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("ano", Integer.parseInt(jspAnoAportesResumenPendientes.getValue().toString()));
-            Utils.getInstance().showReport("aportes_resumen_anual_pendientes", parameters, false, getDataSourceAportesPendientes(Integer.parseInt(jspAnoAportesResumenPendientes.getValue().toString())));
+            Utils.getInstance().showReport("aportes_resumen_anual_pendientes", parameters, false, getDataSourceAportes(Integer.parseInt(jspAnoAportesResumenPendientes.getValue().toString())));
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -584,7 +584,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         try {
             Map parameters = new HashMap();
             parameters.put("ano", Integer.parseInt(jspAnoAportesResumenPendientes.getValue().toString()));
-            Utils.getInstance().showReport("aportes_resumen_anual_pendientes_aviso", parameters, false, getDataSourceAportesPendientes(Integer.parseInt(jspAnoAportesResumenPendientes.getValue().toString())));
+            Utils.getInstance().showReport("aportes_resumen_anual_pendientes_aviso", parameters, false, getDataSourceAportes(Integer.parseInt(jspAnoAportesResumenPendientes.getValue().toString())));
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -595,7 +595,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         return new ArrayList<>();
     }
 
-    private static JRDataSource getDataSourceAportesPendientes(Integer ano) {
+    private static JRDataSource getDataSourceAportes(Integer ano) {
         try {
             List<AportesPendientes> coll = new ArrayList<>();
             Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
