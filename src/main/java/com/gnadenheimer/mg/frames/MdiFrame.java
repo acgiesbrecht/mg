@@ -440,7 +440,7 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOpFacturacion.add(jSeparator8);
 
         mnuOpAportes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
-        mnuOpAportes.setText("Aportes");
+        mnuOpAportes.setText("Aportes Fijos con Debito Automatico");
         mnuOpAportes.setEnabled(false);
         mnuOpAportes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -471,7 +471,7 @@ public class MdiFrame extends javax.swing.JFrame {
         mnuOpFacturacion.add(jSeparator9);
 
         mnuOpAportesVarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
-        mnuOpAportesVarios.setText("Aportes Varios");
+        mnuOpAportesVarios.setText("Aportes Fijos sin Debito Automatico");
         mnuOpAportesVarios.setEnabled(false);
         mnuOpAportesVarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

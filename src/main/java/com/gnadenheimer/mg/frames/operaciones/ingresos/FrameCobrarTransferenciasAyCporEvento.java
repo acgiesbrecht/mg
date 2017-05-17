@@ -397,7 +397,7 @@ public class FrameCobrarTransferenciasAyCporEvento extends JInternalFrame implem
             int[] selectedRows = masterTable.getSelectedRows();
             for (Integer i = 0; i < selectedRows.length; i++) {
                 //list.get(i).setCobrado(true);
-                masterTable.setValueAt(true, selectedRows[i], 5);
+                masterTable.setValueAt(true, selectedRows[i], 6);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());

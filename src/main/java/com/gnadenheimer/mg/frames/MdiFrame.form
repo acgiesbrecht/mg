@@ -86,7 +86,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+A"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Aportes"/>
+                <Property name="text" type="java.lang.String" value="Aportes Fijos con Debito Automatico"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -124,7 +124,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+D"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Aportes Varios"/>
+                <Property name="text" type="java.lang.String" value="Aportes Fijos sin Debito Automatico"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>

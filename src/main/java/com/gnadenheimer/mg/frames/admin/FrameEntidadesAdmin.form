@@ -248,8 +248,13 @@
                                       <Component id="ctacteField1" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
                                       <Component id="direccionField" alignment="0" min="-2" pref="295" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="txtAporteBase2" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
-                                  <Component id="cboFormaDePago" alignment="0" min="-2" pref="197" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="cboFormaDePago" min="-2" pref="197" max="-2" attributes="0"/>
+                                          <Component id="txtAporteBase2" min="-2" pref="123" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -385,14 +390,14 @@
                           <Component id="ctacteLabel6" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="ctacteLabel7" min="-2" pref="20" max="-2" attributes="0"/>
-                          <Component id="txtAporteBase2" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="ctacteLabel7" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="txtAporteBase2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="cboFormaDePago" max="32767" attributes="0"/>
-                          <Component id="idCategoriaLabel" min="-2" pref="21" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="idCategoriaLabel" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                          <Component id="cboFormaDePago" alignment="3" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -404,7 +409,7 @@
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="11" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="montoLabel6" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Group type="103" alignment="1" groupAlignment="3" attributes="0">
@@ -468,12 +473,12 @@
                                       <Component id="cboAlergia" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="25" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace type="unrelated" pref="20" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" pref="23" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="ctacteLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -554,18 +559,6 @@
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
-                  <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                    <ComponentRef name="numberCellRenderer1"/>
-                  </Renderer>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
                   <Renderer/>
                 </Column>
               </TableColumnModel>
@@ -605,19 +598,9 @@
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
-              <Subbinding sourcePath="${aporteMensual}">
-                <BindingParameter name="NAME" value="Aporte Menusal"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
-              </Subbinding>
               <Subbinding sourcePath="${idEntidadPaganteAportes}">
                 <BindingParameter name="NAME" value="Pagante"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.gnadenheimer.mg.domain.miembros.TblEntidades.class"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
-              </Subbinding>
-              <Subbinding sourcePath="${idMiembrosCategoriaDePago.descripcion}">
-                <BindingParameter name="NAME" value="Categoria"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
             </BindingProperty>
@@ -836,7 +819,6 @@
             <ComponentRef name="integerLongConverter1"/>
           </Property>
         </BindingProperty>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="txtAporteBase1" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="txtAporteBase1MouseClicked"/>
@@ -850,7 +832,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="idCategoriaLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Forma de Pago preferida:"/>
+        <Property name="text" type="java.lang.String" value="Forma de Pago preferida Viejo:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cboFormaDePago">
@@ -1048,7 +1030,6 @@
       </Properties>
       <BindingProperties>
         <BindingProperty name="value" source="masterTable" sourcePath="${selectedElement.aporteSaldoAnterior}" target="txtAporteBase2" targetPath="value" updateStrategy="0" immediately="false"/>
-        <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="txtAporteBase2" targetPath="enabled" updateStrategy="0" immediately="false"/>
       </BindingProperties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="txtAporteBase2MouseClicked"/>
@@ -1057,7 +1038,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="ctacteLabel7">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Aporte Saldo de A&#xf1;o Anterior:"/>
+        <Property name="text" type="java.lang.String" value="Aporte Saldo de A&#xf1;o Anterior Viejo:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="nombreLabel7">

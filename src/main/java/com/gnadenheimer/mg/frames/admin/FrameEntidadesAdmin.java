@@ -312,17 +312,9 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         columnBinding.setColumnName("Casilla Correo");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${aporteMensual}"));
-        columnBinding.setColumnName("Aporte Menusal");
-        columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idEntidadPaganteAportes}"));
         columnBinding.setColumnName("Pagante");
         columnBinding.setColumnClass(com.gnadenheimer.mg.domain.miembros.TblEntidades.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idMiembrosCategoriaDePago.descripcion}"));
-        columnBinding.setColumnName("Categoria");
-        columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
@@ -331,7 +323,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             masterTable.getColumnModel().getColumn(2).setCellRenderer(ctaCteTableCellRenderer1);
             masterTable.getColumnModel().getColumn(3).setCellRenderer(rucTableCellRenderer1);
             masterTable.getColumnModel().getColumn(5).setCellRenderer(numberCellRenderer1);
-            masterTable.getColumnModel().getColumn(6).setCellRenderer(numberCellRenderer1);
         }
 
         idLabel.setText("Nro:");
@@ -429,15 +420,13 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.aporteMensual}"), txtAporteBase1, org.jdesktop.beansbinding.BeanProperty.create("value"));
         binding.setConverter(integerLongConverter1);
         bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtAporteBase1, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
 
         txtAporteBase1.addMouseListener(formListener);
         txtAporteBase1.addActionListener(formListener);
 
         ctacteLabel6.setText("Aporte Base:");
 
-        idCategoriaLabel.setText("Forma de Pago preferida:");
+        idCategoriaLabel.setText("Forma de Pago preferida Viejo:");
 
         cboFormaDePago.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -556,13 +545,11 @@ public class FrameEntidadesAdmin extends JInternalFrame {
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.aporteSaldoAnterior}"), txtAporteBase2, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), txtAporteBase2, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
 
         txtAporteBase2.addMouseListener(formListener);
         txtAporteBase2.addActionListener(formListener);
 
-        ctacteLabel7.setText("Aporte Saldo de Año Anterior:");
+        ctacteLabel7.setText("Aporte Saldo de Año Anterior Viejo:");
 
         nombreLabel7.setText("Fecha Defunción:");
 
@@ -724,8 +711,11 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                                         .addComponent(txtAporteBase1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(ctacteField1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtAporteBase2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cboFormaDePago, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(45, 45, 45)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(cboFormaDePago, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtAporteBase2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(idMiembroLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -833,13 +823,13 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                             .addComponent(txtAporteBase1)
                             .addComponent(ctacteLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(ctacteLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtAporteBase2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cboFormaDePago)
-                            .addComponent(idCategoriaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(idCategoriaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cboFormaDePago))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(idMiembroLabel1)
@@ -848,7 +838,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                             .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(idMiembroLabel)))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(montoLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -898,8 +888,8 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                                             .addComponent(idCategoriaLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(cboAlergia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 20, Short.MAX_VALUE)
+                                .addGap(0, 25, Short.MAX_VALUE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 23, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(ctacteLabel2))
@@ -1460,6 +1450,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                 entityManager.remove(t);
             }
             ts.removeAll(toRemove);
+            categoriasTable.clearSelection();
             masterTable.clearSelection();
             masterTable.setRowSelectionInterval(index, index);
         } catch (Exception ex) {
@@ -1499,7 +1490,31 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     }//GEN-LAST:event_cmdAddCategoriaActionPerformed
 
     private void cmdBorrarImporteAporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdBorrarImporteAporteActionPerformed
-        // TODO add your handling code here:
+        try {
+            Integer index = masterTable.getSelectedRow();
+            TblEntidades T = list.get(masterTable.convertRowIndexToModel(index));
+            List<TblAportesImporteMensualSaldoAnterior> ts = T.getTblAportesImporteMensualSaldoAnteriorList();
+            int[] selected = aportesImportesTable.getSelectedRows();
+            List<TblAportesImporteMensualSaldoAnterior> toRemove = new ArrayList<>(selected.length);
+            for (Integer idx = 0; idx < selected.length; idx++) {
+                selected[idx] = aportesImportesTable.convertRowIndexToModel(selected[idx]);
+                Integer count = 0;
+                Iterator<TblAportesImporteMensualSaldoAnterior> iter = ts.iterator();
+                while (count++ < selected[idx]) {
+                    iter.next();
+                }
+                TblAportesImporteMensualSaldoAnterior t = iter.next();
+                toRemove.add(t);
+                entityManager.remove(t);
+            }
+            ts.removeAll(toRemove);
+            aportesImportesTable.clearSelection();
+            masterTable.clearSelection();
+            masterTable.setRowSelectionInterval(index, index);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
     }//GEN-LAST:event_cmdBorrarImporteAporteActionPerformed
 
     private void cmdAddImporteAporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAddImporteAporteActionPerformed
