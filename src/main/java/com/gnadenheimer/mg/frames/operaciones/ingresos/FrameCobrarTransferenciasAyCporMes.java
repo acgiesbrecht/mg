@@ -634,7 +634,8 @@ public class FrameCobrarTransferenciasAyCporMes extends JInternalFrame implement
                         + "                SUM(CAST(ed.monto*(CAST(ev.PORCENTAJE_APORTE AS FLOAT)/100) AS INTEGER)) AS montoAporte,"
                         + "                SUM(CAST(ed.monto*(CAST(100-ev.PORCENTAJE_APORTE AS FLOAT)/100) AS INTEGER)) AS montoDonacion"
                         + "              FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString()
-                        + "                group by MONTH(ev.FECHA), YEAR(ev.FECHA), ed.id_entidad"
+                        + "                AND YEAR(ev.FECHA) = " + persistenceMap.get("anoActivo")
+                        + "             group by MONTH(ev.FECHA), YEAR(ev.FECHA), ed.id_entidad"
                         + " UNION ALL  "
                         + " SELECT p.id_entidad,"
                         + "                 MONTH(p.fechahora_compromiso) AS mes,"
@@ -642,6 +643,7 @@ public class FrameCobrarTransferenciasAyCporMes extends JInternalFrame implement
                         + "                 -SUM(p.MONTO_APORTE) AS montoAporte,"
                         + "                 -SUM(p.MONTO_DONACION) AS montoDonacion"
                         + "                 FROM MG.TBL_TRANSFERENCIAS p WHERE p.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString()
+                        + "                AND YEAR(p.FECHAHORA_COMPROMISO) = " + persistenceMap.get("anoActivo")
                         + "                 group by YEAR(p.FECHAHORA_COMPROMISO), MONTH(p.FECHAHORA_COMPROMISO), p.id_entidad"
                         + " UNION ALL "
                         + " SELECT p.id_entidad,"
@@ -650,6 +652,7 @@ public class FrameCobrarTransferenciasAyCporMes extends JInternalFrame implement
                         + "        -SUM(p.MONTO_APORTE) AS montoAporte,"
                         + "        -SUM(p.MONTO_DONACION) AS montoDonacion"
                         + "        FROM MG.TBL_RECIBOS p WHERE p.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString()
+                        + "                AND YEAR(p.FECHAHORA_COMPROMISO) = " + persistenceMap.get("anoActivo")
                         + "        group by YEAR(p.FECHAHORA_COMPROMISO), MONTH(p.FECHAHORA_COMPROMISO), p.id_entidad) DETALLE LEFT JOIN MG.TBL_ENTIDADES e ON DETALLE.ID_ENTIDAD = e.ID"
                         + " GROUP BY e.ID, e.CTACTE, e.APELLIDOS, e.NOMBRES, DETALLE.ano, DETALLE.mes) d"
                         + " WHERE MONTODONACION + MONTOAPORTE > 0"
