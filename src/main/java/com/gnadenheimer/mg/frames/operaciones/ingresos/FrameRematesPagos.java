@@ -998,6 +998,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                     transferencia.setMontoDonacion(transferenciaMonto - transferencia.getMontoAporte());
                     transferencia.setIdEventoTipo(((TblEventos) cboFechaRemate.getSelectedItem()).getIdEventoTipo());
                     transferencia.setIdEvento((TblEventos) cboFechaRemate.getSelectedItem());
+                    transferencia.setSeqPago(secuencia);
                     transferencia.setCobrado(false);
                     transferencia.setIdUser(currentUser.getUser());
                     entityManager.getTransaction().begin();
