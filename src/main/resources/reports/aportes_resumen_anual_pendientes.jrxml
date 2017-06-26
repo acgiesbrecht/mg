@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-06T18:17:22 -->
+<!-- 2017-06-24T08:23:12 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="aportes_pendientes" pageWidth="595" pageHeight="870" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -174,7 +174,7 @@
 					<pen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{importeCompromiso}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[-$F{importeCompromiso}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###">
 				<reportElement x="391" y="0" width="80" height="20" uuid="adc78a91-6c1b-4f69-820e-dc31b4c45274"/>
@@ -227,7 +227,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{sum_compromiso}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[-$V{sum_compromiso}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###">
 				<reportElement x="391" y="0" width="80" height="20" uuid="dda3883f-1313-48d8-b8bf-4d2e0375a47b"/>
@@ -267,7 +267,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{sum_compromiso}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{sum_saldo_anterior}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
