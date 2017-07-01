@@ -143,8 +143,8 @@ public class FrameFacturacionUnica extends JInternalFrame {
                             }
                         }
                     });
-            
-                        KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+
+            KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
             KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
             KeyStroke ctrlTab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, KeyEvent.CTRL_DOWN_MASK);
             Set<KeyStroke> keys = new HashSet<>();
@@ -152,7 +152,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
             keys.add(tab);
             keys.add(ctrlTab);
             KeyboardFocusManager.getCurrentKeyboardFocusManager().setDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, keys);
-            
+
             refresh();
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -217,18 +217,18 @@ public class FrameFacturacionUnica extends JInternalFrame {
         imprimirButton.setText("Guardar & Imprimir");
         imprimirButton.addActionListener(formListener);
 
-        montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel.setText("Timbrado:");
+        montoLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        txtTimbrado.setEditable(false);
         txtTimbrado.setColumns(9);
+        txtTimbrado.setEditable(false);
         txtTimbrado.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         txtTimbrado.addFocusListener(formListener);
         txtTimbrado.addMouseListener(formListener);
         txtTimbrado.addActionListener(formListener);
 
-        montoLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel1.setText("Factura Nro::");
+        montoLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         txtNro.setColumns(9);
         txtNro.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
@@ -238,11 +238,11 @@ public class FrameFacturacionUnica extends JInternalFrame {
 
         fecha1Label.setText("Fecha:");
 
-        montoLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel2.setText("Razon Social:");
+        montoLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        idMiembroLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel1.setText("Cta. Cte.:");
+        idMiembroLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         txtCtaCte.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         txtCtaCte.addFocusListener(formListener);
@@ -250,22 +250,22 @@ public class FrameFacturacionUnica extends JInternalFrame {
         txtCtaCte.addActionListener(formListener);
         txtCtaCte.addKeyListener(formListener);
 
-        idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel2.setText("Nombre:");
+        idMiembroLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         cboEntidad.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cboEntidad.addActionListener(formListener);
 
-        idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         idMiembroLabel.setText("Miembro:");
+        idMiembroLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         ctacteLabel3.setText("RUC:");
 
-        montoLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel5.setText("Domicilio:");
+        montoLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        montoLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         montoLabel6.setText("Casilla de Correo:");
+        montoLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         txtCdC.setColumns(9);
         txtCdC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
@@ -367,8 +367,9 @@ public class FrameFacturacionUnica extends JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
                         .addComponent(fecha1Label)
-                        .addGap(15, 15, 15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(idMiembroLabel)
                             .addComponent(idMiembroLabel1)
@@ -398,7 +399,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
                             .addComponent(cancelarButton)
                             .addComponent(imprimirButton)))
                     .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -502,6 +503,9 @@ public class FrameFacturacionUnica extends JInternalFrame {
         list.addAll(query.getResultList());
         if (list.size() > 0) {
             txtNro.setValue(list.get(list.size() - 1).getNro() + 1);
+            if ((Integer) txtNro.getValue() < listTimbrados.get(0).getNroFacturaIncio()) {
+                txtNro.setValue(listTimbrados.get(0).getNroFacturaIncio());
+            }
         } else {
             txtNro.setValue(listTimbrados.get(0).getNroFacturaIncio());
         }

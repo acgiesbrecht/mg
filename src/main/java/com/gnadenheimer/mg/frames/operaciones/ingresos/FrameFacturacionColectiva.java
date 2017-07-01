@@ -83,6 +83,9 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             list.addAll(query.getResultList());
             if (list.size() > 0) {
                 siguienteFacturaNro = list.get(list.size() - 1).getNro() + 1;
+                if (siguienteFacturaNro < listTimbrados.get(0).getNroFacturaIncio()) {
+                    siguienteFacturaNro = listTimbrados.get(0).getNroFacturaIncio();
+                }
                 if (siguienteFacturaNro > listTimbrados.get(0).getNroFacturaFin()) {
                     JOptionPane.showMessageDialog(null, "Ha alcanzado el nro maximo de facturas para el timbrado activo.");
                     return;
