@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-03-22T10:53:31 -->
+<!-- 2017-06-29T07:36:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="78c20e98-1bd9-416f-bdbe-337f3341ab83">
 	<parameter name="factura_id" class="java.lang.Integer"/>
 	<parameter name="fechahora" class="java.sql.Date"/>
@@ -97,7 +97,7 @@
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[String.format("001-001-%07d", $P{factura_id})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[String.format("%07d", $P{factura_id})]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="320" y="314" width="76" height="15" uuid="caa97086-a9f5-4d71-8110-9252cede0752"/>
@@ -349,7 +349,7 @@
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[String.format("001-001-%07d", $P{factura_id})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[String.format("%07d", $P{factura_id})]]></textFieldExpression>
 			</textField>
 			<rectangle>
 				<reportElement mode="Transparent" x="472" y="576" width="77" height="170" uuid="1afeb313-0dff-40b2-b286-81e9c048864e"/>
