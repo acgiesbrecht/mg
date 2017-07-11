@@ -17,20 +17,27 @@
     <parameter name="fechaHasta" class="java.sql.Timestamp"/>
     <parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
     <queryString language="SQL">
-		<![CDATA[select nro, nro_timbrado, fechahora, razon_social, ruc, monto_exentas, monto_iva5, monto_iva10 from TBL_FACTURAS_COMPRA
+		<![CDATA[select nro, nro_timbrado, fechahora, razon_social, ruc, monto_exentas, monto_iva5, monto_iva10, false as ANULADO from TBL_FACTURAS_COMPRA
                         WHERE fechahora BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                     UNION ALL
-                        select a.nro, t.nro as nro_timbrado, a.FECHAHORA, a.nombre as razon_social, a.ci as ruc, a.monto as monto_exentas, 0 as monto_iva5, 0 as monto_iva10
+                        select a.nro, t.nro as nro_timbrado, a.FECHAHORA, a.nombre as razon_social, a.ci as ruc, a.monto as monto_exentas, 0 as monto_iva5, 0 as monto_iva10, ANULADO
                         from TBL_AUTOFACTURAS a, TBL_TIMBRADOS_AUTOFACTURAS t
                         where t.ID = a.ID_TIMBRADO
                         AND fechahora BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                     UNION ALL
                         select nc.nro, t.nro as nro_timbrado, nc.FECHAHORA, f.razon_social, f.ruc,
-                        f.IMPORTE_APORTE + f.IMPORTE_DONACION as monto_exentas, 0 as monto_iva5, 0 as monto_iva10
+                        f.IMPORTE_APORTE + f.IMPORTE_DONACION as monto_exentas, 0 as monto_iva5, 0 as monto_iva10, nc.ANULADO
                         from TBL_NOTAS_DE_CREDITO nc, TBL_TIMBRADOS_NOTAS_DE_CREDITO t, TBL_FACTURAS f
                         where t.ID = nc.ID_TIMBRADO
                         AND f.NRO = nc.NRO_FACTURA
                         AND nc.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+                    UNION ALL
+                        select r.nro, '-' as nro_timbrado, r.FECHAHORA, r.razon_social, r.ruc,
+                        r.monto as monto_exentas, 0 as monto_iva5, 0 as monto_iva10, FALSE AS ANULADO
+                        from TBL_RECIBOS_COMPRA r, TBL_RECIBOS_COMPRA_ASIENTOS rca, TBL_ASIENTOS a
+                        where rca.ID_RECIBO = r.ID AND rca.ID_ASIENTO = a.ID
+                        AND a.ID_CUENTA_CONTABLE_DEBE <> 201010100
+                        AND r.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                         ORDER BY FECHAHORA]]>
     </queryString>
     <field name="NRO" class="java.lang.String">
@@ -57,8 +64,11 @@
     <field name="MONTO_IVA10" class="java.lang.Long">
         <fieldDescription><![CDATA[]]></fieldDescription>
     </field>
+    <field name="ANULADO" class="java.lang.Boolean">
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
     <variable name="sum_exentas" class="java.lang.Long" calculation="Sum">
-        <variableExpression><![CDATA[$F{MONTO_EXENTAS}]]></variableExpression>
+        <variableExpression><![CDATA[$F{ANULADO}==false ? $F{MONTO_EXENTAS} : 0]]></variableExpression>
     </variable>
     <variable name="sum_iva5" class="java.lang.Long" calculation="Sum">
         <variableExpression><![CDATA[$F{MONTO_IVA5}]]></variableExpression>
@@ -217,7 +227,7 @@
                 <textElement verticalAlignment="Middle">
                     <font size="8"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{RAZON_SOCIAL}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{ANULADO}==false ? $F{RAZON_SOCIAL} : "Anulado"]]></textFieldExpression>
             </textField>
             <textField pattern="#,##0">
                 <reportElement x="0" y="0" width="80" height="20" uuid="2fdea32c-4bdd-48d4-95f2-60e5e5b7e274"/>
@@ -243,7 +253,7 @@
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font size="8"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{RUC}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{ANULADO}==false ? $F{RUC} : "-"]]></textFieldExpression>
             </textField>
             <textField pattern="">
                 <reportElement x="80" y="0" width="90" height="20" uuid="465b7a77-8b4c-46af-b098-038a15a17c78"/>
@@ -295,7 +305,7 @@
                 <textElement textAlignment="Right" verticalAlignment="Middle">
                     <font size="8"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{MONTO_EXENTAS}+$F{MONTO_IVA5}+$F{MONTO_IVA10}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{ANULADO}==false ? $F{MONTO_EXENTAS} + $F{MONTO_IVA5} + $F{MONTO_IVA10} : 0]]></textFieldExpression>
             </textField>
             <textField pattern="#,##0">
                 <reportElement x="456" y="0" width="86" height="20" uuid="b9ebd6f1-f796-42bd-9fe5-b04dc66c98c5"/>
@@ -308,7 +318,7 @@
                 <textElement textAlignment="Right" verticalAlignment="Middle">
                     <font size="8"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{MONTO_EXENTAS}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{ANULADO}==false ? $F{MONTO_EXENTAS} : 0]]></textFieldExpression>
             </textField>
         </band>
     </detail>
