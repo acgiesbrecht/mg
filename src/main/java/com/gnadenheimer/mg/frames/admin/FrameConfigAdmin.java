@@ -152,6 +152,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         jspAnoActivo = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setEnabled(false);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
                 formInternalFrameActivated(evt);
@@ -282,6 +283,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
         jButton3.setBackground(new java.awt.Color(255, 0, 153));
         jButton3.setText("Actualizar Asientos");
+        jButton3.setEnabled(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -306,6 +308,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
         jButton5.setBackground(new java.awt.Color(255, 0, 153));
         jButton5.setText("Corregir Asientos Pagos");
+        jButton5.setEnabled(false);
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
@@ -314,6 +317,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
         jButton6.setBackground(new java.awt.Color(255, 0, 153));
         jButton6.setText("Informe de Pagos incoherentes");
+        jButton6.setEnabled(false);
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -322,6 +326,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
         jButton7.setBackground(new java.awt.Color(255, 0, 153));
         jButton7.setText("Informe de Facturas incoherentes");
+        jButton7.setEnabled(false);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
@@ -579,8 +584,8 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
             testF.setDomicilio("Loma Plata");
             testF.setCasillaDeCorreo(1158);
             testF.setIdUser(CurrentUser.getInstance().getUser());
-            testF.setImporteAporte(15000000);
-            testF.setImporteDonacion(25000000);
+            testF.setImporteAporte(10775520);
+            testF.setImporteDonacion(25700000);
 
             Utils.getInstance().printFactura(testF);
 
