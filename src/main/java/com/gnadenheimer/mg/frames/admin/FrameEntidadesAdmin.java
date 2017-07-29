@@ -412,6 +412,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         txtAporteBase.addMouseListener(formListener);
         txtAporteBase.addActionListener(formListener);
 
+        txtAporteBase1.setEditable(false);
         txtAporteBase1.setColumns(9);
         txtAporteBase1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         txtAporteBase1.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
@@ -539,6 +540,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         bindingGroup.addBinding(binding);
 
         txtAporteBase2.setColumns(9);
+        txtAporteBase2.setEditable(false);
         txtAporteBase2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         txtAporteBase2.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
         txtAporteBase2.setText("0");
