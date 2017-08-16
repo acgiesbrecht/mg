@@ -84,6 +84,14 @@
                         AND tat.ID_ASIENTO_TEMPORAL = aat.ID
                         AND aat.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                             GROUP BY t.FECHAHORA, et.DESCRIPCION, t.SEQ_PAGO
+                    UNION ALL
+                        SELECT r.FECHAHORA, 'Ingresos efectivo - ' || et.DESCRIPCION as NOMBRE, SUM(aat.MONTO) AS IMPORTE
+                        FROM TBL_RECIBOS r, TBL_EVENTO_TIPOS et, TBL_RECIBOS_ASIENTOS_TEMPORALES rat, TBL_ASIENTOS_TEMPORALES aat
+                        WHERE r.ID_EVENTO_TIPO = et.ID
+                        AND rat.ID_RECIBO = r.ID
+                        AND rat.ID_ASIENTO_TEMPORAL = aat.ID
+                        AND aat.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+                            GROUP BY r.FECHAHORA, et.DESCRIPCION
                     ORDER BY FECHAHORA]]>
     </queryString>
     <field name="FECHAHORA" class="java.sql.Timestamp"/>

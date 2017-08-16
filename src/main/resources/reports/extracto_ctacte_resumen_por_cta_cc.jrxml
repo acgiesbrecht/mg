@@ -113,7 +113,17 @@
                         AND tat.ID_ASIENTO_TEMPORAL = aat.ID
                         AND aat.ID_CENTRO_DE_COSTO_DEBE = $P{centroDeCosto}
                         AND aat.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
-                            GROUP BY et.DESCRIPCION]]>
+                            GROUP BY et.DESCRIPCION
+                    UNION ALL
+                        SELECT et.DESCRIPCION as NOMBRE, SUM(aat.MONTO) AS IMPORTE
+                        FROM TBL_RECIBOS r, TBL_EVENTO_TIPOS et, TBL_RECIBOS_ASIENTOS_TEMPORALES tat, TBL_ASIENTOS_TEMPORALES aat
+                        WHERE r.ID_EVENTO_TIPO = et.ID
+                        AND tat.ID_RECIBO = r.ID
+                        AND tat.ID_ASIENTO_TEMPORAL = aat.ID
+                        AND aat.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
+                        AND aat.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+                            GROUP BY et.DESCRIPCION
+                    ]]>
     </queryString>
     <field name="NOMBRE" class="java.lang.String"/>
     <field name="IMPORTE" class="java.lang.Integer"/>
