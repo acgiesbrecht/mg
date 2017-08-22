@@ -204,13 +204,19 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         });
 
         jLabel6.setText("Mes:");
+        jLabel6.setEnabled(false);
 
         cboMesA.setEditable(true);
         cboMesA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+        cboMesA.setEnabled(false);
 
         jLabel7.setText("Año:");
+        jLabel7.setEnabled(false);
+
+        jspAnoA.setEnabled(false);
 
         cmdResumenPorMesA.setText("Ver");
+        cmdResumenPorMesA.setEnabled(false);
         cmdResumenPorMesA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdResumenPorMesAActionPerformed(evt);
@@ -227,12 +233,18 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         });
 
         jLabel9.setText("Resumen de Aportes por Mes:");
+        jLabel9.setEnabled(false);
 
         jLabel10.setText("Resumen Anual de Aportes sin Debito Automatico:");
+        jLabel10.setEnabled(false);
 
         jLabel12.setText("Año:");
+        jLabel12.setEnabled(false);
+
+        jspAnoDebitoManual.setEnabled(false);
 
         cmdAportesDebitoManual.setText("Ver Informe Viejo");
+        cmdAportesDebitoManual.setEnabled(false);
         cmdAportesDebitoManual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdAportesDebitoManualActionPerformed(evt);
@@ -251,15 +263,22 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         });
 
         jLabel14.setText("Resumen de Compramisos/Pagos por Mes:");
+        jLabel14.setEnabled(false);
 
         jLabel15.setText("Mes:");
+        jLabel15.setEnabled(false);
 
         cboMesCP.setEditable(true);
         cboMesCP.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+        cboMesCP.setEnabled(false);
 
         jLabel16.setText("Año:");
+        jLabel16.setEnabled(false);
+
+        jspAnoCP.setEnabled(false);
 
         cmdResumenCP.setText("Ver");
+        cmdResumenCP.setEnabled(false);
         cmdResumenCP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdResumenCPActionPerformed(evt);
@@ -267,15 +286,22 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
         });
 
         jLabel17.setText("Detalle de Compramisos/Pagos por Mes:");
+        jLabel17.setEnabled(false);
 
         jLabel18.setText("Mes:");
+        jLabel18.setEnabled(false);
 
         cboMesCPAD.setEditable(true);
         cboMesCPAD.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+        cboMesCPAD.setEnabled(false);
 
         jLabel19.setText("Año:");
+        jLabel19.setEnabled(false);
+
+        jspAnoCPAD.setEnabled(false);
 
         cmdResumenCP1.setText("Ver");
+        cmdResumenCP1.setEnabled(false);
         cmdResumenCP1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdResumenCP1ActionPerformed(evt);
@@ -824,7 +850,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                     }
                 }
                 String sQuery = "SELECT CAST(COALESCE(SUM(t.MONTO_APORTE),0) AS BIGINT) as importe "
-                        + "FROM MG.TBL_TRANSFERENCIAS t WHERE t.ID_EVENTO_TIPO = 3 "
+                        + "FROM MG.TBL_TRANSFERENCIAS t WHERE (t.ID_EVENTO_TIPO = 3 OR t.ID_EVENTO_TIPO = 4) "
                         + "AND YEAR(t.FECHAHORA) = " + ano.toString() + " "
                         + "AND t.COBRADO = TRUE AND t.ID_ENTIDAD = " + e.getId().toString();
                 Long importePagos = (Long) entityManager.createNativeQuery(sQuery).getSingleResult();
