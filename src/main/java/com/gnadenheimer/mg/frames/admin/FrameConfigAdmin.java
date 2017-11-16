@@ -317,7 +317,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
         jButton6.setBackground(new java.awt.Color(255, 0, 153));
         jButton6.setText("Informe de Pagos incoherentes");
-        jButton6.setEnabled(false);
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -326,7 +325,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
         jButton7.setBackground(new java.awt.Color(255, 0, 153));
         jButton7.setText("Informe de Facturas incoherentes");
-        jButton7.setEnabled(false);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
@@ -376,7 +374,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(154, 154, 154)
-                                .addComponent(cboFormatoFactura, 0, 320, Short.MAX_VALUE))
+                                .addComponent(cboFormatoFactura, 0, 1, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
