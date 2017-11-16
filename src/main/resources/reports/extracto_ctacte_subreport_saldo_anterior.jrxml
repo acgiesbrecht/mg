@@ -80,9 +80,18 @@
                         AND t.ID_EVENTO_TIPO = et.ID
                         AND tat.ID_TRANSFERENCIA = t.ID
                         AND tat.ID_ASIENTO_TEMPORAL = aat.ID
-                        AND t.FECHAHORA < $P{fechaDesde}
+                        AND aat.FECHAHORA < $P{fechaDesde}
                         AND YEAR(aat.FECHAHORA) = YEAR(CAST($P{fechaDesde} AS VARCHAR(20)))
                             GROUP BY t.FECHAHORA, et.DESCRIPCION, t.SEQ_PAGO
+                    UNION ALL
+                        SELECT r.FECHAHORA, 'Ingresos efectivo - ' || et.DESCRIPCION as NOMBRE, SUM(aat.MONTO) AS IMPORTE
+                        FROM TBL_RECIBOS r, TBL_EVENTO_TIPOS et, TBL_RECIBOS_ASIENTOS_TEMPORALES rat, TBL_ASIENTOS_TEMPORALES aat
+                        WHERE r.ID_EVENTO_TIPO = et.ID
+                        AND rat.ID_RECIBO = r.ID
+                        AND rat.ID_ASIENTO_TEMPORAL = aat.ID
+                        AND aat.FECHAHORA < $P{fechaDesde}
+                        AND YEAR(aat.FECHAHORA) = YEAR(CAST($P{fechaDesde} AS VARCHAR(20)))
+                            GROUP BY r.FECHAHORA, et.DESCRIPCION
                     ORDER BY FECHAHORA) t]]>
     </queryString>
     <field name="SALDO" class="java.lang.Long"/>
