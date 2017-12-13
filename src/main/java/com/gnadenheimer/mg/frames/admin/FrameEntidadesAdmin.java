@@ -329,7 +329,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
 
         nombreLabel.setText("Nombres:");
 
-        ctacteLabel.setText("Cta Cte:");
+        ctacteLabel.setText("Cta Cte (FORMATO NUEVO):");
 
         direccionLabel.setText("Domicilio:");
 

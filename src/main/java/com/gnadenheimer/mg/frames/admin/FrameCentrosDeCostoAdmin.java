@@ -33,7 +33,7 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
     Map<String, String> persistenceMap = new HashMap<>();
 
     public FrameCentrosDeCostoAdmin() {
-        super("Administrar Categorias",
+        super("Administrar Centros de Costo",
                 true, //resizable
                 true, //closable
                 true, //maximizable
@@ -190,7 +190,7 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         bindingGroup.addBinding(binding);
 
         ctacteLabel1.setForeground(new java.awt.Color(153, 153, 153));
-        ctacteLabel1.setText("Formato: 7123801 201237 (Solo numeros sin simbolos como - o /)");
+        ctacteLabel1.setText("Formato: 70123801 2001237 (Solo numeros sin simbolos como - o /)");
 
         jCheckBox1.setText("Es el Centro de Costo ppor defecto");
 
