@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-11-16T21:37:43 -->
+<!-- 2017-11-18T11:24:30 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="aportes_pendientes" pageWidth="595" pageHeight="870" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mg"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -18,29 +18,35 @@
 	<parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
 	<parameter name="connection" class="java.sql.Connection" isForPrompting="false"/>
 	<queryString>
-		<![CDATA[SELECT a.ID_ENTIDAD, a.ID_CATEGORIA_DE_PAGO, a.ANO_MES, 
-e.APELLIDOS, e.NOMBRES, e.CTACTE, e.FECHA_BAUTISMO, e.FECHA_ENTRADA_CONGREGACION,
-cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
-    INNER JOIN (SELECT ID_ENTIDAD, MAX(ANO_MES) ANO_MES FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS
-    GROUP BY ID_ENTIDAD) b
-    ON a.ID_ENTIDAD = b.ID_ENTIDAD AND a.ANO_MES = b.ANO_MES
-    JOIN MG.TBL_MIEMBROS_CATEGORIAS_DE_PAGO cp ON a.ID_CATEGORIA_DE_PAGO = cp.ID
-    JOIN MG.TBL_ENTIDADES e ON a.ID_ENTIDAD = e.ID
-    ORDER BY cp.DESCRIPCION, e.APELLIDOS, e.NOMBRES]]>
+		<![CDATA[SELECT e.APELLIDOS, e.NOMBRES, e.CTACTE, e.FECHA_BAUTISMO, e.FECHA_ENTRADA_CONGREGACION,
+ehc.ID_CATEGORIA_DE_PAGO, ehc.ANO_MES, 
+cp.DESCRIPCION, aimsa.IMPORTE_MESNUAL 
+FROM MG.TBL_ENTIDADES e
+LEFT JOIN (SELECT ID_ENTIDAD, MAX(ANO_MES) ANO_MES, ID_CATEGORIA_DE_PAGO FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS GROUP BY ID_ENTIDAD, ID_CATEGORIA_DE_PAGO) ehc ON e.ID = ehc.ID_ENTIDAD
+LEFT JOIN (SELECT ID_ENTIDAD, MAX(ANO) ANO, IMPORTE_MESNUAL FROM MG.TBL_APORTES_IMPORTE_MENSUAL_SALDO_ANTERIOR GROUP BY ID_ENTIDAD, IMPORTE_MESNUAL) aimsa ON e.ID = aimsa.ID_ENTIDAD
+JOIN MG.TBL_MIEMBROS_CATEGORIAS_DE_PAGO cp ON ehc.ID_CATEGORIA_DE_PAGO = cp.ID
+ORDER BY cp.DESCRIPCION, e.APELLIDOS, e.NOMBRES]]>
 	</queryString>
-	<field name="ID_ENTIDAD" class="java.lang.Integer"/>
-	<field name="ID_CATEGORIA_DE_PAGO" class="java.lang.Integer"/>
-	<field name="ANO_MES" class="java.lang.Integer"/>
 	<field name="APELLIDOS" class="java.lang.String"/>
 	<field name="NOMBRES" class="java.lang.String"/>
 	<field name="CTACTE" class="java.lang.Integer"/>
 	<field name="FECHA_BAUTISMO" class="java.sql.Timestamp"/>
 	<field name="FECHA_ENTRADA_CONGREGACION" class="java.sql.Timestamp"/>
+	<field name="ID_CATEGORIA_DE_PAGO" class="java.lang.Integer"/>
+	<field name="ANO_MES" class="java.lang.Integer"/>
 	<field name="DESCRIPCION" class="java.lang.String"/>
+	<field name="IMPORTE_MESNUAL" class="java.lang.Long"/>
+	<variable name="sum_grupo" class="java.lang.Long" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{IMPORTE_MESNUAL} > 0 ? $F{IMPORTE_MESNUAL}/147960 : 1]]></variableExpression>
+	</variable>
+	<variable name="sum_total" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{IMPORTE_MESNUAL} > 0 ? $F{IMPORTE_MESNUAL}/147960 : 1]]></variableExpression>
+	</variable>
 	<group name="Group1">
 		<groupExpression><![CDATA[$F{DESCRIPCION}]]></groupExpression>
 		<groupHeader>
 			<band height="55">
+				<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				<textField>
 					<reportElement x="0" y="0" width="552" height="20" uuid="0ecb0da6-86be-4f54-82ca-14b81bc19a3a">
 						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
@@ -67,7 +73,7 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 					<text><![CDATA[Cta. Cte.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="71" y="35" width="235" height="20" uuid="f080dfd3-4005-4a77-bfe2-b1a79eee9aaf">
+					<reportElement x="71" y="35" width="200" height="20" uuid="f080dfd3-4005-4a77-bfe2-b1a79eee9aaf">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<box leftPadding="3" rightPadding="3">
@@ -79,7 +85,7 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 					<text><![CDATA[Nombre]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="306" y="20" width="82" height="35" uuid="505eba70-8e9f-4bd3-a622-ef2afcdddc22">
+					<reportElement x="271" y="20" width="82" height="35" uuid="505eba70-8e9f-4bd3-a622-ef2afcdddc22">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<box leftPadding="3" rightPadding="3">
@@ -91,7 +97,7 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 					<text><![CDATA[Fecha de Bautismo]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="388" y="20" width="82" height="35" uuid="08d6ca32-8040-4c07-9afb-809030b9ff94">
+					<reportElement x="353" y="20" width="82" height="35" uuid="08d6ca32-8040-4c07-9afb-809030b9ff94">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<box leftPadding="3" rightPadding="3">
@@ -103,7 +109,7 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 					<text><![CDATA[Fecha de Congregacion]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="470" y="20" width="82" height="35" uuid="f16ab3d0-ce1f-4815-9a34-8827e3b2f187">
+					<reportElement x="435" y="20" width="82" height="35" uuid="f16ab3d0-ce1f-4815-9a34-8827e3b2f187">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<box leftPadding="3" rightPadding="3">
@@ -114,12 +120,24 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 					</textElement>
 					<text><![CDATA[Mes de cambio de categoria]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="517" y="20" width="35" height="35" uuid="0571661a-382c-4285-911c-8730e8511a2a">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box leftPadding="3" rightPadding="3">
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cant.]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
 			<band height="30">
 				<textField>
-					<reportElement x="470" y="0" width="82" height="20" uuid="41224584-8471-4617-b7d0-f171355fc661"/>
+					<reportElement x="435" y="0" width="82" height="20" uuid="41224584-8471-4617-b7d0-f171355fc661"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="0.5"/>
 					</box>
@@ -129,7 +147,7 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 					<textFieldExpression><![CDATA[$V{Group1_COUNT}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="0" y="0" width="470" height="20" uuid="152ddc85-2e1b-4f28-8194-7542d887b953">
+					<reportElement x="0" y="0" width="435" height="20" uuid="152ddc85-2e1b-4f28-8194-7542d887b953">
 						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					</reportElement>
@@ -140,6 +158,16 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["TOTAL " + $F{DESCRIPCION}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="517" y="0" width="34" height="20" uuid="3ad90d12-bd3e-44e9-a886-638fd48232b0"/>
+					<box leftPadding="3" rightPadding="3">
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sum_grupo}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -154,7 +182,7 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="15" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Listado de Miembros seg{un Categoria de Aportes]]></text>
+				<text><![CDATA[Listado de Miembros segun Categoria de Aportes]]></text>
 			</staticText>
 			<subreport>
 				<reportElement x="0" y="0" width="549" height="20" uuid="63db91cd-bb3c-4db6-a93e-d067f72975df">
@@ -168,10 +196,10 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 	</title>
 	<detail>
 		<band height="15">
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField>
-				<reportElement x="71" y="0" width="235" height="15" uuid="8676c6ea-3acd-4261-82d0-e9a5a5b513fe">
+				<reportElement x="71" y="0" width="200" height="15" uuid="8676c6ea-3acd-4261-82d0-e9a5a5b513fe">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
@@ -190,7 +218,7 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 				<textFieldExpression><![CDATA[com.gnadenheimer.utils.FormatCtaCte.format($F{CTACTE})]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="470" y="0" width="82" height="15" uuid="d021926a-3a96-4d44-83bf-f557468275e2">
+				<reportElement x="435" y="0" width="82" height="15" uuid="d021926a-3a96-4d44-83bf-f557468275e2">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box leftPadding="3" rightPadding="3">
@@ -200,7 +228,7 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 				<textFieldExpression><![CDATA[String.valueOf($F{ANO_MES}).substring(0,4)  + " - " + String.valueOf($F{ANO_MES}).substring(4,6)]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="388" y="0" width="82" height="15" uuid="d2f920c1-1ae9-4c76-88c8-c16e2ba3c691">
+				<reportElement x="353" y="0" width="82" height="15" uuid="d2f920c1-1ae9-4c76-88c8-c16e2ba3c691">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box leftPadding="3" rightPadding="3">
@@ -210,7 +238,7 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 				<textFieldExpression><![CDATA[$F{FECHA_ENTRADA_CONGREGACION}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="306" y="0" width="82" height="15" uuid="068fd728-ae29-40e9-b53d-b126e73d991c">
+				<reportElement x="271" y="0" width="82" height="15" uuid="068fd728-ae29-40e9-b53d-b126e73d991c">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box leftPadding="3" rightPadding="3">
@@ -218,6 +246,16 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FECHA_BAUTISMO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="517" y="0" width="35" height="15" uuid="f6fd59d0-e01a-4aa1-a303-98ec8a81b0c4">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{IMPORTE_MESNUAL} > 0 ? $F{IMPORTE_MESNUAL}/147960 : 1]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -239,7 +277,7 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 	<summary>
 		<band height="20">
 			<textField pattern="#,##0.###" isBlankWhenNull="true">
-				<reportElement x="470" y="0" width="82" height="20" uuid="5e5f7e80-6f11-4cf5-a519-3b53f8ffe99d"/>
+				<reportElement x="435" y="0" width="82" height="20" uuid="5e5f7e80-6f11-4cf5-a519-3b53f8ffe99d"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 				</box>
@@ -249,7 +287,7 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="0" width="470" height="20" uuid="aa970661-3722-48d6-bbd7-d5298af99215"/>
+				<reportElement x="0" y="0" width="434" height="20" uuid="aa970661-3722-48d6-bbd7-d5298af99215"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 				</box>
@@ -258,6 +296,16 @@ cp.DESCRIPCION FROM MG.TBL_ENTIDADES_HISTORICO_CATEGORIAS a
 				</textElement>
 				<text><![CDATA[TOTAL]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="517" y="0" width="34" height="20" uuid="a314a3c3-4540-4e16-ba3d-075d88fa1a5c"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_total}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

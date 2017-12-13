@@ -829,7 +829,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             if (ano == LocalDate.now().getYear()) {
                 anoMesUltimo = LocalDate.now().getYear() * 100 + LocalDate.now().getMonth().getValue() - 1;
             } else {
-                anoMesUltimo = ano * 100 + 11;
+                anoMesUltimo = ano * 100 + 10;
             }
 
             for (TblEntidades e : listE) {
