@@ -7,6 +7,9 @@ package com.gnadenheimer.mg.frames;
 
 import com.gnadenheimer.mg.domain.TblDatabaseUpdates;
 import com.gnadenheimer.mg.domain.TblTransferencias;
+import com.gnadenheimer.mg.domain.TblIglesia;
+import com.gnadenheimer.mg.domain.TblCentrosDeCosto;
+import com.gnadenheimer.mg.domain.miembros.TblEntidades;
 import com.gnadenheimer.mg.domain.TblUsers;
 import com.gnadenheimer.mg.frames.admin.FrameAutofacturasAdmin;
 import com.gnadenheimer.mg.frames.admin.FrameCategoriasArticulosAdmin;
@@ -284,6 +287,58 @@ public class MdiFrame extends javax.swing.JFrame {
             }
             if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20170401.sql") == null) {
                 hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20170401.sql", hasBackedUp);
+            }
+            if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20171212.sql") == null) {
+                hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20171212.sql", hasBackedUp);
+                /* ACTUALIZACION DE FORMATO DE CTA CTE CHORTITZER */
+                List<TblEntidades> listE = entityManager.createQuery("SELECT t FROM TblEntidades t").getResultList();
+                if (listE != null) {
+                    for (TblEntidades t : listE) {
+                        if (t.getCtacte() != null && t.getCtacte() != 0) {
+                            String c = String.valueOf(t.getCtacte());
+                            if (c.length() == 5 || c.length() == 7) {
+                                c = "0" + c;
+                            }
+                            c = c.substring(0, 2) + "0" + c.substring(2, c.length());
+                            t.setCtacte(Integer.valueOf(c));
+                            entityManager.merge(t);
+                        }
+                    }
+                    entityManager.getTransaction().commit();
+                    entityManager.getTransaction().begin();
+                }
+                List<TblIglesia> listI = entityManager.createQuery("SELECT t FROM TblIglesia t").getResultList();
+                if (listI != null) {
+                    for (TblIglesia t : listI) {
+                        if (t.getCtacte() != null && t.getCtacte() != 0) {
+                            String c = String.valueOf(t.getCtacte());
+                            if (c.length() == 5 || c.length() == 7) {
+                                c = "0" + c;
+                            }
+                            c = c.substring(0, 2) + "0" + c.substring(2, c.length());
+                            t.setCtacte(Integer.valueOf(c));
+                            entityManager.merge(t);
+                        }
+                    }
+                    entityManager.getTransaction().commit();
+                    entityManager.getTransaction().begin();
+                }
+                List<TblCentrosDeCosto> listC = entityManager.createQuery("SELECT t FROM TblCentrosDeCosto t").getResultList();
+                if (listC != null) {
+                    for (TblCentrosDeCosto t : listC) {
+                        if (t.getCtaCte() != null && t.getCtaCte() != 0) {
+                            String c = String.valueOf(t.getCtaCte());
+                            if (c.length() == 5 || c.length() == 7) {
+                                c = "0" + c;
+                            }
+                            c = c.substring(0, 2) + "0" + c.substring(2, c.length());
+                            t.setCtaCte(Integer.valueOf(c));
+                            entityManager.merge(t);
+                        }
+                    }
+                    entityManager.getTransaction().commit();
+                    entityManager.getTransaction().begin();
+                }
             }
 
             List<TblUsers> list = entityManager.createQuery("SELECT t FROM TblUsers t").getResultList();

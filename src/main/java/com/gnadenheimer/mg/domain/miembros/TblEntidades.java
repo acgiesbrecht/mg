@@ -104,7 +104,7 @@ public class TblEntidades implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CTACTE")
-    private Integer ctacte = 99999;
+    private Integer ctacte = 909999;
     @Size(max = 50)
     @Column(name = "DOMICILIO")
     private String domicilio;

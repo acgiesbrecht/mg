@@ -399,7 +399,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="99" green="99" red="99" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Formato: 7123801 201237 (Solo numeros sin simbolos como - o /)"/>
+        <Property name="text" type="java.lang.String" value="Formato: 70123801 2001237 (Solo numeros sin simbolos como - o /)"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="jCheckBox1">
