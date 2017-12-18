@@ -117,7 +117,7 @@ public abstract class NumeroALetras {
             if (cientos > 1) {
                 converted.append(convertNumber(String.valueOf(cientos)));
             }
-            converted.append(".");
+            converted.append(" GUARANIES.");
             return converted.toString();
         } catch (Exception exx) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + exx.getMessage());

@@ -316,6 +316,7 @@ public class MdiFrame extends javax.swing.JFrame {
                                 c = "0" + c;
                             }
                             c = c.substring(0, 2) + "0" + c.substring(2, c.length());
+                            //c = c.substring(0, 1) + c.substring(3, c.length());  //PARA RESOLVER MULTIPLE UPDATE
                             t.setCtacte(Integer.valueOf(c));
                             entityManager.merge(t);
                         }
@@ -332,6 +333,7 @@ public class MdiFrame extends javax.swing.JFrame {
                                 c = "0" + c;
                             }
                             c = c.substring(0, 2) + "0" + c.substring(2, c.length());
+                            //c = c.substring(0, 1) + c.substring(3, c.length());  //PARA RESOLVER MULTIPLE UPDATE
                             t.setCtaCte(Integer.valueOf(c));
                             entityManager.merge(t);
                         }

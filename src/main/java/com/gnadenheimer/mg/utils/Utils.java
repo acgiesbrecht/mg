@@ -161,6 +161,8 @@ public class Utils extends Component {
             String reportFactura = Preferences.userRoot().node("MG").get("formatoFactura", "Preimpreso sin rejilla");
             if (reportFactura.equals("Preimpreso sin rejilla")) {
                 reportFactura = "factura_con_rejilla";
+            } else if (reportFactura.equals("Preimpreso sin rejilla - CREDITO")) {
+                reportFactura = "factura_con_rejilla_credito";
             } else if (reportFactura.equals("Preimpreso con rejilla")) {
                 reportFactura = "factura";
             } else if (reportFactura.equals("Preimpreso con rejilla modelo especial Bethel Theodor")) {

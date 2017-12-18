@@ -826,7 +826,8 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
 
             Integer anoMesEnero = ano * 100 + 1;
             Integer anoMesUltimo;
-            if (ano == LocalDate.now().getYear()) {
+            //if (ano == LocalDate.now().getYear()) {
+            if (LocalDate.now().getMonth().getValue() < 10) {
                 anoMesUltimo = LocalDate.now().getYear() * 100 + LocalDate.now().getMonth().getValue() - 1;
             } else {
                 anoMesUltimo = ano * 100 + 10;

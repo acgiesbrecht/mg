@@ -279,7 +279,12 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
         jLabel7.setText("Impresion de Facturas");
 
-        cboFormatoFactura.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preimpreso con rejilla", "Preimpreso sin rejilla", "Preimpreso con rejilla modelo especial Bethel Theodor", "Preimpreso sin rejilla Bethel" }));
+        cboFormatoFactura.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preimpreso con rejilla", "Preimpreso sin rejilla", "Preimpreso sin rejilla - CREDITO", "Preimpreso con rejilla modelo especial Bethel Theodor", "Preimpreso sin rejilla Bethel" }));
+        cboFormatoFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboFormatoFacturaActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(255, 0, 153));
         jButton3.setText("Actualizar Asientos");
@@ -856,6 +861,10 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void cboFormatoFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFormatoFacturaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboFormatoFacturaActionPerformed
 
     public void propertyChange(PropertyChangeEvent evt) {
         if ("statusUpdate".equals(evt.getPropertyName())) {
