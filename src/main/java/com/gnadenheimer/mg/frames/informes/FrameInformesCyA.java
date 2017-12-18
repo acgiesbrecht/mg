@@ -822,7 +822,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
 
             entityManager.getTransaction().begin();
-            List<TblEntidades> listE = entityManager.createQuery("select e from TblEntidades e where e in (select t.idEntidad from TblEntidadesHistoricoCategorias t) order by e.ctacte").getResultList();
+            List<TblEntidades> listE = entityManager.createQuery("select e from TblEntidades e where e.fechaSalidaCongregacion IS NULL and e in (select t.idEntidad from TblEntidadesHistoricoCategorias t) order by e.ctacte").getResultList();
 
             Integer anoMesEnero = ano * 100 + 1;
             Integer anoMesUltimo;
