@@ -297,11 +297,11 @@ public class Utils extends Component {
 
     public Boolean executeUpdateSQL(String filename, Boolean hasBackedUp) {
         if (!hasBackedUp) {
-            Integer reply = JOptionPane.showConfirmDialog(null, "Se encuentró una actualización de la base de datos. Se procederá a hacer un BackUp de sus base de datos existente. Desea proceder?", "Seguridad", JOptionPane.YES_NO_OPTION);
-            if (reply == JOptionPane.YES_OPTION) {
-                hasBackedUp = exectueBackUp(getPersistenceMap().get("backUpDir"));
-                executeSQL(filename);
-            }
+            /*Integer reply = JOptionPane.showConfirmDialog(null, "Se encuentró una actualización de la base de datos. Se procederá a hacer un BackUp de sus base de datos existente. Desea proceder?", "Seguridad", JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {*/
+            hasBackedUp = exectueBackUp(getPersistenceMap().get("backUpDir"));
+            executeSQL(filename);
+            //}
         } else {
             executeSQL(filename);
         }
