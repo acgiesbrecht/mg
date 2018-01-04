@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-01-11T15:33:07 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="78c20e98-1bd9-416f-bdbe-337f3341ab83">
+<!-- Created with Jaspersoft Studio version 6.5.0.final using JasperReports Library version 6.5.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" pageWidth="595" pageHeight="852" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="10" uuid="78c20e98-1bd9-416f-bdbe-337f3341ab83">
 	<parameter name="factura_id" class="java.lang.Integer"/>
 	<parameter name="fechahora" class="java.sql.Date"/>
 	<parameter name="razon_social" class="java.lang.String"/>
@@ -17,11 +16,15 @@
 	<parameter name="logo-bethel2" class="java.io.InputStream">
 		<parameterDescription><![CDATA[]]></parameterDescription>
 	</parameter>
+	<parameter name="logo-friesen" class="java.io.InputStream">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="802" splitType="Stretch">
+		<band height="816" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<rectangle>
 				<reportElement mode="Transparent" x="472" y="178" width="77" height="170" uuid="b5c9c9ed-fff1-42e5-ab3d-ff6bf40932d6"/>
 				<graphicElement>
@@ -167,7 +170,7 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[com.gnadenheimer.utils.NumeroALetras.convertNumberToLetter($P{importe_aporte}+$P{importe_donacion})]]></textFieldExpression>
 			</textField>
@@ -378,7 +381,7 @@
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
+					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[com.gnadenheimer.utils.NumeroALetras.convertNumberToLetter($P{importe_aporte}+$P{importe_donacion})]]></textFieldExpression>
 			</textField>
@@ -612,133 +615,75 @@
 				</textElement>
 				<textFieldExpression><![CDATA["Cajero: " + $P{usuario}]]></textFieldExpression>
 			</textField>
-			<rectangle radius="11">
-				<reportElement x="350" y="0" width="194" height="80" uuid="6f549a3f-7a55-4d80-9b2a-04930d674ba8"/>
+			<rectangle radius="5">
+				<reportElement x="380" y="0" width="164" height="80" uuid="6f549a3f-7a55-4d80-9b2a-04930d674ba8"/>
 			</rectangle>
-			<rectangle radius="11">
-				<reportElement x="5" y="0" width="339" height="80" uuid="e0530d64-7544-46f0-af62-f89a20668e78"/>
+			<rectangle radius="5">
+				<reportElement x="5" y="0" width="370" height="80" uuid="e0530d64-7544-46f0-af62-f89a20668e78">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="362" y="5" width="170" height="40" uuid="1528f7b6-2c5d-4ca9-90e1-3bbd53298c7d"/>
+				<reportElement x="380" y="5" width="164" height="40" uuid="1528f7b6-2c5d-4ca9-90e1-3bbd53298c7d"/>
 				<textElement textAlignment="Center">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
-				<text><![CDATA[TIMBRADO N° 11943808
-Inicio de Válidez: 06 de enero de 2017
-Fin de Válidez: 30 de abril de 2017]]></text>
+				<text><![CDATA[TIMBRADO N° 12519070
+Inicio de Válidez: 27 de diciembre de 2017
+Fin de Válidez: 31 de diciembre de 2018]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="362" y="34" width="170" height="20" uuid="0f44f23f-628b-42d0-b9ec-8cdb355b30d3"/>
+				<reportElement x="380" y="34" width="164" height="20" uuid="0f44f23f-628b-42d0-b9ec-8cdb355b30d3"/>
 				<textElement textAlignment="Center">
-					<font size="12"/>
+					<font size="8"/>
 				</textElement>
 				<text><![CDATA[RUC: 80033423-0]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="362" y="45" width="170" height="20" uuid="c866a43d-5d99-4d14-97b6-5fe151caa0b3"/>
+				<reportElement x="380" y="45" width="164" height="20" uuid="c866a43d-5d99-4d14-97b6-5fe151caa0b3"/>
 				<textElement textAlignment="Center">
-					<font size="14" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FACTURA]]></text>
 			</staticText>
 			<textField pattern="#000000" isBlankWhenNull="false">
-				<reportElement x="363" y="54" width="168" height="24" uuid="af8816ac-d4bc-47be-b625-5c8fe78669c6"/>
+				<reportElement x="390" y="54" width="141" height="24" uuid="af8816ac-d4bc-47be-b625-5c8fe78669c6"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="13"/>
+					<font fontName="Arial" size="15"/>
 				</textElement>
 				<textFieldExpression><![CDATA[String.format("001-001-%07d", $P{factura_id})]]></textFieldExpression>
 			</textField>
-			<image hAlign="Left" vAlign="Middle">
-				<reportElement x="200" y="9" width="121" height="60" uuid="f9fedbc4-b868-475b-82d5-8cb009d6c21e">
+			<image hAlign="Left" vAlign="Middle" isUsingCache="true" onErrorType="Blank">
+				<reportElement x="15" y="5" width="132" height="69" uuid="f9fedbc4-b868-475b-82d5-8cb009d6c21e">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<imageExpression><![CDATA[$P{logo-bethel}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="55" y="9" width="144" height="24" uuid="96ba5ec3-13b4-4cd7-aa74-297ffdef53e9"/>
+				<reportElement x="153" y="3" width="212" height="24" uuid="96ba5ec3-13b4-4cd7-aa74-297ffdef53e9"/>
 				<textElement textAlignment="Center">
-					<font fontName="Serif" size="13" isBold="true"/>
+					<font fontName="Serif" size="13" isBold="true" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[Asoc. Iglesia Beth-El]]></text>
+				<text><![CDATA[Asoc. Iglesia Beth-El de Loma Plata]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="55" y="28" width="144" height="42" uuid="6fe80e46-4f31-422c-a579-c03c86a915d8"/>
-				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="7" isBold="false"/>
-				</textElement>
-				<text><![CDATA[de Loma Plata - Decreto N° 860/03
-Entidad sin Fines de Lucro
-Avda. Bethel c/ Cacique Guazú N° 795
-Tel. 0492252247
-]]></text>
-			</staticText>
-			<rectangle radius="11">
-				<reportElement x="350" y="421" width="194" height="80" uuid="6ca47b5f-b817-48bf-b5fe-64336f7d4ce8"/>
-			</rectangle>
-			<rectangle radius="11">
-				<reportElement x="5" y="421" width="339" height="80" uuid="7f90060b-e7e3-4086-ac90-7ec881ba3388"/>
-			</rectangle>
-			<staticText>
-				<reportElement x="362" y="426" width="170" height="40" uuid="db782c69-4701-43a7-bcc9-5f9ff299e929"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[TIMBRADO N° 11943808
-Inicio de Válidez: 06 de enero de 2017
-Fin de Válidez: 30 de abril de 2017]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="362" y="455" width="170" height="20" uuid="d05df5d7-22fc-41a0-aaf1-65a0ac7b60a6"/>
-				<textElement textAlignment="Center">
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[RUC: 80033423-0]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="362" y="466" width="170" height="20" uuid="19e91d6e-7139-4b88-aa28-74197d3bf8e5"/>
-				<textElement textAlignment="Center">
-					<font size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[FACTURA]]></text>
-			</staticText>
-			<textField pattern="#000000" isBlankWhenNull="false">
-				<reportElement x="363" y="475" width="168" height="24" uuid="7538878f-225c-4386-b6bf-b4f76782d1cf"/>
-				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="13"/>
-				</textElement>
-				<textFieldExpression><![CDATA[String.format("001-001-%07d", $P{factura_id})]]></textFieldExpression>
-			</textField>
-			<image hAlign="Left" vAlign="Middle">
-				<reportElement x="200" y="430" width="121" height="60" uuid="feae9f54-647a-4041-8122-6797e7d11d5b">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<imageExpression><![CDATA[$P{logo-bethel2}]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="55" y="430" width="144" height="24" uuid="0f99c741-f737-4513-a837-fc9312f0c0b5"/>
-				<textElement textAlignment="Center">
-					<font fontName="Serif" size="13" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Asoc. Iglesia Beth-El]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="55" y="449" width="144" height="42" uuid="d3a168fe-7d33-4f12-89ef-0beb93c66177"/>
+				<reportElement x="177" y="27" width="165" height="47" uuid="6fe80e46-4f31-422c-a579-c03c86a915d8"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="7" isBold="false"/>
 				</textElement>
-				<text><![CDATA[de Loma Plata - Decreto N° 860/03
-Entidad sin Fines de Lucro
-Avda. Bethel c/ Cacique Guazú N° 795
-Tel. 0492252247
-]]></text>
+				<text><![CDATA[Actividades de las sociedades literarias, cívicas
+y sociales y otras organizaciones
+
+LOMA PLATA, Calle Bethel - Tel. 0492 252 247
+Dpto. Boquerón, Paraguay]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="791" width="455" height="11" uuid="22d45618-f0c5-488b-8185-6d6d0d60a483"/>
+				<reportElement x="90" y="795" width="328" height="16" uuid="22d45618-f0c5-488b-8185-6d6d0d60a483"/>
 				<textElement verticalAlignment="Bottom">
-					<font size="6"/>
+					<font size="5"/>
 				</textElement>
-				<text><![CDATA[Gráfica Arias de Guillermo Perinetto. Dominicana N° 1081. Tel. 200562. RUC: 696266-1.CH N° 1.291. 200 juegos del 1151 al 1350 01/2017  ]]></text>
+				<text><![CDATA[Habilitación Nº 1927 - RUC 80080167-9 - Loma Plata, Calle Algarrobo 1015 - Tel. (0492) 252 543
+500 juegos duplicados - Nº. 001-001-0001551 - 0002050 - diciembre 2017]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="420" y="791" width="128" height="11" uuid="e0c46140-2288-4873-8da3-af288d983295"/>
@@ -754,13 +699,6 @@ Tel. 0492252247
 				</textElement>
 				<text><![CDATA[ORIGINAL: CLIENTE]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="-1" y="377" width="455" height="11" uuid="948579eb-6eba-44ac-89df-ba6143ff243b"/>
-				<textElement verticalAlignment="Bottom">
-					<font size="6"/>
-				</textElement>
-				<text><![CDATA[Gráfica Arias de Guillermo Perinetto. Dominicana N° 1081. Tel. 200562. RUC: 696266-1.CH N° 1.291. 200 juegos del 1151 al 1350 01/2017  ]]></text>
-			</staticText>
 			<line>
 				<reportElement x="0" y="402" width="549" height="1" uuid="19e76328-6ebf-4bd0-8deb-60c8e3735e6c">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -769,6 +707,90 @@ Tel. 0492252247
 					<pen lineWidth="0.5" lineStyle="Dotted"/>
 				</graphicElement>
 			</line>
+			<image hAlign="Left" vAlign="Middle" isUsingCache="true" onErrorType="Blank">
+				<reportElement x="5" y="795" width="75" height="16" uuid="e8ea6bfb-1a8d-46f3-b981-c517e52b224f">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo-friesen}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="90" y="380" width="328" height="16" uuid="f9520821-df96-404d-a4ca-b2fcddc5cab6"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="5"/>
+				</textElement>
+				<text><![CDATA[Habilitación Nº 1927 - RUC 80080167-9 - Loma Plata, Calle Algarrobo 1015 - Tel. (0492) 252 543
+500 juegos duplicados - Nº. 001-001-0001551 - 0002050 - diciembre 2017]]></text>
+			</staticText>
+			<image hAlign="Left" vAlign="Middle" isUsingCache="true" onErrorType="Blank">
+				<reportElement x="5" y="380" width="75" height="16" uuid="5990d0d7-1275-4d40-9fba-a765fee1927d">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo-friesen}]]></imageExpression>
+			</image>
+			<rectangle radius="5">
+				<reportElement x="380" y="418" width="164" height="80" uuid="6790617e-47fb-42d8-aaec-33906d3d3211"/>
+			</rectangle>
+			<rectangle radius="5">
+				<reportElement x="5" y="418" width="370" height="80" uuid="91eb527f-b357-4219-afc2-d032503ce288">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="380" y="423" width="164" height="40" uuid="d3223a26-9db9-4582-b253-a8ffab8e6d18"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[TIMBRADO N° 12519070
+Inicio de Válidez: 27 de diciembre de 2017
+Fin de Válidez: 31 de diciembre de 2018]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="452" width="164" height="20" uuid="f0e0e44f-3e36-49eb-b69f-1cce62f9e2a9"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[RUC: 80033423-0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="463" width="164" height="20" uuid="12dff0f1-51fa-45ea-803c-f6d7c85f4063"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FACTURA]]></text>
+			</staticText>
+			<textField pattern="#000000" isBlankWhenNull="false">
+				<reportElement x="390" y="472" width="141" height="24" uuid="e7e56215-9acb-420a-a84e-cbc248437345"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[String.format("001-001-%07d", $P{factura_id})]]></textFieldExpression>
+			</textField>
+			<image hAlign="Left" vAlign="Middle" isUsingCache="true" onErrorType="Blank">
+				<reportElement x="15" y="423" width="132" height="69" uuid="2a9914d2-ac58-4c20-9fca-a34012a05d78">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo-bethel}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="153" y="421" width="212" height="24" uuid="a7bc0168-26de-44b3-951c-f9f2ddecb0c9"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="13" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Asoc. Iglesia Beth-El de Loma Plata]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="177" y="445" width="165" height="47" uuid="fbe6ffc3-d92a-4374-a1bd-0517bafcb852"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Actividades de las sociedades literarias, cívicas 
+y sociales y otras organizaciones
+
+LOMA PLATA, Calle Bethel - Tel. 0492 252 247
+Dpto. Boquerón, Paraguay]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>

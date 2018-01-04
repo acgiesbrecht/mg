@@ -154,6 +154,7 @@ public class Utils extends Component {
             parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
             parameters.put("logo-bethel", getClass().getResourceAsStream("/images/logo-bethel.png"));
             parameters.put("logo-bethel2", getClass().getResourceAsStream("/images/logo-bethel.png"));
+            parameters.put("logo-friesen", getClass().getResourceAsStream("/images/logo-friesen.png"));
 
             parameters.put(JRParameter.REPORT_LOCALE, Locale.forLanguageTag("es"));
 
