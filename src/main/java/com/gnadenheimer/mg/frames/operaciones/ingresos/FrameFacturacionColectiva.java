@@ -321,9 +321,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             List<PagosRealizados> pagosList = new ArrayList<>();
 
             Query queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblTransferenciasList t WHERE e.rucSinDv != 44444401 AND t.fechahora >= :fechaDesde AND t.fechahora <= :fechaHasta");
-
             queryE.setParameter("fechaDesde", dtpFechaDesde.getDate());
-
             queryE.setParameter("fechaHasta", dtpFechaHasta.getDate());
             List<TblEntidades> listE = (List<TblEntidades>) queryE.getResultList();
 
@@ -331,8 +329,9 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
             for (TblEntidades e : listE) {
                 if (siguienteFacturaNro <= listTimbrados.get(0).getNroFacturaFin()) {
-                    Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesList a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
-                    queryT.setParameter("fecha", dtpFechaHasta.getDate());
+                    Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesList a WHERE t.idEntidad = :entidad AND t.fechahora >= :fechaDesde AND t.fechahora <= :fechaHasta AND a.facturado = false");
+                    queryT.setParameter("fechaDesde", dtpFechaDesde.getDate());
+                    queryT.setParameter("fechaHasta", dtpFechaHasta.getDate());
                     queryT.setParameter("entidad", e);
                     List<TblTransferencias> listT = (List<TblTransferencias>) queryT.getResultList();
                     if (listT.size() > 0) {
@@ -367,14 +366,16 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 }
             }
 
-            queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblRecibosList t WHERE t.fechahora <= :fecha");
-            queryE.setParameter("fecha", dtpFechaHasta.getDate());
+            queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblRecibosList t WHERE t.fechahora >= :fechaDesde AND t.fechahora <= :fechaHasta");
+            queryE.setParameter("fechaDesde", dtpFechaDesde.getDate());
+            queryE.setParameter("fechaHasta", dtpFechaHasta.getDate());
             listE = (List<TblEntidades>) queryE.getResultList();
 
             for (TblEntidades e : listE) {
                 if (siguienteFacturaNro <= listTimbrados.get(0).getNroFacturaFin()) {
-                    Query queryRecibos = entityManager.createQuery("SELECT distinct t FROM TblRecibos t JOIN t.tblAsientosTemporalesList a WHERE t.idEntidad = :entidad AND t.fechahora <= :fecha AND a.facturado = false");
-                    queryRecibos.setParameter("fecha", dtpFechaHasta.getDate());
+                    Query queryRecibos = entityManager.createQuery("SELECT distinct t FROM TblRecibos t JOIN t.tblAsientosTemporalesList a WHERE t.idEntidad = :entidad AND t.fechahora >= :fechaDesde AND t.fechahora <= :fechaHasta AND a.facturado = false");
+                    queryRecibos.setParameter("fechaDesde", dtpFechaDesde.getDate());
+                    queryRecibos.setParameter("fechaHasta", dtpFechaHasta.getDate());
                     queryRecibos.setParameter("entidad", e);
                     List<TblRecibos> listR = (List<TblRecibos>) queryRecibos.getResultList();
                     if (listR.size() > 0) {
@@ -407,6 +408,60 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 }
             }
 
+            //FACTURA DE IMPORTES CONSOLIDADOS
+            queryE = entityManager.createQuery("SELECT distinct e FROM TblEntidades e JOIN e.tblTransferenciasList t WHERE e.rucSinDv = 44444401 AND t.fechahora >= :fechaDesde AND t.fechahora <= :fechaHasta");
+            queryE.setParameter("fechaDesde", dtpFechaDesde.getDate());
+            queryE.setParameter("fechaHasta", dtpFechaHasta.getDate());
+            listE = (List<TblEntidades>) queryE.getResultList();
+
+            if (listE.size() > 0) {
+                PagosRealizados p = new PagosRealizados();
+                TblEntidades en = (TblEntidades) entityManager.createQuery("SELECT e FROM TblEntidades e WHERE e.nombres = 'Clientes Varios'").getSingleResult();
+                if (en == null) {
+                    JOptionPane.showMessageDialog(null, "No existe una Entidad con Nombre Clientes Varios para facturar los importes consolidados.");
+                }
+                en.setRazonSocial("Importes Consolidados");
+                en.setRucSinDv("44444401");
+                p.setEntidad(en);
+                Integer montoAporte = 0;
+                Integer montoDonacion = 0;
+
+                for (TblEntidades e : listE) {
+                    if (siguienteFacturaNro <= listTimbrados.get(0).getNroFacturaFin()) {
+                        Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesList a WHERE t.idEntidad = :entidad AND t.fechahora <= :fechaDesde AND t.fechahora <= :fechaHasta AND a.facturado = false");
+                        queryT.setParameter("fechaDesde", dtpFechaDesde.getDate());
+                        queryT.setParameter("fechaHasta", dtpFechaHasta.getDate());
+                        queryT.setParameter("entidad", e);
+                        List<TblTransferencias> listT = (List<TblTransferencias>) queryT.getResultList();
+                        if (listT.size() > 0) {
+                            List<TblAsientosTemporales> ts = p.getAsientosTemporalesList();
+                            if (ts == null) {
+                                ts = new LinkedList<>();
+                                p.setAsientosTemporalesList((List) ts);
+                            }
+                            for (TblTransferencias t : listT) {
+
+                                ts.addAll(t.getTblAsientosTemporalesList());
+                                for (TblAsientosTemporales at : t.getTblAsientosTemporalesList()) {
+                                    if (at.getEsAporte()) {
+                                        montoAporte += at.getMonto();
+                                    } else {
+                                        montoDonacion += at.getMonto();
+                                    }
+                                    at.setFacturado(true);
+                                    entityManager.merge(at);
+                                }
+                            }
+                        }
+
+                    }
+                }
+                p.setMontoAporte(montoAporte);
+                p.setMontoDonacion(montoDonacion);
+                pagosList.add(p);
+                siguienteFacturaNro++;
+            }
+
             siguienteFacturaNro = facturaNroInicial;
 
             list.clear();
@@ -427,12 +482,6 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     } else {
                         f.setRazonSocial(pago.getEntidad().getNombreCompleto());
                     }
-
-                    /*if (pago.getEntidad().getRucSinDv() != null) {
-                        f.setRuc(pago.getEntidad().getRucSinDv());
-                    } else {
-                        f.setRuc("44444401");
-                    }*/
                     if (pago.getEntidad().getRucSinDv() != null) {
                         f.setRuc(CalcDV.getRucEntero(pago.getEntidad().getRucSinDv()));
                     } else {
@@ -480,77 +529,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     siguienteFacturaNro++;
                 }
             }
-            /*List<PagosRealizados> pagosRealizados = entityManager.createNativeQuery("SELECT m.id AS ID, "
-                    + " COALESCE(transferencias.t_aporte,0) AS T_APORTE, "
-                    + " COALESCE(transferencias.t_donacion,0) AS T_DONACION, "
-                    + " COALESCE(recibos.r_aporte,0) AS R_APORTE,"
-                    + " COALESCE(recibos.r_donacion,0) AS R_DONACION,"
-                    + " COALESCE(facturas.f_aporte,0) AS F_APORTE,"
-                    + " COALESCE(facturas.f_donacion,0) AS F_DONACION"
-                    + " FROM TBL_ENTIDADES m"
-                    + "     LEFT JOIN (SELECT m.id, COALESCE(SUM(t.MONTO_APORTE),0) AS t_aporte,"
-                    + "     COALESCE(SUM(t.MONTO_DONACION),0) AS t_donacion"
-                    + "     FROM TBL_ENTIDADES m"
-                    + "     LEFT JOIN TBL_TRANSFERENCIAS t ON m.id = t.id_entidad "
-                    + "     WHERE YEAR(t.fechahora) >= " + ano
-                    + "     GROUP BY m.id"
-                    + "	) transferencias ON m.id = transferencias.id"
-                    + "     LEFT JOIN (SELECT m.id, COALESCE(SUM(r.MONTO_APORTE),0) AS r_aporte,"
-                    + "     COALESCE(SUM(r.MONTO_DONACION),0) AS r_donacion "
-                    + "     FROM TBL_ENTIDADES m"
-                    + "     LEFT JOIN TBL_RECIBOS r ON m.id = r.id_entidad "
-                    + "     WHERE YEAR(r.fechahora) >= " + ano
-                    + "     GROUP BY m.id"
-                    + "	) recibos ON m.id = recibos.id"
-                    + "     LEFT JOIN (SELECT m.id, COALESCE(SUM(f.importe_aporte),0) AS f_aporte, 		"
-                    + "     COALESCE(SUM(f.importe_donacion),0) AS f_donacion 		"
-                    + "     FROM TBL_ENTIDADES m"
-                    + "     LEFT JOIN TBL_FACTURAS f ON m.id = f.id_entidad "
-                    + "     WHERE YEAR(f.fechahora) >= " + ano
-                    + "     AND f.anulado = false"
-                    + "     GROUP BY m.id"
-                    + "	) facturas ON m.id = facturas.id", PagosRealizados.class).getResultList();
-            TblEntidades m;
-            for (PagosRealizados pr : pagosRealizados) {
 
-                m = entityManager.find(TblEntidades.class, pr.getId());
-                if ((pr.getRDonacion() + pr.getTDonacion() - pr.getFDonacion()) > 0 || (pr.getRAporte() + pr.getTAporte() - pr.getFAporte()) > 0) {
-                    if (siguienteFacturaNro <= listTimbrados.get(0).getNroFacturaFin()) {
-                        TblFacturas f = new TblFacturas();
-                        entityManager.persist(f);
-                        f.setNro(siguienteFacturaNro);
-                        f.setIdTimbrado(listTimbrados.get(0));
-                        f.setFechahora(new LocalDateTime());
-                        f.setIdEntidad(m);
-                        if (m.getRazonSocial() != null) {
-                            if (!m.getRazonSocial().equals("")) {
-                                f.setRazonSocial(m.getRazonSocial());
-                            } else {
-                                f.setRazonSocial(m.getNombreCompleto());
-                            }
-                        } else {
-                            f.setRazonSocial(m.getNombreCompleto());
-                        }
-
-                        if (m.getRucSinDv() != null) {
-                            f.setRuc(m.getRucSinDv());
-                        } else {
-                            f.setRuc("44444401");
-                        }
-                        f.setAnulado(false);
-                        f.setDomicilio(m.getDomicilio());
-                        f.setCasillaDeCorreo(m.getBox());
-                        f.setImporteAporte(pr.getRAporte() + pr.getTAporte() - pr.getFAporte());
-                        f.setImporteDonacion(pr.getRDonacion() + pr.getTDonacion() - pr.getFDonacion());
-                        f.setIdUser(currentUser.getUser());
-                        list.add(f);
-                        Integer row = list.size() - 1;
-                        masterTable.setRowSelectionInterval(row, row);
-                        masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
-                        siguienteFacturaNro++;
-                    }
-                }
-            }*/
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());

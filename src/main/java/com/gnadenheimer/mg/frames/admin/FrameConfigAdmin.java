@@ -6,8 +6,6 @@
 package com.gnadenheimer.mg.frames.admin;
 
 import com.gnadenheimer.mg.domain.TblAsientos;
-import com.gnadenheimer.mg.domain.TblAsientosTemporales;
-import com.gnadenheimer.mg.domain.TblContribuyentes;
 import com.gnadenheimer.mg.domain.TblCuentasContablesPorDefecto;
 import com.gnadenheimer.mg.domain.TblEventoDetalle;
 import com.gnadenheimer.mg.domain.TblFacturas;
@@ -21,7 +19,10 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Enumeration;
@@ -30,6 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.StringJoiner;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.prefs.Preferences;
@@ -130,10 +132,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         jLabel4 = new javax.swing.JLabel();
         cboModoImpresion = new javax.swing.JComboBox();
         cmdReset = new javax.swing.JButton();
-        txtFacturaX = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        txtFacturaY = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         cmdFacturaPrintTest = new javax.swing.JButton();
         cboSqlFiles = new javax.swing.JComboBox();
         jLabel7 = new javax.swing.JLabel();
@@ -251,24 +249,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                 cmdResetActionPerformed(evt);
             }
         });
-
-        txtFacturaX.setText("0");
-        txtFacturaX.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtFacturaXKeyReleased(evt);
-            }
-        });
-
-        jLabel5.setText("Ajuste Factura Izquierda:");
-
-        txtFacturaY.setText("0");
-        txtFacturaY.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtFacturaYKeyReleased(evt);
-            }
-        });
-
-        jLabel6.setText("Ajuste Factura Superior:");
 
         cmdFacturaPrintTest.setText("Impresion de Prueba");
         cmdFacturaPrintTest.addActionListener(new java.awt.event.ActionListener() {
@@ -391,16 +371,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                         .addGap(181, 181, 181))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(cmdFacturaPrintTest, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(txtFacturaY, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel5)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(txtFacturaX, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(cmdFacturaPrintTest, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(panelDatadir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(rbServidor)
@@ -443,15 +414,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(cboFormatoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFacturaX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFacturaY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(71, 71, 71)
                 .addComponent(cmdFacturaPrintTest)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -491,7 +454,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton7))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
                         .addComponent(updateSETbutton)))
                 .addGap(18, 18, 18))
         );
@@ -507,8 +470,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
             Preferences.userRoot().node("MG").put("isServer", String.valueOf(rbServidor.isSelected()));
             Preferences.userRoot().node("MG").put("modoImpresion", cboModoImpresion.getSelectedItem().toString());
             Preferences.userRoot().node("MG").put("formatoFactura", cboFormatoFactura.getSelectedItem().toString());
-            Preferences.userRoot().node("MG").put("facturaLeftMargin", txtFacturaX.getText());
-            Preferences.userRoot().node("MG").put("facturaTopMargin", txtFacturaY.getText());
             Preferences.userRoot().node("MG").put("cobrarAC", String.valueOf(rbCobrarACPorMes.isSelected()));
             Preferences.userRoot().node("MG").put("anoActivo", String.valueOf(jspAnoActivo.getValue()));
 
@@ -531,12 +492,8 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         rbServidor.setSelected(Boolean.parseBoolean(Preferences.userRoot().node("MG").get("isServer", "true")));
         cboModoImpresion.setSelectedItem(Preferences.userRoot().node("MG").get("modoImpresion", "Normal"));
         cboFormatoFactura.setSelectedItem(Preferences.userRoot().node("MG").get("formatoFactura", "Preimpreso sin rejilla"));
-        txtFacturaX.setText(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0"));
-        txtFacturaY.setText(Preferences.userRoot().node("MG").get("facturaTopMargin", "0"));
         rbCobrarACPorMes.setSelected(Boolean.parseBoolean(Preferences.userRoot().node("MG").get("cobrarAC", "true")));
         jspAnoActivo.setValue(Integer.parseInt(Preferences.userRoot().node("MG").get("anoActivo", String.valueOf(LocalDate.now().getYear()))));
-
-        Preferences.userRoot().node("MG").put("facturaTopMargin", txtFacturaY.getText());
     }//GEN-LAST:event_formInternalFrameActivated
 
     private void cmdDatadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDatadirActionPerformed
@@ -597,24 +554,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cmdFacturaPrintTestActionPerformed
-
-    private void txtFacturaXKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFacturaXKeyReleased
-        try {
-            Preferences.userRoot().node("MG").put("facturaLeftMargin", txtFacturaX.getText());
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_txtFacturaXKeyReleased
-
-    private void txtFacturaYKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFacturaYKeyReleased
-        try {
-            Preferences.userRoot().node("MG").put("facturaTopMargin", txtFacturaY.getText());
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_txtFacturaYKeyReleased
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
@@ -878,11 +817,18 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         public Void doInBackground() {
             try {
                 Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
-                EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-                entityManager.getTransaction().begin();
+                //EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
+                //entityManager.getTransaction().begin();
+
+                Connection conn = null;
+                Statement stmt = null;
+                Class.forName(persistenceMap.get("javax.persistence.jdbc.driver"));
+                conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("user"), persistenceMap.get("password"));
+                stmt = conn.createStatement();
+                stmt.executeUpdate("TRUNCATE TABLE MG.TBL_CONTRIBUYENTES");
                 String temp = "";
                 Integer count = 0;
-                entityManager.createQuery("delete from TblContribuyentes t").executeUpdate();
+                //entityManager.createQuery("delete from TblContribuyentes t").executeUpdate();
                 for (Integer i = 0; i <= 9; i++) {
                     URL url = new URL("http://www.set.gov.py/rest/contents/download/collaboration/sites/PARAGUAY-SET/documents/informes-periodicos/ruc/ruc" + String.valueOf(i) + ".zip");
                     ZipInputStream zipStream = new ZipInputStream(url.openStream(), StandardCharsets.UTF_8);
@@ -890,18 +836,35 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
                     Scanner sc = new Scanner(zipStream, "UTF-8");
 
-                    while (sc.hasNextLine()) {
+                    PreparedStatement prepStmt = conn.prepareStatement("INSERT INTO MG.TBL_CONTRIBUYENTES VALUES (?, ?, ?)");
+                    //StringJoiner joiner = new StringJoiner("");
+                    int a = 0;
+                    while (sc.hasNextLine() && a <= 50000) {
                         String[] ruc = sc.nextLine().split("\\|");
                         temp = ruc[0] + " - " + ruc[1] + " - " + ruc[2];
 
                         //System.out.println(ruc[1]);
                         //System.out.println(StringEscapeUtils.escapeJava(ruc[1]));
                         if (ruc[0].length() > 0 && ruc[1].length() > 0 && ruc[2].length() == 1) {
-                            TblContribuyentes c = new TblContribuyentes();
+                            /*TblContribuyentes c = new TblContribuyentes();
                             c.setRucSinDv(ruc[0]);
                             c.setRazonSocial(StringEscapeUtils.escapeSql(ruc[1]));
                             c.setDv(ruc[2]);
-                            entityManager.persist(c);
+                            entityManager.persist(c);*/
+                            prepStmt.setString(1, ruc[0]);
+                            prepStmt.setString(2, ruc[2]);
+                            prepStmt.setString(3, StringEscapeUtils.escapeSql(ruc[1]));
+                            prepStmt.addBatch();
+                            a++;
+                            //joiner.add("INSERT INTO MG.TBL_CONTRIBUYENTES VALUES ('" + ruc[0] + "','" + ruc[2] + "', '" + StringEscapeUtils.escapeSql(ruc[1]) + "');");
+                            if (a == 50000) {
+                                int[] numUpdates = prepStmt.executeBatch();
+                                //stmt.executeUpdate(joiner.toString());
+                                //joiner = new StringJoiner("");
+                                a = 0;
+                                setStatus("Guardando en base...");
+                            }
+
                             setStatus("Descargando listado de RUC con terminacion " + String.valueOf(i) + " - Cantidad de contribuyentes procesada: " + String.format("%,d", count) + " de aprox. 850.000.");
                             count++;
                         } else {
@@ -909,11 +872,17 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                         }
 
                     }
+                    setStatus("Guardando en base...");
+                    int[] numUpdates = prepStmt.executeBatch();
+                    //
+                    //setStatus(numUpdates.);
                     //setStatus("Procesando datos...");
-                    entityManager.getTransaction().commit();
-                    entityManager.getTransaction().begin();
+                    //entityManager.getTransaction().commit();
+                    //entityManager.getTransaction().begin();
                 }
-
+                if (stmt != null) {
+                    conn.close();
+                }
                 setStatus("Lista de RUC actualizada...");
                 return null;
             } catch (Exception ex) {
@@ -999,8 +968,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JSpinner jspAnoActivo;
     private javax.swing.JLabel lblStatusSET;
@@ -1010,8 +977,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
     private javax.swing.JRadioButton rbRemoto;
     private javax.swing.JRadioButton rbServidor;
     private javax.swing.JTextField txtDatadir;
-    private javax.swing.JTextField txtFacturaX;
-    private javax.swing.JTextField txtFacturaY;
     private javax.swing.JTextField txtIP;
     private javax.swing.JButton updateSETbutton;
     // End of variables declaration//GEN-END:variables

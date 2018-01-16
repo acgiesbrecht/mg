@@ -81,7 +81,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
 
             persistenceMap = Utils.getInstance().getPersistenceMap();
             initComponents();
-            txtAporteBase.setValue(0);
+            //txtAporteBase.setValue(0);
             if (!Beans.isDesignTime()) {
                 entityManager.getTransaction().begin();
             }
@@ -98,12 +98,12 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             AutoCompleteSupport support1 = AutoCompleteSupport.install(cboEntidad, GlazedLists.eventListOf(list.toArray()));
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support3 = AutoCompleteSupport.install(cboAreaServicio, GlazedLists.eventListOf(listAreaServicio.toArray()));
+            /*            AutoCompleteSupport support3 = AutoCompleteSupport.install(cboAreaServicio, GlazedLists.eventListOf(listAreaServicio.toArray()));
             support3.setFilterMode(TextMatcherEditor.CONTAINS);
 
             AutoCompleteSupport support4 = AutoCompleteSupport.install(cboAlergia, GlazedLists.eventListOf(listAlergia.toArray()));
             support4.setFilterMode(TextMatcherEditor.CONTAINS);
-
+             */
             AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCategoria, GlazedLists.eventListOf(listCategoria.toArray()));
             support5.setFilterMode(TextMatcherEditor.CONTAINS);
 
@@ -225,9 +225,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         ctacteLabel2 = new javax.swing.JLabel();
         ctacteLabel3 = new javax.swing.JLabel();
         rucField = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
-        ctacteLabel5 = new javax.swing.JLabel();
-        txtAporteBase = new javax.swing.JFormattedTextField();
         txtAporteBase1 = new javax.swing.JFormattedTextField();
         ctacteLabel6 = new javax.swing.JLabel();
         idCategoriaLabel = new javax.swing.JLabel();
@@ -245,10 +242,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         nombreLabel3 = new javax.swing.JLabel();
         nombreLabel4 = new javax.swing.JLabel();
         nombreLabel5 = new javax.swing.JLabel();
-        idCategoriaLabel2 = new javax.swing.JLabel();
-        cboAreaServicio = new javax.swing.JComboBox();
-        idCategoriaLabel3 = new javax.swing.JLabel();
-        cboAlergia = new javax.swing.JComboBox();
         dtpFechaNacimiento = new com.github.lgooddatepicker.components.DatePicker();
         dtpFechaBautismo = new com.github.lgooddatepicker.components.DatePicker();
         dtpFechaCongregacion = new com.github.lgooddatepicker.components.DatePicker();
@@ -257,12 +250,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         txtAporteBase2 = new javax.swing.JFormattedTextField();
         ctacteLabel7 = new javax.swing.JLabel();
         nombreLabel7 = new javax.swing.JLabel();
-        cmdCargarMesAporte = new javax.swing.JButton();
-        nombreLabel9 = new javax.swing.JLabel();
-        txtMesInicioAporteC = new javax.swing.JFormattedTextField();
-        txtMesFinAporteC = new javax.swing.JFormattedTextField();
-        nombreLabel10 = new javax.swing.JLabel();
-        nombreLabel11 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         categoriasTable = new javax.swing.JTable();
         cmdBorrarCategoria = new javax.swing.JButton();
@@ -401,17 +388,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
 
         rucField.addKeyListener(formListener);
 
-        jButton4.setText("Cargar");
-        jButton4.addActionListener(formListener);
-
-        ctacteLabel5.setText("Cargar Importe de Aporte Base a todos los Miembros:");
-
-        txtAporteBase.setColumns(9);
-        txtAporteBase.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        txtAporteBase.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        txtAporteBase.addMouseListener(formListener);
-        txtAporteBase.addActionListener(formListener);
-
         txtAporteBase1.setEditable(false);
         txtAporteBase1.setColumns(9);
         txtAporteBase1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
@@ -492,28 +468,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
 
         nombreLabel5.setText("Fecha Descongregacion:");
 
-        idCategoriaLabel2.setText("Area de Servicio:");
-
-        cboAreaServicio.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idAreaServicioEnIglesia}"), cboAreaServicio, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboAreaServicio, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        cboAreaServicio.addActionListener(formListener);
-
-        idCategoriaLabel3.setText("Alergia:");
-
-        cboAlergia.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idMiembrosAlergia}"), cboAlergia, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), cboAlergia, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        cboAlergia.addActionListener(formListener);
-
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechaNacimiento}"), dtpFechaNacimiento, org.jdesktop.beansbinding.BeanProperty.create("date"));
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), dtpFechaNacimiento, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
@@ -554,24 +508,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         ctacteLabel7.setText("Aporte Saldo de Año Anterior Viejo:");
 
         nombreLabel7.setText("Fecha Defunción:");
-
-        cmdCargarMesAporte.setText("Cargar");
-        cmdCargarMesAporte.addActionListener(formListener);
-
-        nombreLabel9.setText("y ultimo mes ");
-
-        txtMesInicioAporteC.setColumns(2);
-        txtMesInicioAporteC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        txtMesInicioAporteC.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        txtMesInicioAporteC.addActionListener(formListener);
-
-        txtMesFinAporteC.setColumns(2);
-        txtMesFinAporteC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        txtMesFinAporteC.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-
-        nombreLabel10.setText("Cargar primer de mes");
-
-        nombreLabel11.setText("de aportes a todos los miembros aportantes ");
 
         categoriasTable.setAutoCreateRowSorter(true);
         categoriasTable.setRowHeight(20);
@@ -649,24 +585,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(ctacteLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtAporteBase, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(nombreLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMesInicioAporteC, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nombreLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMesFinAporteC, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nombreLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmdCargarMesAporte)
-                        .addGap(169, 169, 169)
+                        .addGap(788, 788, 788)
                         .addComponent(newButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteButton)
@@ -730,42 +649,31 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                                 .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(35, 35, 35)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(nombreLabel3)
+                                .addComponent(nombreLabel2)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(nombreLabel3)
-                                    .addComponent(nombreLabel2)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(nombreLabel4)
+                                        .addGap(16, 16, 16))
+                                    .addComponent(nombreLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addComponent(nombreLabel7)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(161, 161, 161)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(nombreLabel4)
-                                            .addGap(16, 16, 16))
-                                        .addComponent(nombreLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
-                                    .addComponent(nombreLabel7)
+                                        .addComponent(dtpFechaCongregacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(dtpFechaDescongregacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(dtpFechaDefuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(dtpFechaBautismo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(dtpFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(161, 161, 161)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(dtpFechaCongregacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(dtpFechaDescongregacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(dtpFechaDefuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(dtpFechaBautismo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(dtpFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(montoLabel7)
-                                            .addGap(125, 125, 125)
-                                            .addComponent(cmdAddImporteAporte)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(cmdBorrarImporteAporte, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(60, 60, 60)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(idCategoriaLabel3)
-                                        .addGap(85, 85, 85)
-                                        .addComponent(cboAlergia, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(idCategoriaLabel2)
+                                        .addComponent(montoLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cmdAddImporteAporte)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cboAreaServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(cmdBorrarImporteAporte, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(montoLabel6)
@@ -774,7 +682,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(cmdBorrarCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 273, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 660, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -840,7 +748,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                             .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(idMiembroLabel)))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(montoLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -848,66 +756,40 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                                 .addComponent(cmdBorrarCategoria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(montoLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(cmdAddImporteAporte)
-                                        .addComponent(cmdBorrarImporteAporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(nombreLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(dtpFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(dtpFechaBautismo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(nombreLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(dtpFechaCongregacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(nombreLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(nombreLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(dtpFechaDescongregacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(dtpFechaDefuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(nombreLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(167, 167, 167)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(26, 26, 26)
-                                        .addComponent(idCategoriaLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(cboAreaServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(idCategoriaLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cboAlergia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 25, Short.MAX_VALUE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 23, Short.MAX_VALUE)
+                            .addComponent(montoLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(cmdAddImporteAporte)
+                                .addComponent(cmdBorrarImporteAporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(nombreLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dtpFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dtpFechaBautismo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(nombreLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dtpFechaCongregacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(nombreLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(nombreLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dtpFechaDescongregacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(dtpFechaDefuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nombreLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(ctacteLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ctacteLabel5)
-                    .addComponent(txtAporteBase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtMesInicioAporteC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nombreLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtMesFinAporteC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nombreLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmdCargarMesAporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(nombreLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
                     .addComponent(deleteButton)
@@ -941,12 +823,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             else if (evt.getSource() == jButton3) {
                 FrameEntidadesAdmin.this.jButton3ActionPerformed(evt);
             }
-            else if (evt.getSource() == jButton4) {
-                FrameEntidadesAdmin.this.jButton4ActionPerformed(evt);
-            }
-            else if (evt.getSource() == txtAporteBase) {
-                FrameEntidadesAdmin.this.txtAporteBaseActionPerformed(evt);
-            }
             else if (evt.getSource() == txtAporteBase1) {
                 FrameEntidadesAdmin.this.txtAporteBase1ActionPerformed(evt);
             }
@@ -959,20 +835,8 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             else if (evt.getSource() == cboEntidad) {
                 FrameEntidadesAdmin.this.cboEntidadActionPerformed(evt);
             }
-            else if (evt.getSource() == cboAreaServicio) {
-                FrameEntidadesAdmin.this.cboAreaServicioActionPerformed(evt);
-            }
-            else if (evt.getSource() == cboAlergia) {
-                FrameEntidadesAdmin.this.cboAlergiaActionPerformed(evt);
-            }
             else if (evt.getSource() == txtAporteBase2) {
                 FrameEntidadesAdmin.this.txtAporteBase2ActionPerformed(evt);
-            }
-            else if (evt.getSource() == cmdCargarMesAporte) {
-                FrameEntidadesAdmin.this.cmdCargarMesAporteActionPerformed(evt);
-            }
-            else if (evt.getSource() == txtMesInicioAporteC) {
-                FrameEntidadesAdmin.this.txtMesInicioAporteCActionPerformed(evt);
             }
             else if (evt.getSource() == cmdBorrarCategoria) {
                 FrameEntidadesAdmin.this.cmdBorrarCategoriaActionPerformed(evt);
@@ -1025,10 +889,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         }
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
-            if (evt.getSource() == txtAporteBase) {
-                FrameEntidadesAdmin.this.txtAporteBaseMouseClicked(evt);
-            }
-            else if (evt.getSource() == txtAporteBase1) {
+            if (evt.getSource() == txtAporteBase1) {
                 FrameEntidadesAdmin.this.txtAporteBase1MouseClicked(evt);
             }
             else if (evt.getSource() == txtAporteBase2) {
@@ -1275,53 +1136,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
 
     }//GEN-LAST:event_rucFieldKeyReleased
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        try {
-            if (((Number) txtAporteBase.getValue()).intValue() > -1) {
-                Integer reply = JOptionPane.showConfirmDialog(null, "Esta seguro que desea actualizar el valor del aporte base para todos los miembros con categoria Aporta a " + txtAporteBase.getValue().toString() + "Gs? Esta operacion se guarda en la base de datos y no requiere que presione el boton Guardar posteriormente.", title, JOptionPane.YES_NO_OPTION);
-                if (reply == JOptionPane.YES_OPTION) {
-                    Integer val = ((Number) txtAporteBase.getValue()).intValue();
-                    list.stream().forEach((miembro) -> {
-                        if (miembro.getIdMiembrosCategoriaDePago() != null) {
-                            if (miembro.getIdMiembrosCategoriaDePago().getDescripcion().contains("Aporta")) {
-                                miembro.setAporteMensual(val);
-                            }
-                        }
-                    });
-                    entityManager.getTransaction().commit();
-                    entityManager.getTransaction().begin();
-                    List data = query.getResultList();
-                    data.stream().forEach((entity) -> {
-                        entityManager.refresh(entity);
-                    });
-                    list.clear();
-                    list.addAll(data);
-                }
-            }
-        } catch (RollbackException ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-            entityManager.getTransaction().begin();
-            List<TblEntidades> merged = new ArrayList<>(list.size());
-            list.stream().forEach((t) -> {
-                merged.add(entityManager.merge(t));
-            });
-            list.clear();
-            list.addAll(merged);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void txtAporteBaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtAporteBaseMouseClicked
-
-    }//GEN-LAST:event_txtAporteBaseMouseClicked
-
-    private void txtAporteBaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAporteBaseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAporteBaseActionPerformed
-
     private void txtAporteBase1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtAporteBase1MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAporteBase1MouseClicked
@@ -1383,14 +1197,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
          }*/
     }//GEN-LAST:event_cboEntidadActionPerformed
 
-    private void cboAreaServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboAreaServicioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboAreaServicioActionPerformed
-
-    private void cboAlergiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboAlergiaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboAlergiaActionPerformed
-
     private void txtAporteBase2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtAporteBase2MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAporteBase2MouseClicked
@@ -1398,40 +1204,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private void txtAporteBase2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAporteBase2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAporteBase2ActionPerformed
-
-    private void cmdCargarMesAporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCargarMesAporteActionPerformed
-        try {
-            Integer reply = JOptionPane.showConfirmDialog(null, "Esta seguro que desea actualizar los meses de aporte para todos los miembros con categoria Aporta? Esta operacion se guarda en la base de datos y no requiere que presione el boton Guardar posteriormente.", title, JOptionPane.YES_NO_OPTION);
-            if (reply == JOptionPane.YES_OPTION) {
-                Integer inicio = ((Number) txtMesInicioAporteC.getValue()).intValue();
-                Integer fin = ((Number) txtMesFinAporteC.getValue()).intValue();
-                list.stream().forEach((miembro) -> {
-                    if (miembro.getIdMiembrosCategoriaDePago() != null) {
-                        if (miembro.getIdMiembrosCategoriaDePago().getDescripcion().contains("Aporta")) {
-                            miembro.setMesInicioAporte(inicio);
-                            miembro.setMesFinAporte(fin);
-                        }
-                    }
-                });
-                entityManager.getTransaction().commit();
-                entityManager.getTransaction().begin();
-                List data = query.getResultList();
-                data.stream().forEach((entity) -> {
-                    entityManager.refresh(entity);
-                });
-                list.clear();
-                list.addAll(data);
-            }
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_cmdCargarMesAporteActionPerformed
-
-    private void txtMesInicioAporteCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMesInicioAporteCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMesInicioAporteCActionPerformed
 
     private void cmdBorrarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdBorrarCategoriaActionPerformed
         try {
@@ -1556,15 +1328,12 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private javax.swing.JTextField apellidosField;
     private javax.swing.JTable aportesImportesTable;
     private javax.swing.JTable categoriasTable;
-    private javax.swing.JComboBox cboAlergia;
-    private javax.swing.JComboBox cboAreaServicio;
     private javax.swing.JComboBox cboEntidad;
     private javax.swing.JComboBox cboFormaDePago;
     private javax.swing.JButton cmdAddCategoria;
     private javax.swing.JButton cmdAddImporteAporte;
     private javax.swing.JButton cmdBorrarCategoria;
     private javax.swing.JButton cmdBorrarImporteAporte;
-    private javax.swing.JButton cmdCargarMesAporte;
     private com.gnadenheimer.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
     private javax.swing.JTextField ctacteField;
     private javax.swing.JTextField ctacteField1;
@@ -1572,7 +1341,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private javax.swing.JLabel ctacteLabel1;
     private javax.swing.JLabel ctacteLabel2;
     private javax.swing.JLabel ctacteLabel3;
-    private javax.swing.JLabel ctacteLabel5;
     private javax.swing.JLabel ctacteLabel6;
     private javax.swing.JLabel ctacteLabel7;
     private javax.swing.JButton deleteButton;
@@ -1586,8 +1354,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private com.github.lgooddatepicker.components.DatePicker dtpFechaNacimiento;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel idCategoriaLabel;
-    private javax.swing.JLabel idCategoriaLabel2;
-    private javax.swing.JLabel idCategoriaLabel3;
     private javax.swing.JTextField idField;
     private javax.swing.JLabel idLabel;
     private javax.swing.JLabel idMiembroLabel;
@@ -1595,7 +1361,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private javax.swing.JLabel idMiembroLabel2;
     private com.gnadenheimer.mg.utils.IntegerLongConverter integerLongConverter1;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private java.util.List<com.gnadenheimer.mg.domain.miembros.TblEntidades> list;
@@ -1612,14 +1377,11 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private javax.swing.JTextField nombreField;
     private javax.swing.JLabel nombreLabel;
     private javax.swing.JLabel nombreLabel1;
-    private javax.swing.JLabel nombreLabel10;
-    private javax.swing.JLabel nombreLabel11;
     private javax.swing.JLabel nombreLabel2;
     private javax.swing.JLabel nombreLabel3;
     private javax.swing.JLabel nombreLabel4;
     private javax.swing.JLabel nombreLabel5;
     private javax.swing.JLabel nombreLabel7;
-    private javax.swing.JLabel nombreLabel9;
     private com.gnadenheimer.mg.utils.NumberCellRenderer numberCellRenderer1;
     private javax.persistence.Query query;
     private javax.persistence.Query queryAlergia;
@@ -1630,12 +1392,9 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private javax.swing.JTextField rucField;
     private com.gnadenheimer.mg.utils.RucTableCellRenderer rucTableCellRenderer1;
     private javax.swing.JButton saveButton;
-    private javax.swing.JFormattedTextField txtAporteBase;
     private javax.swing.JFormattedTextField txtAporteBase1;
     private javax.swing.JFormattedTextField txtAporteBase2;
     private javax.swing.JTextField txtCtaCte;
-    private javax.swing.JFormattedTextField txtMesFinAporteC;
-    private javax.swing.JFormattedTextField txtMesInicioAporteC;
     private javax.swing.JTextField txtRazonSocial;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
