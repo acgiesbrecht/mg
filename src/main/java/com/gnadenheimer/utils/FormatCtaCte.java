@@ -21,14 +21,14 @@ public class FormatCtaCte {
         try {
             String sCta = String.valueOf(ctaCte);
             if (sCta.length() == 6 || sCta.length() == 8) {
-                sCta = "0" + sCta;
+                sCta = new StringBuilder("0").append(sCta).toString();
             }
 
             if (sCta.length() == 9) {
-                sCta = sCta.substring(0, 2) + "-" + sCta.substring(2, 6) + "-" + sCta.substring(6, 7) + "/" + sCta.substring(7, 9);
+                sCta = new StringBuilder(sCta.substring(0, 2)).append("-").append(sCta.substring(2, 6)).append("-").append(sCta.substring(6, 7)).append("/").append(sCta.substring(7, 9)).toString();
             }
             if (sCta.length() == 7) {
-                sCta = sCta.substring(0, 2) + "-" + sCta.substring(2, 6) + "-" + sCta.substring(6, 7);
+                sCta = new StringBuilder(sCta.substring(0, 2)).append("-").append(sCta.substring(2, 6)).append("-").append(sCta.substring(6, 7)).toString();
             }
             return sCta;
         } catch (Exception exx) {
