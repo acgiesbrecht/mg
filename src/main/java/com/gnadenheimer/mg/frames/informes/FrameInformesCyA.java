@@ -598,8 +598,8 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             }
             for (TblEntidades e : listE) {
 
-                System.out.println(e.getId());
-                System.out.println(e.getNombreCompleto());
+                //System.out.println(e.getId());
+                //System.out.println(e.getNombreCompleto());
                 Boolean haPasadoDeAno = false;
                 Long importeMensual = 0L;
                 try {
@@ -617,7 +617,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                     importeSaldoAnterior = 0L;
                 }
 
-                System.out.println(importeMensual);
+                //System.out.println(importeMensual);
                 List<TblEntidadesHistoricoCategorias> listEHC = entityManager.createQuery("select t from TblEntidadesHistoricoCategorias t where t.idEntidad.id = " + e.getId().toString() + " order by t.anoMes DESC").getResultList();
                 List<TblEntidadesHistoricoCategorias> listEHCtoRemove = new ArrayList<>();
                 for (TblEntidadesHistoricoCategorias ehc : listEHC) {
@@ -672,7 +672,7 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                     }
                 }
             }
-            entityManager.getTransaction().commit();
+            //entityManager.getTransaction().commit();
             return new JRBeanCollectionDataSource(coll);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);

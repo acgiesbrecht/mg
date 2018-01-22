@@ -6,6 +6,7 @@
 package com.gnadenheimer.mg.domain.miembros;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -49,6 +52,11 @@ public class TblEntidadesHistoricoCategorias implements Serializable {
     @JoinColumn(name = "ID_CATEGORIA_DE_PAGO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblMiembrosCategoriasDePago idCategoriaDePago;
+    @Column(name = "FECHA")
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDate fecha;
+    @Column(name = "OBSERVACIONES")
+    private LocalDate observaciones;
 
     public TblEntidadesHistoricoCategorias() {
     }
@@ -117,6 +125,34 @@ public class TblEntidadesHistoricoCategorias implements Serializable {
     @Override
     public String toString() {
         return "com.gnadenheimer.mg.domain.miembros.TblEntidadesHistoricoCategorias[ id=" + id + " ]";
+    }
+
+    /**
+     * @return the fecha
+     */
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    /**
+     * @param fecha the fecha to set
+     */
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    /**
+     * @return the observaciones
+     */
+    public LocalDate getObservaciones() {
+        return observaciones;
+    }
+
+    /**
+     * @param observaciones the observaciones to set
+     */
+    public void setObservaciones(LocalDate observaciones) {
+        this.observaciones = observaciones;
     }
 
 }
