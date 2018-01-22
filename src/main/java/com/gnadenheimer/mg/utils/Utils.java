@@ -13,6 +13,10 @@ import com.gnadenheimer.mg.domain.miembros.TblEntidades;
 import com.gnadenheimer.mg.domain.models.CuotaModel;
 import java.awt.Component;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileTime;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,13 +24,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import static java.time.temporal.ChronoUnit.DAYS;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.prefs.Preferences;
 import javax.swing.DefaultListModel;
@@ -376,6 +384,28 @@ public class Utils extends Component {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             return false;
+        }
+    }
+
+    public void backUpIfOld() {
+        try {
+            Path dir = Paths.get(getPersistenceMap().get("backUpDir"));  // specify your directory
+
+            Optional<Path> lastFilePath = Files.list(dir) // here we get the stream with full directory listing
+                    .filter(f -> !Files.isDirectory(f)) // exclude subdirectories from listing
+                    .max(Comparator.comparingLong(f -> f.toFile().lastModified()));  // finally get the last file using simple comparator by lastModified field
+
+            if (lastFilePath.isPresent()) // your folder may be empty
+            {
+                FileTime fileTime = Files.getLastModifiedTime(lastFilePath.get());
+                Long age = DAYS.between(LocalDateTime.ofInstant(fileTime.toInstant(), ZoneOffset.UTC), LocalDateTime.now());
+                if (age > 3) {
+                    exectueBackUp(getPersistenceMap().get("backUpDir"));
+                }
+            }
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }
 
