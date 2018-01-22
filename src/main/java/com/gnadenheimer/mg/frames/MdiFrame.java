@@ -11,6 +11,7 @@ import com.gnadenheimer.mg.domain.TblIglesia;
 import com.gnadenheimer.mg.domain.TblCentrosDeCosto;
 import com.gnadenheimer.mg.domain.miembros.TblEntidades;
 import com.gnadenheimer.mg.domain.TblUsers;
+import com.gnadenheimer.mg.domain.miembros.TblEntidadesHistoricoCategorias;
 import com.gnadenheimer.mg.frames.admin.FrameAutofacturasAdmin;
 import com.gnadenheimer.mg.frames.admin.FrameCategoriasArticulosAdmin;
 import com.gnadenheimer.mg.frames.admin.FrameCentrosDeCostoAdmin;
@@ -60,6 +61,7 @@ import java.beans.PropertyChangeEvent;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -291,6 +293,10 @@ public class MdiFrame extends javax.swing.JFrame {
             if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20171212.sql") == null) {
                 hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20171212.sql", hasBackedUp);
                 updateNroCtaCte(entityManager);
+            }
+            if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20180122.sql") == null) {
+                hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20180122.sql", hasBackedUp);
+                updateFechaHistorico(entityManager);
             }
 
             List<TblUsers> list = entityManager.createQuery("SELECT t FROM TblUsers t").getResultList();
@@ -1490,6 +1496,19 @@ public class MdiFrame extends javax.swing.JFrame {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
         }
+    }
+
+    private void updateFechaHistorico(EntityManager entityManager) {
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        List<TblEntidadesHistoricoCategorias> ehcList = entityManager.createQuery("select t from TblEntidadesHistoricoCategorias t").getResultList();
+        for (TblEntidadesHistoricoCategorias e : ehcList) {
+            int ano = e.getAnoMes() / 100;
+            int mes = e.getAnoMes() - ano * 100;
+            e.setFecha(LocalDate.of(ano, mes, 1));
+        }
+        entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
     }
 
     /**
