@@ -299,6 +299,12 @@ public class MdiFrame extends javax.swing.JFrame {
                 updateFechaHistorico(entityManager);
             }
 
+            /**
+             * Make BackUp if last autoBackUp is older than 3 days
+             */
+            Utils.getInstance().deleteOldBackUps();
+            Utils.getInstance().backUpIfOld();
+
             List<TblUsers> list = entityManager.createQuery("SELECT t FROM TblUsers t").getResultList();
             for (TblUsers user : list) {
                 if (user.getNombre().equals("adrian") && BCrypt.checkpw(String.valueOf("adrian"), user.getPassword())) {
@@ -1499,7 +1505,7 @@ public class MdiFrame extends javax.swing.JFrame {
     }
 
     private void updateFechaHistorico(EntityManager entityManager) {
-        entityManager.getTransaction().commit();
+        /*        entityManager.getTransaction().commit();
         entityManager.getTransaction().begin();
         List<TblEntidadesHistoricoCategorias> ehcList = entityManager.createQuery("select t from TblEntidadesHistoricoCategorias t").getResultList();
         for (TblEntidadesHistoricoCategorias e : ehcList) {
@@ -1508,7 +1514,7 @@ public class MdiFrame extends javax.swing.JFrame {
             e.setFecha(LocalDate.of(ano, mes, 1));
         }
         entityManager.getTransaction().commit();
-        entityManager.getTransaction().begin();
+        entityManager.getTransaction().begin();*/
     }
 
     /**

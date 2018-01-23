@@ -585,7 +585,8 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
             entityManager.getTransaction().begin();
             List<TblEntidades> listE = entityManager.createQuery("select e from TblEntidades e where e.fechaSalidaCongregacion IS NULL and e in (select t.idEntidad from TblEntidadesHistoricoCategorias t) order by e.ctacte").getResultList();
 
-            Integer anoMesEnero = ano * 100 + 1;
+            LocalDate dAnoMesEnero = LocalDate.ofYearDay(ano, 1);
+            Integer anoMesEnero = getAnoMes(dAnoMesEnero);
             Integer anoMesUltimo;
 
             if (LocalDate.now().getMonth().getValue() < 10) {
@@ -618,13 +619,13 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                 }
 
                 //System.out.println(importeMensual);
-                List<TblEntidadesHistoricoCategorias> listEHC = entityManager.createQuery("select t from TblEntidadesHistoricoCategorias t where t.idEntidad.id = " + e.getId().toString() + " order by t.anoMes DESC").getResultList();
+                List<TblEntidadesHistoricoCategorias> listEHC = entityManager.createQuery("select t from TblEntidadesHistoricoCategorias t where t.idEntidad.id = " + e.getId().toString() + " order by t.fecha DESC").getResultList();
                 List<TblEntidadesHistoricoCategorias> listEHCtoRemove = new ArrayList<>();
                 for (TblEntidadesHistoricoCategorias ehc : listEHC) {
-                    if (ehc.getAnoMes() < anoMesEnero && !haPasadoDeAno) {
-                        ehc.setAnoMes(anoMesEnero);
+                    if (getAnoMes(ehc.getFecha()) < anoMesEnero && !haPasadoDeAno) {
+                        ehc.setFecha(dAnoMesEnero);
                         haPasadoDeAno = true;
-                    } else if (ehc.getAnoMes() < anoMesEnero) {
+                    } else if (getAnoMes(ehc.getFecha()) < anoMesEnero) {
                         listEHCtoRemove.add(ehc);
                     }
                 }
@@ -635,9 +636,9 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                     Integer cantidadMeses = 0;
                     if (listEHC.get(x).getIdCategoriaDePago().getEsActivacion()) {
                         if (x < listEHC.size() - 1) {
-                            cantidadMeses = listEHC.get(x + 1).getAnoMes() - listEHC.get(x).getAnoMes() + 1;
+                            cantidadMeses = getAnoMes(listEHC.get(x + 1).getFecha()) - getAnoMes(listEHC.get(x).getFecha()) + 1;
                         } else {
-                            cantidadMeses = anoMesUltimo - listEHC.get(x).getAnoMes() + 1;
+                            cantidadMeses = anoMesUltimo - getAnoMes(listEHC.get(x).getFecha()) + 1;
                         }
 
                         importeCompromiso += cantidadMeses * importeMensual;
@@ -672,13 +673,17 @@ public class FrameInformesCyA extends javax.swing.JInternalFrame {
                     }
                 }
             }
-            //entityManager.getTransaction().commit();
+            entityManager.close();
             return new JRBeanCollectionDataSource(coll);
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             return null;
         }
+    }
+
+    private static Integer getAnoMes(LocalDate fecha) {
+        return fecha.getYear() * 100 + fecha.getMonthValue();
     }
 
     /**

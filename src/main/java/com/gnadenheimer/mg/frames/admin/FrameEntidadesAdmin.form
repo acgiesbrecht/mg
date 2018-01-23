@@ -151,6 +151,11 @@
         <Property name="text" type="java.lang.String" value="anoMesCellRenderer1"/>
       </Properties>
     </Component>
+    <Component class="com.gnadenheimer.mg.utils.DateTableCellRenderer" name="dateTableCellRenderer1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="dateTableCellRenderer1"/>
+      </Properties>
+    </Component>
   </NonVisualComponents>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
@@ -191,7 +196,7 @@
                       <Component id="ctacteLabel2" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="514" max="32767" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
@@ -226,7 +231,6 @@
                                       <Component id="apellidosField" alignment="0" min="-2" pref="249" max="-2" attributes="0"/>
                                       <Component id="rucField" alignment="0" min="-2" pref="104" max="-2" attributes="0"/>
                                       <Component id="txtRazonSocial" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtAporteBase1" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
                                       <Component id="ctacteField1" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
                                       <Component id="direccionField" alignment="0" min="-2" pref="295" max="-2" attributes="0"/>
                                   </Group>
@@ -236,6 +240,10 @@
                                           <Component id="cboFormaDePago" min="-2" pref="197" max="-2" attributes="0"/>
                                           <Component id="txtAporteBase2" min="-2" pref="123" max="-2" attributes="0"/>
                                       </Group>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="txtAporteBase1" min="-2" pref="123" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -251,52 +259,53 @@
                               <Component id="cboEntidad" min="-2" pref="200" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="nombreLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="nombreLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="nombreLabel4" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="nombreLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="nombreLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="161" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="dtpFechaCongregacion" min="-2" max="-2" attributes="0"/>
-                                      <Component id="dtpFechaDescongregacion" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="dtpFechaDefuncion" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="dtpFechaBautismo" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="dtpFechaNacimiento" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="jScrollPane2" min="-2" pref="359" max="-2" attributes="0"/>
+                      <EmptySpace min="35" pref="35" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Component id="montoLabel7" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
                                       <Component id="cmdAddImporteAporte" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                                       <Component id="cmdBorrarImporteAporte" min="-2" pref="41" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="montoLabel7" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="cmdAddCategoria" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="cmdBorrarCategoria" min="-2" pref="41" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="montoLabel6" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jScrollPane1" min="-2" pref="359" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="nombreLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="nombreLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="nombreLabel4" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="nombreLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="nombreLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="161" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="dtpFechaCongregacion" min="-2" max="-2" attributes="0"/>
+                                          <Component id="dtpFechaDescongregacion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="dtpFechaDefuncion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="dtpFechaBautismo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="dtpFechaNacimiento" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                               </Group>
                           </Group>
-                          <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="montoLabel6" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
-                                  <Component id="cmdAddCategoria" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Component id="cmdBorrarCategoria" min="-2" pref="41" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="jScrollPane1" pref="0" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="jScrollPane2" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="660" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -310,7 +319,7 @@
               <Component id="masterScrollPane" min="-2" pref="148" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="36" max="32767" attributes="0"/>
+                      <EmptySpace pref="55" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="idField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="idLabel" alignment="3" min="-2" pref="12" max="-2" attributes="0"/>
@@ -353,7 +362,7 @@
                       </Group>
                       <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="txtAporteBase1" max="32767" attributes="0"/>
+                          <Component id="txtAporteBase1" min="-2" max="-2" attributes="0"/>
                           <Component id="ctacteLabel6" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -376,54 +385,64 @@
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="19" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="montoLabel6" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                              <Component id="cmdAddCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="cmdBorrarCategoria" alignment="3" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="nombreLabel2" alignment="1" min="-2" pref="19" max="-2" attributes="0"/>
+                                  <Component id="dtpFechaNacimiento" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="dtpFechaBautismo" max="32767" attributes="0"/>
+                                  <Component id="nombreLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="dtpFechaCongregacion" max="32767" attributes="0"/>
+                                  <Component id="nombreLabel4" min="-2" pref="20" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="nombreLabel5" max="32767" attributes="0"/>
+                                  <Component id="dtpFechaDescongregacion" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                                      <Component id="montoLabel6" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                      <Component id="cmdBorrarCategoria" alignment="3" max="32767" attributes="0"/>
+                                      <Component id="cmdAddCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jScrollPane1" min="-2" pref="97" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="97" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="montoLabel7" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                              <Component id="cmdAddImporteAporte" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="cmdBorrarImporteAporte" alignment="3" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" min="-2" pref="59" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="nombreLabel2" min="-2" pref="19" max="-2" attributes="0"/>
-                          <Component id="dtpFechaNacimiento" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="dtpFechaBautismo" max="32767" attributes="0"/>
-                          <Component id="nombreLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="dtpFechaCongregacion" max="32767" attributes="0"/>
-                          <Component id="nombreLabel4" min="-2" pref="20" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="nombreLabel5" max="32767" attributes="0"/>
-                          <Component id="dtpFechaDescongregacion" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="dtpFechaDefuncion" min="-2" max="-2" attributes="0"/>
                           <Component id="nombreLabel7" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace pref="37" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="montoLabel7" min="-2" max="-2" attributes="0"/>
+                              <Component id="cmdBorrarImporteAporte" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="cmdAddImporteAporte" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" pref="177" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace type="unrelated" pref="27" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" pref="26" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="ctacteLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -941,6 +960,11 @@
                     <ComponentRef name="numberCellRenderer1"/>
                   </Renderer>
                 </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
               </TableColumnModel>
             </Property>
             <Property name="rowHeight" type="int" value="20"/>
@@ -950,13 +974,17 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="elements" source="masterTable" sourcePath="${selectedElement.tblEntidadesHistoricoCategoriasList}" target="categoriasTable" targetPath="elements" updateStrategy="0" immediately="true">
-              <Subbinding sourcePath="${anoMes}">
-                <BindingParameter name="NAME" value="A&#xf1;o Mes"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+              <Subbinding sourcePath="${fecha}">
+                <BindingParameter name="NAME" value="Fecha de Cambio"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.time.LocalDate.class"/>
               </Subbinding>
               <Subbinding sourcePath="${idCategoriaDePago}">
                 <BindingParameter name="NAME" value="Categoria De Pago"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="com.gnadenheimer.mg.domain.miembros.TblMiembrosCategoriasDePago.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${observaciones}">
+                <BindingParameter name="NAME" value="Observaciones"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="categoriasTable" targetPath="enabled" updateStrategy="0" immediately="false"/>

@@ -12,7 +12,9 @@ import com.gnadenheimer.mg.domain.TblNotasDeCredito;
 import com.gnadenheimer.mg.domain.miembros.TblEntidades;
 import com.gnadenheimer.mg.domain.models.CuotaModel;
 import java.awt.Component;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -392,15 +394,47 @@ public class Utils extends Component {
             Path dir = Paths.get(getPersistenceMap().get("backUpDir"));  // specify your directory
 
             Optional<Path> lastFilePath = Files.list(dir) // here we get the stream with full directory listing
-                    .filter(f -> !Files.isDirectory(f)) // exclude subdirectories from listing
+                    .filter(f -> Files.isDirectory(f)) // exclude files from listing
                     .max(Comparator.comparingLong(f -> f.toFile().lastModified()));  // finally get the last file using simple comparator by lastModified field
 
             if (lastFilePath.isPresent()) // your folder may be empty
             {
                 FileTime fileTime = Files.getLastModifiedTime(lastFilePath.get());
                 Long age = DAYS.between(LocalDateTime.ofInstant(fileTime.toInstant(), ZoneOffset.UTC), LocalDateTime.now());
-                if (age > 3) {
+                if (age > 7) {
                     exectueBackUp(getPersistenceMap().get("backUpDir"));
+                }
+            } else {
+                exectueBackUp(getPersistenceMap().get("backUpDir"));
+            }
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Delete AutoBackUps if older than 60 days
+     */
+    public void deleteOldBackUps() {
+        try {
+            Path dir = Paths.get(getPersistenceMap().get("backUpDir"));  // specify your directory
+
+            Optional<Path> lastFilePath = Files.list(dir) // here we get the stream with full directory listing
+                    .filter(f -> Files.isDirectory(f)) // exclude files from listing
+                    .min(Comparator.comparingLong(f -> f.toFile().lastModified()));  // finally get the last file using simple comparator by lastModified field
+
+            if (lastFilePath.isPresent()) // your folder may be empty
+            {
+                FileTime fileTime = Files.getLastModifiedTime(lastFilePath.get());
+                Long age = DAYS.between(LocalDateTime.ofInstant(fileTime.toInstant(), ZoneOffset.UTC), LocalDateTime.now());
+                if (age > 30) {
+                    Files.walk(lastFilePath.get(), FileVisitOption.FOLLOW_LINKS)
+                            .sorted(Comparator.reverseOrder())
+                            .map(Path::toFile)
+                            .peek(System.out::println)
+                            .forEach(File::delete);
+                    deleteOldBackUps();
                 }
             }
         } catch (Exception ex) {

@@ -32,8 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TblEntidadesHistoricoCategorias.findAll", query = "SELECT t FROM TblEntidadesHistoricoCategorias t")
-    , @NamedQuery(name = "TblEntidadesHistoricoCategorias.findById", query = "SELECT t FROM TblEntidadesHistoricoCategorias t WHERE t.id = :id")
-    , @NamedQuery(name = "TblEntidadesHistoricoCategorias.findByAnoMes", query = "SELECT t FROM TblEntidadesHistoricoCategorias t WHERE t.anoMes = :anoMes")})
+    , @NamedQuery(name = "TblEntidadesHistoricoCategorias.findById", query = "SELECT t FROM TblEntidadesHistoricoCategorias t WHERE t.id = :id")})
 public class TblEntidadesHistoricoCategorias implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,10 +41,6 @@ public class TblEntidadesHistoricoCategorias implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ANO_MES")
-    private int anoMes;
     @JoinColumn(name = "ID_ENTIDAD", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private TblEntidades idEntidad;
@@ -53,6 +48,7 @@ public class TblEntidadesHistoricoCategorias implements Serializable {
     @ManyToOne(optional = false)
     private TblMiembrosCategoriasDePago idCategoriaDePago;
     @Column(name = "FECHA")
+    @Basic(optional = false)
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDate fecha;
     @Column(name = "OBSERVACIONES")
@@ -65,9 +61,9 @@ public class TblEntidadesHistoricoCategorias implements Serializable {
         this.id = id;
     }
 
-    public TblEntidadesHistoricoCategorias(Integer id, int anoMes) {
+    public TblEntidadesHistoricoCategorias(Integer id, LocalDate fecha) {
         this.id = id;
-        this.anoMes = anoMes;
+        this.fecha = fecha;
     }
 
     public Integer getId() {
@@ -76,14 +72,6 @@ public class TblEntidadesHistoricoCategorias implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getAnoMes() {
-        return anoMes;
-    }
-
-    public void setAnoMes(int anoMes) {
-        this.anoMes = anoMes;
     }
 
     public TblEntidades getIdEntidad() {
