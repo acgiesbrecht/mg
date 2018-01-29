@@ -13,8 +13,10 @@ import com.gnadenheimer.mg.domain.TblContribuyentes;
 import com.gnadenheimer.mg.domain.miembros.TblAportesImporteMensualSaldoAnterior;
 import com.gnadenheimer.mg.domain.miembros.TblEntidades;
 import com.gnadenheimer.mg.domain.miembros.TblEntidadesHistoricoCategorias;
+import com.gnadenheimer.mg.domain.models.AportesPendientes;
 import com.gnadenheimer.mg.utils.CurrentUser;
 import com.gnadenheimer.mg.utils.Utils;
+import com.gnadenheimer.utils.FormatCtaCte;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
@@ -35,6 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
 import javax.swing.DefaultCellEditor;
@@ -262,6 +265,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         cmdBorrarImporteAporte = new javax.swing.JButton();
         cmdAddImporteAporte = new javax.swing.JButton();
         montoLabel7 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -585,6 +589,9 @@ public class FrameEntidadesAdmin extends JInternalFrame {
 
         montoLabel7.setText("Importes de Aporte");
 
+        jButton4.setText("Calcular Saldo Anterior y agregar Importe Mensual");
+        jButton4.addActionListener(formListener);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -592,7 +599,8 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(788, 788, 788)
+                        .addComponent(jButton4)
+                        .addGap(513, 513, 513)
                         .addComponent(newButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteButton)
@@ -705,7 +713,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                 .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(idLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -792,7 +800,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(dtpFechaDefuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(nombreLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(montoLabel7)
@@ -800,7 +808,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                             .addComponent(cmdAddImporteAporte))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 16, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(ctacteLabel2))
@@ -809,7 +817,8 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
                     .addComponent(deleteButton)
-                    .addComponent(newButton))
+                    .addComponent(newButton)
+                    .addComponent(jButton4))
                 .addContainerGap())
         );
 
@@ -865,6 +874,9 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             }
             else if (evt.getSource() == cmdAddImporteAporte) {
                 FrameEntidadesAdmin.this.cmdAddImporteAporteActionPerformed(evt);
+            }
+            else if (evt.getSource() == jButton4) {
+                FrameEntidadesAdmin.this.jButton4ActionPerformed(evt);
             }
         }
 
@@ -1340,6 +1352,112 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         }
     }//GEN-LAST:event_cmdAddImporteAporteActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            /**
+             * Calcular saldo anterior
+             */
+            Integer ano = 2017;
+            List<AportesPendientes> coll = new ArrayList<>();
+
+            //entityManager.getTransaction().begin();
+            List<TblEntidades> listE = entityManager.createQuery("select e from TblEntidades e where e.fechaSalidaCongregacion IS NULL and e in (select t.idEntidad from TblEntidadesHistoricoCategorias t) order by e.ctacte").getResultList();
+
+            LocalDate dAnoMesEnero = LocalDate.ofYearDay(ano, 1);
+            Integer anoMesEnero = getAnoMes(dAnoMesEnero);
+            Integer anoMesUltimo;
+
+            if (LocalDate.now().getMonth().getValue() < 10) {
+                anoMesUltimo = LocalDate.now().getYear() * 100 + LocalDate.now().getMonth().getValue() - 1;
+            } else {
+                anoMesUltimo = ano * 100 + 10;
+            }
+            if (ano != LocalDate.now().getYear()) {
+                anoMesUltimo = ano * 100 + 10;
+            }
+            for (TblEntidades e : listE) {
+
+                //System.out.println(e.getId());
+                //System.out.println(e.getNombreCompleto());
+                Boolean haPasadoDeAno = false;
+                Long importeMensual = 0L;
+                try {
+                    importeMensual = (Long) entityManager.createQuery("select COALESCE(t.importeMensual,0) from TblAportesImporteMensualSaldoAnterior t where t.ano = " + ano.toString() + " and t.idEntidad.id = " + e.getId().toString()).getSingleResult();
+                } catch (Exception ex) {
+                    //JOptionPane.showMessageDialog(null, e.getNombreCompleto() + " no tiene Importe Mnsual de Aportes definido. Se considera 0.");
+                    importeMensual = 0L;
+                }
+
+                Long importeSaldoAnterior = 0L;
+                try {
+                    importeSaldoAnterior = (Long) entityManager.createQuery("select COALESCE(t.saldoAnterior,0) from TblAportesImporteMensualSaldoAnterior t where t.ano = " + ano.toString() + " and t.idEntidad.id = " + e.getId().toString()).getSingleResult();
+                } catch (Exception ex) {
+                    //JOptionPane.showMessageDialog(null, e.getNombreCompleto() + " no tiene Importe Mnsual de Aportes definido. Se considera 0.");
+                    importeSaldoAnterior = 0L;
+                }
+
+                //System.out.println(importeMensual);
+                List<TblEntidadesHistoricoCategorias> listEHC = entityManager.createQuery("select t from TblEntidadesHistoricoCategorias t where t.idEntidad.id = " + e.getId().toString() + " order by t.fecha DESC").getResultList();
+                List<TblEntidadesHistoricoCategorias> listEHCtoRemove = new ArrayList<>();
+                for (TblEntidadesHistoricoCategorias ehc : listEHC) {
+                    entityManager.detach(ehc);
+                    if (getAnoMes(ehc.getFecha()) < anoMesEnero && !haPasadoDeAno) {
+                        ehc.setFecha(dAnoMesEnero);
+                        haPasadoDeAno = true;
+                    } else if (getAnoMes(ehc.getFecha()) < anoMesEnero) {
+                        listEHCtoRemove.add(ehc);
+                    }
+                }
+                listEHC.removeAll(listEHCtoRemove);
+
+                Long importeCompromiso = 0L;
+                for (int x = 0; x < listEHC.size(); x++) {
+                    Integer cantidadMeses = 0;
+                    if (listEHC.get(x).getIdCategoriaDePago().getEsActivacion()) {
+                        if (x < listEHC.size() - 1) {
+                            cantidadMeses = getAnoMes(listEHC.get(x + 1).getFecha()) - getAnoMes(listEHC.get(x).getFecha()) + 1;
+                        } else {
+                            cantidadMeses = anoMesUltimo - getAnoMes(listEHC.get(x).getFecha()) + 1;
+                        }
+
+                        importeCompromiso += cantidadMeses * importeMensual;
+                    }
+                }
+                String sQuery = "SELECT CAST(COALESCE(SUM(t.MONTO_APORTE),0) AS BIGINT) as importe "
+                        + "FROM MG.TBL_TRANSFERENCIAS t WHERE (t.ID_EVENTO_TIPO = 3 OR t.ID_EVENTO_TIPO = 4) "
+                        + "AND YEAR(t.FECHAHORA) = " + ano.toString() + " "
+                        + "AND t.COBRADO = TRUE AND t.ID_ENTIDAD = " + e.getId().toString();
+                Long importePagos = (Long) entityManager.createNativeQuery(sQuery).getSingleResult();
+
+                Integer ctaCte = (Integer) entityManager.createQuery("select t.ctacte from TblIglesia t").getSingleResult();
+
+                AportesPendientes ap = new AportesPendientes();
+                ap.setMiembro(e);
+                ap.setImporteSaldoAnterior(importeSaldoAnterior);
+                ap.setImporteCompromiso(importeCompromiso);
+                ap.setImporteCompromisoAnual(importeMensual * 10);
+                ap.setImportePagos(importePagos);
+                ap.setCtaCteIglesia(FormatCtaCte.format(ctaCte));
+                coll.add(ap);
+
+                TblAportesImporteMensualSaldoAnterior aimsa = new TblAportesImporteMensualSaldoAnterior();
+                aimsa.setAno(2018);
+                aimsa.setImporteMensual(importeMensual / 147960 * 139355);
+                aimsa.setIdEntidad(e);
+                aimsa.setSaldoAnterior(importeSaldoAnterior + importePagos - importeCompromiso);
+                entityManager.persist(aimsa);
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private static Integer getAnoMes(LocalDate fecha) {
+        return fecha.getYear() * 100 + fecha.getMonthValue();
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.gnadenheimer.mg.utils.AnoMesCellRenderer anoMesCellRenderer1;
     private javax.swing.JTextField apellidosField;
@@ -1379,6 +1497,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private javax.swing.JLabel idMiembroLabel2;
     private com.gnadenheimer.mg.utils.IntegerLongConverter integerLongConverter1;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private java.util.List<com.gnadenheimer.mg.domain.miembros.TblEntidades> list;
