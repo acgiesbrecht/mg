@@ -12,17 +12,22 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.gnadenheimer.mg.domain.TblCentrosDeCosto;
 import com.gnadenheimer.mg.domain.miembros.TblEntidades;
+import com.gnadenheimer.mg.domain.models.BalanceGeneral;
 import com.gnadenheimer.mg.utils.CurrentUser;
 import com.gnadenheimer.mg.utils.Utils;
 import java.beans.Beans;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -649,12 +654,54 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
             parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
-            Utils.getInstance().showReport("balance_general", "balance_general_subreport", parameters, false);
+            Utils.getInstance().showReport("balance_general", parameters, false, getDataSourceBalanceGeneral(txtFechaDesde.getDateTimeStrict(), txtFechaHasta.getDateTimeStrict()));
+
+            /*Utils.getInstance().showReport("balance_general", "balance_general_subreport", parameters, false);
+
+            SELECT ID, DESCRIPCION, SUM(IMPORTE) AS IMPORTE FROM (
+SELECT cc.ID, cc.DESCRIPCION, SUM(CAST(A.MONTO AS BIGINT)) AS IMPORTE
+FROM TBL_ASIENTOS A, TBL_CUENTAS_CONTABLES cc
+WHERE cc.ID = A.ID_CUENTA_CONTABLE_DEBE
+AND cc.ID_CUENTA_MADRE = $P{ctaContable}
+AND A.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+AND A.MONTO > 0
+GROUP BY cc.ID, cc.DESCRIPCION
+UNION ALL
+SELECT cc.ID, cc.DESCRIPCION, -SUM(CAST(A.MONTO AS BIGINT)) AS IMPORTE
+FROM TBL_ASIENTOS A, TBL_CUENTAS_CONTABLES cc
+WHERE cc.ID = A.ID_CUENTA_CONTABLE_HABER
+AND cc.ID_CUENTA_MADRE = $P{ctaContable}
+AND A.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+AND A.MONTO > 0
+GROUP BY cc.ID, cc.DESCRIPCION
+UNION ALL
+SELECT cc.ID, cc.DESCRIPCION, 0 AS IMPORTE
+FROM TBL_CUENTAS_CONTABLES cc
+WHERE cc.ID_CUENTA_MADRE = $P{ctaContable}
+AND IMPUTABLE = FALSE) cuentas
+GROUP BY ID, DESCRIPCION
+
+             */
         } catch (Exception ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }//GEN-LAST:event_cmdBalanceGeneralActionPerformed
+
+    private static JRDataSource getDataSourceBalanceGeneral(LocalDateTime desdeFecha, LocalDateTime hastaFecha) {
+        try {
+            List<BalanceGeneral> balanceGeneralList = new ArrayList<>();
+            Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
+            EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
+            entityManager.getTransaction().begin();
+
+            entityManager.close();
+            return new JRBeanCollectionDataSource(balanceGeneralList);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            return null;
+        }
+    }
 
     private void cmdDDJJ121ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDDJJ121ActionPerformed
         try {

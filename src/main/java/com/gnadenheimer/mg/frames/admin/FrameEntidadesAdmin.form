@@ -181,7 +181,7 @@
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmdCargarAportes" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="513" max="-2" attributes="0"/>
                       <Component id="newButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -242,10 +242,7 @@
                                           <Component id="txtAporteBase2" min="-2" pref="123" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="txtAporteBase1" min="-2" pref="123" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="txtAporteBase1" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -454,7 +451,7 @@
                   <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmdCargarAportes" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -1108,12 +1105,12 @@
         <Property name="text" type="java.lang.String" value="Importes de Aporte"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton4">
+    <Component class="javax.swing.JButton" name="cmdCargarAportes">
       <Properties>
         <Property name="text" type="java.lang.String" value="Calcular Saldo Anterior y agregar Importe Mensual"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdCargarAportesActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

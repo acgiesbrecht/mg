@@ -176,6 +176,9 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                     }
                 }
             });
+
+            cmdCargarAportes.setVisible(false);
+            
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -265,7 +268,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         cmdBorrarImporteAporte = new javax.swing.JButton();
         cmdAddImporteAporte = new javax.swing.JButton();
         montoLabel7 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        cmdCargarAportes = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -589,8 +592,8 @@ public class FrameEntidadesAdmin extends JInternalFrame {
 
         montoLabel7.setText("Importes de Aporte");
 
-        jButton4.setText("Calcular Saldo Anterior y agregar Importe Mensual");
-        jButton4.addActionListener(formListener);
+        cmdCargarAportes.setText("Calcular Saldo Anterior y agregar Importe Mensual");
+        cmdCargarAportes.addActionListener(formListener);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -599,7 +602,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton4)
+                        .addComponent(cmdCargarAportes)
                         .addGap(513, 513, 513)
                         .addComponent(newButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -651,9 +654,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(cboFormaDePago, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txtAporteBase2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtAporteBase1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(31, 31, 31))))
+                                    .addComponent(txtAporteBase1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(idMiembroLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -818,7 +819,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                     .addComponent(refreshButton)
                     .addComponent(deleteButton)
                     .addComponent(newButton)
-                    .addComponent(jButton4))
+                    .addComponent(cmdCargarAportes))
                 .addContainerGap())
         );
 
@@ -875,8 +876,8 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             else if (evt.getSource() == cmdAddImporteAporte) {
                 FrameEntidadesAdmin.this.cmdAddImporteAporteActionPerformed(evt);
             }
-            else if (evt.getSource() == jButton4) {
-                FrameEntidadesAdmin.this.jButton4ActionPerformed(evt);
+            else if (evt.getSource() == cmdCargarAportes) {
+                FrameEntidadesAdmin.this.cmdCargarAportesActionPerformed(evt);
             }
         }
 
@@ -1352,7 +1353,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         }
     }//GEN-LAST:event_cmdAddImporteAporteActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void cmdCargarAportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCargarAportesActionPerformed
         try {
             /**
              * Calcular saldo anterior
@@ -1452,7 +1453,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_cmdCargarAportesActionPerformed
 
     private static Integer getAnoMes(LocalDate fecha) {
         return fecha.getYear() * 100 + fecha.getMonthValue();
@@ -1469,6 +1470,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private javax.swing.JButton cmdAddImporteAporte;
     private javax.swing.JButton cmdBorrarCategoria;
     private javax.swing.JButton cmdBorrarImporteAporte;
+    private javax.swing.JButton cmdCargarAportes;
     private com.gnadenheimer.mg.utils.CtaCteTableCellRenderer ctaCteTableCellRenderer1;
     private javax.swing.JTextField ctacteField;
     private javax.swing.JTextField ctacteField1;
@@ -1497,7 +1499,6 @@ public class FrameEntidadesAdmin extends JInternalFrame {
     private javax.swing.JLabel idMiembroLabel2;
     private com.gnadenheimer.mg.utils.IntegerLongConverter integerLongConverter1;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private java.util.List<com.gnadenheimer.mg.domain.miembros.TblEntidades> list;
