@@ -15,7 +15,7 @@ public class BalanceGeneral implements Serializable {
     private TblCuentasContables cuentaContable;
     private String nroCuentaIndentada;
     private String nombreCuenta;
-    private Long monto;
+    private Long importe;
 
     public BalanceGeneral() {
     }
@@ -40,17 +40,17 @@ public class BalanceGeneral implements Serializable {
     }
 
     /**
-     * @return the monto
+     * @return the importe
      */
-    public Long getMonto() {
-        return monto;
+    public Long getImporte() {
+        return importe;
     }
 
     /**
-     * @param monto the monto to set
+     * @param importe the importe to set
      */
-    public void setMonto(Long monto) {
-        this.monto = monto;
+    public void setImporte(Long importe) {
+        this.importe = importe;
     }
 
     /**

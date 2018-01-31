@@ -11,6 +11,7 @@ import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.gnadenheimer.mg.domain.TblCentrosDeCosto;
+import com.gnadenheimer.mg.domain.TblCuentasContables;
 import com.gnadenheimer.mg.domain.miembros.TblEntidades;
 import com.gnadenheimer.mg.domain.models.BalanceGeneral;
 import com.gnadenheimer.mg.utils.CurrentUser;
@@ -19,6 +20,7 @@ import java.beans.Beans;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -695,12 +697,149 @@ GROUP BY ID, DESCRIPCION
             EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
             entityManager.getTransaction().begin();
 
+            List<TblCuentasContables> listCuentasMadre = (List<TblCuentasContables>) entityManager.createQuery("select t from TblCuentasContables t where t.idCuentaMadre = null and t.id <> 400000000").getResultList();
+
+            listCuentasMadre.stream().forEach(cta -> {
+                //List<BalanceGeneral> bgItemList = getSumCuentaContable(cta, entityManager, desdeFecha, hastaFecha, 1);
+                //balanceGeneralList.addAll(bgItemList);
+                Long sum1 = 0L;
+                BalanceGeneral bg1 = new BalanceGeneral();
+                bg1.setCuentaContable(cta);
+                bg1.setNombreCuenta(cta.getDescripcion());
+                bg1.setNroCuentaIndentada(cta.getId().toString());
+                List<BalanceGeneral> bgItemListNivel2 = new ArrayList<>();
+                for (TblCuentasContables cta2 : cta.getTblCuentasContablesList()) {
+                    if (cta2.getImputable()) {
+                        BalanceGeneral bg2 = getSumaCuentaImputable(cta2, entityManager, desdeFecha, hastaFecha, 2);
+                        bgItemListNivel2.add(bg2);
+                        sum1 += bg2.getImporte();
+                    } else {
+                        Long sum2 = 0L;
+                        BalanceGeneral bg2 = new BalanceGeneral();
+                        bg2.setCuentaContable(cta2);
+                        bg2.setNombreCuenta(cta2.getDescripcion());
+                        bg2.setNroCuentaIndentada(String.format("%2s", "") + cta2.getId().toString());
+                        List<BalanceGeneral> bgItemListNivel3 = new ArrayList<>();
+                        for (TblCuentasContables cta3 : cta2.getTblCuentasContablesList()) {
+                            if (cta3.getImputable()) {
+                                BalanceGeneral bg3 = getSumaCuentaImputable(cta3, entityManager, desdeFecha, hastaFecha, 3);
+                                bgItemListNivel3.add(bg3);
+                                sum2 += bg3.getImporte();
+                            } else {
+                                Long sum3 = 0L;
+                                BalanceGeneral bg3 = new BalanceGeneral();
+                                bg3.setCuentaContable(cta3);
+                                bg3.setNombreCuenta(cta3.getDescripcion());
+                                bg3.setNroCuentaIndentada(String.format("%4s", "") + cta3.getId().toString());
+                                List<BalanceGeneral> bgItemListNivel4 = new ArrayList<>();
+                                for (TblCuentasContables cta4 : cta3.getTblCuentasContablesList()) {
+                                    if (cta4.getImputable()) {
+                                        BalanceGeneral bg4 = getSumaCuentaImputable(cta4, entityManager, desdeFecha, hastaFecha, 4);
+                                        bgItemListNivel4.add(bg4);
+                                        sum3 += bg4.getImporte();
+                                    } else {
+                                        Long sum4 = 0L;
+                                        BalanceGeneral bg4 = new BalanceGeneral();
+                                        bg4.setCuentaContable(cta4);
+                                        bg4.setNombreCuenta(cta4.getDescripcion());
+                                        bg4.setNroCuentaIndentada(String.format("%6s", "") + cta4.getId().toString());
+                                        List<BalanceGeneral> bgItemListNivel5 = new ArrayList<>();
+                                        for (TblCuentasContables cta5 : cta4.getTblCuentasContablesList()) {
+                                            BalanceGeneral bg5 = getSumaCuentaImputable(cta5, entityManager, desdeFecha, hastaFecha, 5);
+                                            bgItemListNivel5.add(bg5);
+                                            sum4 += bg5.getImporte();
+                                        }
+                                        bg4.setImporte(sum4);
+                                        bgItemListNivel4.add(bg4);
+                                        bgItemListNivel4.addAll(bgItemListNivel5);
+                                        sum3 += sum4;
+                                    }
+                                }
+                                bg3.setImporte(sum3);
+                                bgItemListNivel3.add(bg3);
+                                bgItemListNivel3.addAll(bgItemListNivel4);
+                                sum2 += sum3;
+                            }
+                        }
+                        bg2.setImporte(sum2);
+                        bgItemListNivel2.add(bg2);
+                        bgItemListNivel2.addAll(bgItemListNivel3);
+                        sum1 += sum2;
+                    }
+                }
+                bg1.setImporte(sum1);
+                balanceGeneralList.add(bg1);
+                balanceGeneralList.addAll(bgItemListNivel2);
+            });
+
             entityManager.close();
             return new JRBeanCollectionDataSource(balanceGeneralList);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             return null;
         }
+    }
+
+    private static BalanceGeneral getSumaCuentaImputable(TblCuentasContables cta, EntityManager entityManager, LocalDateTime desdeFecha, LocalDateTime hastaFecha, Integer nivel) {
+        BalanceGeneral bgItemImputable = new BalanceGeneral();
+        Long importeImputable = (Long) entityManager.createNativeQuery("SELECT SUM(IMPORTE) FROM (SELECT SUM(CAST(A.MONTO AS BIGINT)) AS IMPORTE "
+                + " FROM TBL_ASIENTOS A "
+                + " WHERE A.ID_CUENTA_CONTABLE_DEBE = " + cta.getId().toString() + " AND A.FECHAHORA BETWEEN '" + desdeFecha.format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "' AND '" + hastaFecha.format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "'"
+                + " UNION ALL"
+                + " SELECT SUM(CAST(-A.MONTO AS BIGINT)) AS IMPORTE "
+                + " FROM TBL_ASIENTOS A"
+                + " WHERE A.ID_CUENTA_CONTABLE_HABER = " + cta.getId().toString() + " AND A.FECHAHORA BETWEEN '" + desdeFecha.format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "' AND '" + hastaFecha.format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "') S").getSingleResult();
+        bgItemImputable.setCuentaContable(cta);
+        bgItemImputable.setNroCuentaIndentada(String.format("%" + String.valueOf(nivel * 2) + "s", "") + cta.getId().toString());
+        bgItemImputable.setNombreCuenta(cta.getDescripcion());
+        if (importeImputable == null) {
+            importeImputable = 0L;
+        }
+        bgItemImputable.setImporte(importeImputable);
+        return bgItemImputable;
+    }
+
+    private static List<BalanceGeneral> getSumCuentaContable(TblCuentasContables cta, EntityManager entityManager, LocalDateTime desdeFecha, LocalDateTime hastaFecha, Integer nivel) {
+        //try {
+        List<BalanceGeneral> listItems = new ArrayList<>();
+        if (cta.getImputable()) {
+            BalanceGeneral bgItemImputable = new BalanceGeneral();
+            Long importeImputable = (Long) entityManager.createNativeQuery("SELECT SUM(IMPORTE) FROM (SELECT SUM(CAST(A.MONTO AS BIGINT)) AS IMPORTE "
+                    + " FROM TBL_ASIENTOS A "
+                    + " WHERE A.ID_CUENTA_CONTABLE_DEBE = " + cta.getId().toString() + " AND A.FECHAHORA BETWEEN '" + desdeFecha.format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "' AND '" + hastaFecha.format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "'"
+                    + " UNION ALL"
+                    + " SELECT SUM(CAST(-A.MONTO AS BIGINT)) AS IMPORTE "
+                    + " FROM TBL_ASIENTOS A"
+                    + " WHERE A.ID_CUENTA_CONTABLE_HABER = " + cta.getId().toString() + " AND A.FECHAHORA BETWEEN '" + desdeFecha.format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "' AND '" + hastaFecha.format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "') S").getSingleResult();
+            bgItemImputable.setCuentaContable(cta);
+            bgItemImputable.setNroCuentaIndentada(String.format("%" + String.valueOf(nivel * 3) + "s", "") + cta.getId().toString());
+            bgItemImputable.setNombreCuenta(cta.getDescripcion());
+            if (importeImputable == null) {
+                importeImputable = 0L;
+            }
+            bgItemImputable.setImporte(importeImputable);
+
+            listItems.add(bgItemImputable);
+        } else {
+            Long sumImporte = 0L;
+            for (TblCuentasContables cc : cta.getTblCuentasContablesList()) {
+                List<BalanceGeneral> bgList = getSumCuentaContable(cc, entityManager, desdeFecha, hastaFecha, nivel + 1);
+                listItems.addAll(bgList);
+                sumImporte += bgList.stream().mapToLong(BalanceGeneral::getImporte).sum();
+            }
+            BalanceGeneral bgItem = new BalanceGeneral();
+            bgItem.setCuentaContable(cta);
+            bgItem.setNombreCuenta(cta.getDescripcion());
+            bgItem.setNroCuentaIndentada(String.format("%" + String.valueOf(nivel * 3) + "s", "") + cta.getId().toString());
+            bgItem.setImporte(sumImporte);
+
+            listItems.add(bgItem);
+        }
+        return listItems;
+        /* } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            return null;
+        }*/
     }
 
     private void cmdDDJJ121ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDDJJ121ActionPerformed
@@ -735,12 +874,15 @@ GROUP BY ID, DESCRIPCION
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(FrameInformesContabilidad.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(FrameInformesContabilidad.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(FrameInformesContabilidad.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(FrameInformesContabilidad.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);

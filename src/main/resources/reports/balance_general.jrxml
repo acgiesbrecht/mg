@@ -1,47 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-02-08T21:00:21 -->
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libro_mayor" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96593">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mgdb"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="subreportHeader" class="net.sf.jasperreports.engine.JasperReport"/>
-	<parameter name="subreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
-	<queryString language="SQL">
-		<![CDATA[SELECT * FROM  TBL_CUENTAS_CONTABLES
-        WHERE ID_CUENTA_MADRE IS NULL
-        AND ID = 500000000]]>
-	</queryString>
-	<field name="ID" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="DESCRIPCION" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="ID_CUENTA_MADRE" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="IMPUTABLE" class="java.lang.Boolean">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<variable name="RET" class="java.lang.Long" calculation="System"/>
+	<parameter name="connection" class="java.sql.Connection" isForPrompting="false"/>
+	<parameter name="fechaDesde" class="java.sql.Timestamp"/>
+	<parameter name="fechaHasta" class="java.sql.Timestamp"/>
+	<field name="nroCuentaIndentada" class="java.lang.String"/>
+	<field name="nombreCuenta" class="java.lang.String"/>
+	<field name="importe" class="java.lang.Long"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="118" splitType="Stretch">
+		<band height="120" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="22" width="555" height="30" uuid="f4897dda-0521-4f9e-81de-fd9130737515"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[BALANCE GENERAL]]></text>
+				<text><![CDATA[BALANCE GENERAL DE SUMAS Y SALDOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="50" width="40" height="20" uuid="ea792960-e164-45fb-9074-10e77a5a42b9"/>
+				<reportElement x="30" y="52" width="40" height="20" uuid="ea792960-e164-45fb-9074-10e77a5a42b9"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Desde:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="70" width="40" height="20" uuid="2f0aebae-171a-4203-a1e1-b792a07d31e2"/>
+				<reportElement x="30" y="72" width="40" height="20" uuid="2f0aebae-171a-4203-a1e1-b792a07d31e2"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Hasta:]]></text>
 			</staticText>
@@ -53,6 +39,20 @@
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{subreportHeader}]]></subreportExpression>
 			</subreport>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="70" y="52" width="95" height="20" uuid="16a29e83-59bd-48c5-ab0e-0b7baa9dcaa5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="70" y="72" width="95" height="20" uuid="3e635b28-656c-44c8-8dbb-bf6b793bc6a7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>
@@ -62,14 +62,14 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[DEBITO]]></text>
+				<text><![CDATA[CREDITO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="270" y="0" width="80" height="20" uuid="0a25f7e4-dfb0-47bc-a51e-90d5a16486f9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[CREDITO]]></text>
+				<text><![CDATA[DEBITO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="30" y="0" width="240" height="20" uuid="ce65d149-ea20-4544-95fa-28531cfa1881"/>
@@ -81,27 +81,9 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="30" splitType="Stretch">
-			<subreport>
-				<reportElement x="30" y="15" width="400" height="15" isRemoveLineWhenBlank="true" uuid="d2a3e78e-f05e-418d-a9d4-1d3b98d67e06">
-					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<subreportParameter name="ctaContable">
-					<subreportParameterExpression><![CDATA[$F{ID}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="subreportObject">
-					<subreportParameterExpression><![CDATA[$P{subreportObject}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="nivel">
-					<subreportParameterExpression><![CDATA[10]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<returnValue subreportVariable="SUM_ACUMULADO" toVariable="RET"/>
-				<subreportExpression><![CDATA[$P{subreportObject}]]></subreportExpression>
-			</subreport>
+		<band height="15" splitType="Stretch">
 			<textField>
-				<reportElement x="30" y="0" width="240" height="15" uuid="8b339181-6dc1-4b1d-9c47-9541807a230d"/>
+				<reportElement x="110" y="0" width="160" height="15" uuid="8b339181-6dc1-4b1d-9c47-9541807a230d"/>
 				<box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="2">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -111,7 +93,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{DESCRIPCION}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombreCuenta}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Band" pattern="#,##0.###">
 				<reportElement x="270" y="0" width="80" height="15" uuid="fb453a34-9490-4530-9d1d-41a31926f913"/>
@@ -124,7 +106,33 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{RET}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importe}>=0 ? $F{importe} : ""]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Band" pattern="#,##0.###">
+				<reportElement x="350" y="0" width="80" height="15" uuid="fc4e9a02-4309-451a-81a8-6a5e0923e40d"/>
+				<box padding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe}<0 ? -$F{importe} : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="0" width="80" height="15" uuid="6904db0f-78cc-4de2-b32a-1266eb5bef39"/>
+				<box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nroCuentaIndentada}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
