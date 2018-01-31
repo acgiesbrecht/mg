@@ -265,7 +265,7 @@ public class FrameDonacionesVariasDetalle extends JInternalFrame {
         listMiembros = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryMiembros.getResultList());
         normalTableCellRenderer1 = new com.gnadenheimer.mg.utils.NormalTableCellRenderer();
         categoriasConverter1 = new com.gnadenheimer.mg.utils.CategoriasConverter();
-        queryTransferencias = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t WHERE t.idEventoTipo.id = 4 AND t.montoDonacion > 0 AND EXTRACT(YEAR FROM t.fechahora) = :anoActivo ORDER BY t.id");
+        queryTransferencias = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblTransferencias t WHERE t.idEventoTipo.id = 4 AND t.montoAporte = 0 AND EXTRACT(YEAR FROM t.fechahora) = :anoActivo ORDER BY t.id");
         queryTransferencias.setParameter("anoActivo", persistenceMap.get("anoActivo"));
         listTransferencias = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTransferencias.getResultList());
         jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();

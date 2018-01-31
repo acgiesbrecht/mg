@@ -47,7 +47,7 @@
     </Component>
     <Component class="javax.persistence.Query" name="queryTransferencias">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TblTransferencias t WHERE t.idEventoTipo.id = 4 AND t.montoDonacion &gt; 0 AND EXTRACT(YEAR FROM t.fechahora) = :anoActivo ORDER BY t.id"/>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM TblTransferencias t WHERE t.idEventoTipo.id = 4 AND t.montoAporte = 0 AND EXTRACT(YEAR FROM t.fechahora) = :anoActivo ORDER BY t.id"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="entityManager"/>
         </Property>

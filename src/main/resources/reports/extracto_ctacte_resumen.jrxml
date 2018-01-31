@@ -87,6 +87,29 @@
                         FROM TBL_TRANSFERENCIAS t, TBL_EVENTO_TIPOS et, TBL_TRANSFERENCIAS_ASIENTOS_TEMPORALES tat, TBL_ASIENTOS_TEMPORALES aat
                         WHERE t.COBRADO = TRUE
                         AND t.ID_EVENTO_TIPO = et.ID
+                        AND t.ID_EVENTO_TIPO <> 4
+                        AND tat.ID_TRANSFERENCIA = t.ID
+                        AND tat.ID_ASIENTO_TEMPORAL = aat.ID
+                        AND aat.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+                            GROUP BY et.DESCRIPCION
+                    UNION ALL
+                        SELECT 'Aportes Varios' as NOMBRE, SUM(aat.MONTO) AS IMPORTE
+                        FROM TBL_TRANSFERENCIAS t, TBL_EVENTO_TIPOS et, TBL_TRANSFERENCIAS_ASIENTOS_TEMPORALES tat, TBL_ASIENTOS_TEMPORALES aat
+                        WHERE t.COBRADO = TRUE
+                        AND t.ID_EVENTO_TIPO = et.ID
+                        AND t.ID_EVENTO_TIPO = 4
+                        AND t.MONTO_DONACION = 0
+                        AND tat.ID_TRANSFERENCIA = t.ID
+                        AND tat.ID_ASIENTO_TEMPORAL = aat.ID
+                        AND aat.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
+                            GROUP BY et.DESCRIPCION
+                    UNION ALL
+                        SELECT 'Donaciones Varias' as NOMBRE, SUM(aat.MONTO) AS IMPORTE
+                        FROM TBL_TRANSFERENCIAS t, TBL_EVENTO_TIPOS et, TBL_TRANSFERENCIAS_ASIENTOS_TEMPORALES tat, TBL_ASIENTOS_TEMPORALES aat
+                        WHERE t.COBRADO = TRUE
+                        AND t.ID_EVENTO_TIPO = et.ID
+                        AND t.ID_EVENTO_TIPO = 4
+                        AND t.MONTO_APORTE = 0
                         AND tat.ID_TRANSFERENCIA = t.ID
                         AND tat.ID_ASIENTO_TEMPORAL = aat.ID
                         AND aat.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
