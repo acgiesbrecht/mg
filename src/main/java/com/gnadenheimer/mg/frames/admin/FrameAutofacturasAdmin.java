@@ -19,6 +19,7 @@ import java.beans.Beans;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Persistence;
@@ -327,23 +328,26 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
                 TblAutofacturas t = list.get(masterTable.convertRowIndexToModel(selected[0]));
                 if (!t.getAnulado()) {
                     t.setAnulado(true);
+                    List<TblAsientos> asientosInversosList = new ArrayList<>();
 
                     for (TblAsientos asiento : t.getTblAsientosList()) {
-                        if (asiento.getFechahora().getMonth().getValue() < LocalDateTime.now().getMonth().getValue()) {
-                            TblAsientos asientoInverso = new TblAsientos();
-                            entityManager.persist(asientoInverso);
-                            asientoInverso.setFechahora(LocalDateTime.now());
-                            asientoInverso.setIdCentroDeCostoDebe(asiento.getIdCentroDeCostoHaber());
-                            asientoInverso.setIdCentroDeCostoHaber(asiento.getIdCentroDeCostoDebe());
-                            asientoInverso.setIdCuentaContableDebe(asiento.getIdCuentaContableHaber());
-                            asientoInverso.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
-                            asientoInverso.setMonto(asiento.getMonto());
-                            asientoInverso.setIdUser(currentUser.getUser());
-                            asientoInverso.setObservacion("Anulacion");
-                        } else {
+                        //if (asiento.getFechahora().getMonth().getValue() < LocalDateTime.now().getMonth().getValue()) {
+                        TblAsientos asientoInverso = new TblAsientos();
+                        //entityManager.persist(asientoInverso);
+                        asientoInverso.setFechahora(LocalDateTime.now());
+                        asientoInverso.setIdCentroDeCostoDebe(asiento.getIdCentroDeCostoHaber());
+                        asientoInverso.setIdCentroDeCostoHaber(asiento.getIdCentroDeCostoDebe());
+                        asientoInverso.setIdCuentaContableDebe(asiento.getIdCuentaContableHaber());
+                        asientoInverso.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
+                        asientoInverso.setMonto(asiento.getMonto());
+                        asientoInverso.setIdUser(currentUser.getUser());
+                        asientoInverso.setObservacion("Anulacion");
+                        asientosInversosList.add(asientoInverso);
+                        /*} else {
                             entityManager.remove(asiento);
-                        }
+                        }*/
                     }
+                    t.getTblAsientosList().addAll(asientosInversosList);
                     entityManager.merge(t);
                     //chkAnulado.setSelected(true);
                     entityManager.getTransaction().commit();
