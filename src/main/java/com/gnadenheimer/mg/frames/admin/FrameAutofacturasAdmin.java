@@ -5,6 +5,7 @@
  */
 package com.gnadenheimer.mg.frames.admin;
 
+import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
@@ -70,16 +71,16 @@ public class FrameAutofacturasAdmin extends JInternalFrame {
         filterHeader.getParserModel().setIgnoreCase(true);
         filterHeader.setPosition(TableFilterHeader.Position.TOP);
 
-        AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCentroDeCostoDebe, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+        AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCentroDeCostoDebe, (EventList) GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
         support2.setFilterMode(TextMatcherEditor.CONTAINS);
 
-        AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCentroDeCostoHaber, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+        AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCentroDeCostoHaber, (EventList) GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
         support5.setFilterMode(TextMatcherEditor.CONTAINS);
 
-        AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaDebe, GlazedLists.eventListOf(listCuentasContables.toArray()));
+        AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaDebe, (EventList) GlazedLists.eventListOf(listCuentasContables.toArray()));
         support3.setFilterMode(TextMatcherEditor.CONTAINS);
 
-        AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaHaber, GlazedLists.eventListOf(listCuentasContables.toArray()));
+        AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaHaber, (EventList) GlazedLists.eventListOf(listCuentasContables.toArray()));
         support4.setFilterMode(TextMatcherEditor.CONTAINS);
 
         masterTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {

@@ -52,31 +52,31 @@ public class FrameCuentasContablesAdmin extends JInternalFrame {
 
             eventListCuentasContables.clear();
             eventListCuentasContables.addAll(list);
-            AutoCompleteSupport support = AutoCompleteSupport.install(cboCuentaMadre, eventListCuentasContables);
+            AutoCompleteSupport support = AutoCompleteSupport.install(cboCuentaMadre, (EventList) eventListCuentasContables);
             support.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCuentaContado, eventListCuentasContables);
+            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCuentaContado, (EventList) eventListCuentasContables);
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCuentaCredito, eventListCuentasContables);
+            AutoCompleteSupport support2 = AutoCompleteSupport.install(cboCuentaCredito, (EventList) eventListCuentasContables);
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaACobrar, eventListCuentasContables);
+            AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaACobrar, (EventList) eventListCuentasContables);
             support3.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaCompras, eventListCuentasContables);
+            AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaCompras, (EventList) eventListCuentasContables);
             support4.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCuentaAportes, eventListCuentasContables);
+            AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCuentaAportes, (EventList) eventListCuentasContables);
             support5.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support7 = AutoCompleteSupport.install(cboCuentaDonaciones, eventListCuentasContables);
+            AutoCompleteSupport support7 = AutoCompleteSupport.install(cboCuentaDonaciones, (EventList) eventListCuentasContables);
             support7.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support8 = AutoCompleteSupport.install(cboCuentaEfectivo, eventListCuentasContables);
+            AutoCompleteSupport support8 = AutoCompleteSupport.install(cboCuentaEfectivo, (EventList) eventListCuentasContables);
             support8.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support9 = AutoCompleteSupport.install(cboCuentaCtaCte, eventListCuentasContables);
+            AutoCompleteSupport support9 = AutoCompleteSupport.install(cboCuentaCtaCte, (EventList) eventListCuentasContables);
             support9.setFilterMode(TextMatcherEditor.CONTAINS);
             readCuentasPorDefecto();
 
