@@ -177,8 +177,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                 }
             });
 
-            cmdCargarAportes.setVisible(false);
-            
+            //cmdCargarAportes.setVisible(false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -592,7 +591,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
 
         montoLabel7.setText("Importes de Aporte");
 
-        cmdCargarAportes.setText("Calcular Saldo Anterior y agregar Importe Mensual");
+        cmdCargarAportes.setText("Agregar Importe Mensual de Aporte");
         cmdCargarAportes.addActionListener(formListener);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -615,7 +614,7 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(ctacteLabel2)))
-                .addGap(0, 514, Short.MAX_VALUE))
+                .addGap(0, 584, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1357,25 +1356,103 @@ public class FrameEntidadesAdmin extends JInternalFrame {
         try {
             /**
              * Calcular saldo anterior
+             *
+             * Integer ano = 2017; List<AportesPendientes> coll = new
+             * ArrayList<>();
+             *
+             * //entityManager.getTransaction().begin(); List<TblEntidades>
+             * listE = entityManager.createQuery("select e from TblEntidades e
+             * where e.fechaSalidaCongregacion IS NULL and e in (select
+             * t.idEntidad from TblEntidadesHistoricoCategorias t) order by
+             * e.ctacte").getResultList();
+             *
+             * LocalDate dAnoMesEnero = LocalDate.ofYearDay(ano, 1); Integer
+             * anoMesEnero = getAnoMes(dAnoMesEnero); Integer anoMesUltimo;
+             *
+             * if (LocalDate.now().getMonth().getValue() < 10) { anoMesUltimo =
+             * LocalDate.now().getYear() * 100 +
+             * LocalDate.now().getMonth().getValue() - 1; } else { anoMesUltimo
+             * = ano * 100 + 10; } if (ano != LocalDate.now().getYear()) {
+             * anoMesUltimo = ano * 100 + 10; } for (TblEntidades e : listE) {
+             *
+             * //System.out.println(e.getId());
+             * //System.out.println(e.getNombreCompleto()); Boolean
+             * haPasadoDeAno = false; Long importeMensual = 0L; try {
+             * importeMensual = (Long) entityManager.createQuery("select
+             * COALESCE(t.importeMensual,0) from
+             * TblAportesImporteMensualSaldoAnterior t where t.ano = " +
+             * ano.toString() + " and t.idEntidad.id = " +
+             * e.getId().toString()).getSingleResult(); } catch (Exception ex) {
+             * //JOptionPane.showMessageDialog(null, e.getNombreCompleto() + "
+             * no tiene Importe Mnsual de Aportes definido. Se considera 0.");
+             * importeMensual = 0L; }
+             *
+             * Long importeSaldoAnterior = 0L; try { importeSaldoAnterior =
+             * (Long) entityManager.createQuery("select
+             * COALESCE(t.saldoAnterior,0) from
+             * TblAportesImporteMensualSaldoAnterior t where t.ano = " +
+             * ano.toString() + " and t.idEntidad.id = " +
+             * e.getId().toString()).getSingleResult(); } catch (Exception ex) {
+             * //JOptionPane.showMessageDialog(null, e.getNombreCompleto() + "
+             * no tiene Importe Mnsual de Aportes definido. Se considera 0.");
+             * importeSaldoAnterior = 0L; }
+             *
+             * //System.out.println(importeMensual);
+             * List<TblEntidadesHistoricoCategorias> listEHC =
+             * entityManager.createQuery("select t from
+             * TblEntidadesHistoricoCategorias t where t.idEntidad.id = " +
+             * e.getId().toString() + " order by t.fecha DESC").getResultList();
+             * List<TblEntidadesHistoricoCategorias> listEHCtoRemove = new
+             * ArrayList<>(); for (TblEntidadesHistoricoCategorias ehc :
+             * listEHC) { entityManager.detach(ehc); if
+             * (getAnoMes(ehc.getFecha()) < anoMesEnero && !haPasadoDeAno) {
+             * ehc.setFecha(dAnoMesEnero); haPasadoDeAno = true; } else if
+             * (getAnoMes(ehc.getFecha()) < anoMesEnero) {
+             * listEHCtoRemove.add(ehc); } } listEHC.removeAll(listEHCtoRemove);
+             *
+             * Long importeCompromiso = 0L; for (int x = 0; x < listEHC.size();
+             * x++) { Integer cantidadMeses = 0; if
+             * (listEHC.get(x).getIdCategoriaDePago().getEsActivacion()) { if (x
+             * < listEHC.size() - 1) { cantidadMeses = getAnoMes(listEHC.get(x +
+             * 1).getFecha()) - getAnoMes(listEHC.get(x).getFecha()) + 1; } else
+             * { cantidadMeses = anoMesUltimo -
+             * getAnoMes(listEHC.get(x).getFecha()) + 1; }
+             *
+             * importeCompromiso += cantidadMeses * importeMensual; } } String
+             * sQuery = "SELECT CAST(COALESCE(SUM(t.MONTO_APORTE),0) AS BIGINT)
+             * as importe " + "FROM MG.TBL_TRANSFERENCIAS t WHERE
+             * (t.ID_EVENTO_TIPO = 3 OR t.ID_EVENTO_TIPO = 4) " + "AND
+             * YEAR(t.FECHAHORA) = " + ano.toString() + " " + "AND t.COBRADO =
+             * TRUE AND t.ID_ENTIDAD = " + e.getId().toString(); Long
+             * importePagos = (Long)
+             * entityManager.createNativeQuery(sQuery).getSingleResult();
+             *
+             * Integer ctaCte = (Integer) entityManager.createQuery("select
+             * t.ctacte from TblIglesia t").getSingleResult();
+             *
+             * AportesPendientes ap = new AportesPendientes(); ap.setMiembro(e);
+             * ap.setImporteSaldoAnterior(importeSaldoAnterior);
+             * ap.setImporteCompromiso(importeCompromiso);
+             * ap.setImporteCompromisoAnual(importeMensual * 10);
+             * ap.setImportePagos(importePagos);
+             * ap.setCtaCteIglesia(FormatCtaCte.format(ctaCte)); coll.add(ap);
+             *
+             * TblAportesImporteMensualSaldoAnterior aimsa = new
+             * TblAportesImporteMensualSaldoAnterior(); aimsa.setAno(2018);
+             * aimsa.setImporteMensual(importeMensual / 147960 * 139355);
+             * aimsa.setIdEntidad(e);
+             * aimsa.setSaldoAnterior(importeSaldoAnterior + importePagos -
+             * importeCompromiso); entityManager.persist(aimsa); }
              */
-            Integer ano = 2017;
-            List<AportesPendientes> coll = new ArrayList<>();
+            String sImporteMensualAnterior = JOptionPane.showInputDialog(this, "Cuanto era el importe mensual para una persona el año pasado?");
+            Integer importeMensualAnterior = Integer.parseInt(sImporteMensualAnterior);
+            String sImporteMensualActual = JOptionPane.showInputDialog(this, "Cuanto es el importe mensual para una persona del año actual?");
+            Integer importeMensualActual = Integer.parseInt(sImporteMensualActual);
 
-            //entityManager.getTransaction().begin();
-            List<TblEntidades> listE = entityManager.createQuery("select e from TblEntidades e where e.fechaSalidaCongregacion IS NULL and e in (select t.idEntidad from TblEntidadesHistoricoCategorias t) order by e.ctacte").getResultList();
-
-            LocalDate dAnoMesEnero = LocalDate.ofYearDay(ano, 1);
-            Integer anoMesEnero = getAnoMes(dAnoMesEnero);
-            Integer anoMesUltimo;
-
-            if (LocalDate.now().getMonth().getValue() < 10) {
-                anoMesUltimo = LocalDate.now().getYear() * 100 + LocalDate.now().getMonth().getValue() - 1;
-            } else {
-                anoMesUltimo = ano * 100 + 10;
-            }
-            if (ano != LocalDate.now().getYear()) {
-                anoMesUltimo = ano * 100 + 10;
-            }
+            List<TblEntidades> listE = entityManager.createQuery("select e from TblEntidades e"
+                    + " where e.fechaSalidaCongregacion IS NULL and e in (select"
+                    + " t.idEntidad from TblEntidadesHistoricoCategorias t) order by"
+                    + " e.ctacte").getResultList();
             for (TblEntidades e : listE) {
 
                 //System.out.println(e.getId());
@@ -1383,72 +1460,20 @@ public class FrameEntidadesAdmin extends JInternalFrame {
                 Boolean haPasadoDeAno = false;
                 Long importeMensual = 0L;
                 try {
-                    importeMensual = (Long) entityManager.createQuery("select COALESCE(t.importeMensual,0) from TblAportesImporteMensualSaldoAnterior t where t.ano = " + ano.toString() + " and t.idEntidad.id = " + e.getId().toString()).getSingleResult();
+                    importeMensual = (Long) entityManager.createQuery("select COALESCE(t.importeMensual,0) from TblAportesImporteMensualSaldoAnterior t where t.ano = " + ((Integer) (LocalDate.now().getYear() - 1)).toString() + " and t.idEntidad.id = " + e.getId().toString()).getSingleResult();
                 } catch (Exception ex) {
-                    //JOptionPane.showMessageDialog(null, e.getNombreCompleto() + " no tiene Importe Mnsual de Aportes definido. Se considera 0.");
                     importeMensual = 0L;
                 }
 
-                Long importeSaldoAnterior = 0L;
-                try {
-                    importeSaldoAnterior = (Long) entityManager.createQuery("select COALESCE(t.saldoAnterior,0) from TblAportesImporteMensualSaldoAnterior t where t.ano = " + ano.toString() + " and t.idEntidad.id = " + e.getId().toString()).getSingleResult();
-                } catch (Exception ex) {
-                    //JOptionPane.showMessageDialog(null, e.getNombreCompleto() + " no tiene Importe Mnsual de Aportes definido. Se considera 0.");
-                    importeSaldoAnterior = 0L;
-                }
-
-                //System.out.println(importeMensual);
-                List<TblEntidadesHistoricoCategorias> listEHC = entityManager.createQuery("select t from TblEntidadesHistoricoCategorias t where t.idEntidad.id = " + e.getId().toString() + " order by t.fecha DESC").getResultList();
-                List<TblEntidadesHistoricoCategorias> listEHCtoRemove = new ArrayList<>();
-                for (TblEntidadesHistoricoCategorias ehc : listEHC) {
-                    entityManager.detach(ehc);
-                    if (getAnoMes(ehc.getFecha()) < anoMesEnero && !haPasadoDeAno) {
-                        ehc.setFecha(dAnoMesEnero);
-                        haPasadoDeAno = true;
-                    } else if (getAnoMes(ehc.getFecha()) < anoMesEnero) {
-                        listEHCtoRemove.add(ehc);
-                    }
-                }
-                listEHC.removeAll(listEHCtoRemove);
-
-                Long importeCompromiso = 0L;
-                for (int x = 0; x < listEHC.size(); x++) {
-                    Integer cantidadMeses = 0;
-                    if (listEHC.get(x).getIdCategoriaDePago().getEsActivacion()) {
-                        if (x < listEHC.size() - 1) {
-                            cantidadMeses = getAnoMes(listEHC.get(x + 1).getFecha()) - getAnoMes(listEHC.get(x).getFecha()) + 1;
-                        } else {
-                            cantidadMeses = anoMesUltimo - getAnoMes(listEHC.get(x).getFecha()) + 1;
-                        }
-
-                        importeCompromiso += cantidadMeses * importeMensual;
-                    }
-                }
-                String sQuery = "SELECT CAST(COALESCE(SUM(t.MONTO_APORTE),0) AS BIGINT) as importe "
-                        + "FROM MG.TBL_TRANSFERENCIAS t WHERE (t.ID_EVENTO_TIPO = 3 OR t.ID_EVENTO_TIPO = 4) "
-                        + "AND YEAR(t.FECHAHORA) = " + ano.toString() + " "
-                        + "AND t.COBRADO = TRUE AND t.ID_ENTIDAD = " + e.getId().toString();
-                Long importePagos = (Long) entityManager.createNativeQuery(sQuery).getSingleResult();
-
-                Integer ctaCte = (Integer) entityManager.createQuery("select t.ctacte from TblIglesia t").getSingleResult();
-
-                AportesPendientes ap = new AportesPendientes();
-                ap.setMiembro(e);
-                ap.setImporteSaldoAnterior(importeSaldoAnterior);
-                ap.setImporteCompromiso(importeCompromiso);
-                ap.setImporteCompromisoAnual(importeMensual * 10);
-                ap.setImportePagos(importePagos);
-                ap.setCtaCteIglesia(FormatCtaCte.format(ctaCte));
-                coll.add(ap);
-
                 TblAportesImporteMensualSaldoAnterior aimsa = new TblAportesImporteMensualSaldoAnterior();
-                aimsa.setAno(2018);
-                aimsa.setImporteMensual(importeMensual / 147960 * 139355);
+                aimsa.setAno(LocalDate.now().getYear());
+                aimsa.setImporteMensual(importeMensual / importeMensualAnterior * importeMensualActual);
+                aimsa.setSaldoAnterior(0L);
                 aimsa.setIdEntidad(e);
-                aimsa.setSaldoAnterior(importeSaldoAnterior + importePagos - importeCompromiso);
+                aimsa.setSaldoAnterior(0);
                 entityManager.persist(aimsa);
             }
-
+            JOptionPane.showMessageDialog(null, "Se han agregado el importe proporcional al historico de cada miembro activo. Debe presionar guardar para que los cambios sean permanentes.");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
