@@ -5,6 +5,7 @@
  */
 package com.gnadenheimer.mg.frames.informes;
 
+import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.matchers.TextMatcherEditor;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
@@ -94,10 +95,10 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                 entityManager.getTransaction().begin();
             }
 
-            AutoCompleteSupport support = AutoCompleteSupport.install(cboCentroDeCosto, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            AutoCompleteSupport support = AutoCompleteSupport.install(cboCentroDeCosto, (EventList) GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCentroDeCostoExtractoCtaCte, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            AutoCompleteSupport support1 = AutoCompleteSupport.install(cboCentroDeCostoExtractoCtaCte, (EventList) GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support1.setFilterMode(TextMatcherEditor.CONTAINS);
 
             cboPeriodo.setSelectedIndex(0);

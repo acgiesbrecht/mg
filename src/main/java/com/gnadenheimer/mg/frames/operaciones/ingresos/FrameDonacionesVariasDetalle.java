@@ -133,16 +133,16 @@ public class FrameDonacionesVariasDetalle extends JInternalFrame {
             AutoCompleteSupport support2 = AutoCompleteSupport.install(cboMiembro, eventListMiembros);
             support2.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCentroDeCostoDebe, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            AutoCompleteSupport support5 = AutoCompleteSupport.install(cboCentroDeCostoDebe, (EventList) GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support5.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support6 = AutoCompleteSupport.install(cboCentroDeCostoHaber, GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
+            AutoCompleteSupport support6 = AutoCompleteSupport.install(cboCentroDeCostoHaber, (EventList) GlazedLists.eventListOf(listCentrosDeCosto.toArray()));
             support6.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaDebe, GlazedLists.eventListOf(listCuentasContables.toArray()));
+            AutoCompleteSupport support3 = AutoCompleteSupport.install(cboCuentaDebe, (EventList) GlazedLists.eventListOf(listCuentasContables.toArray()));
             support3.setFilterMode(TextMatcherEditor.CONTAINS);
 
-            AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaHaber, GlazedLists.eventListOf(listCuentasContables.toArray()));
+            AutoCompleteSupport support4 = AutoCompleteSupport.install(cboCuentaHaber, (EventList) GlazedLists.eventListOf(listCuentasContables.toArray()));
             support4.setFilterMode(TextMatcherEditor.CONTAINS);
 
             idEventoTipo = entityManager.find(TblEventoTipos.class, 4);
