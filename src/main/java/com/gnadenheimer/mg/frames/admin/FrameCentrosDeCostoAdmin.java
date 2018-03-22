@@ -123,6 +123,11 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${esDonacionExterna}"));
         columnBinding.setColumnName("Es Donacion Externa");
         columnBinding.setColumnClass(Boolean.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${preferido}"));
+        columnBinding.setColumnName("Es CdC por defecto");
+        columnBinding.setColumnClass(Boolean.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
@@ -134,6 +139,7 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
             masterTable.getColumnModel().getColumn(3).setPreferredWidth(100);
             masterTable.getColumnModel().getColumn(4).setPreferredWidth(100);
             masterTable.getColumnModel().getColumn(4).setCellRenderer(ctaCteTableCellRenderer2);
+            masterTable.getColumnModel().getColumn(6).setResizable(false);
         }
 
         idLabel.setText("Nro.:");
