@@ -416,9 +416,12 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
             if (listE.size() > 0) {
                 PagosRealizados p = new PagosRealizados();
-                TblEntidades en = (TblEntidades) entityManager.createQuery("SELECT e FROM TblEntidades e WHERE e.nombres = 'Clientes Varios'").getSingleResult();
-                if (en == null) {
-                    JOptionPane.showMessageDialog(null, "No existe una Entidad con Nombre Clientes Varios para facturar los importes consolidados.");
+                TblEntidades en;
+                try {
+                    en = (TblEntidades) entityManager.createQuery("SELECT e FROM TblEntidades e WHERE e.nombres = 'Clientes Varios'").getSingleResult();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "No existe una Entidad con Nombre 'Clientes Varios' para facturar los importes consolidados.");
+                    return;
                 }
                 en.setRazonSocial("Importes Consolidados");
                 en.setRucSinDv("44444401");
