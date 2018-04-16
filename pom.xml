@@ -126,7 +126,7 @@
                             <goal>updates</goal>
                         </goals>
                         <configuration>
-                            <appbase>http://www.gnadenheimer.com/mg</appbase>
+                            <appbase>https://www.gnadenheimer.com/mg</appbase>
                             <libPath>lib</libPath>
                             <mainClass>com.gnadenheimer.mg.frames.MdiFrame</mainClass>
                             <outputJarVersions>true</outputJarVersions>
