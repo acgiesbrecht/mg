@@ -300,7 +300,7 @@ public class MdiFrame extends javax.swing.JFrame {
             }
 
             /**
-             * Make BackUp if last autoBackUp is older than 3 days
+             * Make BackUp if last autoBackUp is older than 7 days
              */
             Utils.getInstance().deleteOldBackUps();
             Utils.getInstance().backUpIfOld();
