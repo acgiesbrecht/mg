@@ -415,7 +415,7 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="jCheckBox1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Es el Centro de Costo ppor defecto"/>
+        <Property name="text" type="java.lang.String" value="Es el Centro de Costo por defecto"/>
       </Properties>
       <BindingProperties>
         <BindingProperty name="selected" source="masterTable" sourcePath="${selectedElement.preferido}" target="jCheckBox1" targetPath="selected" updateStrategy="0" immediately="false">

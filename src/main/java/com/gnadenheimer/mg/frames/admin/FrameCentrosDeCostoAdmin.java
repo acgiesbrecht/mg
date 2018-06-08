@@ -198,7 +198,7 @@ public class FrameCentrosDeCostoAdmin extends JInternalFrame {
         ctacteLabel1.setForeground(new java.awt.Color(153, 153, 153));
         ctacteLabel1.setText("Formato: 70123801 2001237 (Solo numeros sin simbolos como - o /)");
 
-        jCheckBox1.setText("Es el Centro de Costo ppor defecto");
+        jCheckBox1.setText("Es el Centro de Costo por defecto");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.preferido}"), jCheckBox1, org.jdesktop.beansbinding.BeanProperty.create("selected"));
         binding.setSourceNullValue(false);
