@@ -101,6 +101,7 @@ public class MdiFrame extends javax.swing.JFrame {
      */
     public MdiFrame() {
         try {
+            java.security.Security.setProperty("networkaddress.cache.ttl" , "0");
             persistenceMap = Utils.getInstance().getPersistenceMap();
 
             if (Boolean.parseBoolean(Preferences.userRoot().node("MG").get("isServer", "true"))) {
