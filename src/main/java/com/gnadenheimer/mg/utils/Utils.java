@@ -131,10 +131,16 @@ public class Utils extends Component {
             String databaseIP;
             databaseIP = Preferences.userRoot().node("MG").get("DatabaseIP", "127.0.0.1");
             Map<String, String> persistenceMap = new HashMap<>();
-            persistenceMap.put("javax.persistence.jdbc.url", "jdbc:derby://" + databaseIP + ":1527/mgdb;create=true");
+            /*persistenceMap.put("javax.persistence.jdbc.url", "jdbc:derby://" + databaseIP + ":1527/mgdb;create=true");
             persistenceMap.put("javax.persistence.jdbc.user", "mg");
             persistenceMap.put("javax.persistence.jdbc.password", "123456");
-            persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
+            persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");*/
+
+            persistenceMap.put("javax.persistence.jdbc.url", "jdbc:postgresql://191.97.121.213:5432/mgtest?currentSchema=mg");
+            persistenceMap.put("javax.persistence.jdbc.user", "postgres");
+            persistenceMap.put("javax.persistence.jdbc.password", "03022007");
+            persistenceMap.put("javax.persistence.jdbc.driver", "org.postgresql.Driver");
+
             persistenceMap.put("backUpDir", Preferences.userRoot().node("MG").get("Datadir", (new JFileChooser()).getFileSystemView().getDefaultDirectory().toString() + "\\javadb") + "\\autoBackUp");
             persistenceMap.put("anoActivo", Preferences.userRoot().node("MG").get("anoActivo", String.valueOf(LocalDate.now().getYear())));
             return persistenceMap;
@@ -332,7 +338,7 @@ public class Utils extends Component {
             Statement stmt = conn.createStatement();
             for (String s : sql) {
                 try {
-                    stmt.executeUpdate(s);
+                    stmt.executeUpdate(s.replace("MG.", ""));
                 } catch (SQLException exx) {
                     error = true;
                     JOptionPane.showMessageDialog(null, exx.getMessage() + String.valueOf(exx.getErrorCode()));
