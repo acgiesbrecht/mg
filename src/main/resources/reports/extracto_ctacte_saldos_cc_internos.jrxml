@@ -10,7 +10,7 @@
 	<parameter name="subreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
 	<parameter name="subSubreportObject" class="net.sf.jasperreports.engine.JasperReport"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT * FROM TBL_CENTROS_DE_COSTO ORDER BY DESCRIPCION]]>
+		<![CDATA[SELECT * FROM TBL_CENTROS_DE_COSTO WHERE ES_DONACION_EXTERNA = FALSE ORDER BY DESCRIPCION]]>
 	</queryString>
 	<field name="ID" class="java.lang.Integer"/>
 	<field name="DESCRIPCION" class="java.lang.String"/>
@@ -37,7 +37,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="13" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Extracto de Cuenta Corriente - Saldos"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Centros de Costo Internos - Saldos"]]></textFieldExpression>
 			</textField>
 			<subreport>
 				<reportElement x="0" y="0" width="555" height="20" uuid="e3d4dc27-5db1-48be-ab9f-5dbed0fab1d6">

@@ -166,7 +166,10 @@
                               <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
-                              <Component id="jLabel16" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel16" max="32767" attributes="0"/>
+                                  <Component id="jLabel24" alignment="0" max="32767" attributes="0"/>
+                              </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -174,20 +177,18 @@
                           <Component id="cmdFacturasCreditoResumen" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="cmdDDJJ121" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="cmdBalanceGeneral" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="cmdExtractoCtaCte1" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="cmdExtractoCtaCte2" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="cmdExtractoCtaCteSaldos" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                                      <Component id="cboCentroDeCostoExtractoCtaCte" min="-2" pref="163" max="-2" attributes="0"/>
                                   </Group>
+                                  <Component id="cmdBalanceGeneral" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="cmdDDJJ121" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
+                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                              <Component id="cboCentroDeCostoExtractoCtaCte" min="-2" pref="163" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="cmdFacturasCreditoResumenCC" min="-2" max="-2" attributes="0"/>
@@ -199,6 +200,13 @@
                               </Group>
                           </Group>
                           <Component id="cmdLibroVentas" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="cmdExtractoCtaCteSaldos" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="cmdExtractoCtaCteSaldosInternos" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="cmdExtractoCtaCteSaldosExternos" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
               </Group>
@@ -279,10 +287,7 @@
                       <Component id="cmdLibroVentas" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="cmdExtractoCtaCte2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="cmdExtractoCtaCteSaldos" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="cmdExtractoCtaCte2" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="cmdExtractoCtaCte1" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                               <Group type="103" alignment="0" groupAlignment="3" attributes="0">
@@ -306,7 +311,14 @@
                       <Component id="cmdFacturasCreditoResumen" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="44" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel24" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                  <Component id="cmdExtractoCtaCteSaldosInternos" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmdExtractoCtaCteSaldos" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmdExtractoCtaCteSaldosExternos" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="16" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -511,7 +523,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="cmdExtractoCtaCteSaldos">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Ver Saldos"/>
+        <Property name="text" type="java.lang.String" value="Todos"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdExtractoCtaCteSaldosActionPerformed"/>
@@ -575,6 +587,27 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdLibroComprasCdCyCCActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="cmdExtractoCtaCteSaldosInternos">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Internos"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdExtractoCtaCteSaldosInternosActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel24">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Saldos Centro de Costo"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="cmdExtractoCtaCteSaldosExternos">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Externos"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdExtractoCtaCteSaldosExternosActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

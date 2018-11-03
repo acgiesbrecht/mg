@@ -9,12 +9,12 @@
     <parameter name="centroDeCosto" class="java.lang.Integer"/>
     <queryString language="SQL">
 		<![CDATA[SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
-                        FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
-                        WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
-                        AND a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
+                        FROM TBL_FACTURAS_COMPRA f
+                            INNER JOIN TBL_FACTURAS_COMPRA_ASIENTOS fa ON fa.ID_FACTURA_COMPRA = f.ID
+                            INNER JOIN TBL_ASIENTOS a ON a.ID = fa.ID_ASIENTO
+                            INNER JOIN TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd ON ccpd.ID_CUENTA_CTA_CTE = a.ID_CUENTA_CONTABLE_HABER
+                        WHERE a.ID_CENTRO_DE_COSTO_HABER = $P{centroDeCosto}
                             AND ccpd.ID = 1
-                            AND a.ID = fa.ID_ASIENTO
-                            AND f.ID = fa.ID_FACTURA_COMPRA
                             AND a.FECHAHORA BETWEEN $P{fechaDesde} AND $P{fechaHasta}
                             GROUP BY f.FECHAHORA, f.RAZON_SOCIAL, a.MONTO, f.ID
                     UNION ALL

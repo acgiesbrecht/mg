@@ -162,6 +162,9 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         cmdFacturasCreditoResumenCC = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
         cmdLibroComprasCdCyCC = new javax.swing.JButton();
+        cmdExtractoCtaCteSaldosInternos = new javax.swing.JButton();
+        jLabel24 = new javax.swing.JLabel();
+        cmdExtractoCtaCteSaldosExternos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -291,7 +294,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             }
         });
 
-        cmdExtractoCtaCteSaldos.setText("Ver Saldos");
+        cmdExtractoCtaCteSaldos.setText("Todos");
         cmdExtractoCtaCteSaldos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdExtractoCtaCteSaldosActionPerformed(evt);
@@ -338,6 +341,22 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         cmdLibroComprasCdCyCC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdLibroComprasCdCyCCActionPerformed(evt);
+            }
+        });
+
+        cmdExtractoCtaCteSaldosInternos.setText("Internos");
+        cmdExtractoCtaCteSaldosInternos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdExtractoCtaCteSaldosInternosActionPerformed(evt);
+            }
+        });
+
+        jLabel24.setText("Saldos Centro de Costo");
+
+        cmdExtractoCtaCteSaldosExternos.setText("Externos");
+        cmdExtractoCtaCteSaldosExternos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdExtractoCtaCteSaldosExternosActionPerformed(evt);
             }
         });
 
@@ -395,24 +414,24 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(52, 52, 52))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cmdFacturasCreditoResumen)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmdDDJJ121)
-                                    .addComponent(cmdBalanceGeneral)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(cmdExtractoCtaCte1)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cmdExtractoCtaCte2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cmdExtractoCtaCteSaldos)
-                                        .addGap(12, 12, 12)
-                                        .addComponent(jLabel2)
-                                        .addGap(32, 32, 32)
-                                        .addComponent(cboCentroDeCostoExtractoCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(cmdExtractoCtaCte2))
+                                    .addComponent(cmdBalanceGeneral)
+                                    .addComponent(cmdDDJJ121))
+                                .addGap(114, 114, 114)
+                                .addComponent(jLabel2)
+                                .addGap(32, 32, 32)
+                                .addComponent(cboCentroDeCostoExtractoCtaCte, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cmdFacturasCreditoResumenCC)
@@ -420,7 +439,13 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                                         .addComponent(cmdExtractoCtaCteCC)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(cmdExtractoCtaCte3))))
-                            .addComponent(cmdLibroVentas))))
+                            .addComponent(cmdLibroVentas)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cmdExtractoCtaCteSaldos)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cmdExtractoCtaCteSaldosInternos)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmdExtractoCtaCteSaldosExternos)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -483,9 +508,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                         .addComponent(cmdLibroVentas)
                         .addGap(4, 4, 4)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(cmdExtractoCtaCte2)
-                                .addComponent(cmdExtractoCtaCteSaldos))
+                            .addComponent(cmdExtractoCtaCte2)
                             .addComponent(cmdExtractoCtaCte1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -502,7 +525,13 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                         .addComponent(cmdDDJJ121)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmdFacturasCreditoResumen)))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdExtractoCtaCteSaldosInternos)
+                    .addComponent(cmdExtractoCtaCteSaldos)
+                    .addComponent(cmdExtractoCtaCteSaldosExternos))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
@@ -951,6 +980,30 @@ GROUP BY ID, DESCRIPCION
         }
     }//GEN-LAST:event_cmdLibroComprasCdCyCCActionPerformed
 
+    private void cmdExtractoCtaCteSaldosInternosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExtractoCtaCteSaldosInternosActionPerformed
+                try {
+            Map parameters = new HashMap();
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
+            Utils.getInstance().showReport("extracto_ctacte_saldos_cc_internos", "extracto_ctacte_saldos_subreport", "extracto_ctacte_saldos_subreport_saldo_anterior", parameters, false);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdExtractoCtaCteSaldosInternosActionPerformed
+
+    private void cmdExtractoCtaCteSaldosExternosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExtractoCtaCteSaldosExternosActionPerformed
+                try {
+            Map parameters = new HashMap();
+            parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
+            parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
+            Utils.getInstance().showReport("extracto_ctacte_saldos_cc_externos", "extracto_ctacte_saldos_subreport", "extracto_ctacte_saldos_subreport_saldo_anterior", parameters, false);
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdExtractoCtaCteSaldosExternosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1020,6 +1073,8 @@ GROUP BY ID, DESCRIPCION
     private javax.swing.JButton cmdExtractoCtaCte3;
     private javax.swing.JButton cmdExtractoCtaCteCC;
     private javax.swing.JButton cmdExtractoCtaCteSaldos;
+    private javax.swing.JButton cmdExtractoCtaCteSaldosExternos;
+    private javax.swing.JButton cmdExtractoCtaCteSaldosInternos;
     private javax.swing.JButton cmdFacturasCreditoResumen;
     private javax.swing.JButton cmdFacturasCreditoResumenCC;
     private javax.swing.JButton cmdLibroCompras;
@@ -1043,6 +1098,7 @@ GROUP BY ID, DESCRIPCION
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private java.util.List<com.gnadenheimer.mg.domain.TblCentrosDeCosto> listCentrosDeCosto;
