@@ -259,7 +259,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
         jLabel7.setText("Impresion de Facturas");
 
-        cboFormatoFactura.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preimpreso con rejilla", "Preimpreso sin rejilla", "Preimpreso sin rejilla - CREDITO", "Preimpreso con rejilla modelo especial Bethel Theodor", "Preimpreso sin rejilla Bethel" }));
+        cboFormatoFactura.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preimpreso con rejilla", "Preimpreso sin rejilla", "Preimpreso sin rejilla - CREDITO", "Preimpreso con rejilla modelo especial Bethel Theodor", "Preimpreso sin rejilla Bethel", "Preimpreso sin rejilla - Lichtenau" }));
         cboFormatoFactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboFormatoFacturaActionPerformed(evt);
@@ -493,6 +493,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         cboModoImpresion.setSelectedItem(Preferences.userRoot().node("MG").get("modoImpresion", "Normal"));
         cboFormatoFactura.setSelectedItem(Preferences.userRoot().node("MG").get("formatoFactura", "Preimpreso sin rejilla"));
         rbCobrarACPorMes.setSelected(Boolean.parseBoolean(Preferences.userRoot().node("MG").get("cobrarAC", "true")));
+        rbCobrarACPorEvento.setSelected(!Boolean.parseBoolean(Preferences.userRoot().node("MG").get("cobrarAC", "true")));
         jspAnoActivo.setValue(Integer.parseInt(Preferences.userRoot().node("MG").get("anoActivo", String.valueOf(LocalDate.now().getYear()))));
     }//GEN-LAST:event_formInternalFrameActivated
 
