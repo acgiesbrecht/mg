@@ -628,9 +628,9 @@
 				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
-				<text><![CDATA[TIMBRADO N° 12519070
-Inicio de Válidez: 27 de diciembre de 2017
-Fin de Válidez: 31 de diciembre de 2018]]></text>
+				<text><![CDATA[TIMBRADO N° 13155622
+Inicio de Válidez: 28 de diciembre de 2018
+Fin de Válidez: 31 de diciembre de 2019]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="380" y="34" width="164" height="20" uuid="0f44f23f-628b-42d0-b9ec-8cdb355b30d3"/>
@@ -742,9 +742,9 @@ Dpto. Boquerón, Paraguay]]></text>
 				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
-				<text><![CDATA[TIMBRADO N° 12519070
-Inicio de Válidez: 27 de diciembre de 2017
-Fin de Válidez: 31 de diciembre de 2018]]></text>
+				<text><![CDATA[TIMBRADO N° 13155622
+Inicio de Válidez: 28 de diciembre de 2018
+Fin de Válidez: 31 de diciembre de 2019]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="380" y="452" width="164" height="20" uuid="f0e0e44f-3e36-49eb-b69f-1cce62f9e2a9"/>
