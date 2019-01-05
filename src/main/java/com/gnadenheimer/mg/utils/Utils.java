@@ -180,7 +180,10 @@ public class Utils extends Component {
                 reportFactura = "factura_bethel";
             } else if (reportFactura.equals("Preimpreso sin rejilla Bethel")) {
                 reportFactura = "factura_con_rejilla_bethel_full";
+            } else if (reportFactura.equals("Preimpreso sin rejilla - Lichtenau")) {
+                reportFactura = "factura_con_rejilla_lichtenau";
             }
+
             JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFactura + ".jrxml"));
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());

@@ -287,6 +287,7 @@ public class FrameTimbradosAutofacturasAdmin extends JInternalFrame {
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         com.gnadenheimer.mg.domain.TblTimbradosAutofacturas t = new com.gnadenheimer.mg.domain.TblTimbradosAutofacturas();
         t.setIdUser(currentUser.getUser());
+        t.setActivo(false);
         entityManager.persist(t);
         list.add(t);
         Integer row = list.size() - 1;
