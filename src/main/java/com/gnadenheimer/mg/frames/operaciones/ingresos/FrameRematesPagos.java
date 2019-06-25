@@ -895,7 +895,7 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
             cmdProcesar.setEnabled(false);
             //Connection conn = DriverManager.getConnection("jdbc:postgresql://" + databaseIP + ":5432/remate", "postgres", "123456");
             Connection conn = DriverManager.getConnection(persistenceMap.get("javax.persistence.jdbc.url"), persistenceMap.get("javax.persistence.jdbc.user"), persistenceMap.get("javax.persistence.jdbc.password"));
-            LocalDate fecha = LocalDate.now();
+            //LocalDate fecha = LocalDate.now();
             Integer t_id = 0;
             Integer r_id = 0;
             /*if (!StringUtils.isNumeric(txtTransferencia.getText())) {
@@ -1035,8 +1035,8 @@ public class FrameRematesPagos extends javax.swing.JInternalFrame {
                 entityManager.getTransaction().begin();
                 entityManager.persist(recibo);
 
-                recibo.setFechahora(fecha);
-                recibo.setFechahoraCompromiso(fecha);
+                recibo.setFechahora(dtpFechaPago.getDate());
+                recibo.setFechahoraCompromiso(dtpFechaPago.getDate());
                 recibo.setIdEntidad(selectedEntidad);
                 recibo.setConcepto(((TblEventos) cboFechaRemate.getSelectedItem()).getDescripcion());
                 recibo.setMontoAporte(((Long) (reciboMonto.longValue() * ((TblEventos) cboFechaRemate.getSelectedItem()).getPorcentajeAporte().longValue() / 100)).intValue());
