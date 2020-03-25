@@ -7,7 +7,7 @@
 	<parameter name="razon_social" class="java.lang.String"/>
 	<parameter name="ruc" class="java.lang.String"/>
 	<parameter name="importe_donacion" class="java.lang.Integer"/>
-	<parameter name="importe_aporte" class="java.lang.Integer"/>
+	<parameter name="importeAporte" class="java.lang.Integer"/>
 	<parameter name="domicilio" class="java.lang.String"/>
 	<parameter name="box" class="java.lang.String"/>
 	<parameter name="usuario" class="java.lang.String"/>
@@ -95,21 +95,21 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_aporte}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{importeAporte}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="322" y="305" width="100" height="17" uuid="caa97086-a9f5-4d71-8110-9252cede0752"/>
 				<textElement textAlignment="Right">
 					<font fontName="Times New Roman" size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_aporte}+$P{importe_donacion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{importeAporte}+$P{importe_donacion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="451" y="320" width="102" height="17" uuid="6c3699fc-2b5e-4ea7-b3da-7f6d5b6fd866"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_aporte}+$P{importe_donacion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{importeAporte}+$P{importe_donacion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement x="130" y="319" width="402" height="20" uuid="e83d7c4d-3770-4af7-9090-c4afad1c9142"/>
@@ -122,7 +122,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[com.gnadenheimer.utils.NumeroALetras.convertNumberToLetter($P{importe_aporte}+$P{importe_donacion})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[com.gnadenheimer.utils.NumeroALetras.convertNumberToLetter($P{importeAporte}+$P{importe_donacion})]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="45" y="490" width="220" height="20" uuid="9b4148f0-4518-4f5e-89a1-3bacbc918afe"/>
@@ -203,21 +203,21 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_aporte}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{importeAporte}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="322" y="726" width="100" height="17" uuid="caa97086-a9f5-4d71-8110-9252cede0752"/>
 				<textElement textAlignment="Right">
 					<font fontName="Times New Roman" size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_aporte}+$P{importe_donacion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{importeAporte}+$P{importe_donacion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="451" y="741" width="102" height="17" uuid="6c3699fc-2b5e-4ea7-b3da-7f6d5b6fd866"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_aporte}+$P{importe_donacion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{importeAporte}+$P{importe_donacion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement x="130" y="740" width="402" height="20" uuid="e83d7c4d-3770-4af7-9090-c4afad1c9142"/>
@@ -230,7 +230,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[com.gnadenheimer.utils.NumeroALetras.convertNumberToLetter($P{importe_aporte}+$P{importe_donacion})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[com.gnadenheimer.utils.NumeroALetras.convertNumberToLetter($P{importeAporte}+$P{importe_donacion})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="159" y="760" width="16" height="20" uuid="7ecd1285-56aa-4f35-8aef-60e9bccbe09d"/>

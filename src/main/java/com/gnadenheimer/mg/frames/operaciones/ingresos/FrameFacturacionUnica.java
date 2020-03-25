@@ -616,7 +616,7 @@ public class FrameFacturacionUnica extends JInternalFrame {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
 
-            Utils.getInstance().printFactura(factura);
+            Utils.getInstance().printFactura(factura, true);
 
             refresh();
 

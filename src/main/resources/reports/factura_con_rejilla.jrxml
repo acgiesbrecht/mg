@@ -2,15 +2,15 @@
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
 <!-- 2017-06-30T20:57:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="78c20e98-1bd9-416f-bdbe-337f3341ab83">
-	<parameter name="factura_id" class="java.lang.Integer"/>
-	<parameter name="fechahora" class="java.sql.Date"/>
-	<parameter name="razon_social" class="java.lang.String"/>
-	<parameter name="ruc" class="java.lang.String"/>
-	<parameter name="importe_donacion" class="java.lang.Integer"/>
-	<parameter name="importe_aporte" class="java.lang.Integer"/>
-	<parameter name="domicilio" class="java.lang.String"/>
-	<parameter name="box" class="java.lang.String"/>
-	<parameter name="usuario" class="java.lang.String"/>
+	<field name="nro" class="java.lang.Integer"/>
+	<field name="fechahora" class="java.time.LocalDateTime"/>
+	<field name="razonSocial" class="java.lang.String"/>
+	<field name="ruc" class="java.lang.String"/>
+	<field name="importeDonacion" class="java.lang.Integer"/>
+	<field name="importeAporte" class="java.lang.Integer"/>
+	<field name="domicilio" class="java.lang.String"/>
+	<field name="casillaDeCorreo" class="java.lang.Integer"/>
+	<field name="idUser.nombrecompleto" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -64,7 +64,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{fechahora}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fechahora}.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement x="115" y="132" width="375" height="20" uuid="e9c030c0-7389-479e-b406-fdfc5897cc2b"/>
@@ -77,7 +77,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{razon_social}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{razonSocial}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement x="50" y="112" width="140" height="20" uuid="1adc7f3a-3acb-430e-853c-4a1a6ce5afec"/>
@@ -90,14 +90,14 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{ruc}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{ruc}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#000000" isBlankWhenNull="false">
 				<reportElement x="345" y="73" width="186" height="24" uuid="8e001246-49f6-4bc3-b931-bbd496e29651"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[String.format("%07d", $P{factura_id})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[String.format("%07d", $F{nro})]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="320" y="322" width="76" height="15" uuid="caa97086-a9f5-4d71-8110-9252cede0752"/>
@@ -105,7 +105,7 @@
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_aporte}+$P{importe_donacion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importeAporte}+$F{importeDonacion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="472" y="337" width="77" height="15" uuid="6c3699fc-2b5e-4ea7-b3da-7f6d5b6fd866"/>
@@ -118,7 +118,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_aporte}+$P{importe_donacion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importeAporte}+$F{importeDonacion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement x="100" y="337" width="372" height="15" uuid="e83d7c4d-3770-4af7-9090-c4afad1c9142"/>
@@ -131,7 +131,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[com.gnadenheimer.utils.NumeroALetras.convertNumberToLetter($P{importe_aporte}+$P{importe_donacion})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[com.gnadenheimer.utils.NumeroALetras.convertNumberToLetter($F{importeAporte}+$F{importeDonacion})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="5" y="92" width="45" height="20" uuid="cd85e5db-b342-45fe-a014-10bad7650e68"/>
@@ -342,14 +342,14 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[com.gnadenheimer.utils.NumeroALetras.convertNumberToLetter($P{importe_aporte}+$P{importe_donacion})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[com.gnadenheimer.utils.NumeroALetras.convertNumberToLetter($F{importeAporte}+$F{importeDonacion})]]></textFieldExpression>
 			</textField>
 			<textField pattern="#000000" isBlankWhenNull="false">
 				<reportElement x="345" y="490" width="186" height="24" uuid="7f28a5bf-e0d1-47eb-a4c3-087a7be26a2d"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[String.format("%07d", $P{factura_id})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[String.format("%07d", $F{nro})]]></textFieldExpression>
 			</textField>
 			<rectangle>
 				<reportElement mode="Transparent" x="472" y="584" width="77" height="170" uuid="1afeb313-0dff-40b2-b286-81e9c048864e"/>
@@ -363,7 +363,7 @@
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_aporte}+$P{importe_donacion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importeAporte}+$F{importeDonacion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="50" y="509" width="220" height="20" uuid="b4a17670-b03d-4a88-bc19-a4c2f1e1628e"/>
@@ -376,7 +376,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{fechahora}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fechahora}.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))]]></textFieldExpression>
 			</textField>
 			<rectangle>
 				<reportElement mode="Transparent" x="320" y="584" width="76" height="170" uuid="f4416fb4-b451-496c-a0c4-12afabc80b68"/>
@@ -401,7 +401,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{ruc}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{ruc}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="319" y="599" width="77" height="15" uuid="eeb74386-b2ee-449a-bacb-ad4cf926eb0d"/>
@@ -409,7 +409,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_donacion}==0 ? $P{importe_aporte} : $P{importe_donacion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importeDonacion}==0 ? $F{importeAporte} : $F{importeDonacion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="320" y="614" width="76" height="15" uuid="a5592893-4ce9-431f-9cf9-2490dfae9488"/>
@@ -417,7 +417,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_donacion} == 0 ? "" : $P{importe_aporte} == 0 ? "" : $P{importe_aporte}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importeDonacion} == 0 ? "" : $F{importeAporte} == 0 ? "" : $F{importeAporte}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement x="115" y="549" width="375" height="20" uuid="a464e97d-aa29-4c1e-9699-03dfe16bb26c"/>
@@ -430,7 +430,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{razon_social}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{razonSocial}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="55" y="584" width="265" height="15" uuid="3c763f82-1858-465c-bd70-19f445f6ed9f"/>
@@ -456,7 +456,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_aporte}+$P{importe_donacion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importeAporte}+$F{importeDonacion}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="5" y="584" width="50" height="15" uuid="36ca8896-27f3-417d-95ef-e418c4ec1370"/>
@@ -515,7 +515,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{domicilio} !=null ? $P{domicilio} + ($P{box} != "" ? " - C.d.C.: " + $P{box} : "") : ""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{domicilio} !=null ? $F{domicilio} + ($F{casillaDeCorreo}.toString() != "" ? " - C.d.C.: " + $F{casillaDeCorreo}.toString() : "") : ""]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="270" y="529" width="58" height="20" uuid="a72e1750-50a2-4d3b-a6e8-1e93fcf3156d"/>
@@ -535,7 +535,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{domicilio} !=null ? $P{domicilio} + ($P{box} != "" ? " - C.d.C.: " + $P{box} : "") : ""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{domicilio} !=null ? $F{domicilio} + ($F{casillaDeCorreo}.toString() != "" ? " - C.d.C.: " + $F{casillaDeCorreo}.toString() : "") : ""]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="270" y="112" width="58" height="20" uuid="699bf562-8b18-4571-b488-d0c7b7afe7cf"/>
@@ -549,14 +549,14 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Cajero: " + $P{usuario}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Cajero: " + $F{idUser.nombrecompleto}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="455" y="770" width="92" height="14" uuid="3425293e-645b-4c9f-babb-056e1c0c058b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Cajero: " + $P{usuario}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Cajero: " + $F{idUser.nombrecompleto}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement x="55" y="182" width="195" height="15" uuid="7d0ba534-25e6-4e87-b0de-7e6faa3038cb"/>
@@ -564,7 +564,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_donacion}==0 ? "Aporte" : "Donación"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importeDonacion}==0 ? "Aporte" : "Donación"]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement x="55" y="599" width="195" height="15" uuid="5f3ea01b-1046-4d6b-b8b8-7c26741f3abe"/>
@@ -572,7 +572,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_donacion}==0 ? "Aporte" : "Donación"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importeDonacion}==0 ? "Aporte" : "Donación"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="320" y="182" width="77" height="15" uuid="023ba6e7-6707-4e86-b9ba-f0ce835c4cfc"/>
@@ -580,7 +580,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_donacion}==0 ? $P{importe_aporte} : $P{importe_donacion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importeDonacion}==0 ? $F{importeAporte} : $F{importeDonacion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="320" y="197" width="76" height="15" uuid="41ad71af-6b50-47ed-addf-748fd3c08fc5"/>
@@ -588,7 +588,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_donacion} == 0 ? "" : $P{importe_aporte} == 0 ? "" : $P{importe_aporte}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importeDonacion} == 0 ? "" : $F{importeAporte} == 0 ? "" : $F{importeAporte}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement x="55" y="197" width="195" height="15" uuid="ae4fb256-ffd2-410c-b7f5-3237f33b6f0d"/>
@@ -596,7 +596,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_donacion}==0 ? "" : $P{importe_aporte} == 0 ? "" : "Aporte"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importeDonacion}==0 ? "" : $F{importeAporte} == 0 ? "" : "Aporte"]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement x="55" y="614" width="195" height="15" uuid="ce82d7b0-6e3d-4650-be5c-a046e0fd3a1e"/>
@@ -604,7 +604,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{importe_donacion}==0 ? "" : $P{importe_aporte} == 0 ? "" : "Aporte"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{importeDonacion}==0 ? "" : $F{importeAporte} == 0 ? "" : "Aporte"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

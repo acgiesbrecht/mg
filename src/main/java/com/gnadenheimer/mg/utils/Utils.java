@@ -51,6 +51,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.type.WhenNoDataTypeEnum;
 import net.sf.jasperreports.view.JasperViewer;
 import org.apache.commons.io.IOUtils;
@@ -145,7 +146,7 @@ public class Utils extends Component {
         }
     }
 
-    public void printFactura(TblFacturas factura) {
+    /*public void printFactura(TblFacturas factura) {
         try {
 
             Map parameters = new HashMap();
@@ -195,6 +196,68 @@ public class Utils extends Component {
             jasperPrint.setLeftMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0")));
             jasperPrint.setTopMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaTopMargin", "0")));
             JasperPrintManager.printReport(jasperPrint, false);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }*/
+    
+    public void printFactura(TblFacturas factura, Boolean print) {
+        try {
+            List<TblFacturas> facturasList = new ArrayList<>();
+            facturasList.add(factura);
+            printFactura(facturasList, print);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }
+    
+    public void printFactura(List<TblFacturas> facturasList, Boolean print) {
+        try {
+
+            Map parameters = new HashMap();
+
+            parameters.put("logo", getClass().getResourceAsStream("/reports/cclogo200.png"));
+            parameters.put("logo2", getClass().getResourceAsStream("/reports/cclogo200.png"));
+            parameters.put("logo3", getClass().getResourceAsStream("/reports/cclogo200.png"));
+            parameters.put("logo-bethel", getClass().getResourceAsStream("/images/logo-bethel.png"));
+            parameters.put("logo-bethel2", getClass().getResourceAsStream("/images/logo-bethel.png"));
+            parameters.put("logo-friesen", getClass().getResourceAsStream("/images/logo-friesen.png"));
+
+            parameters.put(JRParameter.REPORT_LOCALE, Locale.forLanguageTag("es"));
+
+            //JOptionPane.showMessageDialog(null, getClass().getResource("/reports/cclogo200.png").getPath());
+            String reportFactura = Preferences.userRoot().node("MG").get("formatoFactura", "Preimpreso sin rejilla");
+            if (reportFactura.equals("Preimpreso sin rejilla")) {
+                reportFactura = "factura_con_rejilla";
+            } else if (reportFactura.equals("Preimpreso sin rejilla - CREDITO")) {
+                reportFactura = "factura_con_rejilla_credito";
+            } else if (reportFactura.equals("Preimpreso con rejilla")) {
+                reportFactura = "factura";
+            } else if (reportFactura.equals("Preimpreso con rejilla modelo especial Bethel Theodor")) {
+                reportFactura = "factura_bethel";
+            } else if (reportFactura.equals("Preimpreso sin rejilla Bethel")) {
+                reportFactura = "factura_con_rejilla_bethel_full";
+            } else if (reportFactura.equals("Preimpreso sin rejilla - Lichtenau")) {
+                reportFactura = "factura_con_rejilla_lichtenau";
+            }
+
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/" + reportFactura + ".jrxml"));
+                       
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, new JRBeanCollectionDataSource(facturasList));
+            jasperPrint.setLeftMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0")));
+            jasperPrint.setTopMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaTopMargin", "0")));
+
+            if(print){
+                jasperPrint.setLeftMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaLeftMargin", "0")));
+                jasperPrint.setTopMargin(Integer.getInteger(Preferences.userRoot().node("MG").get("facturaTopMargin", "0")));
+                JasperPrintManager.printReport(jasperPrint, false);
+            }else{
+                JasperViewer jReportsViewer = new JasperViewer(jasperPrint, false);
+                jReportsViewer.setVisible(true);
+            }            
+            
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);

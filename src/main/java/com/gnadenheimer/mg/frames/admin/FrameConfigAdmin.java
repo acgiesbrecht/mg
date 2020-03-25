@@ -548,7 +548,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
             testF.setImporteAporte(10775520);
             testF.setImporteDonacion(25700000);
 
-            Utils.getInstance().printFactura(testF);
+            Utils.getInstance().printFactura(testF, false);
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());

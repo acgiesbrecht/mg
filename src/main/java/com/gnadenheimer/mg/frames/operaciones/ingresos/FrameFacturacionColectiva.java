@@ -21,7 +21,6 @@ import java.awt.EventQueue;
 import java.beans.Beans;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -136,6 +135,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         dtpFechaDesde = new DatePicker(datePickerSettings);
         dtpFechaHasta = new DatePicker(datePickerSettings1);
+        generatePdfButton = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -206,6 +206,9 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
         jLabel2.setText("Hasta (Fecha de Facturacion):");
 
+        generatePdfButton.setText("Guardar & Generar PDF");
+        generatePdfButton.addActionListener(formListener);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -215,6 +218,8 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(generatePdfButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(imprimirButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelarButton))
@@ -228,7 +233,8 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dtpFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(cmdCalcular)))
+                        .addComponent(cmdCalcular)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -246,11 +252,12 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     .addComponent(dtpFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmdCalcular))
                 .addGap(10, 10, 10)
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarButton)
-                    .addComponent(imprimirButton))
+                    .addComponent(imprimirButton)
+                    .addComponent(generatePdfButton))
                 .addContainerGap())
         );
 
@@ -271,6 +278,9 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             else if (evt.getSource() == cmdCalcular) {
                 FrameFacturacionColectiva.this.cmdCalcularActionPerformed(evt);
             }
+            else if (evt.getSource() == generatePdfButton) {
+                FrameFacturacionColectiva.this.generatePdfButtonActionPerformed(evt);
+            }
         }
     }// </editor-fold>//GEN-END:initComponents
 
@@ -281,11 +291,14 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
 
+            List<TblFacturas> facturasList = new ArrayList<>();
+                
             list.stream().forEach((factura) -> {
-
-                Utils.getInstance().printFactura(factura);
-
+                facturasList.add(factura);
             });
+                        
+            Utils.getInstance().printFactura(facturasList, true);
+            
             java.util.List data = query.getResultList();
             data.stream().forEach((entity) -> {
                 entityManager.refresh(entity);
@@ -314,6 +327,34 @@ public class FrameFacturacionColectiva extends JInternalFrame {
             imprimirButton.setEnabled(true);
         }
     }//GEN-LAST:event_cmdCalcularActionPerformed
+
+    private void generatePdfButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generatePdfButtonActionPerformed
+        try {
+
+            entityManager.getTransaction().commit();
+            entityManager.getTransaction().begin();
+            
+            List<TblFacturas> facturasList = new ArrayList<>();
+                
+            list.stream().forEach((factura) -> {
+
+                facturasList.add(factura);
+
+            });
+                        
+            Utils.getInstance().printFactura(facturasList, false);
+            
+            java.util.List data = query.getResultList();
+            data.stream().forEach((entity) -> {
+                entityManager.refresh(entity);
+            });
+            list.clear();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+        }
+    }//GEN-LAST:event_generatePdfButtonActionPerformed
 
     private void generate() {
         try {
@@ -547,6 +588,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
     private com.github.lgooddatepicker.components.DatePicker dtpFechaHasta;
     private javax.persistence.EntityManager entityManager;
     private com.gnadenheimer.mg.utils.FacturaNroTableCellRenderer facturaNroTableCellRenderer1;
+    private javax.swing.JButton generatePdfButton;
     private javax.swing.JButton imprimirButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

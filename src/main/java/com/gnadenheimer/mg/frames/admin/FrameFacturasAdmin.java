@@ -239,7 +239,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
         try {
             if (masterTable.getSelectedRow() > -1) {
                 TblFacturas factura = list.get(masterTable.convertRowIndexToModel(masterTable.getSelectedRow()));
-                Utils.getInstance().printFactura(factura);
+                Utils.getInstance().printFactura(factura, true);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
