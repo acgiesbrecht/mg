@@ -5,9 +5,6 @@
  */
 package com.gnadenheimer.mg.frames.admin;
 
-import com.gnadenheimer.mg.domain.TblAsientos;
-import com.gnadenheimer.mg.domain.TblCuentasContablesPorDefecto;
-import com.gnadenheimer.mg.domain.TblEventoDetalle;
 import com.gnadenheimer.mg.domain.TblFacturas;
 import com.gnadenheimer.mg.domain.TblTransferencias;
 import com.gnadenheimer.mg.domain.miembros.TblEntidades;
@@ -16,6 +13,7 @@ import com.gnadenheimer.mg.utils.Utils;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -27,23 +25,23 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.StringJoiner;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.prefs.Preferences;
 import java.util.zip.ZipInputStream;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
+import java.nio.file.*;
+import org.apache.derby.drda.NetworkServerControl;
+
 
 /**
  *
@@ -136,7 +134,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         cboSqlFiles = new javax.swing.JComboBox();
         jLabel7 = new javax.swing.JLabel();
         cboFormatoFactura = new javax.swing.JComboBox();
-        jButton3 = new javax.swing.JButton();
+        btnPrepBd = new javax.swing.JButton();
         updateSETbutton = new javax.swing.JButton();
         lblStatusSET = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
@@ -266,12 +264,11 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(255, 0, 153));
-        jButton3.setText("Actualizar Asientos");
-        jButton3.setEnabled(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnPrepBd.setBackground(new java.awt.Color(255, 0, 153));
+        btnPrepBd.setText("Preparar Base para MG3");
+        btnPrepBd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnPrepBdActionPerformed(evt);
             }
         });
 
@@ -339,9 +336,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                     .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3)
                     .addComponent(jButton6)
-                    .addComponent(jButton5)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -384,7 +379,11 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(cmdReset, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cmdReset, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(140, 140, 140)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnPrepBd)
+                                    .addComponent(jButton5)))
                             .addComponent(jLabel7))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
@@ -427,35 +426,36 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                                 .addComponent(rbCobrarACPorMes)
                                 .addComponent(rbCobrarACPorEvento))
                             .addComponent(jLabel1))))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel21)
-                    .addComponent(jspAnoActivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel21)
+                            .addComponent(jspAnoActivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 189, Short.MAX_VALUE)
+                        .addComponent(updateSETbutton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(87, 87, 87)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
                             .addComponent(jButton2))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(3, 3, 3)
-                                .addComponent(jButton4))
+                                .addComponent(jButton4)
+                                .addGap(17, 17, 17)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cmdReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton3)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmdReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnPrepBd)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton5)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton7))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
-                        .addComponent(updateSETbutton)))
+                        .addComponent(jButton7)))
                 .addGap(18, 18, 18))
         );
 
@@ -556,9 +556,9 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         }
     }//GEN-LAST:event_cmdFacturaPrintTestActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnPrepBdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrepBdActionPerformed
         try {
-            CurrentUser currentUser = CurrentUser.getInstance();
+            /*CurrentUser currentUser = CurrentUser.getInstance();
             Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
             EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
             entityManager.getTransaction().begin();
@@ -652,14 +652,45 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                     entityManager.merge(t);
                 }
             }*/
-            entityManager.getTransaction().commit();
+           /* entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
-            JOptionPane.showMessageDialog(null, "Actualizacion satisfactoria!");
+            JOptionPane.showMessageDialog(null, "Actualizacion satisfactoria!");*/
+           /*String[] args = new String[5];
+           args[0] = "mgdb.sql";
+           args[1] = "jdbc:derby:"+System.getProperties().getProperty("derby.system.home")+"\\mgdb\\;create=false;user=mg;password=123456";
+           args[2] = "MG";
+           args[3] = "true";           
+           //derby2pg.core.main(args);     
+           
+           
+           JFileChooser chooser = new JFileChooser();
+            chooser.setCurrentDirectory(new java.io.File(System.getProperties().getProperty("derby.system.home")));
+            chooser.setDialogTitle("Eligir ubicación de derby2pg.jar");            
+            chooser.setAcceptAllFileFilterUsed(false);            
+
+            
+            if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                String s = chooser.getSelectedFile().getParent();
+                
+                String cmd = "java -jar derby2pg.jar mgdb.sql \"" + args[1] + "\" \"MG\" true";
+                
+                NetworkServerControl server = new NetworkServerControl();                
+                server.shutdown();
+                
+                final ProcessBuilder pBuilder = new ProcessBuilder("java", "-jar", 
+                   "derby2pg.jar", args[0], args[1],args[2],args[3]).inheritIO();
+                //final ProcessBuilder pBuilder = new ProcessBuilder(cmd); 
+                pBuilder.directory(new File(chooser.getSelectedFile().getParent()));
+                final Process process = pBuilder.start();                
+            }*/
+                              
+           Utils.getInstance().executeUpdateSQL("/sql/javadb_prep_mg3.sql", false);
+           
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnPrepBdActionPerformed
 
     private void updateSETbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSETbuttonActionPerformed
         try {
@@ -950,6 +981,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgCobrarAC;
+    private javax.swing.JButton btnPrepBd;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox cboFormatoFactura;
     private javax.swing.JComboBox cboModoImpresion;
@@ -959,7 +991,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
     private javax.swing.JButton cmdReset;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
