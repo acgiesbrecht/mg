@@ -986,7 +986,7 @@ public class FrameAportesDetalle extends JInternalFrame {
 
                             Integer monto = 0;
                             try {
-                                monto = ((Long) entityManager.createQuery("select t.importeMensual from TblAportesImporteMensualSaldoAnterior t where t.idEntidad.id = " + miembro.getId().toString() + " and t.ano = " + String.valueOf(currEvento.getFecha().getYear())).getSingleResult()).intValue();
+                                monto = ((Long) entityManager.createQuery("select t.importeMensual from TblAportesImporteMensualSaldoAnterior t where t.idEntidad.id = " + miembro.getId().toString() + " and t.ano = " + String.valueOf(currEvento.getFecha().getYear())).setMaxResults(1).getSingleResult()).intValue();
                             } catch (Exception ex) {
                                 monto = 0;
                             }
