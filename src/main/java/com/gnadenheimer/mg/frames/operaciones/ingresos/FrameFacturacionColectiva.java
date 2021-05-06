@@ -472,7 +472,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
 
                 for (TblEntidades e : listE) {
                     if (siguienteFacturaNro <= listTimbrados.get(0).getNroFacturaFin()) {
-                        Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesList a WHERE t.idEntidad = :entidad AND t.fechahora <= :fechaDesde AND t.fechahora <= :fechaHasta AND a.facturado = false");
+                        Query queryT = entityManager.createQuery("SELECT distinct t FROM TblTransferencias t JOIN t.tblAsientosTemporalesList a WHERE t.idEntidad = :entidad AND t.fechahora >= :fechaDesde AND t.fechahora <= :fechaHasta AND a.facturado = false");
                         queryT.setParameter("fechaDesde", dtpFechaDesde.getDate());
                         queryT.setParameter("fechaHasta", dtpFechaHasta.getDate());
                         queryT.setParameter("entidad", e);
@@ -544,7 +544,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                     if (ts == null) {
                         ts = new LinkedList<>();
                         f.setTblAsientosList((List) ts);
-                    }
+                    }                                                            
                     for (TblAsientosTemporales aT : pago.getAsientosTemporalesList()) {
                         TblAsientos asiento = new TblAsientos();
                         asiento.setFechahora(f.getFechahora());
@@ -574,7 +574,7 @@ public class FrameFacturacionColectiva extends JInternalFrame {
                 }
             }
 
-        } catch (Exception ex) {
+        } catch (Exception ex) {            
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
