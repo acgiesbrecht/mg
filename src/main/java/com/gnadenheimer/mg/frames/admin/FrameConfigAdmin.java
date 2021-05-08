@@ -853,8 +853,8 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         try {
             try (Connection con = Utils.getInstance().getDatabaseConnection()) {
                 try (Statement stmt = con.createStatement()) {
-                    stmt.execute("ALTER TABLE tbl_asientos ALTER COLUMN id_user NULL");
-                    stmt.execute("update tbl_asientos set id_user = null");
+                    stmt.execute("TRUNCATE TABLE tbl_contribuyentes");
+                    /*stmt.execute("update tbl_asientos set id_user = null");
                     stmt.execute("ALTER TABLE tbl_autofacturas ALTER COLUMN id_user NULL");
                     stmt.execute("update tbl_autofacturas set id_user = null");
                     stmt.execute("update tbl_entidades set id_user = NULL");
@@ -887,7 +887,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                     stmt.execute("ALTER TABLE TBL_TIMBRADOS_NOTAS_DE_CREDITO ALTER COLUMN id_user NULL");
                     stmt.execute("update TBL_TIMBRADOS_NOTAS_DE_CREDITO set id_user = null");
                     stmt.execute("ALTER TABLE TBL_TRANSFERENCIAS ALTER COLUMN id_user NULL");
-                    stmt.execute("update TBL_TRANSFERENCIAS set id_user = null");                    
+                    stmt.execute("update TBL_TRANSFERENCIAS set id_user = null");                    */
                 }
             }
         } catch (Exception ex) {
@@ -948,7 +948,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                             prepStmt.setString(1, ruc[0]);
                             prepStmt.setString(2, ruc[2]);
                             prepStmt.setString(3, StringEscapeUtils.escapeSql(ruc[1]));
-                            prepStmt.execute();
+                            prepStmt.addBatch();
                             a++;
                             //joiner.add("INSERT INTO MG.TBL_CONTRIBUYENTES VALUES ('" + ruc[0] + "','" + ruc[2] + "', '" + StringEscapeUtils.escapeSql(ruc[1]) + "')");
                             if (a == 50000) {
