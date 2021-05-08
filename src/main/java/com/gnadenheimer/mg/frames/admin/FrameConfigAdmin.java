@@ -664,10 +664,10 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                     entityManager.merge(t);
                 }
             }*/
-           /* entityManager.getTransaction().commit();
+ /* entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
             JOptionPane.showMessageDialog(null, "Actualizacion satisfactoria!");*/
-           /*String[] args = new String[5];
+ /*String[] args = new String[5];
            args[0] = "mgdb.sql";
            args[1] = "jdbc:derby:"+System.getProperties().getProperty("derby.system.home")+"\\mgdb\\;create=false;user=mg;password=123456";
            args[2] = "MG";
@@ -695,9 +695,9 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                 pBuilder.directory(new File(chooser.getSelectedFile().getParent()));
                 final Process process = pBuilder.start();                
             }*/
-                              
-           Utils.getInstance().executeUpdateSQL("/sql/javadb_prep_mg3.sql", false);
-           
+
+            Utils.getInstance().executeUpdateSQL("/sql/javadb_prep_mg3.sql", false);
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
@@ -850,6 +850,51 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
     }//GEN-LAST:event_cboFormatoFacturaActionPerformed
 
     private void exportDbButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportDbButtonActionPerformed
+        try {
+            try (Connection con = Utils.getInstance().getDatabaseConnection()) {
+                try (Statement stmt = con.createStatement()) {
+                    stmt.execute("ALTER TABLE tbl_asientos ALTER COLUMN id_user NULL");
+                    stmt.execute("update tbl_asientos set id_user = null");
+                    stmt.execute("ALTER TABLE tbl_autofacturas ALTER COLUMN id_user NULL");
+                    stmt.execute("update tbl_autofacturas set id_user = null");
+                    stmt.execute("update tbl_entidades set id_user = NULL");
+                    stmt.execute("ALTER TABLE TBL_EVENTOS ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_EVENTOS set id_user = null");
+                    stmt.execute("ALTER TABLE TBL_EVENTO_CUOTAS ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_EVENTO_CUOTAS set id_user = null");
+                    stmt.execute("ALTER TABLE TBL_EVENTO_DETALLE ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_EVENTO_DETALLE set id_user = null");
+                    stmt.execute("ALTER TABLE TBL_FACTURAS ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_FACTURAS set id_user = null");
+                    stmt.execute("ALTER TABLE TBL_FACTURAS_COMPRA ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_FACTURAS_COMPRA set id_user = null");
+                    stmt.execute("ALTER TABLE TBL_MIEMBROS_RELACIONES ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_MIEMBROS_RELACIONES set id_user = null");
+                    stmt.execute("ALTER TABLE TBL_NOTAS_DE_CREDITO ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_NOTAS_DE_CREDITO set id_user = null");
+                    stmt.execute("ALTER TABLE TBL_NOTAS_DE_CREDITO_COMPRAS ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_NOTAS_DE_CREDITO_COMPRAS set id_user = null");
+                    stmt.execute("ALTER TABLE TBL_RECIBOS ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_RECIBOS set id_user = null");
+                    stmt.execute("ALTER TABLE TBL_RECIBOS_COMPRA ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_RECIBOS_COMPRA set id_user = null");
+                    stmt.execute("ALTER TABLE TBL_TIMBRADOS ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_TIMBRADOS set id_user = null");
+                    stmt.execute("ALTER TABLE TBL_TIMBRADOS_AUTOFACTURAS ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_TIMBRADOS_AUTOFACTURAS set id_user = null");
+                    stmt.execute("ALTER TABLE TBL_TIMBRADOS_COMPRAS ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_TIMBRADOS_COMPRAS set id_user = null");
+                    stmt.execute("ALTER TABLE TBL_TIMBRADOS_NOTAS_DE_CREDITO ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_TIMBRADOS_NOTAS_DE_CREDITO set id_user = null");
+                    stmt.execute("ALTER TABLE TBL_TRANSFERENCIAS ALTER COLUMN id_user NULL");
+                    stmt.execute("update TBL_TRANSFERENCIAS set id_user = null");                    
+                }
+            }
+        } catch (Exception ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+
         LiquibaseExport export = new LiquibaseExport();
         export.backup();
     }//GEN-LAST:event_exportDbButtonActionPerformed
@@ -903,9 +948,9 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                             prepStmt.setString(1, ruc[0]);
                             prepStmt.setString(2, ruc[2]);
                             prepStmt.setString(3, StringEscapeUtils.escapeSql(ruc[1]));
-                            prepStmt.addBatch();
+                            prepStmt.execute();
                             a++;
-                            //joiner.add("INSERT INTO MG.TBL_CONTRIBUYENTES VALUES ('" + ruc[0] + "','" + ruc[2] + "', '" + StringEscapeUtils.escapeSql(ruc[1]) + "');");
+                            //joiner.add("INSERT INTO MG.TBL_CONTRIBUYENTES VALUES ('" + ruc[0] + "','" + ruc[2] + "', '" + StringEscapeUtils.escapeSql(ruc[1]) + "')");
                             if (a == 50000) {
                                 int[] numUpdates = prepStmt.executeBatch();
                                 //stmt.executeUpdate(joiner.toString());

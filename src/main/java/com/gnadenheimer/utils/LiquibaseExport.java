@@ -35,7 +35,7 @@ public class LiquibaseExport {
     
     private static final Logger log = LogManager.getLogger(LiquibaseExport.class);
     private static final String AUTHOR = "liquibase-backuper";
-    private static final String CHANGELOG_FILE_NAME_TEMPLATE = Preferences.userRoot().node("MG").get("Datadir", "") + "\\backup_%s.%s%s";
+    private static final String CHANGELOG_FILE_NAME_TEMPLATE = "\\backup_%s.%s%s";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
     
     public enum BackupFormat {
@@ -78,10 +78,11 @@ public class LiquibaseExport {
         
     private String makeChangeLogFileName(Database database) {
         String fileId = LocalDateTime.now().format(DATE_TIME_FORMATTER);
-        BackupFormat format = BackupFormat.XML;
+        BackupFormat format = BackupFormat.SQL;
         String extension = format.name().toLowerCase();
         String databaseType = format == BackupFormat.SQL ? String.format("%s.", database.getShortName()) : "";
-        return String.format(CHANGELOG_FILE_NAME_TEMPLATE, fileId, databaseType, extension);
+        String fileName = String.format(Preferences.userRoot().node("MG").get("Datadir", "") + CHANGELOG_FILE_NAME_TEMPLATE, fileId, databaseType, extension);
+        return fileName;
     }
 
     private DiffOutputControl makeDiffOutputControl() {
