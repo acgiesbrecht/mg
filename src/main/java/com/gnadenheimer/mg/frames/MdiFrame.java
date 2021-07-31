@@ -303,6 +303,10 @@ public class MdiFrame extends javax.swing.JFrame {
                 hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20191126.sql", hasBackedUp);
                 updateFechaHistorico(entityManager);
             }
+            if (entityManager.find(TblDatabaseUpdates.class, "/sql/javadb_20210731.sql") == null) {
+                hasBackedUp = Utils.getInstance().executeUpdateSQL("/sql/javadb_20210731.sql", hasBackedUp);
+                updateFechaHistorico(entityManager);
+            }
 
             /**
              * Make BackUp if last autoBackUp is older than 7 days
