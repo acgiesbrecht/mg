@@ -132,7 +132,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
         cboSqlFiles = new javax.swing.JComboBox();
         jLabel7 = new javax.swing.JLabel();
         cboFormatoFactura = new javax.swing.JComboBox();
-        btnPrepBd = new javax.swing.JButton();
         updateSETbutton = new javax.swing.JButton();
         lblStatusSET = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
@@ -263,14 +262,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
             }
         });
 
-        btnPrepBd.setBackground(new java.awt.Color(255, 0, 153));
-        btnPrepBd.setText("Preparar Base para MG3");
-        btnPrepBd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPrepBdActionPerformed(evt);
-            }
-        });
-
         updateSETbutton.setText("Actualizar Base de Datos SET");
         updateSETbutton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -322,7 +313,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
         jLabel21.setText("Año fiscal activo:");
 
-        exportDbButton.setText("Exportar Base a MGweb");
+        exportDbButton.setText("Generar SQL para MGweb");
         exportDbButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exportDbButtonActionPerformed(evt);
@@ -390,9 +381,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                                 .addGap(18, 18, 18)
                                 .addComponent(cmdReset, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(140, 140, 140)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnPrepBd)
-                                    .addComponent(jButton5)))
+                                .addComponent(jButton5))
                             .addComponent(jLabel7))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
@@ -456,9 +445,7 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
                                     .addComponent(cmdReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(cboSqlFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                                .addComponent(btnPrepBd)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                                 .addComponent(jButton5)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -567,142 +554,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
         }
     }//GEN-LAST:event_cmdFacturaPrintTestActionPerformed
-
-    private void btnPrepBdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrepBdActionPerformed
-        try {
-            /*CurrentUser currentUser = CurrentUser.getInstance();
-            Map<String, String> persistenceMap = Utils.getInstance().getPersistenceMap();
-            EntityManager entityManager = Persistence.createEntityManagerFactory("mg_PU", persistenceMap).createEntityManager();
-            entityManager.getTransaction().begin();
-            Query queryEventoDetalle = entityManager.createQuery("SELECT t FROM TblEventoDetalle t ORDER BY t.id");
-            List<TblEventoDetalle> listEventoDetalle = org.jdesktop.observablecollections.ObservableCollections.observableList(queryEventoDetalle.getResultList());
-            TblCuentasContablesPorDefecto cuentasContablesPorDefecto = entityManager.find(TblCuentasContablesPorDefecto.class, 1);
-            for (TblEventoDetalle evd : listEventoDetalle) {
-                if (evd.getTblAsientosList().size() == 2) {
-                    Integer indexAsientoAporte = -1;
-                    Integer indexAsientoDonacion = -1;
-                    if (((List<TblAsientos>) evd.getTblAsientosList()).get(0).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
-                        indexAsientoAporte = 0;
-                        indexAsientoDonacion = 1;
-                    } else if (((List<TblAsientos>) evd.getTblAsientosList()).get(1).getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
-                        indexAsientoAporte = 1;
-                        indexAsientoDonacion = 0;
-                    }
-                    ((List<TblAsientos>) evd.getTblAsientosList()).get(indexAsientoAporte).setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
-                    ((List<TblAsientos>) evd.getTblAsientosList()).get(indexAsientoDonacion).setMonto(evd.getMonto() - ((List<TblAsientos>) evd.getTblAsientosList()).get(indexAsientoAporte).getMonto());
-                    entityManager.merge(evd);
-                } else if (evd.getTblAsientosList().isEmpty()) {
-
-                    List<TblAsientos> ts = evd.getTblAsientosList();
-                    if (ts == null) {
-                        ts = new LinkedList<>();
-                        evd.setTblAsientosList((List) ts);
-                    }
-                    TblAsientos asientoAporte = new TblAsientos();
-                    asientoAporte.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
-                    asientoAporte.setIdCentroDeCostoDebe(evd.getIdEvento().getIdCentroDeCosto());
-                    asientoAporte.setIdCentroDeCostoHaber(evd.getIdEvento().getIdCentroDeCosto());
-                    asientoAporte.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
-                    asientoAporte.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaAportes());
-                    asientoAporte.setMonto(((Long) (evd.getMonto().longValue() * evd.getIdEvento().getPorcentajeAporte().longValue() / 100)).intValue());
-                    asientoAporte.setIdUser(currentUser.getUser());
-
-                    ts.add(asientoAporte);
-
-                    TblAsientos asientoDonacion = new TblAsientos();
-                    asientoDonacion.setFechahora(evd.getIdEvento().getFecha().atStartOfDay());
-                    asientoDonacion.setIdCentroDeCostoDebe(evd.getIdEvento().getIdCentroDeCosto());
-                    asientoDonacion.setIdCentroDeCostoHaber(evd.getIdEvento().getIdCentroDeCosto());
-                    asientoDonacion.setIdCuentaContableDebe(cuentasContablesPorDefecto.getIdCuentaACobrar());
-                    asientoDonacion.setIdCuentaContableHaber(cuentasContablesPorDefecto.getIdCuentaDonaciones());
-                    asientoDonacion.setMonto(evd.getMonto() - asientoAporte.getMonto());
-                    asientoDonacion.setIdUser(currentUser.getUser());
-
-                    ts.add(asientoDonacion);
-
-                    entityManager.merge(evd);
-                }
-            }
-            /*
-            List<TblTransferencias> listT = (List<TblTransferencias>) entityManager.createQuery("select t from TblTransferencias t").getResultList();
-            for (TblTransferencias t : listT) {
-                Query queryEvd = entityManager.createQuery("select e from TblEventoDetalle e where e.idEvento.idEventoTipo = :eventoTipo and EXTRACT(MONTH FROM e.idEvento.fecha) = :mes and EXTRACT(YEAR FROM e.idEvento.fecha) = :ano and e.idEntidad = :entidad");
-                Calendar c = Calendar.getInstance();
-                c.setTime(t.getFechahora());
-                queryEvd.setParameter("mes", c.get(Calendar.MONTH) + 1);
-                queryEvd.setParameter("ano", c.get(Calendar.YEAR));
-                queryEvd.setParameter("entidad", t.getIdEntidad());
-                queryEvd.setParameter("eventoTipo", t.getIdEventoTipo());
-
-                List<TblEventoDetalle> listEvd = queryEvd.getResultList();
-                List<TblAsientos> listAsientos = new ArrayList<>();
-                for (TblEventoDetalle evd : listEvd) {
-                    listAsientos.addAll(evd.getTblAsientosList());
-                }
-                List<TblAsientosTemporales> listAsientosTemporales = t.getTblAsientosTemporalesList();
-                if (listAsientosTemporales == null) {
-                    listAsientosTemporales = new LinkedList<>();
-                    t.setTblAsientosTemporalesList(listAsientosTemporales);
-                }
-                if (t.getTblAsientosTemporalesList().isEmpty()) {
-                    for (TblAsientos asiento : listAsientos) {
-                        TblAsientosTemporales aT = new TblAsientosTemporales();
-                        entityManager.persist(aT);
-                        aT.setFacturado(false);
-                        aT.setFechahora(t.getFechahora());
-                        aT.setIdCentroDeCosto(asiento.getIdCentroDeCosto());
-                        aT.setIdCuentaContableDebe(asiento.getIdCentroDeCosto().getIdCuentaContableCtaCtePorDefecto());
-                        aT.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
-                        if (asiento.getIdCuentaContableHaber().equals(cuentasContablesPorDefecto.getIdCuentaAportes())) {
-                            aT.setEsAporte(true);
-                        } else {
-                            aT.setEsAporte(false);
-                        }
-                        aT.setMonto(asiento.getMonto());
-                        listAsientosTemporales.add(aT);
-                    }
-                    entityManager.merge(t);
-                }
-            }*/
- /* entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            JOptionPane.showMessageDialog(null, "Actualizacion satisfactoria!");*/
- /*String[] args = new String[5];
-           args[0] = "mgdb.sql";
-           args[1] = "jdbc:derby:"+System.getProperties().getProperty("derby.system.home")+"\\mgdb\\;create=false;user=mg;password=123456";
-           args[2] = "MG";
-           args[3] = "true";           
-           //derby2pg.core.main(args);     
-           
-           
-           JFileChooser chooser = new JFileChooser();
-            chooser.setCurrentDirectory(new java.io.File(System.getProperties().getProperty("derby.system.home")));
-            chooser.setDialogTitle("Eligir ubicación de derby2pg.jar");            
-            chooser.setAcceptAllFileFilterUsed(false);            
-
-            
-            if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                String s = chooser.getSelectedFile().getParent();
-                
-                String cmd = "java -jar derby2pg.jar mgdb.sql \"" + args[1] + "\" \"MG\" true";
-                
-                NetworkServerControl server = new NetworkServerControl();                
-                server.shutdown();
-                
-                final ProcessBuilder pBuilder = new ProcessBuilder("java", "-jar", 
-                   "derby2pg.jar", args[0], args[1],args[2],args[3]).inheritIO();
-                //final ProcessBuilder pBuilder = new ProcessBuilder(cmd); 
-                pBuilder.directory(new File(chooser.getSelectedFile().getParent()));
-                final Process process = pBuilder.start();                
-            }*/
-
-            Utils.getInstance().executeUpdateSQL("/sql/javadb_prep_mg3.sql", false);
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
-            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
-        }
-    }//GEN-LAST:event_btnPrepBdActionPerformed
 
     private void updateSETbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSETbuttonActionPerformed
         try {
@@ -1043,7 +894,6 @@ public class FrameConfigAdmin extends javax.swing.JInternalFrame implements Prop
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgCobrarAC;
-    private javax.swing.JButton btnPrepBd;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox cboFormatoFactura;
     private javax.swing.JComboBox cboModoImpresion;

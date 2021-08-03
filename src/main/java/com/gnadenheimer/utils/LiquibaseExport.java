@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,6 +64,7 @@ public class LiquibaseExport {
             String fileName = generateChangeLog(connection, snapshotTypes, author, diffOutputControl);            
         }catch(IOException | ParserConfigurationException | LiquibaseException ex){
             log.error(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
 
@@ -72,7 +74,7 @@ public class LiquibaseExport {
         String fileName = makeChangeLogFileName(database);
         System.out.println(fileName);
         CommandLineUtils.doGenerateChangeLog(fileName, database, null, null, snapshotTypes, author, null, null, diffOutputControl);
-        
+        JOptionPane.showMessageDialog(null, "Completado con exito!");
         return fileName;
     }
         
@@ -82,6 +84,7 @@ public class LiquibaseExport {
         String extension = format.name().toLowerCase();
         String databaseType = format == BackupFormat.SQL ? String.format("%s.", database.getShortName()) : "";
         String fileName = String.format(Preferences.userRoot().node("MG").get("Datadir", "") + CHANGELOG_FILE_NAME_TEMPLATE, fileId, databaseType, extension);
+        JOptionPane.showMessageDialog(null, "Generando " + fileName);
         return fileName;
     }
 

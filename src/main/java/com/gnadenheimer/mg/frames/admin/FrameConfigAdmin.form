@@ -102,10 +102,7 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="cmdReset" min="-2" pref="131" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="btnPrepBd" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jButton5" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="jButton5" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -190,9 +187,7 @@
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
-                              <EmptySpace pref="15" max="32767" attributes="0"/>
-                              <Component id="btnPrepBd" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace pref="48" max="32767" attributes="0"/>
                               <Component id="jButton5" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -375,17 +370,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboFormatoFacturaActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnPrepBd">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="99" green="0" red="ff" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Preparar Base para MG3"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPrepBdActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="updateSETbutton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Actualizar Base de Datos SET"/>
@@ -477,7 +461,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="exportDbButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Exportar Base a MGweb"/>
+        <Property name="text" type="java.lang.String" value="Generar SQL para MGweb"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exportDbButtonActionPerformed"/>
