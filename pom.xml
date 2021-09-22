@@ -95,7 +95,7 @@
                     <keypass>123456</keypass>
                 </configuration>
             </plugin>-->
-                        <plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
                 <version>1.4</version>
@@ -114,11 +114,11 @@
                         </items>
                         <revisionOnScmFailure>unknownbuild</revisionOnScmFailure>
                     </configuration>
-              </plugin>
+            </plugin>
             <plugin>
-                <groupId>org.icestuff</groupId>
+                <groupId>io.github.rockfireredmoon</groupId>
                 <artifactId>getdown-maven-plugin</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.9.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -286,7 +286,8 @@
         <repository>
             <id>central</id>
             <name>Central Repository</name>
-            <url>https://repo.maven.apache.org/maven2</url>
+            <!--<url>https://repo.maven.apache.org/maven2</url>-->
+            <url>https://industria.chortitzer.com.py/nexus/repository/full</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
@@ -301,7 +302,8 @@
         <pluginRepository>
             <id>central</id>
             <name>Central Repository</name>
-            <url>https://repo.maven.apache.org/maven2</url>
+            <!--<url>https://repo.maven.apache.org/maven2</url>-->
+            <url>https://industria.chortitzer.com.py/nexus/repository/full</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
@@ -310,12 +312,12 @@
                 <updatePolicy>never</updatePolicy>
             </releases>
         </pluginRepository>
-        <pluginRepository>
+        <!--<pluginRepository>
             <id>getdown-maven-plugin-mvn-repo</id>
             <url>https://raw.github.com/rockfireredmoon/getdown-maven-plugin/mvn-repo/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
-        </pluginRepository>
+        </pluginRepository>-->
     </pluginRepositories>
 </project>
