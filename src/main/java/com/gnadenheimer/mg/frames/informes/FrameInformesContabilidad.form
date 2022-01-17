@@ -209,6 +209,7 @@
                           </Group>
                       </Group>
                   </Group>
+                  <Component id="cmdLibroComprasRes90" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -318,6 +319,8 @@
                   <Component id="cmdExtractoCtaCteSaldos" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmdExtractoCtaCteSaldosExternos" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="cmdLibroComprasRes90" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="16" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -608,6 +611,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdExtractoCtaCteSaldosExternosActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="cmdLibroComprasRes90">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Generar archivo Res 90/21"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdLibroComprasRes90ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

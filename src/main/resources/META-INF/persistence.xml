@@ -42,6 +42,7 @@
         <class>com.gnadenheimer.mg.domain.models.PagosMensualesPendientes</class>
         <class>com.gnadenheimer.mg.domain.models.MiembrosConPagosPendientes</class>
         <class>com.gnadenheimer.mg.domain.models.Transferencia</class>
+        <class>com.gnadenheimer.mg.domain.models.LibroRes90</class>
         <class>com.gnadenheimer.mg.domain.TblGrupos</class>
         <class>com.gnadenheimer.mg.domain.TblFormasDePago</class>
         <class>com.gnadenheimer.mg.domain.TblEventoCuotas</class>

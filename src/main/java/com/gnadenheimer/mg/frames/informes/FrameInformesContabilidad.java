@@ -13,21 +13,32 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.gnadenheimer.mg.domain.TblCentrosDeCosto;
 import com.gnadenheimer.mg.domain.TblCuentasContables;
+import com.gnadenheimer.mg.domain.TblIglesia;
 import com.gnadenheimer.mg.domain.miembros.TblEntidades;
 import com.gnadenheimer.mg.domain.models.BalanceGeneral;
+import com.gnadenheimer.mg.domain.models.LibroRes90;
 import com.gnadenheimer.mg.utils.CurrentUser;
 import com.gnadenheimer.mg.utils.Utils;
 import java.beans.Beans;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.prefs.Preferences;
+import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -165,6 +176,7 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
         cmdExtractoCtaCteSaldosInternos = new javax.swing.JButton();
         jLabel24 = new javax.swing.JLabel();
         cmdExtractoCtaCteSaldosExternos = new javax.swing.JButton();
+        cmdLibroComprasRes90 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -360,6 +372,13 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
             }
         });
 
+        cmdLibroComprasRes90.setText("Generar archivo Res 90/21");
+        cmdLibroComprasRes90.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdLibroComprasRes90ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -445,7 +464,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(cmdExtractoCtaCteSaldosInternos)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmdExtractoCtaCteSaldosExternos)))))
+                                .addComponent(cmdExtractoCtaCteSaldosExternos))))
+                    .addComponent(cmdLibroComprasRes90))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -531,6 +551,8 @@ public class FrameInformesContabilidad extends javax.swing.JInternalFrame {
                     .addComponent(cmdExtractoCtaCteSaldosInternos)
                     .addComponent(cmdExtractoCtaCteSaldos)
                     .addComponent(cmdExtractoCtaCteSaldosExternos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmdLibroComprasRes90)
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -967,7 +989,7 @@ GROUP BY ID, DESCRIPCION
     }//GEN-LAST:event_cmdFacturasCreditoResumenCCActionPerformed
 
     private void cmdLibroComprasCdCyCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroComprasCdCyCCActionPerformed
-                try {
+        try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
             parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
@@ -981,7 +1003,7 @@ GROUP BY ID, DESCRIPCION
     }//GEN-LAST:event_cmdLibroComprasCdCyCCActionPerformed
 
     private void cmdExtractoCtaCteSaldosInternosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExtractoCtaCteSaldosInternosActionPerformed
-                try {
+        try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
             parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
@@ -993,7 +1015,7 @@ GROUP BY ID, DESCRIPCION
     }//GEN-LAST:event_cmdExtractoCtaCteSaldosInternosActionPerformed
 
     private void cmdExtractoCtaCteSaldosExternosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExtractoCtaCteSaldosExternosActionPerformed
-                try {
+        try {
             Map parameters = new HashMap();
             parameters.put("fechaDesde", Timestamp.valueOf(txtFechaDesde.getDateTimeStrict()));
             parameters.put("fechaHasta", Timestamp.valueOf(txtFechaHasta.getDateTimeStrict()));
@@ -1003,6 +1025,223 @@ GROUP BY ID, DESCRIPCION
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
         }
     }//GEN-LAST:event_cmdExtractoCtaCteSaldosExternosActionPerformed
+
+    private void cmdLibroComprasRes90ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLibroComprasRes90ActionPerformed
+        try {
+            List<LibroRes90> listCompras = entityManager.createNativeQuery("SELECT "
+                    + "    2 AS tipo_registro, "
+                    + "    11 AS tipo_id_proveedor, "
+                    + "    ruc, "
+                    + "    razon_social, "
+                    + "    109 AS tipo_comprobante, "
+                    + "    fechahora, "
+                    + "    nro_timbrado, "
+                    + "    nro, "
+                    + "    monto_iva10, "
+                    + "    monto_iva5, "
+                    + "    monto_exentas, "
+                    + "    monto_iva10 + monto_iva5 + monto_exentas AS monto_total, "
+                    + "    1 AS condicion, "
+                    + " 'N' AS op_moneda_extranjera, "
+                    + "    'S' AS imputa_iva, "
+                    + "    'S' AS imputa_ire, "
+                    + "    'N' AS imputa_irp, "
+                    + "    'N' AS no_imputa, "
+                    + "    '' AS nro_comprobante_asoc, "
+                    + "    0 AS timbrado_comprobante_asoc, "
+                    + "    FALSE AS ANULADO "
+                    + "FROM "
+                    + "    TBL_FACTURAS_COMPRA "
+                    + "WHERE "
+                    + "    fechahora BETWEEN '" + txtFechaDesde.getDateTimeStrict().format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "' AND '" + txtFechaHasta.getDateTimeStrict().format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "' "
+                    + "UNION ALL "
+                    + "SELECT "
+                    + "    2 AS tipo_registro, "
+                    + "    12 AS tipo_id_proveedor, "
+                    + "    a.ci AS ruc, "
+                    + "    a.nombre AS razon_social, "
+                    + "    101 AS tipo_comprobante, "
+                    + "    a.FECHAHORA, "
+                    + "    t.nro AS nro_timbrado, "
+                    + "    a.nro, "
+                    + "    0 AS monto_iva10, "
+                    + "    0 AS monto_iva5, "
+                    + "    a.monto AS monto_exentas, "
+                    + "    a.monto AS monto_total, "
+                    + "    1 AS condicion, "
+                    + " 'N' AS op_moneda_extranjera, "
+                    + "    'S' AS imputa_iva, "
+                    + "    'S' AS imputa_ire, "
+                    + "    'N' AS imputa_irp, "
+                    + "    'N' AS no_imputa, "
+                    + "    '' AS nro_comprobante_asoc, "
+                    + "    0 AS timbrado_comprobante_asoc, "
+                    + "    ANULADO "
+                    + "FROM "
+                    + "    TBL_AUTOFACTURAS a, "
+                    + "    TBL_TIMBRADOS_AUTOFACTURAS t "
+                    + "WHERE "
+                    + "    t.ID = a.ID_TIMBRADO "
+                    + "    AND fechahora BETWEEN '" + txtFechaDesde.getDateTimeStrict().format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "' AND '" + txtFechaHasta.getDateTimeStrict().format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "' "
+                    + "UNION ALL "
+                    + "SELECT "
+                    + "    2 AS tipo_registro, "
+                    + "    11 AS tipo_id_proveedor, "
+                    + "    f.ruc, "
+                    + "    f.razon_social, "
+                    + "    110 AS tipo_comprobante, "
+                    + "    nc.FECHAHORA, "
+                    + "    t.nro AS nro_timbrado, "
+                    + "    nc.nro, "
+                    + "    0 AS monto_iva10, "
+                    + "    0 AS monto_iva5, "
+                    + "    f.IMPORTE_APORTE + f.IMPORTE_DONACION AS monto_exentas, "
+                    + "    f.IMPORTE_APORTE + f.IMPORTE_DONACION AS monto_total, "
+                    + "    1 AS condicion, "
+                    + " 'N' AS op_moneda_extranjera, "
+                    + "    'S' AS imputa_iva, "
+                    + "    'S' AS imputa_ire, "
+                    + "    'N' AS imputa_irp, "
+                    + "    'N' AS no_imputa, "
+                    + "    CAST(f.NRO AS CHAR(15)) AS nro_comprobante_asoc, "
+                    + "    f.ID_TIMBRADO AS timbrado_comprobante_asoc, "
+                    + "    nc.ANULADO "
+                    + "FROM "
+                    + "    TBL_NOTAS_DE_CREDITO nc, "
+                    + "    TBL_TIMBRADOS_NOTAS_DE_CREDITO t, "
+                    + "    TBL_FACTURAS f "
+                    + "WHERE "
+                    + "    t.ID = nc.ID_TIMBRADO "
+                    + "    AND f.NRO = nc.NRO_FACTURA "
+                    + "    AND nc.FECHAHORA BETWEEN '" + txtFechaDesde.getDateTimeStrict().format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "' AND '" + txtFechaHasta.getDateTimeStrict().format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "' ",
+                    LibroRes90.class)
+                    .getResultList();
+
+            List<LibroRes90> listVentas = entityManager.createNativeQuery("SELECT "
+                    + "   1 AS tipo_registro, "
+                    + "11 AS tipo_id_proveedor, "
+                    + "f.RUC, "
+                    + "f.RAZON_SOCIAL, "
+                    + "109 AS tipo_comprobante, "
+                    + "f.FECHAHORA, "
+                    + "CAST(f.ID_TIMBRADO AS CHAR(8)) AS NRO_TIMBRADO, "
+                    + "CAST(f.NRO AS CHAR(7)) AS NRO,  "
+                    + "0 as monto_iva10, "
+                    + "0 as monto_iva5, "
+                    + "f.IMPORTE_DONACION + f.IMPORTE_APORTE as monto_exentas, "
+                    + "f.IMPORTE_DONACION + f.IMPORTE_APORTE as monto_total, "
+                    + "1 AS condicion, "
+                    + " 'N' AS op_moneda_extranjera, "
+                    + "	 'S' AS imputa_iva, "
+                    + "	 'S' AS imputa_ire, "
+                    + "	 'N' AS imputa_irp, "
+                    + "	 'N' AS no_imputa, "
+                    + "	 '' AS nro_comprobante_asoc, "
+                    + "	 0 AS timbrado_comprobante_asoc, "
+                    + " f.ANULADO "
+                    + " from TBL_FACTURAS f "
+                    + "WHERE "
+                    + "    f.FECHAHORA BETWEEN '" + txtFechaDesde.getDateTimeStrict().format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "' AND '" + txtFechaHasta.getDateTimeStrict().format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "' "
+                    + "UNION ALL "
+                    + "SELECT "
+                    + " 1 AS tipo_registro, "
+                    + "    11 AS tipo_id_proveedor, "
+                    + " ncc.RUC, "
+                    + " ncc.RAZON_SOCIAL, "
+                    + " 110 AS tipo_comprobante, "
+                    + " ncc.FECHAHORA, "
+                    + " ncc.NRO_TIMBRADO, "
+                    + " ncc.NRO, "
+                    + " monto_iva10, "
+                    + " monto_iva5, "
+                    + " monto_exentas, "
+                    + " monto_exentas + monto_iva5 + monto_iva10 as monto_total, "
+                    + "    1 AS condicion, "
+                    + " 'N' AS op_moneda_extranjera, "
+                    + "    'S' AS imputa_iva, "
+                    + "    'S' AS imputa_ire, "
+                    + "    'N' AS imputa_irp, "
+                    + "    'N' AS no_imputa, "
+                    + "    '' AS nro_comprobante_asoc, "
+                    + "    0 AS timbrado_comprobante_asoc, "
+                    + "FALSE AS ANULADO "
+                    + " from TBL_NOTAS_DE_CREDITO_COMPRAS ncc "
+                    + "WHERE "
+                    + "    ncc.FECHAHORA BETWEEN '" + txtFechaDesde.getDateTimeStrict().format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "' AND '" + txtFechaHasta.getDateTimeStrict().format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ") + "' ",
+                    LibroRes90.class)
+                    .getResultList();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            StringBuilder sb = new StringBuilder();
+            List registros = new ArrayList();
+            registros.addAll(listCompras.stream()
+                    .map(o -> {
+                        return o.getTipoRegistro().toString() + "\t"
+                                + o.getTipoIdProveedor().toString() + "\t"
+                                + o.getRuc().split("-")[0] + "\t"
+                                + o.getRazonSocial() + "\t"
+                                + o.getTipoComprobante().toString() + "\t"
+                                + o.getFechahora().format(formatter) + "\t"
+                                + o.getNroTimbrado().toString() + "\t"
+                                + (o.getNro().contains("-") ? o.getNro() : Utils.generateFacturaNroFull(Integer.parseInt(o.getNro().trim()))) + "\t"
+                                + o.getMontoIva10().toString() + "\t"
+                                + o.getMontoIva5().toString() + "\t"
+                                + o.getMontoExentas().toString() + "\t"
+                                + o.getMontoTotal().toString() + "\t"
+                                + o.getCondicion().toString() + "\t"
+                                + o.getOpMonedaExtranjera() + "\t"
+                                + o.getImputaIva() + "\t"
+                                + o.getImputaIre() + "\t"
+                                + o.getImputaIrp() + "\t"
+                                + o.getNoImputa() + "\t"
+                                + (o.getTimbradoComprobanteAsoc() != 0 ? o.getNroComprobanteAsoc() + "\t" : "")
+                                + (o.getTimbradoComprobanteAsoc() != 0 ? o.getTimbradoComprobanteAsoc().toString() + "\t" : "");
+                    })
+                    .collect(Collectors.toList()));
+            registros.addAll(listVentas.stream()
+                    .map(o -> {
+                        return o.getTipoRegistro().toString() + "\t"
+                                + o.getTipoIdProveedor().toString() + "\t"
+                                + o.getRuc().split("-")[0] + "\t"
+                                + o.getRazonSocial() + "\t"
+                                + o.getTipoComprobante().toString() + "\t"
+                                + o.getFechahora().format(formatter) + "\t"
+                                + o.getNroTimbrado().toString() + "\t"
+                                + (o.getNro().contains("-") ? o.getNro() : Utils.generateFacturaNroFull(Integer.parseInt(o.getNro().trim()))) + "\t"
+                                + o.getMontoIva10().toString() + "\t"
+                                + o.getMontoIva5().toString() + "\t"
+                                + o.getMontoExentas().toString() + "\t"
+                                + o.getMontoTotal().toString() + "\t"
+                                + o.getCondicion().toString() + "\t"
+                                + o.getOpMonedaExtranjera() + "\t"
+                                + o.getImputaIva() + "\t"
+                                + o.getImputaIre() + "\t"
+                                + o.getImputaIrp() + "\t"
+                                + (o.getTimbradoComprobanteAsoc() != 0 ? o.getNroComprobanteAsoc() + "\t" : "")
+                                + (o.getTimbradoComprobanteAsoc() != 0 ? o.getTimbradoComprobanteAsoc().toString() + "\t" : "");
+                    })
+                    .collect(Collectors.toList()));
+            sb.append(String.join("\n", registros));
+
+            String fileName
+                    = entityManager.find(TblIglesia.class, 1).getRucSinDv()
+                    + "_REG_"
+                    + String.format("%02d", txtFechaDesde.getDateTimeStrict().getMonthValue())
+                    + txtFechaDesde.getDateTimeStrict().getYear()
+                    + "_00001";
+            File f = new File(Preferences.userRoot().node("MG").get("Datadir", (new JFileChooser()).getFileSystemView().getDefaultDirectory().toString()) + "\\" + fileName + ".zip");
+            try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(f))) {
+                ZipEntry e = new ZipEntry(fileName + ".txt");
+                out.putNextEntry(e);
+                byte[] data = sb.toString().getBytes();
+                out.write(data, 0, data.length);
+                out.closeEntry();
+            }
+        } catch (IOException ex) {
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_cmdLibroComprasRes90ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1079,6 +1318,7 @@ GROUP BY ID, DESCRIPCION
     private javax.swing.JButton cmdFacturasCreditoResumenCC;
     private javax.swing.JButton cmdLibroCompras;
     private javax.swing.JButton cmdLibroComprasCdCyCC;
+    private javax.swing.JButton cmdLibroComprasRes90;
     private javax.swing.JButton cmdLibroDiario;
     private javax.swing.JButton cmdLibroMayor;
     private javax.swing.JButton cmdLibroMayorCC;
