@@ -1237,6 +1237,7 @@ GROUP BY ID, DESCRIPCION
                 out.write(data, 0, data.length);
                 out.closeEntry();
             }
+            JOptionPane.showMessageDialog(null, "Archivo genreado en; " + f.getAbsolutePath());
         } catch (IOException ex) {
             LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), ex);
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
