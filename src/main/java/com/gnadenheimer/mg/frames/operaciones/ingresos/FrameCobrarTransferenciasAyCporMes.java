@@ -631,8 +631,10 @@ public class FrameCobrarTransferenciasAyCporMes extends JInternalFrame implement
                         + "(SELECT ed.id_entidad,"
                         + "                MONTH(ev.FECHA) AS mes,"
                         + "                YEAR(ev.FECHA) AS ano,"
-                        + "                SUM(CAST(ed.monto*(CAST(ev.PORCENTAJE_APORTE AS FLOAT)/100) AS INTEGER)) AS montoAporte,"
-                        + "                SUM(CAST(ed.monto*(CAST(100-ev.PORCENTAJE_APORTE AS FLOAT)/100) AS INTEGER)) AS montoDonacion"
+                        + "                SUM(CAST(FLOOR((ed.monto*(CAST(ev.PORCENTAJE_APORTE AS FLOAT)/100)) + 0.5) AS INTEGER)) AS montoAporte,"
+                        + "                SUM(CAST(FLOOR((ed.monto*(CAST(100-ev.PORCENTAJE_APORTE AS FLOAT)/100)) + 0.5) AS INTEGER)) AS montoDonacion"
+//                        + "                SUM(CAST((ed.monto*(CAST(ev.PORCENTAJE_APORTE AS FLOAT)/100)) AS INTEGER)) AS montoAporte,"
+//                        + "                SUM(CAST((ed.monto*(CAST(100-ev.PORCENTAJE_APORTE AS FLOAT)/100)) AS INTEGER)) AS montoDonacion"
                         + "              FROM MG.TBL_EVENTO_DETALLE ed LEFT JOIN MG.TBL_EVENTOS ev ON ed.ID_EVENTO = ev.ID WHERE ev.ID_EVENTO_TIPO = " + ((TblEventoTipos) cboEventoTipo.getSelectedItem()).getId().toString()
                         + "                AND YEAR(ev.FECHA) = " + persistenceMap.get("anoActivo")
                         + "             group by MONTH(ev.FECHA), YEAR(ev.FECHA), ed.id_entidad"
