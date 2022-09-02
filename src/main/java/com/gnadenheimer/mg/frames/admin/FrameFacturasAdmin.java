@@ -105,7 +105,7 @@ public class FrameFacturasAdmin extends JInternalFrame {
         numberCellRenderer1.setText("numberCellRenderer1");
 
         masterTable.setAutoCreateRowSorter(true);
-        masterTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        masterTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nro}"));
@@ -237,9 +237,11 @@ public class FrameFacturasAdmin extends JInternalFrame {
     @SuppressWarnings("unchecked")
     private void imprimirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirButtonActionPerformed
         try {
-            if (masterTable.getSelectedRow() > -1) {
-                TblFacturas factura = list.get(masterTable.convertRowIndexToModel(masterTable.getSelectedRow()));
-                Utils.getInstance().printFactura(factura, true);
+            for (int i : masterTable.getSelectedRows()) {
+                if (i > -1) {
+                    TblFacturas factura = list.get(masterTable.convertRowIndexToModel(i));
+                    Utils.getInstance().printFactura(factura, true);
+                }
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + ex.getMessage());
@@ -249,42 +251,41 @@ public class FrameFacturasAdmin extends JInternalFrame {
 
     private void anularButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anularButtonActionPerformed
         try {
-            if (masterTable.getSelectedRow() > -1) {
-                int[] selected = masterTable.getSelectedRows();
+            for (int i : masterTable.getSelectedRows()) {
+                if (i > -1) {
+                    TblFacturas t = list.get(masterTable.convertRowIndexToModel(i));
+                    if (!t.getAnulado()) {
+                        t.setAnulado(true);
 
-                TblFacturas t = list.get(masterTable.convertRowIndexToModel(selected[0]));
-                if (!t.getAnulado()) {
-                    t.setAnulado(true);
+                        for (TblAsientos asiento : t.getTblAsientosList()) {
 
-                    for (TblAsientos asiento : t.getTblAsientosList()) {
+                            for (TblAsientosTemporales at : asiento.getTblAsientosTemporalesList()) {
+                                at.setFacturado(false);
+                                entityManager.merge(at);
+                            }
 
-                        for (TblAsientosTemporales at : asiento.getTblAsientosTemporalesList()) {
-                            at.setFacturado(false);
-                            entityManager.merge(at);
+                            TblAsientos asientoInverso = new TblAsientos();
+                            entityManager.persist(asientoInverso);
+                            asientoInverso.setFechahora(LocalDateTime.now());
+                            asientoInverso.setIdCentroDeCostoDebe(asiento.getIdCentroDeCostoHaber());
+                            asientoInverso.setIdCentroDeCostoHaber(asiento.getIdCentroDeCostoDebe());
+                            asientoInverso.setIdCuentaContableDebe(asiento.getIdCuentaContableHaber());
+                            asientoInverso.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
+                            asientoInverso.setMonto(asiento.getMonto());
+                            asientoInverso.setIdUser(currentUser.getUser());
+                            asientoInverso.setObservacion("Anulacion");
+
                         }
-
-                        TblAsientos asientoInverso = new TblAsientos();
-                        entityManager.persist(asientoInverso);
-                        asientoInverso.setFechahora(LocalDateTime.now());
-                        asientoInverso.setIdCentroDeCostoDebe(asiento.getIdCentroDeCostoHaber());
-                        asientoInverso.setIdCentroDeCostoHaber(asiento.getIdCentroDeCostoDebe());
-                        asientoInverso.setIdCuentaContableDebe(asiento.getIdCuentaContableHaber());
-                        asientoInverso.setIdCuentaContableHaber(asiento.getIdCuentaContableDebe());
-                        asientoInverso.setMonto(asiento.getMonto());
-                        asientoInverso.setIdUser(currentUser.getUser());
-                        asientoInverso.setObservacion("Anulacion");
-
+                        entityManager.merge(t);                        
+                        entityManager.getTransaction().commit();
+                        entityManager.getTransaction().begin();
+                        java.util.List data = query.getResultList();
+                        for (Object entity : data) {
+                            entityManager.refresh(entity);
+                        }
+                        list.clear();
+                        list.addAll(data);
                     }
-                    entityManager.merge(t);
-                    //chkAnulado.setSelected(true);
-                    entityManager.getTransaction().commit();
-                    entityManager.getTransaction().begin();
-                    java.util.List data = query.getResultList();
-                    for (Object entity : data) {
-                        entityManager.refresh(entity);
-                    }
-                    list.clear();
-                    list.addAll(data);
                 }
             }
         } catch (RollbackException ex) {
