@@ -37,5 +37,17 @@ public abstract class NumeroALetras {
             return "error";
         }
     }
+    
+    public static String convertNumberToLetter(Integer number){
+        try {
+            NumberFormat formatter = new RuleBasedNumberFormat(new Locale("es"), RuleBasedNumberFormat.SPELLOUT);
+            String res = formatter.format(number);
+            return res.replaceAll("­", "");
+        } catch (Exception exx) {
+            JOptionPane.showMessageDialog(null, Thread.currentThread().getStackTrace()[1].getMethodName() + " - " + exx.getMessage());
+            LOGGER.error(Thread.currentThread().getStackTrace()[1].getMethodName(), exx);
+            return "error";
+        }
+    }
 
 }
