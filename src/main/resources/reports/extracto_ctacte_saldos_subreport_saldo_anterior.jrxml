@@ -7,7 +7,7 @@
     <parameter name="fechaDesde" class="java.sql.Timestamp"/>
     <parameter name="centroDeCosto" class="java.lang.Integer"/>
     <queryString language="SQL">
-		<![CDATA[SELECT COALESCE(SUM(IMPORTE),0) AS SALDO FROM
+		<![CDATA[SELECT COALESCE(SUM(CAST(IMPORTE AS BIGINT)),0) AS SALDO FROM
                         (SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE

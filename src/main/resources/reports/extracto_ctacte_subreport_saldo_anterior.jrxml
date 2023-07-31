@@ -4,7 +4,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libro_mayor_saldo_anterior" pageWidth="514" pageHeight="842" columnWidth="514" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="59aee2f8-0e6a-4948-9875-e8cfccd96688">
     <parameter name="fechaDesde" class="java.sql.Timestamp"/>
     <queryString language="SQL">
-		<![CDATA[SELECT COALESCE(SUM(IMPORTE),0) AS SALDO FROM
+		<![CDATA[SELECT COALESCE(SUM(CAST(IMPORTE AS BIGINT)),0) AS SALDO FROM
 (SELECT f.FECHAHORA, 'Fac - '  || f.RAZON_SOCIAL AS NOMBRE, -SUM(a.MONTO) AS IMPORTE
                         FROM TBL_FACTURAS_COMPRA f, TBL_FACTURAS_COMPRA_ASIENTOS fa, TBL_ASIENTOS a, TBL_CUENTAS_CONTABLES_POR_DEFECTO ccpd
                         WHERE a.ID_CUENTA_CONTABLE_HABER = ccpd.ID_CUENTA_CTA_CTE
